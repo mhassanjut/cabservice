@@ -1,0 +1,17 @@
+# IntelliJ
+.idea/
+*.iml
+
+# Build tools
+target/
+build/
+
+# Compiled files
+*.class
+
+# Eclipse (only keep if needed)
+.metadata/
+.settings/
+.project
+.classpath
+.recommenders/
