@@ -1,0 +1,121 @@
+stwmovers.com (Nuxt 3) — SEO-first static MVP
+
+FOLDER STRUCTURE (what goes where)
+
+- app.vue
+  Nuxt root. Uses the default layout + renders page routes.
+
+- nuxt.config.ts
+  Central app configuration:
+  - global SEO defaults (head meta, titleTemplate)
+  - runtimeConfig for business/contact values and future API base URL
+  - prerender routes for static generation (/, /cars, /confirm)
+
+- assets/css/main.css
+  Global design tokens + minimal responsive styles (mobile-first).
+
+- config/
+  Central configuration (single source of truth):
+  - site.ts (siteUrl, apiBaseUrl placeholder, WhatsApp number, external tour CTA)
+  - seo.ts (brand defaults + OG defaults)
+
+- constants/
+  Route/external link constants:
+  - routes.ts
+  - externalLinks.ts
+
+- composables/
+  Reusable UI/SEO logic:
+  - usePageSeo.ts (SEO-critical centralized meta builder)
+  - usePlacesAutocomplete.ts (Spain-limited autocomplete placeholder)
+
+- utils/
+  Pure helpers:
+  - seo.ts (URL/title/description helpers)
+  - whatsapp.ts (wa.me URL builder)
+
+- services/
+  Future Spring Boot integration layer (modular, replaceable):
+  - http/client.ts (base API client using ofetch)
+  - http/useApiClient.ts (runtime baseURL wiring)
+  - api/places.service.ts (placeholder autocomplete endpoint)
+  - api/booking.service.ts (placeholder create booking endpoint)
+
+- stores/
+  Pinia state:
+  - booking.ts (booking draft + selected vehicle; validation getters)
+
+- plugins/
+  Client-only persistence:
+  - bookingPersist.client.ts (hydrates store + persists to localStorage)
+
+- data/
+  Static content used by pages (easy to replace with API later):
+  - vehicles.ts (static car list + pricing)
+
+- components/
+  Reusable UI components:
+  - BookingForm.vue (homepage booking form + Spain-only suggestion UX)
+  - VehicleCard.vue (car listing card)
+  - WhatsappFloatingButton.vue (global WhatsApp CTA)
+
+- layouts/
+  - default.vue (shared header/nav/footer + cross-domain tour CTA)
+
+- pages/
+  Crawl-friendly, stable routes (3-page MVP):
+  - index.vue (homepage; modular SEO service blocks)
+  - cars.vue (vehicle selection; reads persisted booking draft)
+  - confirm.vue (WhatsApp payment CTA; message prefill)
+
+- public/
+  Static assets:
+  - favicon.svg
+  - og-default.svg (default OpenGraph image)
+  - img/vehicles/*.svg (placeholder vehicle images)
+
+- features/admin/.keep
+  Placeholder structure for future admin panel integration (no routes yet).
+
+
+SEO-CRITICAL ARCHITECTURAL DECISIONS
+
+- Centralized page SEO composition in composable: composables/usePageSeo.ts
+  - consistent canonical, OG/Twitter meta and future-scalable page configuration
+  - supports adding schema JSON-LD later via useHead in the same pattern
+
+- Homepage sections are modular and semantic:
+  - Service grouping blocks are intentionally separated for future keyword clustering
+    and extraction into dedicated landing pages without rewriting layout logic.
+
+- Crawl-friendly routing:
+  - stable, short routes: /, /cars, /confirm
+  - static prerender configuration for consistent indexability in MVP
+
+
+MOBILE / RESPONSIVE STRATEGY
+
+- Mobile-first CSS with a small breakpoint at 860px.
+- Grid layout collapses naturally to one column on mobile.
+- Form inputs and CTAs are full-width / touch-friendly.
+
+
+LIBRARIES USED
+
+- Nuxt 3 (SSR capable, generated as static MVP via prerender routes)
+- Pinia + @pinia/nuxt (state + persistence plugin)
+- ofetch (HTTP client base; ready for Spring Boot endpoints)
+- @nuxt/eslint + eslint (lint)
+
+
+FUTURE BACKEND / ADMIN EXTENSIBILITY NOTES
+
+- API layer is isolated under services/:
+  swap placeholders for real Spring Boot endpoints without touching UI components.
+
+- Booking store is the single source of truth for booking data:
+  can later be replaced/augmented by server-side sessions or booking IDs from backend.
+
+- features/admin/ is a reserved boundary:
+  add admin pages, auth, and role-based routing without polluting customer-facing pages.
+

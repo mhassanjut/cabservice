@@ -1,17 +1,133 @@
-# IntelliJ
+########################################
+# IDE / Editors
+########################################
+
 .idea/
 *.iml
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
 
-# Build tools
-target/
-build/
-
-# Compiled files
-*.class
-
-# Eclipse (only keep if needed)
+# Eclipse (if used)
 .metadata/
 .settings/
 .project
 .classpath
 .recommenders/
+
+########################################
+# OS files
+########################################
+
+.DS_Store
+Thumbs.db
+
+########################################
+# Dependencies
+########################################
+
+node_modules/
+.pnp/
+.pnp.js
+
+########################################
+# Nuxt / Build outputs
+########################################
+
+.nuxt/
+.output/
+dist/
+dist-ssr/
+.server/
+.nitro/
+.vercel/
+.netlify/
+
+########################################
+# Logs
+########################################
+
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+########################################
+# Runtime / system files
+########################################
+
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+########################################
+# Coverage / testing
+########################################
+
+coverage/
+*.lcov
+
+########################################
+# Environment variables (VERY IMPORTANT)
+########################################
+
+.env
+.env.*
+!.env.example
+
+########################################
+# Cache directories
+########################################
+
+.cache/
+.parcel-cache/
+.eslintcache
+.nuxt-cache/
+.nitro-cache/
+
+########################################
+# Build tools
+########################################
+
+build/
+target/
+
+########################################
+# Frontend tooling
+########################################
+
+.swc/
+.turbo/
+.next/
+.storybook/
+
+########################################
+# Temporary files
+########################################
+
+*.tmp
+*.temp
+
+########################################
+# Package manager lock files (DO NOT IGNORE unless you know why)
+########################################
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+########################################
+# Compiled files (Java/Kotlin if mixed project)
+########################################
+
+*.class
+
+########################################
+# Keep this file reference safe
+########################################
+
+!project-structure.txt

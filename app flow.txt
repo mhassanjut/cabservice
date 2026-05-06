@@ -1,0 +1,73 @@
+
+🚕 1. CORE APP FLOW (End-to-End)
+
+Let’s first define how your system works.
+
+👤 A. Customer Flow
+User opens app (Nuxt.js)
+Sets pickup + destination
+Clicks on book now
+System shows a list of cars calculates fair and shows fair with each car( How is the fair calculated is yet to be decided so we make it scalable such that the fair can be decided based
+on radius or if its city to city(consider the pickup and dropoff location it will be decided wether the ride is inCity or cityToCity, which can be tagged as rideType))
+
+User can also select others as cars(for other car no car details will be mentioned(fair + car type + car name will not be mentioned )) (in case other car has been selected the user will be sent an email that the you will shortly receive an email shortly click on proceed to payment if you agree and make the payment.
+and proceed to) 
+
+User clicks on proceed to payment
+
+User is prompted to login in with google / Make booking as guest, if user clicks on make booking as guest( User is prompted for details, full name + phone number + email address(optional)))
+=======================================
+1. Case Guest:
+
+User fills its details
+
+User click on make payment(on clicking make payment
+an otp is sent to the phone number , user is prompted to verify otp)
+
+After successfull verification stripe is triggered
+
+2. Case User Logged In:
+
+User Is displayed as logged in and the page look changes 
+
+User clicks on make payment
+
+Stripe is triggered
+
+========================================
+
+Stripe is triggered
+
+Payment completed
+
+Receipt generated
+
+User can download the receipt
+
+The users that have registered later
+
+🚗 B. Driver Flow
+Driver logs in
+Driver can see the rides assigned to him
+Driver can accept the ride/reject the ride
+After accepting the ride the driver can now reach the location and click start the ride(Time stored)
+After that the driver can complete the ride(Time stored)
+(Note for development: In case of internet disconnectivity how to manage this?)
+Driver can complete the ride
+Driver can see the completed rides
+Driver cannot see the fair of the car
+
+🧠 C. System Flow (Backend logic)(admin side)
+Add drivers(All the fields are optional except contact number and name , the validation is that the user should enter atleast a first name(middle name + last name can be optional))
+Assign driver to the car
+In case other has been selected for the car, add manual details for car, select a driver from the pre existing driver/ add new driver
+Store ride state transitions
+Calculate fare
+Process payment
+Maintain history
+Admin can change the status of the car
+What happens if the car is not available?
+car name how many seaters car is and car type
+
+Coding Rules: 
+Make sure the coding structure follows camelCase, with first letter small.

@@ -1,0 +1,9 @@
+Radius Between 27 km price
+1. Mercedes Vito van 7 passenger 55 euros
+2. Mercedes V class 7 passenger 65 euros
+3. Mercedes Van 8 passenger 70 euros
+4. Mercedes E class 70 euros
+5. Mercedes S class 120 euros
+6. Tesla model S 50 euros
+7. Hyundai Ionic 40 euros
+8. Toyota Corolla Familiar 40 euros

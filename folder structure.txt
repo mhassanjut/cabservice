@@ -1,0 +1,97 @@
+com.cabapp
+│
+├── CabAppApplication.java
+│
+├── config/
+│   ├── AppConfig.java
+│   ├── CorsConfig.java
+│   ├── SwaggerConfig.java
+│   └── ModelMapperConfig.java
+│
+├── shared/
+│   ├── exception/
+│   │   ├── GlobalExceptionHandler.java
+│   │   ├── ResourceNotFoundException.java
+│   │   └── BadRequestException.java
+│   │
+│   ├── response/
+│   │   ├── ApiResponse.java
+│   │   └── ErrorResponse.java
+│   │
+│   ├── util/
+│   │   ├── DateUtil.java
+│   │   ├── GeoUtils.java
+│   │   └── Constants.java
+│   │
+│   └── enums/
+│       ├── RideStatus.java
+│       ├── UserRole.java
+│       └── PaymentStatus.java
+│
+├── modules/
+│
+│   ├── user/
+│   │   ├── controller/
+│   │   │   └── UserController.java
+│   │   ├── service/
+│   │   │   ├── UserService.java
+│   │   │   └── impl/UserServiceImpl.java
+│   │   ├── repository/
+│   │   │   └── UserRepository.java
+│   │   ├── entity/
+│   │   │   └── User.java
+│   │   ├── dto/
+│   │   │   ├── UserRequest.java
+│   │   │   └── UserResponse.java
+│   │   └── mapper/
+│   │       └── UserMapper.java
+│   │
+│   ├── driver/
+│   │   ├── controller/
+│   │   ├── service/
+│   │   ├── repository/
+│   │   ├── entity/
+│   │   │   └── Driver.java
+│   │   ├── dto/
+│   │   └── mapper/
+│   │
+│   ├── ride/
+│   │   ├── controller/
+│   │   ├── service/
+│   │   ├── repository/
+│   │   ├── entity/
+│   │   │   ├── Ride.java
+│   │   │   └── RideLocation.java
+│   │   ├── dto/
+│   │   └── mapper/
+│   │
+│   ├── payment/
+│   │   ├── controller/
+│   │   ├── service/
+│   │   ├── repository/
+│   │   ├── entity/
+│   │   │   └── Payment.java
+│   │   ├── dto/
+│   │   └── mapper/
+│   │
+│   └── auth/
+│       ├── controller/
+│       │   └── AuthController.java
+│       ├── service/
+│       │   └── AuthService.java
+│       ├── dto/
+│       │   ├── LoginRequest.java
+│       │   ├── RegisterRequest.java
+│       │   └── AuthResponse.java
+│       ├── security/
+│       │   ├── JwtUtil.java
+│       │   ├── JwtFilter.java
+│       │   └── CustomUserDetailsService.java
+│       └── repository/
+│           └── AuthRepository.java
+│
+└── resources/
+    ├── application.yml
+    ├── application-dev.yml
+    ├── application-prod.yml
+    └── data.sql

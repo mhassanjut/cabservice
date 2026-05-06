@@ -1,0 +1,75 @@
+RAW EXPLANATION:
+
+Let me first tell you what the website is for, its to book cab service in Barcelona spain, it can be from airport to anywhere in Barcelona or any other city it can also be from within city to within city or to another city, the homepage will create a navigation in top navbar header lets say its text is "Do you want a tour?", which navigates to bcncitytour.com, the homepage has content which is SEO friendly , and mentions the services in a way that can lead to better to SEO and is static. It also mentions that you can get a tour by clicking on "Do you want a tour?". City to city service, barcelona airport to within barcelona and anyother city, basically airport cab service, and anywhere in barcelona if you need a cab service within city. And tour within barcelona service. So the plan is that I have two domain names, bcncitytour.com and stwmovers.com. I am initially creating just the front end static pages and starting their SEO. I am thinking of a strategy to perform their SEO based on same patterns and keyword just like stwmovers has a link to bcncitytour.com bcncitytour.com will have a link , lets suppose "Want to book a cab?", the main purpose of the website is to book a tour but the homepage content also mentions content of booking a cab like from airport or within city etc but subtly.
+So that i can target both websites for tourism and cab booking keywords in barcelona.
+
+
+Above is a raw explanation, turn it into a structured,technical and concise explanation.
+
+Project Overview
+
+The business operates two related websites targeting the Barcelona transportation and tourism market:
+
+stwmovers.com – Primary platform for cab/transfer booking services
+bcncitytour.com – Primary platform for Barcelona city tours and tourism services
+Service Scope
+Cab / Transfer Services (stwmovers.com)
+
+The cab booking platform will support:
+
+Airport Transfers
+Barcelona Airport → Barcelona city
+Barcelona Airport → Other cities in Spain
+City Transfers
+Within Barcelona city
+Barcelona → Other cities
+General Cab Booking
+On-demand transportation within service regions
+Tour Services (bcncitytour.com)
+
+The tourism platform will support:
+
+Barcelona city tours
+Guided/local tourism packages
+Tour booking and itinerary information
+Frontend / SEO Strategy
+Phase 1: Static SEO-Focused Website Launch
+
+Initially, both platforms will launch as frontend-only static websites with:
+
+SEO-optimized landing pages
+Static informational/service content
+Conversion-oriented CTAs for future booking workflows
+Cross-Domain SEO / Traffic Strategy
+
+A strategic internal cross-promotion model will be used between both domains:
+
+On stwmovers.com
+Homepage/top navbar will include:
+"Do you want a tour?" → Links to bcncitytour.com
+Static homepage content will:
+Focus primarily on cab/transfer keywords
+Subtly mention tourism/tour availability
+On bcncitytour.com
+Homepage/top navbar will include:
+"Want to book a cab?" → Links to stwmovers.com
+Static homepage content will:
+Focus primarily on tourism/tour keywords
+Subtly mention transportation/cab booking services
+SEO Objective
+
+The goal is to:
+
+Target both tourism and transportation keyword clusters
+Build authority for each domain in its primary niche
+Use contextual cross-linking between domains to:
+Capture overlapping search intent
+Funnel users between complementary services
+Strengthen overall topical relevance across both brands
+Long-Term Vision
+
+After SEO traction is established:
+
+Introduce dynamic booking functionality/backend systems
+Convert static lead-generation pages into full booking platforms
+Potentially unify operational workflows while maintaining niche SEO targeting per domain

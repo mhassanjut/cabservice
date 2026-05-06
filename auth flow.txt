@@ -1,0 +1,94 @@
+What you’re describing is called:
+
+👉 “Guest flow → Auth at checkout”
+
+And it’s valid — but only if you implement it properly.
+
+✅ Your flow (good version)
+User:
+Selects pickup/drop
+Chooses ride
+Sees fare
+Clicks “Proceed to Payment”
+Then:
+Prompt Login / Register
+After login:
+Continue to payment via Stripe
+
+👉 This is perfectly acceptable UX
+
+⚠️ The important part (where people mess up)
+❌ WRONG way
+You calculate everything without any backend tracking
+After login, you trust frontend data
+
+👉 This is dangerous:
+
+Price manipulation
+Fake ride data
+Security issues
+✅ CORRECT way (production-level)
+
+Before login, you still create a temporary ride/session on backend
+
+Flow should be:
+Step 1: User enters ride details
+
+Backend creates:
+
+rideId (temporary)
+fare
+route
+status = PENDING_AUTH
+Step 2: User clicks “Proceed”
+You store rideId
+Step 3: Ask for login/signup
+Use JWT auth in Spring Boot
+Step 4: After login
+
+Attach ride to user:
+
+ride.userId = loggedInUser
+Step 5: Payment
+Create Stripe session using backend ride data (NOT frontend)
+🔐 Why this is important
+
+Because without this:
+
+🚨 User can:
+Change price in frontend
+Change ride distance
+Call payment API directly
+💡 Real-world apps do this
+
+Apps like:
+
+Uber
+Careem
+
+👉 They:
+
+Let you explore first
+But require login before booking/payment
+🧠 Best practice summary
+Step	Required?
+Browse without login	✅ Good UX
+Create backend ride before auth	✅ MUST
+Login before payment	✅ MUST
+Trust frontend data	❌ NEVER
+👍 Final verdict
+
+✔ Your idea is good and industry standard
+❗ Just make sure:
+
+Backend controls everything
+Auth happens before payment
+No critical data comes from frontend
+
+If you want next step, I can:
+
+Design your Ride + Payment DB schema
+Or 
+give Spring Boot APIs for this exact flow
+
+Just tell me 👍

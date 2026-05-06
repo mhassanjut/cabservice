@@ -1,0 +1,142 @@
+Build a production-grade Nuxt application for stwmovers.com using an SEO-first architecture, designed for future Spring Boot backend integration.
+
+IMPORTANT:
+- I am new to Nuxt, so structure the project using clean, industry-standard patterns.
+- Output only code/files required. Do not explain inline.
+- Be token efficient.
+
+==================================================
+CORE ARCHITECTURE REQUIREMENTS
+==================================================
+
+1. Create a scalable Nuxt project architecture that supports future Spring Boot API integration.
+2. Follow professional folder structure and naming conventions.
+3. Keep architecture extensible for future admin panel integration (create structure only).
+4. Implement modular API layer with:
+   - Base API configuration
+   - Service abstraction
+   - Placeholder endpoints
+   - Industry-standard HTTP library/setup
+5. Separate concerns properly (components, composables, services, constants, assets, config, SEO utilities, etc.).
+6. Use latest stable libraries and best practices.
+7. Follow SOLID/modular principles where applicable.
+8. Keep assets, theme, colors, constants, and configuration centralized.
+9. Use placeholder images/assets where needed.
+
+==================================================
+SEO REQUIREMENTS (HIGH PRIORITY)
+==================================================
+
+1. Treat SEO as a primary architectural concern.
+2. Structure project for future SEO scalability and content grouping.
+3. Add concise comments only where SEO-critical implementation exists.
+4. Ensure architecture supports:
+   - Dynamic meta management
+   - Structured content sections
+   - Semantic HTML
+   - Schema-ready structure
+   - Crawl-friendly routing
+   - Content modularity for future keyword expansion
+5. Homepage content/components must be organized for later SEO optimization and regrouping.
+6. Layout should support visually appealing, content-rich SEO sections.
+
+==================================================
+STWMOVERS SEO / BUSINESS STRATEGY
+==================================================
+
+stwmovers.com is the primary cab-transfer platform targeting Barcelona and Spain transfer keywords.
+
+The website must support SEO/content structure for these service categories:
+
+1. Barcelona Airport Transfers
+   - Airport to Barcelona City
+   - Airport to Other Cities
+
+2. City Transfers
+   - Within Barcelona
+   - Barcelona to Other Cities
+
+3. General Cab Booking
+   - On-demand transportation in Barcelona/Spain
+
+Cross-domain SEO strategy:
+- Navbar/header must include CTA:
+  "Do you want a tour?"
+  → Links to bcncitytour.com
+
+Homepage content architecture must:
+- Primarily target cab/transfer intent
+- Subtly support tourism-related internal linking opportunities
+- Be structured so future SEO pages/sections can be extracted/reused
+
+==================================================
+UI / RESPONSIVE REQUIREMENTS
+==================================================
+
+1. Mobile-first responsive design.
+2. Add concise comments only where responsiveness is structurally important.
+3. Use suitable placeholder branding/colors for transport/travel industry.
+4. Keep styling minimal but modern and professional.
+
+==================================================
+FUNCTIONAL REQUIREMENTS
+==================================================
+
+Build a static frontend-only MVP with 3 navigable pages.
+
+1. Homepage
+   - Domain: stwmovers.com
+   - Booking form fields:
+     - Pickup Location
+     - Drop-off Location
+     - Pickup Date
+     - Pickup Time
+   - All fields required
+   - Enable "Book Now" only when valid
+   - Location autocomplete/select API structure prepared (Spain-limited, placeholder implementation acceptable)
+
+2. Car Listing Page
+   - Display static list of vehicles with prices
+   - Persist booking data from homepage
+   - User selects vehicle
+
+3. Confirmation / Payment CTA Flow
+   - "Make Payment" button
+   - Redirect to WhatsApp
+   - Pre-fill WhatsApp message with:
+     - Selected Car
+     - Price
+     - Pickup Location
+     - Drop-off Location
+     - Date
+     - Time
+
+==================================================
+INTEGRATIONS
+==================================================
+
+1. Add WhatsApp floating/chat plugin/button globally.
+2. Keep all business/contact/config values centralized in config/constants.
+
+==================================================
+DOCUMENTATION OUTPUT
+==================================================
+
+At completion, create:
+project-structure.txt
+
+Include concise documentation covering:
+1. Folder structure explanation
+2. SEO-critical architectural decisions
+3. Mobile/responsive strategy
+4. Libraries used
+5. Future backend/admin extensibility notes
+
+==================================================
+OUTPUT RULES
+==================================================
+
+1. Do not provide explanations during generation.
+2. Output only implementation/code/files.
+3. Keep comments minimal and high-value only.
+4. Optimize for maintainability, SEO scalability, and clean UI composition.
