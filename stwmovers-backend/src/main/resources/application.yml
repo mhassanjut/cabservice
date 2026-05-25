@@ -1,0 +1,69 @@
+spring:
+  application:
+    name: stwmovers-backend
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/stwmovers}
+    username: ${DB_USER:stwmovers}
+    password: ${DB_PASSWORD:stwmovers}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+  mail:
+    host: ${MAIL_HOST:smtp-relay.brevo.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+server:
+  port: ${SERVER_PORT:8080}
+
+app:
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:3000,http://127.0.0.1:3000}
+  jwt:
+    secret: ${JWT_SECRET:change-me-to-a-256-bit-secret-key-for-production-use}
+    expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+  barcelona:
+    min-lat: 41.320
+    max-lat: 41.469
+    min-lng: 2.052
+    max-lng: 2.228
+  fare:
+    in-city-base-km: 27
+    in-city-extra-km-block: 3
+    in-city-extra-eur-per-block: 5
+  otp:
+    ttl-seconds: 600
+    length: 6
+  stripe:
+    api-key: ${STRIPE_API_KEY:}
+    webhook-secret: ${STRIPE_WEBHOOK_SECRET:}
+    success-url: ${STRIPE_SUCCESS_URL:http://localhost:3000/confirm}
+    cancel-url: ${STRIPE_CANCEL_URL:http://localhost:3000/cars}
+  admin:
+    email: ${ADMIN_EMAIL:admin@stwmovers.com}
+    password: ${ADMIN_PASSWORD:Admin@12345}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
