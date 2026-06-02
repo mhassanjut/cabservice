@@ -1,32 +1,15 @@
-import type { Vehicle } from '~/types/booking'
+export type FleetVehicle = {
+  id: string
+  name: string
+  seats: number
+  bags: number
+  priceEur: number
+  description: string
+  imagePath: string
+}
 
-export const vehicles: Vehicle[] = [
-  {
-    id: 'eco',
-    name: 'Economy Sedan',
-    seats: 3,
-    bags: 2,
-    priceEur: 39,
-    description: 'Best value for city and airport transfers.',
-    imagePath: '/img/vehicles/eco.svg',
-  },
-  {
-    id: 'comfort',
-    name: 'Comfort Sedan',
-    seats: 3,
-    bags: 3,
-    priceEur: 55,
-    description: 'Extra comfort for longer rides across Spain.',
-    imagePath: '/img/vehicles/comfort.svg',
-  },
-  {
-    id: 'van',
-    name: 'Family Van',
-    seats: 6,
-    bags: 6,
-    priceEur: 79,
-    description: 'Ideal for groups, luggage, and family travel.',
-    imagePath: '/img/vehicles/van.svg',
-  },
-] as const
-
+export const vehicles: FleetVehicle[] = [
+  { id: 'eco', name: 'Mercedes E Class', seats: 4, bags: 3, priceEur: 70, description: 'Executive sedan.', imagePath: '/img/vehicles/comfort.svg' },
+  { id: 'comfort', name: 'Tesla Model S', seats: 4, bags: 3, priceEur: 50, description: 'Electric premium.', imagePath: '/img/vehicles/eco.svg' },
+  { id: 'van', name: 'Mercedes Vito Van', seats: 7, bags: 6, priceEur: 55, description: 'Group transfers.', imagePath: '/img/vehicles/van.svg' },
+]

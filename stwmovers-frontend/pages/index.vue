@@ -9,66 +9,90 @@ usePageSeo({
 </script>
 
 <template>
-  <div class="grid cols-2" style="align-items:start;">
-    <section aria-labelledby="home-hero-title">
-      <div class="card" style="padding: 18px;">
-        <div class="pill">Barcelona • Airport • City • Spain</div>
-        <h1 id="home-hero-title" style="margin: 12px 0 8px; font-size: 30px; letter-spacing: -0.02em;">
-          Barcelona Transfers & Cab Booking — Fast, Reliable, Clear Pricing
-        </h1>
-        <p style="margin:0; color: var(--muted); font-size: 16px;">
-          Book airport transfers, city transfers, or on-demand cab rides in Barcelona and across Spain.
-          Choose a car in seconds and confirm via WhatsApp.
-        </p>
+  <div>
+    <HeroHome />
 
-        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top: 14px;">
-          <span class="pill">24/7 support</span>
-          <span class="pill">Meet & greet options</span>
-          <span class="pill">Spain-wide transfers</span>
-        </div>
-      </div>
-
-      <section aria-labelledby="home-services-title" style="margin-top: 16px;">
-        <div class="card" style="padding: 16px;">
-          <h2 id="home-services-title" style="margin:0 0 10px; font-size: 18px;">
-            Transfer services in Barcelona & Spain
-          </h2>
-
-          <!-- SEO-critical: modular service group blocks for future keyword clustering and extraction into dedicated landing pages. -->
-          <div class="grid cols-3">
-            <div class="card" style="padding: 14px; background: rgba(0,0,0,0.16); box-shadow:none;">
-              <h3 style="margin:0 0 6px; font-size: 15px;">Barcelona Airport Transfers</h3>
-              <ul style="margin:0; padding-left: 18px; color: var(--muted);">
-                <li>Airport to Barcelona City</li>
-                <li>Airport to other cities</li>
-              </ul>
-            </div>
-            <div class="card" style="padding: 14px; background: rgba(0,0,0,0.16); box-shadow:none;">
-              <h3 style="margin:0 0 6px; font-size: 15px;">City Transfers</h3>
-              <ul style="margin:0; padding-left: 18px; color: var(--muted);">
-                <li>Within Barcelona</li>
-                <li>Barcelona to other cities</li>
-              </ul>
-            </div>
-            <div class="card" style="padding: 14px; background: rgba(0,0,0,0.16); box-shadow:none;">
-              <h3 style="margin:0 0 6px; font-size: 15px;">General Cab Booking</h3>
-              <ul style="margin:0; padding-left: 18px; color: var(--muted);">
-                <li>On-demand rides</li>
-                <li>Pre-booked pickup</li>
-              </ul>
-            </div>
+    <section
+      class="reveal"
+      style="padding: var(--space-section) 0 var(--space-block)"
+      aria-labelledby="services-heading"
+    >
+      <SectionHeading
+        title-id="services-heading"
+        eyebrow="Capabilities"
+        title="Transfer services in Barcelona and Spain"
+        lead="Curated routing for airport arrivals, inner-city movement, and intercity journeys — executed with the same attention to timing and discretion."
+      />
+      <div class="grid cols-3">
+        <article class="card card--elevated card--interactive service-card reveal">
+          <div class="service-card__icon" aria-hidden="true">
+            <i class="fa-solid fa-plane-arrival" />
           </div>
-        </div>
-      </section>
+          <h3>Barcelona airport</h3>
+          <ul>
+            <li>BCN to city &amp; business districts</li>
+            <li>BCN to Girona, Tarragona, Costa Brava</li>
+          </ul>
+        </article>
+        <article class="card card--elevated card--interactive service-card reveal">
+          <div class="service-card__icon" aria-hidden="true">
+            <i class="fa-solid fa-city" />
+          </div>
+          <h3>City transfers</h3>
+          <ul>
+            <li>Within Barcelona &amp; metropolitan area</li>
+            <li>Barcelona to Madrid &amp; major hubs</li>
+          </ul>
+        </article>
+        <article class="card card--elevated card--interactive service-card reveal">
+          <div class="service-card__icon" aria-hidden="true">
+            <i class="fa-solid fa-road" />
+          </div>
+          <h3>On-demand</h3>
+          <ul>
+            <li>Same-day black car</li>
+            <li>Pre-booked meet &amp; greet</li>
+          </ul>
+        </article>
+      </div>
     </section>
 
-    <section aria-labelledby="booking-form-title">
-      <h2 id="booking-form-title" class="sr-only">Booking Form</h2>
+    <section class="reveal" style="padding: 0 0 var(--space-section)" aria-labelledby="fleet-heading">
+      <SectionHeading
+        title-id="fleet-heading"
+        eyebrow="Fleet"
+        title="Curated vehicles"
+        lead="Each class is maintained for comfort and luggage capacity — tap a filter to focus the gallery."
+      />
+      <FleetGallery />
+    </section>
+
+    <section
+      id="booking-section"
+      class="reveal"
+      style="padding: 0 0 var(--space-section)"
+      aria-labelledby="booking-heading"
+    >
+      <SectionHeading
+        title-id="booking-heading"
+        eyebrow="Itinerary"
+        title="Reserve your transfer"
+        lead="Enter your route and time — fares are calculated instantly for our premium fleet."
+      />
       <BookingForm />
-      <div class="help" style="margin-top: 10px;">
-        By continuing, you agree to confirm details via WhatsApp before payment.
-      </div>
+      <p class="help reveal" style="margin-top: 14px; max-width: 62ch">
+        By continuing, you confirm details with our desk over WhatsApp before payment is accepted.
+      </p>
+    </section>
+
+    <section id="contact" class="reveal" style="padding: 0 0 var(--space-section)" aria-labelledby="contact-title">
+      <SectionHeading
+        title-id="contact-title"
+        eyebrow="Concierge"
+        title="Contact and briefings"
+        lead="For bespoke routing, corporate accounts, or multi-day chauffeuring — reach the desk directly."
+      />
+      <ContactSection />
     </section>
   </div>
 </template>
-
