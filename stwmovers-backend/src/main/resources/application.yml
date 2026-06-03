@@ -3,8 +3,8 @@ spring:
     name: stwmovers-backend
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/stwmovers}
-    username: ${DB_USER:stwmovers}
-    password: ${DB_PASSWORD:stwmovers}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:toor@123}
   jpa:
     hibernate:
       ddl-auto: validate
