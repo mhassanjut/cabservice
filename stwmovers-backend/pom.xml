@@ -18,6 +18,9 @@
         <java.version>21</java.version>
         <jjwt.version>0.12.6</jjwt.version>
         <stripe.version>28.4.0</stripe.version>
+        <flyway.url>jdbc:postgresql://localhost:5432/stwmovers</flyway.url>
+        <flyway.user>postgres</flyway.user>
+        <flyway.password>toor@123</flyway.password>
     </properties>
     <dependencies>
         <dependency>
@@ -109,6 +112,16 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <configuration>
+                    <url>${flyway.url}</url>
+                    <user>${flyway.user}</user>
+                    <password>${flyway.password}</password>
+                    <locations>classpath:db/migration</locations>
+                </configuration>
             </plugin>
         </plugins>
     </build>
