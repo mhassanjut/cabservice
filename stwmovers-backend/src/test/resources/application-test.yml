@@ -28,7 +28,7 @@ app:
     secret: test-secret-key-must-be-at-least-256-bits-long-for-hmac-sha256-algorithm
     expiration-ms: 3600000
   barcelona:
-    min-lat: 41.320
+    min-lat: 41.270
     max-lat: 41.469
     min-lng: 2.052
     max-lng: 2.228

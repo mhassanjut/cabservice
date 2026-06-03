@@ -37,7 +37,7 @@ public class AppProperties {
     @Getter
     @Setter
     public static class BarcelonaBounds {
-        private double minLat = 41.320;
+        private double minLat = 41.270;
         private double maxLat = 41.469;
         private double minLng = 2.052;
         private double maxLng = 2.228;

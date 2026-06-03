@@ -42,7 +42,8 @@ app:
     secret: ${JWT_SECRET:change-me-to-a-256-bit-secret-key-for-production-use}
     expiration-ms: ${JWT_EXPIRATION_MS:86400000}
   barcelona:
-    min-lat: 41.320
+    # Barcelona + El Prat (08820) + BCN airport (~41.297, 2.078)
+    min-lat: 41.270
     max-lat: 41.469
     min-lng: 2.052
     max-lng: 2.228
