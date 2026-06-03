@@ -10,16 +10,18 @@ export default defineNuxtConfig({
     public: {
       siteUrl: siteConfig.siteUrl,
       apiBaseUrl: siteConfig.apiBaseUrl,
-      whatsappNumber: siteConfig.whatsappNumber,
-      whatsappDefaultMessage: siteConfig.whatsappDefaultMessage,
       externalTourUrl: siteConfig.externalTourUrl,
+      googleMapsApiKey: '',
+      stripePublicKey: '',
     },
   },
 
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
-      titleTemplate: (titleChunk) =>
+      // Unhead accepts a function; generated app config types may only list `string`.
+      // @ts-expect-error — runtime titleTemplate callback is valid for Nuxt / Unhead
+      titleTemplate: (titleChunk?: string) =>
         titleChunk ? `${titleChunk} | ${seoDefaults.brandName}` : seoDefaults.defaultTitle,
       meta: [
         { charset: 'utf-8' },
@@ -27,13 +29,27 @@ export default defineNuxtConfig({
         { name: 'robots', content: 'index,follow' },
         { name: 'theme-color', content: seoDefaults.themeColor },
       ],
-      link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
+      link: [
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@500;600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap',
+        },
+        {
+          rel: 'stylesheet',
+          href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css',
+          crossorigin: 'anonymous',
+          referrerpolicy: 'no-referrer',
+        },
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+      ],
     },
   },
 
   nitro: {
     prerender: {
-      routes: ['/', '/cars', '/confirm'],
+      routes: ['/', '/cars'],
     },
   },
 

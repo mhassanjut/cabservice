@@ -3,6 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "merge-portable": "node scripts/merge-portable-node-modules.mjs",
+    "install:portable": "node scripts/install-with-portable.mjs",
+    "vendor:pack": "node scripts/vendor-pack.mjs",
     "dev": "nuxt dev",
     "build": "nuxt build",
     "generate": "nuxt generate",

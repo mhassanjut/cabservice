@@ -1,8 +1,7 @@
 export const siteConfig = {
   siteUrl: 'https://stwmovers.com',
-  apiBaseUrl: 'https://api.stwmovers.com', // placeholder for Spring Boot
-  whatsappNumber: '34000000000', // TODO: update
+  apiBaseUrl: 'http://localhost:8080',
+  whatsappNumber: '34632047888',
   whatsappDefaultMessage: 'Hello STW Movers, I want to book a transfer.',
   externalTourUrl: 'https://bcncitytour.com',
 } as const
-

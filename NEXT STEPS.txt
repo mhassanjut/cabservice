@@ -1,0 +1,8 @@
+(MAKE PROMPTS FOR EACH OF BELOW ONE BY ONE)
+
+1. Analyze the make payment flow , test it without triggering it and see that data is stored in database.
+2. Analyze the landing page, search on technical SEO and make it SEO friendly and redesign the page perfectly(Including the login).
+3. Integrate the Google Login Perfectly. And test the design according to Google login.
+4. Test the OTP. Integeration test the booking both as logged in user and as guest.
+
+(GET ALL THE ABOVE DONE BY TONIGHT)

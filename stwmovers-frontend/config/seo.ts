@@ -3,7 +3,7 @@ export const seoDefaults = {
   defaultTitle: 'Barcelona Transfers & Cab Booking',
   defaultDescription:
     'Reliable Barcelona airport transfers, city transfers, and on-demand cab booking across Spain. Book your ride in minutes.',
-  themeColor: '#0B5FFF',
+  themeColor: '#0a0a0c',
   defaultOgImagePath: '/og-default.svg',
 } as const
 
