@@ -1,0 +1,353 @@
+{
+  "info": {
+    "name": "STW Movers Taxi API",
+    "description": "Spring Boot taxi booking backend — Barcelona",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "token", "value": "" },
+    { "key": "bookingReference", "value": "" },
+    { "key": "carId", "value": "c0000001-0000-0000-0000-000000000006" }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register Customer",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/api/v1/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"customer@example.com\",\n  \"password\": \"Customer@123\",\n  \"fullName\": \"Test Customer\",\n  \"phone\": \"+34600000001\"\n}"
+            }
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": ["if (pm.response.code === 200) { pm.collectionVariables.set('token', pm.response.json().data.token); }"]
+            }
+          }]
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/api/v1/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@stwmovers.com\",\n  \"password\": \"Admin@12345\"\n}"
+            }
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": ["if (pm.response.code === 200) { pm.collectionVariables.set('token', pm.response.json().data.token); }"]
+            }
+          }]
+        },
+        {
+          "name": "Guest OTP Send",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/api/v1/auth/guest/otp/send",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"guest@example.com\",\n  \"fullName\": \"Guest User\",\n  \"phone\": \"+34600000002\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Guest OTP Verify",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/api/v1/auth/guest/otp/verify",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"guest@example.com\",\n  \"otp\": \"123456\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Rides",
+      "item": [
+        {
+          "name": "Get Cars With Fare (IN_CITY Barcelona)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/api/v1/rides/cars",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pickupLat\": 41.3874,\n  \"pickupLng\": 2.1686,\n  \"dropoffLat\": 41.4036,\n  \"dropoffLng\": 2.1744,\n  \"distanceKm\": 12.5,\n  \"rideType\": \"IN_CITY\",\n  \"filters\": {\n    \"electric\": false,\n    \"minPrice\": 40,\n    \"maxPrice\": 150\n  },\n  \"page\": 0,\n  \"size\": 20\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Cars With Fare (CITY_TO_CITY)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/api/v1/rides/cars",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pickupLat\": 41.3874,\n  \"pickupLng\": 2.1686,\n  \"dropoffLat\": 41.9794,\n  \"dropoffLng\": 2.8214,\n  \"distanceKm\": 100,\n  \"rideType\": \"CITY_TO_CITY\",\n  \"destinationCity\": \"Girona\",\n  \"filters\": {\n    \"carType\": \"SEDAN\",\n    \"luxury\": false\n  },\n  \"page\": 0,\n  \"size\": 20\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Cars - Filter Electric Van",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/api/v1/rides/cars",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pickupLat\": 41.3874,\n  \"pickupLng\": 2.1686,\n  \"dropoffLat\": 41.4036,\n  \"dropoffLng\": 2.1744,\n  \"distanceKm\": 8,\n  \"filters\": {\n    \"bodyType\": \"VAN\",\n    \"passengerCapacity\": 7,\n    \"category\": \"LUXURY\"\n  }\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bookings",
+      "item": [
+        {
+          "name": "Create Booking",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/api/v1/bookings",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"carId\": \"{{carId}}\",\n  \"otherCar\": false,\n  \"rideType\": \"IN_CITY\",\n  \"pickupAddress\": \"Plaça Catalunya, Barcelona\",\n  \"dropoffAddress\": \"Sagrada Família, Barcelona\",\n  \"pickupLat\": 41.3874,\n  \"pickupLng\": 2.1686,\n  \"dropoffLat\": 41.4036,\n  \"dropoffLng\": 2.1744,\n  \"distanceKm\": 5.2,\n  \"passengerCount\": 2,\n  \"scheduledAt\": \"2026-06-01T10:00:00Z\",\n  \"guestName\": \"Guest User\",\n  \"guestEmail\": \"guest@example.com\",\n  \"guestPhone\": \"+34600000002\"\n}"
+            }
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": ["if (pm.response.code === 201 || pm.response.code === 200) { pm.collectionVariables.set('bookingReference', pm.response.json().data.bookingReference); }"]
+            }
+          }]
+        },
+        {
+          "name": "Create Custom Request (OTHER_CAR)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/api/v1/bookings",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"otherCar\": true,\n  \"rideType\": \"IN_CITY\",\n  \"pickupAddress\": \"Barcelona Airport\",\n  \"dropoffAddress\": \"Hotel Arts Barcelona\",\n  \"pickupLat\": 41.2974,\n  \"pickupLng\": 2.0833,\n  \"dropoffLat\": 41.3868,\n  \"dropoffLng\": 2.1960,\n  \"distanceKm\": 18,\n  \"scheduledAt\": \"2026-06-02T14:00:00Z\",\n  \"guestName\": \"VIP Guest\",\n  \"guestEmail\": \"vip@example.com\",\n  \"guestPhone\": \"+34600000003\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Booking By Reference",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/bookings/{{bookingReference}}"
+          }
+        },
+        {
+          "name": "My Bookings (Authenticated)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/bookings/me"
+          }
+        },
+        {
+          "name": "Cancel Booking",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/bookings/{{bookingReference}}/cancel"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "Create Stripe Session",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/api/v1/payments/session",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bookingReference\": \"{{bookingReference}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Payment By Booking",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/payments/{{bookingReference}}"
+          }
+        },
+        {
+          "name": "Stripe Webhook (manual test)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Stripe-Signature", "value": "whsec_test_signature" }
+            ],
+            "url": "{{baseUrl}}/api/v1/payments/webhook",
+            "body": { "mode": "raw", "raw": "{}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Driver",
+      "item": [
+        {
+          "name": "Assigned Rides",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/v1/drivers/rides" }
+        },
+        {
+          "name": "Completed Rides",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/v1/drivers/rides/completed" }
+        },
+        {
+          "name": "Accept Ride",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/drivers/rides/{{bookingId}}/accept"
+          }
+        },
+        {
+          "name": "Reject Ride",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/drivers/rides/{{bookingId}}/reject"
+          }
+        },
+        {
+          "name": "Update Ride Status",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/api/v1/drivers/rides/{{bookingId}}/status",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rideStatus\": \"DRIVER_EN_ROUTE\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Dashboard Stats",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/v1/admin/dashboard" }
+        },
+        {
+          "name": "List Cars",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/v1/admin/cars" }
+        },
+        {
+          "name": "Create Car",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/api/v1/admin/cars",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"BMW 7 Series\",\n  \"carType\": \"SEDAN\",\n  \"bodyType\": \"SEDAN\",\n  \"category\": \"LUXURY\",\n  \"passengerCapacity\": 4,\n  \"baseFare\": 95,\n  \"electric\": false,\n  \"available\": true,\n  \"active\": true,\n  \"supportsInCity\": true,\n  \"supportsCityToCity\": true,\n  \"imageUrl\": \"/img/vehicles/comfort.svg\",\n  \"description\": \"Luxury sedan\",\n  \"displayPriority\": 10\n}"
+            }
+          }
+        },
+        {
+          "name": "List Drivers",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/v1/admin/drivers" }
+        },
+        {
+          "name": "Create Driver User",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/api/v1/admin/drivers",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"driver@stwmovers.com\",\n  \"password\": \"Driver@12345\",\n  \"fullName\": \"Test Driver\",\n  \"phone\": \"+34600000010\",\n  \"licenseNumber\": \"B-DRV-001\"\n}"
+            }
+          }
+        },
+        {
+          "name": "List Bookings",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/v1/admin/bookings?page=0&size=20" }
+        },
+        {
+          "name": "Assign Driver To Booking",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/api/v1/admin/bookings/{{bookingId}}/assign-driver",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"driverId\": \"00000000-0000-0000-0000-000000000001\"\n}"
+            }
+          }
+        },
+        {
+          "name": "List City Route Pricing",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/v1/admin/pricing/routes" }
+        },
+        {
+          "name": "Create City Route Pricing",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/api/v1/admin/pricing/routes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fromCity\": \"Barcelona\",\n  \"toCity\": \"Lloret de Mar\",\n  \"carType\": \"VAN\",\n  \"price\": 90\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Actuator Health",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": "{{baseUrl}}/actuator/health"
+          }
+        }
+      ]
+    }
+  ]
+}

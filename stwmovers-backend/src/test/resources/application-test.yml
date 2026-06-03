@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: stwmovers-backend-test
+  datasource:
+    url: jdbc:h2:mem:stwmovers_test;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+  flyway:
+    enabled: false
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  mail:
+    host: localhost
+    port: 1025
+
+app:
+  jwt:
+    secret: test-secret-key-must-be-at-least-256-bits-long-for-hmac-sha256-algorithm
+    expiration-ms: 3600000
+  barcelona:
+    min-lat: 41.320
+    max-lat: 41.469
+    min-lng: 2.052
+    max-lng: 2.228
+  fare:
+    in-city-base-km: 27
+    in-city-extra-km-block: 3
+    in-city-extra-eur-per-block: 5
+  otp:
+    ttl-seconds: 600
+    length: 6
+  stripe:
+    api-key: sk_test_placeholder
+    webhook-secret: whsec_test_placeholder
+    success-url: http://localhost:3000/confirm
+    cancel-url: http://localhost:3000/cars
+  admin:
+    email: admin@test.com
+    password: Admin@12345
+  cors:
+    allowed-origins: http://localhost:3000
