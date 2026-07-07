@@ -1,0 +1,45 @@
+name: Frontend CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'stwmovers-frontend/**'
+      - '.github/workflows/frontend-*.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'stwmovers-frontend/**'
+      - '.github/workflows/frontend-*.yml'
+
+defaults:
+  run:
+    working-directory: stwmovers-frontend
+
+jobs:
+  typecheck-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: stwmovers-frontend/package-lock.json
+      - name: Install
+        run: npm ci
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Build
+        run: npm run build
+        env:
+          NUXT_PUBLIC_API_BASE_URL: https://api.stwmovers.com
+          NUXT_PUBLIC_GOOGLE_MAPS_API_KEY: ci-placeholder
+          NUXT_PUBLIC_GOOGLE_CLIENT_ID: ci-placeholder
+      - name: Upload build artifact
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-output
+          path: stwmovers-frontend/.output
+          retention-days: 7

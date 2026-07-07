@@ -1,0 +1,47 @@
+name: Backend Deploy
+
+on:
+  workflow_run:
+    workflows: [Backend CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_branch == 'main')
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Build JAR
+        working-directory: stwmovers-backend
+        run: mvn -B -DskipTests package
+      - name: Deploy to VPS
+        if: ${{ secrets.VPS_HOST != '' }}
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_BACKEND_PATH: ${{ secrets.VPS_BACKEND_PATH }}
+        run: |
+          install -m 600 -d ~/.ssh
+          echo "$VPS_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          JAR=$(ls stwmovers-backend/target/stwmovers-backend-*.jar | head -1)
+          scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no "$JAR" "$VPS_USER@$VPS_HOST:${VPS_BACKEND_PATH:-/opt/stwmovers/backend}/app.jar"
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no "$VPS_USER@$VPS_HOST" \
+            "sudo systemctl restart stwmovers-backend"
+      - name: Deploy skipped (configure GitHub secrets)
+        if: ${{ secrets.VPS_HOST == '' }}
+        run: echo "Set VPS_HOST, VPS_USER, VPS_SSH_KEY, VPS_BACKEND_PATH in GitHub production environment."

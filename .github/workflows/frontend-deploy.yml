@@ -1,0 +1,54 @@
+name: Frontend Deploy
+
+on:
+  workflow_run:
+    workflows: [Frontend CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_branch == 'main')
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: stwmovers-frontend/package-lock.json
+      - name: Build
+        working-directory: stwmovers-frontend
+        run: |
+          npm ci
+          npm run build
+        env:
+          NUXT_PUBLIC_API_BASE_URL: ${{ secrets.NUXT_PUBLIC_API_BASE_URL }}
+          NUXT_PUBLIC_GOOGLE_MAPS_API_KEY: ${{ secrets.NUXT_PUBLIC_GOOGLE_MAPS_API_KEY }}
+          NUXT_PUBLIC_GOOGLE_CLIENT_ID: ${{ secrets.NUXT_PUBLIC_GOOGLE_CLIENT_ID }}
+          NUXT_PUBLIC_STRIPE_PUBLIC_KEY: ${{ secrets.NUXT_PUBLIC_STRIPE_PUBLIC_KEY }}
+      - name: Deploy to VPS
+        if: ${{ secrets.VPS_HOST != '' }}
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_FRONTEND_PATH: ${{ secrets.VPS_FRONTEND_PATH }}
+        run: |
+          install -m 600 -d ~/.ssh
+          echo "$VPS_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          rsync -avz --delete -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
+            stwmovers-frontend/.output/ "$VPS_USER@$VPS_HOST:${VPS_FRONTEND_PATH:-/opt/stwmovers/frontend}/.output/"
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no "$VPS_USER@$VPS_HOST" \
+            "sudo systemctl restart stwmovers-frontend"
+      - name: Deploy skipped (configure GitHub secrets)
+        if: ${{ secrets.VPS_HOST == '' }}
+        run: echo "Set VPS_HOST, VPS_USER, VPS_SSH_KEY, VPS_FRONTEND_PATH in GitHub production environment."
