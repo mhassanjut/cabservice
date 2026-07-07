@@ -1,6 +1,10 @@
 spring:
   application:
     name: stwmovers-backend
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/stwmovers}
     username: ${DB_USER:postgres}
@@ -16,10 +20,11 @@ spring:
   flyway:
     enabled: true
     locations: classpath:db/migration
-  data:
-    redis:
-      host: ${REDIS_HOST:localhost}
-      port: ${REDIS_PORT:6379}
+  # REDIS-CONFIG-PRESERVED: Redis connection (OTP now in-memory). Re-enable: uncomment block, restore Redis starter, RedisConfig, and RedisOtpStore Redis calls.
+  # data:
+  #   redis:
+  #     host: ${REDIS_HOST:localhost}
+  #     port: ${REDIS_PORT:6379}
   mail:
     host: ${MAIL_HOST:smtp-relay.brevo.com}
     port: ${MAIL_PORT:587}
@@ -29,8 +34,16 @@ spring:
       mail:
         smtp:
           auth: true
+          connectiontimeout: 10000
+          timeout: 10000
+          writetimeout: 10000
           starttls:
-            enable: true
+            enable: ${MAIL_STARTTLS_ENABLE:true}
+            required: true
+          ssl:
+            enable: ${MAIL_SSL_ENABLE:false}
+            trust: ${MAIL_HOST:smtp-relay.brevo.com}
+        debug: ${MAIL_DEBUG:false}
 
 server:
   port: ${SERVER_PORT:8080}
@@ -49,8 +62,7 @@ app:
     max-lng: 2.228
   fare:
     in-city-base-km: 27
-    in-city-extra-km-block: 3
-    in-city-extra-eur-per-block: 5
+    in-city-extra-eur-per-km: 1
   otp:
     ttl-seconds: 600
     length: 6
@@ -58,10 +70,17 @@ app:
     api-key: ${STRIPE_API_KEY:}
     webhook-secret: ${STRIPE_WEBHOOK_SECRET:}
     success-url: ${STRIPE_SUCCESS_URL:http://localhost:3000/confirm}
-    cancel-url: ${STRIPE_CANCEL_URL:http://localhost:3000/cars}
+    cancel-url: ${STRIPE_CANCEL_URL:http://localhost:3000/payment?cancelled=1}
+  google:
+    client-id: ${GOOGLE_CLIENT_ID:}
+  rate-limit:
+    enabled: ${RATE_LIMIT_ENABLED:true}
+    max-requests-per-minute: ${RATE_LIMIT_MAX_PER_MINUTE:600}
   admin:
     email: ${ADMIN_EMAIL:admin@stwmovers.com}
     password: ${ADMIN_PASSWORD:Admin@12345}
+  uploads:
+    cars-dir: ${CAR_UPLOADS_DIR:uploads/cars}
 
 management:
   endpoints:

@@ -4,7 +4,6 @@ import { api } from '~/services/http/api'
 export type CreateBookingPayload = {
   carId?: string
   otherCar: boolean
-  rideType?: string
   pickupAddress: string
   dropoffAddress: string
   pickupLat: number
@@ -12,6 +11,7 @@ export type CreateBookingPayload = {
   dropoffLat: number
   dropoffLng: number
   distanceKm: number
+  pickupCity: string
   passengerCount?: number
   scheduledAt: string
   destinationCity?: string
@@ -21,8 +21,8 @@ export type CreateBookingPayload = {
 }
 
 export const bookingService = {
-  create(body: CreateBookingPayload) {
-    return api<BookingDto>('/api/v1/bookings', { method: 'POST', body, auth: false })
+  create(body: CreateBookingPayload, opts?: { auth?: boolean }) {
+    return api<BookingDto>('/api/v1/bookings', { method: 'POST', body, auth: opts?.auth ?? true })
   },
   get(reference: string) {
     return api<BookingDto>(`/api/v1/bookings/${reference}`, { auth: false })

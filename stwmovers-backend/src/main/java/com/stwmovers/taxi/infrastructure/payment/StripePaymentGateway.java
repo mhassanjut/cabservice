@@ -65,6 +65,10 @@ public class StripePaymentGateway {
     }
 
     public com.stripe.model.Event constructWebhookEvent(String payload, String sigHeader) {
+        if (appProperties.getStripe().getWebhookSecret() == null
+                || appProperties.getStripe().getWebhookSecret().isBlank()) {
+            throw new BusinessException("Stripe webhook secret is not configured");
+        }
         try {
             return com.stripe.net.Webhook.constructEvent(
                     payload,
@@ -73,5 +77,10 @@ public class StripePaymentGateway {
         } catch (Exception e) {
             throw new BusinessException("Invalid Stripe webhook signature");
         }
+    }
+
+    public boolean isConfigured() {
+        return appProperties.getStripe().getApiKey() != null
+                && !appProperties.getStripe().getApiKey().isBlank();
     }
 }

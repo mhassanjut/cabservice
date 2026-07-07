@@ -49,6 +49,9 @@ public class User {
     @Column(name = "google_id")
     private String googleId;
 
+    @Column(name = "profile_picture_url")
+    private String profilePictureUrl;
+
     @Column(nullable = false)
     @Builder.Default
     private Boolean active = true;

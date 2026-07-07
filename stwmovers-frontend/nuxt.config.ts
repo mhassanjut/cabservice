@@ -6,12 +6,20 @@ export default defineNuxtConfig({
   modules: ['@pinia/nuxt'],
   css: ['~/assets/css/main.css'],
 
+  // Avoid dev.json / #app-manifest errors after `nuxt generate` or stale Vite cache.
+  experimental: {
+    appManifest: false,
+  },
+
+  ignore: ['dist/**'],
+
   runtimeConfig: {
     public: {
       siteUrl: siteConfig.siteUrl,
       apiBaseUrl: siteConfig.apiBaseUrl,
       externalTourUrl: siteConfig.externalTourUrl,
       googleMapsApiKey: '',
+      googleClientId: '',
       stripePublicKey: '',
     },
   },
@@ -47,9 +55,14 @@ export default defineNuxtConfig({
     },
   },
 
+  routeRules: {
+    '/admin': { ssr: false },
+    '/admin/**': { ssr: false },
+  },
+
   nitro: {
     prerender: {
-      routes: ['/', '/cars'],
+      routes: ['/', '/cars', '/tours', '/faq'],
     },
   },
 

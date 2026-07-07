@@ -20,5 +20,6 @@ public class PaymentResponse {
     String currency;
     PaymentStatus status;
     String stripeSessionId;
+    String stripePaymentIntentId;
     Instant createdAt;
 }

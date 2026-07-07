@@ -1,4 +1,5 @@
 import { siteConfig } from '~/config/site'
+import { seoDefaults, seoSections } from '~/config/seo'
 
 export function useLocalBusinessSchema() {
   const config = useRuntimeConfig()
@@ -6,9 +7,10 @@ export function useLocalBusinessSchema() {
 
   const json = {
     '@context': 'https://schema.org',
-    '@type': 'TaxiService',
-    name: 'STW Movers',
-    image: `${siteUrl}/favicon.svg`,
+    '@type': 'LimousineBusiness',
+    name: seoDefaults.brandName,
+    description: seoDefaults.defaultDescription,
+    image: `${siteUrl}${seoDefaults.defaultOgImagePath}`,
     url: siteUrl,
     telephone: `+${siteConfig.whatsappNumber.replace(/\D/g, '')}`,
     email: 'concierge@stwmovers.com',
@@ -19,13 +21,20 @@ export function useLocalBusinessSchema() {
       postalCode: '08007',
       addressCountry: 'ES',
     },
-    areaServed: ['Barcelona', 'Spain'],
-    priceRange: '€€',
+    areaServed: [
+      { '@type': 'City', name: 'Barcelona' },
+      { '@type': 'City', name: 'Sitges' },
+      { '@type': 'City', name: 'Girona' },
+      { '@type': 'City', name: 'Tarragona' },
+      { '@type': 'Country', name: 'Spain' },
+    ],
+    knowsAbout: seoSections.home.keywords,
+    priceRange: '€€€',
     openingHoursSpecification: {
       '@type': 'OpeningHoursSpecification',
       dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-      opens: '06:00',
-      closes: '23:00',
+      opens: '00:00',
+      closes: '23:59',
     },
   }
 

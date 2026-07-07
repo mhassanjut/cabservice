@@ -21,21 +21,29 @@ jobs:
       - name: Build JAR
         run: mvn -B -DskipTests package
 
-  docker:
+  # DOCKER-DISABLED: Container image build removed. Re-enable: uncomment job and restore deploy needs: docker.
+  # docker:
+  #   needs: build-test
+  #   if: github.ref == 'refs/heads/main'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Build image
+  #       run: docker build -t stwmovers-backend:${{ github.sha }} .
+
+  deploy:
     needs: build-test
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Build image
-        run: docker build -t stwmovers-backend:${{ github.sha }} .
-
-  deploy:
-    needs: docker
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - name: Build deployable JAR
+        run: mvn -B -DskipTests package
       - name: Deploy to VPS
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
@@ -43,4 +51,5 @@ jobs:
           VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
         run: |
           echo "Configure VPS_HOST, VPS_USER, VPS_SSH_KEY secrets for Hostinger deployment."
-          echo "On VPS: docker compose pull && docker compose up -d"
+          echo "On VPS: mvn package && java -jar target/stwmovers-backend-1.0.0.jar"
+          # DOCKER-DISABLED: was docker compose pull && docker compose up -d. Re-enable: restore docker job and compose deploy.

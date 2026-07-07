@@ -15,10 +15,11 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
   flyway:
     enabled: false
-  data:
-    redis:
-      host: localhost
-      port: 6379
+  # REDIS-CONFIG-PRESERVED: test Redis settings (unused). Re-enable when Redis starter is restored.
+  # data:
+  #   redis:
+  #     host: localhost
+  #     port: 6379
   mail:
     host: localhost
     port: 1025
@@ -34,8 +35,7 @@ app:
     max-lng: 2.228
   fare:
     in-city-base-km: 27
-    in-city-extra-km-block: 3
-    in-city-extra-eur-per-block: 5
+    in-city-extra-eur-per-km: 1
   otp:
     ttl-seconds: 600
     length: 6

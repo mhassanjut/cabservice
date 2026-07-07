@@ -1,7 +1,13 @@
-import type { BookingDraft, GuestDetails, Vehicle } from '~/types/booking'
 import type { CarFilter, CarWithFare } from '~/types/api'
+import {
+  VEHICLE_IMAGE_PLACEHOLDER,
+  type BookingDraft,
+  type GuestDetails,
+  type Vehicle,
+} from '~/types/booking'
 
 const STORAGE_KEY = 'stwmovers.booking.v2'
+const CHECKOUT_COMPLETE_KEY = 'stwmovers.checkout.completedRef'
 
 type BookingState = {
   draft: BookingDraft
@@ -67,10 +73,30 @@ export const useBookingStore = defineStore('booking', {
     toVehicle(c: CarWithFare): Vehicle {
       return {
         ...c,
-        imagePath: c.imageUrl || '/img/vehicles/comfort.svg',
+        imagePath: c.imageUrl || VEHICLE_IMAGE_PLACEHOLDER,
         priceEur: Number(c.calculatedFare),
         seats: c.passengerCapacity,
       }
+    },
+    clearGuestDetails() {
+      this.guest = null
+      if (import.meta.client) this.persistToStorage()
+    },
+    beginNewTrip() {
+      this.bookingReference = ''
+      this.vehicle = null
+      this.otherCar = false
+      if (import.meta.client) sessionStorage.removeItem(CHECKOUT_COMPLETE_KEY)
+    },
+    completeCheckout(_reference: string) {
+      this.clear()
+      if (import.meta.client) {
+        sessionStorage.setItem(CHECKOUT_COMPLETE_KEY, _reference)
+      }
+    },
+    isCheckoutComplete() {
+      if (!import.meta.client) return false
+      return Boolean(sessionStorage.getItem(CHECKOUT_COMPLETE_KEY))
     },
     clear() {
       this.draft = emptyDraft()
@@ -80,7 +106,10 @@ export const useBookingStore = defineStore('booking', {
       this.filters = {}
       this.bookingReference = ''
       this.guest = null
-      if (import.meta.client) localStorage.removeItem(STORAGE_KEY)
+      if (import.meta.client) {
+        localStorage.removeItem(STORAGE_KEY)
+        sessionStorage.removeItem(CHECKOUT_COMPLETE_KEY)
+      }
     },
     hydrateFromStorage() {
       if (!import.meta.client) return
@@ -88,13 +117,19 @@ export const useBookingStore = defineStore('booking', {
       if (!raw) return
       try {
         const p = JSON.parse(raw) as Partial<BookingState>
-        if (p.draft) this.draft = { ...emptyDraft(), ...p.draft }
-        if (p.vehicle) this.vehicle = p.vehicle
-        if (p.otherCar) this.otherCar = p.otherCar
+        if (p.draft) {
+          const merged = { ...emptyDraft(), ...p.draft }
+          if (!merged.pickup?.lat && this.draft.pickup?.lat) merged.pickup = this.draft.pickup
+          if (!merged.dropoff?.lat && this.draft.dropoff?.lat) merged.dropoff = this.draft.dropoff
+          if (!merged.distanceKm && this.draft.distanceKm) merged.distanceKm = this.draft.distanceKm
+          this.draft = merged
+        }
+        if (p.vehicle !== undefined) this.vehicle = p.vehicle
+        if (p.otherCar !== undefined) this.otherCar = p.otherCar
         if (p.filters) this.filters = p.filters
         if (p.bookingReference) this.bookingReference = p.bookingReference
         if (p.guest) this.guest = p.guest
-        if (p.cars) this.cars = p.cars
+        if (p.cars?.length) this.cars = p.cars
       } catch {
         localStorage.removeItem(STORAGE_KEY)
       }

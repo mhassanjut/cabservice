@@ -12,4 +12,6 @@ public class AssignDriverRequest {
 
     @NotNull
     private UUID driverId;
+
+    private Boolean force;
 }

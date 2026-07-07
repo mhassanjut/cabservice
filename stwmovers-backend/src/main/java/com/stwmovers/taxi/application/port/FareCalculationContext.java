@@ -10,5 +10,6 @@ import lombok.Value;
 public class FareCalculationContext {
 
     BigDecimal distanceKm;
+    String pickupCity;
     String destinationCity;
 }

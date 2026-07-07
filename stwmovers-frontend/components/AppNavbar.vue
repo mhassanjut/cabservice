@@ -1,17 +1,24 @@
 <script setup lang="ts">
-import { externalLinks } from '~/constants/externalLinks'
-import { routes } from '~/constants/routes'
+import { homeAnchors, routes } from '~/constants/routes'
 
+const auth = useAuthStore()
 const menuOpen = ref(false)
 const scrolled = ref(false)
+const isMobile = useIsMobile()
+const { open: openSignIn } = useCustomerSignIn()
 
 const onScroll = () => {
   scrolled.value = window.scrollY > 24
 }
 
 onMounted(() => {
+  auth.hydrate()
   onScroll()
   window.addEventListener('scroll', onScroll, { passive: true })
+  auth.listenForAuthChanges(() => {
+    auth.syncFromStorage()
+    if (!auth.isLoggedIn && !auth.isGuestSession) menuOpen.value = false
+  })
 })
 
 onUnmounted(() => {
@@ -19,9 +26,7 @@ onUnmounted(() => {
 })
 
 watch(menuOpen, (open) => {
-  if (import.meta.client) {
-    document.body.style.overflow = open ? 'hidden' : ''
-  }
+  if (import.meta.client) document.body.style.overflow = open ? 'hidden' : ''
 })
 
 onBeforeUnmount(() => {
@@ -44,23 +49,18 @@ const closeMenu = () => {
         </span>
       </NuxtLink>
 
+      <p v-if="auth.isLoggedIn" class="app-nav__greeting">Hi, {{ auth.firstName }}</p>
+
       <nav class="app-nav__links" aria-label="Primary">
         <NuxtLink class="app-nav__link" :to="routes.home">Home</NuxtLink>
-        <NuxtLink class="app-nav__link" :to="routes.cars">Fleet</NuxtLink>
-        <NuxtLink class="app-nav__link" to="/#booking-section">Book</NuxtLink>
-        <NuxtLink class="app-nav__link" to="/#contact">Contact</NuxtLink>
-        <a
-          class="app-nav__link"
-          :href="externalLinks.tourCta"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          Tours
-        </a>
+        <NuxtLink class="app-nav__link" :to="routes.faq">FAQ</NuxtLink>
+        <a class="app-nav__link" :href="homeAnchors.contact">Contact</a>
+        <NuxtLink class="app-nav__link" :to="routes.tours">Tours</NuxtLink>
       </nav>
 
-      <div style="display: flex; align-items: center; gap: 10px;">
-        <NuxtLink class="btn btn--solid-gold app-nav__cta" :to="routes.cars">Reserve</NuxtLink>
+      <div class="app-nav__actions">
+        <AppUserMenu :mobile-sheet="isMobile" />
+        <a class="btn btn--solid-gold app-nav__cta app-nav__action-btn" :href="homeAnchors.booking">Reserve</a>
         <button
           type="button"
           class="app-nav__burger"
@@ -82,23 +82,61 @@ const closeMenu = () => {
     >
       <div class="app-nav__backdrop" @click="closeMenu" />
       <nav class="app-nav__panel" aria-label="Mobile">
-        <NuxtLink class="app-nav__drawer-link" :to="routes.home" @click="closeMenu">Home</NuxtLink>
-        <NuxtLink class="app-nav__drawer-link" :to="routes.cars" @click="closeMenu">Fleet</NuxtLink>
-        <NuxtLink class="app-nav__drawer-link" to="/#booking-section" @click="closeMenu">Book</NuxtLink>
-        <NuxtLink class="app-nav__drawer-link" to="/#contact" @click="closeMenu">Contact</NuxtLink>
-        <a
+        <button
+          v-if="!auth.isLoggedIn && !auth.isGuestSession"
+          type="button"
+          class="app-nav__drawer-link btn"
+          @click="closeMenu(); openSignIn()"
+        >
+          Login
+        </button>
+        <NuxtLink
+          v-else-if="auth.isGuestSession"
           class="app-nav__drawer-link"
-          :href="externalLinks.tourCta"
-          rel="noopener noreferrer"
-          target="_blank"
+          :to="routes.guestBooking"
           @click="closeMenu"
         >
-          City tours
-        </a>
-        <NuxtLink class="btn btn--solid-gold app-nav__drawer-cta" :to="routes.cars" @click="closeMenu">
-          Reserve a vehicle
+          Your booking
         </NuxtLink>
+        <NuxtLink class="app-nav__drawer-link" :to="routes.home" @click="closeMenu">Home</NuxtLink>
+        <NuxtLink class="app-nav__drawer-link" :to="routes.faq" @click="closeMenu">FAQ</NuxtLink>
+        <a class="app-nav__drawer-link" :href="homeAnchors.contact" @click="closeMenu">Contact</a>
+        <NuxtLink class="app-nav__drawer-link" :to="routes.tours" @click="closeMenu">City tours</NuxtLink>
+        <a class="btn btn--solid-gold app-nav__drawer-cta" :href="homeAnchors.booking" @click="closeMenu">
+          Get a quote
+        </a>
       </nav>
     </div>
   </header>
 </template>
+
+<style scoped>
+.app-nav__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-nav__greeting {
+  display: none;
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--color-muted);
+}
+
+.app-nav__drawer-button {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+@media (min-width: 860px) {
+  .app-nav__greeting {
+    display: block;
+  }
+}
+</style>

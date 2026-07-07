@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { seoDefaults } from '~/config/seo'
+import { homeAnchors } from '~/constants/routes'
+import { seoDefaults, seoSections } from '~/config/seo'
 
 usePageSeo({
   title: seoDefaults.defaultTitle,
@@ -10,7 +11,14 @@ usePageSeo({
 
 <template>
   <div>
-    <HeroHome />
+    <HeroHome>
+      <template #booking>
+        <BookingForm />
+        <p class="hero__booking-note">
+          Fixed fares for Barcelona airport transfers and city-to-city routes. Confirmation via WhatsApp before payment.
+        </p>
+      </template>
+    </HeroHome>
 
     <section
       class="reveal"
@@ -19,78 +27,93 @@ usePageSeo({
     >
       <SectionHeading
         title-id="services-heading"
-        eyebrow="Capabilities"
-        title="Transfer services in Barcelona and Spain"
-        lead="Curated routing for airport arrivals, inner-city movement, and intercity journeys — executed with the same attention to timing and discretion."
+        eyebrow="Executive chauffeur"
+        title="Private transfer services across Barcelona and Spain"
+        lead="Door-to-door airport transfers, in-city executive chauffeur service, and intercity routes — delivered with discretion and fixed pricing."
       />
       <div class="grid cols-3">
         <article class="card card--elevated card--interactive service-card reveal">
           <div class="service-card__icon" aria-hidden="true">
             <i class="fa-solid fa-plane-arrival" />
           </div>
-          <h3>Barcelona airport</h3>
+          <h3>Barcelona airport transfers (BCN)</h3>
+          <p class="service-card__intro">
+            Private El Prat airport transfer with flight tracking, arrivals-hall meet &amp; greet, and direct
+            door-to-door service.
+          </p>
           <ul>
-            <li>BCN to city &amp; business districts</li>
-            <li>BCN to Girona, Tarragona, Costa Brava</li>
-          </ul>
-        </article>
-        <article class="card card--elevated card--interactive service-card reveal">
-          <div class="service-card__icon" aria-hidden="true">
-            <i class="fa-solid fa-city" />
-          </div>
-          <h3>City transfers</h3>
-          <ul>
-            <li>Within Barcelona &amp; metropolitan area</li>
-            <li>Barcelona to Madrid &amp; major hubs</li>
+            <li>BCN to Barcelona city &amp; port</li>
+            <li>BCN to business districts &amp; hotels</li>
+            <li>English-speaking chauffeurs</li>
           </ul>
         </article>
         <article class="card card--elevated card--interactive service-card reveal">
           <div class="service-card__icon" aria-hidden="true">
             <i class="fa-solid fa-road" />
           </div>
-          <h3>On-demand</h3>
+          <h3>City-to-city chauffeur routes</h3>
+          <p class="service-card__intro">
+            Executive car service from Barcelona to Catalonia's most requested destinations — one vehicle,
+            one fixed price.
+          </p>
           <ul>
-            <li>Same-day black car</li>
-            <li>Pre-booked meet &amp; greet</li>
+            <li>Barcelona to Sitges</li>
+            <li>Barcelona to Girona &amp; Costa Brava</li>
+            <li>Barcelona to Tarragona &amp; Costa Dorada</li>
+          </ul>
+        </article>
+        <article class="card card--elevated card--interactive service-card reveal">
+          <div class="service-card__icon" aria-hidden="true">
+            <i class="fa-solid fa-gem" />
+          </div>
+          <h3>Executive &amp; on-demand chauffeur</h3>
+          <p class="service-card__intro">
+            Black-car service for corporate travel, events, and pre-booked hourly chauffeur hire across Barcelona
+            and Spain.
+          </p>
+          <ul>
+            <li>Mercedes E Class &amp; S Class sedans</li>
+            <li>Mercedes V Class &amp; Vito vans</li>
+            <li>Same-day executive dispatch</li>
           </ul>
         </article>
       </div>
     </section>
 
-    <section class="reveal" style="padding: 0 0 var(--space-section)" aria-labelledby="fleet-heading">
-      <SectionHeading
-        title-id="fleet-heading"
-        eyebrow="Fleet"
-        title="Curated vehicles"
-        lead="Each class is maintained for comfort and luggage capacity — tap a filter to focus the gallery."
-      />
-      <FleetGallery />
-    </section>
-
     <section
-      id="booking-section"
-      class="reveal"
+      id="routes-section"
+      class="reveal routes-section"
       style="padding: 0 0 var(--space-section)"
-      aria-labelledby="booking-heading"
+      aria-labelledby="routes-heading"
     >
       <SectionHeading
-        title-id="booking-heading"
-        eyebrow="Itinerary"
-        title="Reserve your transfer"
-        lead="Enter your route and time — fares are calculated instantly for our premium fleet."
+        title-id="routes-heading"
+        eyebrow="Popular routes"
+        title="Fixed-price chauffeur routes from Barcelona"
+        lead="Transparent pricing for the routes travellers book most — airport arrivals, coastal escapes, and business travel across Catalonia."
       />
-      <BookingForm />
-      <p class="help reveal" style="margin-top: 14px; max-width: 62ch">
-        By continuing, you confirm details with our desk over WhatsApp before payment is accepted.
-      </p>
+      <div class="grid cols-2 routes-grid">
+        <article
+          v-for="route in seoSections.home.routes"
+          :key="route.slug"
+          class="card card--elevated route-card reveal"
+        >
+          <h3 class="route-card__title font-serif">{{ route.name }}</h3>
+          <p class="route-card__note">{{ route.note }}</p>
+          <a class="route-card__link" :href="homeAnchors.booking">
+            Check availability
+            <i class="fa-solid fa-arrow-right" aria-hidden="true" />
+          </a>
+        </article>
+      </div>
     </section>
 
     <section id="contact" class="reveal" style="padding: 0 0 var(--space-section)" aria-labelledby="contact-title">
       <SectionHeading
         title-id="contact-title"
         eyebrow="Concierge"
-        title="Contact and briefings"
-        lead="For bespoke routing, corporate accounts, or multi-day chauffeuring — reach the desk directly."
+        title="Contact our Barcelona chauffeur desk"
+        lead="For bespoke routing, corporate accounts, or multi-day executive chauffeur hire — reach the desk directly."
       />
       <ContactSection />
     </section>

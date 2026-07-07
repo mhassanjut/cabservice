@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.stripe.model.Event;
+import com.stwmovers.taxi.application.dto.request.CompletePaymentSessionRequest;
 import com.stwmovers.taxi.application.dto.request.CreatePaymentSessionRequest;
+import com.stwmovers.taxi.application.dto.response.BookingResponse;
 import com.stwmovers.taxi.application.dto.response.PaymentResponse;
 import com.stwmovers.taxi.application.dto.response.PaymentSessionResponse;
 import com.stwmovers.taxi.application.service.PaymentService;
@@ -35,6 +37,12 @@ public class PaymentController {
     public ResponseEntity<ApiResponse<PaymentSessionResponse>> createSession(
             @Valid @RequestBody CreatePaymentSessionRequest request) {
         return ResponseEntity.ok(ApiResponse.ok(paymentService.createCheckoutSession(request)));
+    }
+
+    @PostMapping("/session/complete")
+    public ResponseEntity<ApiResponse<BookingResponse>> completeSession(
+            @Valid @RequestBody CompletePaymentSessionRequest request) {
+        return ResponseEntity.ok(ApiResponse.ok(paymentService.confirmCheckoutSession(request.getSessionId())));
     }
 
     @GetMapping("/{bookingReference}")

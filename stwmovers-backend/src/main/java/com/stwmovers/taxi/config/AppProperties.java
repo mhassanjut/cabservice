@@ -19,7 +19,23 @@ public class AppProperties {
     private Fare fare = new Fare();
     private Otp otp = new Otp();
     private Stripe stripe = new Stripe();
+    private Google google = new Google();
     private Admin admin = new Admin();
+    private RateLimit rateLimit = new RateLimit();
+    private Uploads uploads = new Uploads();
+
+    @Getter
+    @Setter
+    public static class Uploads {
+        private String carsDir = "uploads/cars";
+    }
+
+    @Getter
+    @Setter
+    public static class RateLimit {
+        private boolean enabled = true;
+        private int maxRequestsPerMinute = 300;
+    }
 
     @Getter
     @Setter
@@ -47,8 +63,7 @@ public class AppProperties {
     @Setter
     public static class Fare {
         private int inCityBaseKm = 27;
-        private int inCityExtraKmBlock = 3;
-        private BigDecimal inCityExtraEurPerBlock = new BigDecimal("5");
+        private BigDecimal inCityExtraEurPerKm = new BigDecimal("1");
     }
 
     @Getter
@@ -65,6 +80,12 @@ public class AppProperties {
         private String webhookSecret;
         private String successUrl;
         private String cancelUrl;
+    }
+
+    @Getter
+    @Setter
+    public static class Google {
+        private String clientId;
     }
 
     @Getter

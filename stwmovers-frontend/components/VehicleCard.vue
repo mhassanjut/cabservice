@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import type { Vehicle } from '~/types/booking'
 
-defineProps<{ vehicle: Vehicle; selected?: boolean; unavailable?: boolean }>()
+defineProps<{
+  vehicle: Vehicle
+  selected?: boolean
+  unavailable?: boolean
+  continuing?: boolean
+}>()
 defineEmits<{ (e: 'select'): void }>()
 </script>
 
@@ -18,7 +23,7 @@ defineEmits<{ (e: 'select'): void }>()
 
     <div class="vehicle-card-lux__inner">
       <div class="vehicle-card-lux__thumb">
-        <img :src="vehicle.imagePath" :alt="vehicle.name" width="120" height="120" loading="lazy" />
+        <FleetVehicleImage :src="vehicle.imagePath" :alt="vehicle.name" />
       </div>
 
       <div class="vehicle-card-lux__body">
@@ -45,8 +50,13 @@ defineEmits<{ (e: 'select'): void }>()
             <span class="vehicle-card-lux__price-label">From</span>
             <span class="vehicle-fare">€{{ vehicle.priceEur }}</span>
           </div>
-          <button class="btn btn--solid-gold vehicle-card-lux__cta" type="button" :disabled="unavailable">
-            {{ selected ? 'Selected' : 'Select' }}
+          <button
+            class="btn btn--solid-gold vehicle-card-lux__cta"
+            type="button"
+            :disabled="unavailable || continuing"
+            @click.stop="!unavailable && $emit('select')"
+          >
+            {{ selected ? 'Continue' : 'Select' }}
             <i class="fa-solid fa-arrow-right" aria-hidden="true" />
           </button>
         </div>

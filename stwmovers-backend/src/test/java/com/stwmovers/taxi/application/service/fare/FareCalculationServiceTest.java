@@ -1,12 +1,14 @@
 package com.stwmovers.taxi.application.service.fare;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,8 +23,8 @@ import com.stwmovers.taxi.domain.entity.CityRoutePricing;
 import com.stwmovers.taxi.domain.enums.BodyType;
 import com.stwmovers.taxi.domain.enums.CarCategory;
 import com.stwmovers.taxi.domain.enums.CarType;
-import com.stwmovers.taxi.domain.enums.RideType;
 import com.stwmovers.taxi.domain.repository.CityRoutePricingRepository;
+import com.stwmovers.taxi.exception.BadRequestException;
 
 @ExtendWith(MockitoExtension.class)
 class FareCalculationServiceTest {
@@ -32,22 +34,21 @@ class FareCalculationServiceTest {
 
     private FareCalculationService fareCalculationService;
     private Car sedan;
+    private UUID sedanId;
 
     @BeforeEach
     void setUp() {
         AppProperties appProperties = new AppProperties();
         AppProperties.Fare fare = new AppProperties.Fare();
         fare.setInCityBaseKm(27);
-        fare.setInCityExtraKmBlock(3);
-        fare.setInCityExtraEurPerBlock(new BigDecimal("5"));
+        fare.setInCityExtraEurPerKm(new BigDecimal("1"));
         appProperties.setFare(fare);
 
-        InCityFareCalculationStrategy inCity = new InCityFareCalculationStrategy(appProperties);
-        CityToCityFareCalculationStrategy cityToCity =
-                new CityToCityFareCalculationStrategy(cityRoutePricingRepository);
-        fareCalculationService = new FareCalculationService(List.of(inCity, cityToCity));
+        fareCalculationService = new FareCalculationService(cityRoutePricingRepository, appProperties);
 
+        sedanId = UUID.randomUUID();
         sedan = Car.builder()
+                .id(sedanId)
                 .name("Mercedes E Class")
                 .carType(CarType.SEDAN)
                 .bodyType(BodyType.SEDAN)
@@ -58,45 +59,60 @@ class FareCalculationServiceTest {
     }
 
     @Test
-    void inCity_withinBaseDistance_returnsBaseFare() {
+    void withinBaseDistance_returnsBaseFare() {
         FareCalculationContext context = FareCalculationContext.builder()
                 .distanceKm(new BigDecimal("20"))
+                .pickupCity("Barcelona")
+                .destinationCity("Girona")
                 .build();
 
-        BigDecimal fare = fareCalculationService.calculateFare(sedan, RideType.IN_CITY, context);
+        BigDecimal fare = fareCalculationService.calculateFare(sedan, context);
 
         assertThat(fare).isEqualByComparingTo("70.00");
     }
 
     @Test
-    void inCity_beyondBaseDistance_addsExtraBlocks() {
+    void beyondBaseDistance_addsPerKmCharge() {
         FareCalculationContext context = FareCalculationContext.builder()
                 .distanceKm(new BigDecimal("33"))
+                .pickupCity("Barcelona")
+                .destinationCity("Girona")
                 .build();
 
-        BigDecimal fare = fareCalculationService.calculateFare(sedan, RideType.IN_CITY, context);
+        BigDecimal fare = fareCalculationService.calculateFare(sedan, context);
 
-        assertThat(fare).isEqualByComparingTo("80.00");
+        assertThat(fare).isEqualByComparingTo("76.00");
     }
 
     @Test
-    void cityToCity_usesRoutePricing() {
-        when(cityRoutePricingRepository.findByFromCityIgnoreCaseAndToCityIgnoreCaseAndCarTypeAndActiveTrue(
-                        any(), any(), any()))
+    void matchingRoute_usesRoutePrice() {
+        when(cityRoutePricingRepository.findActiveByRouteAndCarId(any(), any(), eq(sedanId)))
                 .thenReturn(Optional.of(CityRoutePricing.builder()
                         .fromCity("Barcelona")
                         .toCity("Girona")
-                        .carType(CarType.SEDAN)
+                        .car(sedan)
                         .price(new BigDecimal("120.00"))
                         .build()));
 
         FareCalculationContext context = FareCalculationContext.builder()
-                .destinationCity("Girona")
                 .distanceKm(new BigDecimal("100"))
+                .pickupCity("Barcelona")
+                .destinationCity("Girona")
                 .build();
 
-        BigDecimal fare = fareCalculationService.calculateFare(sedan, RideType.CITY_TO_CITY, context);
+        BigDecimal fare = fareCalculationService.calculateFare(sedan, context);
 
         assertThat(fare).isEqualByComparingTo("120.00");
+    }
+
+    @Test
+    void missingDistance_throwsBadRequest() {
+        FareCalculationContext context = FareCalculationContext.builder()
+                .pickupCity("Barcelona")
+                .destinationCity("Girona")
+                .build();
+
+        assertThatThrownBy(() -> fareCalculationService.calculateFare(sedan, context))
+                .isInstanceOf(BadRequestException.class);
     }
 }

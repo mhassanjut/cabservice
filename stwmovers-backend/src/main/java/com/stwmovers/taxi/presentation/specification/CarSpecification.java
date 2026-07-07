@@ -54,22 +54,4 @@ public final class CarSpecification {
         }
         return spec;
     }
-
-    public static Specification<Car> supportsRideType(com.stwmovers.taxi.domain.enums.RideType rideType) {
-        return switch (rideType) {
-            case IN_CITY -> (root, query, cb) -> cb.isTrue(root.get("supportsInCity"));
-            case CITY_TO_CITY -> (root, query, cb) -> cb.isTrue(root.get("supportsCityToCity"));
-        };
-    }
-
-    public static Specification<Car> priceBetween(BigDecimal min, BigDecimal max) {
-        Specification<Car> spec = (root, query, cb) -> cb.conjunction();
-        if (min != null) {
-            spec = spec.and((root, query, cb) -> cb.greaterThanOrEqualTo(root.get("baseFare"), min));
-        }
-        if (max != null) {
-            spec = spec.and((root, query, cb) -> cb.lessThanOrEqualTo(root.get("baseFare"), max));
-        }
-        return spec;
-    }
 }

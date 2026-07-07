@@ -2,9 +2,8 @@ package com.stwmovers.taxi.application.dto.request;
 
 import java.math.BigDecimal;
 
-import com.stwmovers.taxi.domain.enums.RideType;
-
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,7 +28,8 @@ public class CarsWithFareRequest {
     @DecimalMin(value = "0.1", message = "distanceKm must be positive")
     private BigDecimal distanceKm;
 
-    private RideType rideType;
+    @NotBlank
+    private String pickupCity;
 
     private String destinationCity;
 

@@ -5,9 +5,12 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.stwmovers.taxi.config.AppProperties;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -17,15 +20,32 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class RateLimitFilter extends OncePerRequestFilter {
 
-    private static final int MAX_REQUESTS_PER_MINUTE = 120;
     private static final long WINDOW_MS = 60_000L;
 
+    private final AppProperties appProperties;
     private final Map<String, Window> windows = new ConcurrentHashMap<>();
+
+    public RateLimitFilter(AppProperties appProperties) {
+        this.appProperties = appProperties;
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        if (!appProperties.getRateLimit().isEnabled()) {
+            return true;
+        }
+        if (HttpMethod.OPTIONS.matches(request.getMethod())) {
+            return true;
+        }
+        String path = request.getRequestURI();
+        return path.startsWith("/actuator/");
+    }
 
     @Override
     protected void doFilterInternal(
             HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+        int maxRequests = appProperties.getRateLimit().getMaxRequestsPerMinute();
         String key = clientKey(request);
         long now = System.currentTimeMillis();
         Window window = windows.compute(key, (k, w) -> {
@@ -36,9 +56,10 @@ public class RateLimitFilter extends OncePerRequestFilter {
         });
 
         int count = window.counter.incrementAndGet();
-        if (count > MAX_REQUESTS_PER_MINUTE) {
+        if (count > maxRequests) {
             response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
-            response.getWriter().write("Rate limit exceeded");
+            response.setContentType("application/json");
+            response.getWriter().write("{\"success\":false,\"message\":\"Rate limit exceeded. Please wait and try again.\"}");
             return;
         }
         filterChain.doFilter(request, response);

@@ -1,34 +1,66 @@
 package com.stwmovers.taxi.application.service.fare;
 
 import java.math.BigDecimal;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
+import java.math.RoundingMode;
 
 import org.springframework.stereotype.Service;
 
 import com.stwmovers.taxi.application.port.FareCalculationContext;
-import com.stwmovers.taxi.application.port.FareCalculationStrategy;
+import com.stwmovers.taxi.config.AppProperties;
 import com.stwmovers.taxi.domain.entity.Car;
-import com.stwmovers.taxi.domain.enums.RideType;
+import com.stwmovers.taxi.domain.entity.CityRoutePricing;
+import com.stwmovers.taxi.domain.repository.CityRoutePricingRepository;
+import com.stwmovers.taxi.exception.BadRequestException;
+import com.stwmovers.taxi.util.CityNameUtils;
 
 @Service
 public class FareCalculationService {
 
-    private final Map<RideType, FareCalculationStrategy> strategies;
+    private final CityRoutePricingRepository cityRoutePricingRepository;
+    private final AppProperties appProperties;
 
-    public FareCalculationService(List<FareCalculationStrategy> strategyList) {
-        this.strategies = new EnumMap<>(RideType.class);
-        for (FareCalculationStrategy strategy : strategyList) {
-            strategies.put(strategy.supportedRideType(), strategy);
-        }
+    public FareCalculationService(
+            CityRoutePricingRepository cityRoutePricingRepository,
+            AppProperties appProperties) {
+        this.cityRoutePricingRepository = cityRoutePricingRepository;
+        this.appProperties = appProperties;
     }
 
-    public BigDecimal calculateFare(Car car, RideType rideType, FareCalculationContext context) {
-        FareCalculationStrategy strategy = strategies.get(rideType);
-        if (strategy == null) {
-            throw new IllegalStateException("No fare strategy registered for ride type: " + rideType);
+    public BigDecimal calculateFare(Car car, FareCalculationContext context) {
+        BigDecimal distanceKm = requireDistance(context.getDistanceKm());
+
+        String pickupCity = CityNameUtils.normalize(context.getPickupCity());
+        String destinationCity = CityNameUtils.normalize(context.getDestinationCity());
+
+        if (pickupCity != null && destinationCity != null) {
+            var routePrice = cityRoutePricingRepository
+                    .findActiveByRouteAndCarId(pickupCity, destinationCity, car.getId());
+            if (routePrice.isPresent()) {
+                return routePrice.get().getPrice().setScale(2, RoundingMode.HALF_UP);
+            }
         }
-        return strategy.calculateFare(car, context);
+
+        return calculateDistanceFare(car, distanceKm);
+    }
+
+    private BigDecimal calculateDistanceFare(Car car, BigDecimal distanceKm) {
+        BigDecimal baseFare = car.getBaseFare();
+        int baseKm = appProperties.getFare().getInCityBaseKm();
+        BigDecimal extraEurPerKm = appProperties.getFare().getInCityExtraEurPerKm();
+
+        if (distanceKm.compareTo(BigDecimal.valueOf(baseKm)) <= 0) {
+            return baseFare.setScale(2, RoundingMode.HALF_UP);
+        }
+
+        BigDecimal extraKm = distanceKm.subtract(BigDecimal.valueOf(baseKm));
+        BigDecimal extraCharge = extraKm.multiply(extraEurPerKm);
+        return baseFare.add(extraCharge).setScale(2, RoundingMode.HALF_UP);
+    }
+
+    private BigDecimal requireDistance(BigDecimal distanceKm) {
+        if (distanceKm == null || distanceKm.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new BadRequestException("distanceKm must be greater than zero");
+        }
+        return distanceKm;
     }
 }

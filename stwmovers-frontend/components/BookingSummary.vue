@@ -4,11 +4,8 @@ import { routes } from '~/constants/routes'
 const booking = useBookingStore()
 const auth = useAuthStore()
 
-const rideLabel = computed(() => {
-  const rt = booking.draft.rideType ?? booking.vehicle?.rideType
-  if (rt === 'CITY_TO_CITY') return 'City to city'
-  if (rt === 'IN_CITY') return 'In city'
-  return 'Transfer'
+onMounted(() => {
+  auth.hydrate()
 })
 </script>
 
@@ -26,8 +23,12 @@ const rideLabel = computed(() => {
     </header>
 
     <div v-if="auth.isLoggedIn" class="booking-summary__user">
-      <i class="fa-solid fa-circle-user" aria-hidden="true" />
-      <span>Signed in as <strong>{{ auth.fullName }}</strong></span>
+      <UserAvatar size="sm" class="booking-summary__avatar" />
+      <span>Booking as <strong>{{ auth.fullName }}</strong></span>
+    </div>
+    <div v-else-if="auth.isGuestSession" class="booking-summary__user booking-summary__user--guest">
+      <span class="booking-summary__avatar booking-summary__avatar--guest">{{ auth.avatarInitial }}</span>
+      <span>Guest: <strong>{{ auth.guestSession?.fullName }}</strong></span>
     </div>
 
     <div class="booking-summary__route">
@@ -56,19 +57,14 @@ const rideLabel = computed(() => {
         <i class="fa-solid fa-route" aria-hidden="true" />
         ≈ {{ booking.draft.distanceKm }} km
       </li>
-      <li>
-        <i class="fa-solid fa-map-pin" aria-hidden="true" />
-        {{ rideLabel }}
-      </li>
     </ul>
 
     <div v-if="booking.vehicle" class="booking-summary__vehicle">
-      <img
+      <FleetVehicleImage
         :src="booking.vehicle.imagePath"
         :alt="booking.vehicle.name"
         width="72"
         height="72"
-        loading="lazy"
       />
       <div class="booking-summary__vehicle-info">
         <span class="booking-summary__label">Selected vehicle</span>
@@ -94,3 +90,25 @@ const rideLabel = computed(() => {
     </footer>
   </article>
 </template>
+
+<style scoped>
+.booking-summary__avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.booking-summary__avatar--guest {
+  display: inline-grid;
+  place-items: center;
+  background: rgba(91, 155, 213, 0.2);
+  color: #7eb8e8;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.booking-summary__user--guest {
+  border-color: rgba(91, 155, 213, 0.35);
+}
+</style>

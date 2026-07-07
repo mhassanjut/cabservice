@@ -1,0 +1,38 @@
+# Infrastructure only (Postgres) for local dev with `mvn spring-boot:run`.
+# DOCKER-DISABLED: Redis service commented out (OTP uses in-memory store).
+# Usage: docker compose -f docker-compose.infra.yml up -d
+#
+# Note: If you already have PostgreSQL on port 5432, either stop it first
+# or change the postgres ports mapping below (e.g. "5433:5432") and set
+# DB_URL=jdbc:postgresql://localhost:5433/stwmovers in your .env.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: stwmovers
+      POSTGRES_USER: stwmovers
+      POSTGRES_PASSWORD: stwmovers
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U stwmovers"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # REDIS-DISABLED: local Redis container for OTP cache. Re-enable: uncomment service and restore Redis in app config.
+  # redis:
+  #   image: redis:7-alpine
+  #   ports:
+  #     - "6379:6379"
+  #   healthcheck:
+  #     test: ["CMD", "redis-cli", "ping"]
+  #     interval: 5s
+  #     timeout: 3s
+  #     retries: 10
+
+volumes:
+  pgdata:

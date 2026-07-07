@@ -11,21 +11,21 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.stwmovers.taxi.application.dto.request.AdminCarRequest;
-import com.stwmovers.taxi.application.dto.request.CarFilterRequest;
 import com.stwmovers.taxi.application.dto.request.CarsWithFareRequest;
 import com.stwmovers.taxi.application.dto.response.CarResponse;
 import com.stwmovers.taxi.application.dto.response.CarWithFareResponse;
 import com.stwmovers.taxi.application.dto.response.PagedResponse;
 import com.stwmovers.taxi.application.port.FareCalculationContext;
 import com.stwmovers.taxi.application.service.fare.FareCalculationService;
-import com.stwmovers.taxi.application.service.fare.RideTypeService;
 import com.stwmovers.taxi.domain.entity.Car;
-import com.stwmovers.taxi.domain.enums.RideType;
 import com.stwmovers.taxi.domain.repository.CarRepository;
+import com.stwmovers.taxi.exception.BadRequestException;
 import com.stwmovers.taxi.exception.ResourceNotFoundException;
 import com.stwmovers.taxi.presentation.specification.CarSpecification;
+import com.stwmovers.taxi.util.CityNameUtils;
 import com.stwmovers.taxi.util.EntityMapper;
 
 @Service
@@ -33,28 +33,24 @@ public class CarCatalogService {
 
     private final CarRepository carRepository;
     private final FareCalculationService fareCalculationService;
-    private final RideTypeService rideTypeService;
+    private final CarImageStorageService carImageStorageService;
 
     public CarCatalogService(
             CarRepository carRepository,
             FareCalculationService fareCalculationService,
-            RideTypeService rideTypeService) {
+            CarImageStorageService carImageStorageService) {
         this.carRepository = carRepository;
         this.fareCalculationService = fareCalculationService;
-        this.rideTypeService = rideTypeService;
+        this.carImageStorageService = carImageStorageService;
     }
 
     @Transactional(readOnly = true)
     public PagedResponse<CarWithFareResponse> listCarsWithFare(CarsWithFareRequest request) {
-        RideType rideType = rideTypeService.resolveRideType(
-                request.getRideType(),
-                request.getPickupLat(),
-                request.getPickupLng(),
-                request.getDropoffLat(),
-                request.getDropoffLng());
+        validatePickupCity(request.getPickupCity(), request.getPickupLat(), request.getPickupLng());
+        String pickupCity = CityNameUtils.resolvePickupCity(
+                request.getPickupCity(), request.getPickupLat(), request.getPickupLng());
 
         Specification<Car> spec = Specification.where(CarSpecification.activeAndAvailable())
-                .and(CarSpecification.supportsRideType(rideType))
                 .and(CarSpecification.withFilters(request.getFilters()));
 
         int page = request.getPage() != null ? request.getPage() : 0;
@@ -64,12 +60,13 @@ public class CarCatalogService {
         Page<Car> carPage = carRepository.findAll(spec, pageable);
         FareCalculationContext context = FareCalculationContext.builder()
                 .distanceKm(request.getDistanceKm())
+                .pickupCity(pickupCity)
                 .destinationCity(request.getDestinationCity())
                 .build();
 
         List<CarWithFareResponse> results = new ArrayList<>();
         for (Car car : carPage.getContent()) {
-            BigDecimal fare = fareCalculationService.calculateFare(car, rideType, context);
+            BigDecimal fare = fareCalculationService.calculateFare(car, context);
             if (request.getFilters() != null) {
                 if (request.getFilters().getMinPrice() != null
                         && fare.compareTo(request.getFilters().getMinPrice()) < 0) {
@@ -80,7 +77,7 @@ public class CarCatalogService {
                     continue;
                 }
             }
-            results.add(EntityMapper.toCarWithFare(car, fare, rideType));
+            results.add(EntityMapper.toCarWithFare(car, fare));
         }
 
         return PagedResponse.<CarWithFareResponse>builder()
@@ -90,6 +87,13 @@ public class CarCatalogService {
                 .totalElements(carPage.getTotalElements())
                 .totalPages(carPage.getTotalPages())
                 .build();
+    }
+
+    private void validatePickupCity(String pickupCity, Double lat, Double lng) {
+        if (!CityNameUtils.isValidPickupCity(pickupCity, lat, lng)) {
+            throw new BadRequestException(
+                    "Pickup is only available from Barcelona (including El Prat Airport), Tarragona, or Girona");
+        }
     }
 
     @Transactional(readOnly = true)
@@ -158,6 +162,18 @@ public class CarCatalogService {
             car.setDisplayPriority(request.getDisplayPriority());
         }
         return EntityMapper.toCarResponse(carRepository.save(car));
+    }
+
+    @Transactional
+    public CarResponse updateCarImage(UUID id, MultipartFile file) {
+        Car car = carRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Car not found: " + id));
+        String previousUrl = car.getImageUrl();
+        String imageUrl = carImageStorageService.store(file);
+        car.setImageUrl(imageUrl);
+        Car saved = carRepository.save(car);
+        carImageStorageService.deleteIfStored(previousUrl);
+        return EntityMapper.toCarResponse(saved);
     }
 
     @Transactional

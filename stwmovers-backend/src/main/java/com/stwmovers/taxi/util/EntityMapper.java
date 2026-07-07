@@ -42,7 +42,7 @@ public final class EntityMapper {
                 .build();
     }
 
-    public static CarWithFareResponse toCarWithFare(Car car, BigDecimal calculatedFare, RideType rideType) {
+    public static CarWithFareResponse toCarWithFare(Car car, BigDecimal calculatedFare) {
         return CarWithFareResponse.builder()
                 .id(car.getId())
                 .name(car.getName())
@@ -56,7 +56,6 @@ public final class EntityMapper {
                 .available(car.getAvailable())
                 .imageUrl(car.getImageUrl())
                 .description(car.getDescription())
-                .rideType(rideType)
                 .build();
     }
 
@@ -119,6 +118,7 @@ public final class EntityMapper {
                 .currency(payment.getCurrency())
                 .status(payment.getStatus())
                 .stripeSessionId(payment.getStripeSessionId())
+                .stripePaymentIntentId(payment.getStripePaymentIntentId())
                 .createdAt(payment.getCreatedAt())
                 .build();
     }
@@ -128,7 +128,8 @@ public final class EntityMapper {
                 .id(pricing.getId())
                 .fromCity(pricing.getFromCity())
                 .toCity(pricing.getToCity())
-                .carType(pricing.getCarType())
+                .carId(pricing.getCar().getId())
+                .carName(pricing.getCar().getName())
                 .price(pricing.getPrice())
                 .active(pricing.getActive())
                 .build();

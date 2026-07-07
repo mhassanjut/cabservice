@@ -1,6 +1,43 @@
+# Backend-specific ignores. The repo root .gitignore (../.gitignore) also applies.
+#
+# Do NOT add source extensions here (*.java, *.yml, *.xml, *.sql, etc.).
+# Do NOT add *.vue — Vue SFCs live in stwmovers-frontend/ and must stay tracked.
+
+# --- Java / Maven ---
 target/
+*.class
+*.jar
+*.war
+hs_err_pid*
+replay_pid*
+
+# --- IDE ---
 .idea/
 *.iml
+.vscode/
+
+# --- Secrets ---
 .env
 .env.*
 !.env.example
+
+# --- Local Redis (Windows portable install) ---
+tools/redis/*.exe
+tools/redis/*.pdb
+tools/redis/*.zip
+dump.rdb
+*.rdb
+
+# --- Manual API test payloads (tmp-login.json, tmp-otp-send.json, etc.) ---
+tmp-*.json
+
+# --- Optional Node scratch in backend root (e.g. nodemailer experiments) ---
+node_modules/
+package.json
+
+# --- Uploaded media ---
+uploads/
+
+# --- OS ---
+.DS_Store
+Thumbs.db

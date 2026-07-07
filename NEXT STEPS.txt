@@ -1,8 +1,39 @@
-(MAKE PROMPTS FOR EACH OF BELOW ONE BY ONE)
 
-1. Analyze the make payment flow , test it without triggering it and see that data is stored in database.
-2. Analyze the landing page, search on technical SEO and make it SEO friendly and redesign the page perfectly(Including the login).
-3. Integrate the Google Login Perfectly. And test the design according to Google login.
-4. Test the OTP. Integeration test the booking both as logged in user and as guest.
+1. Manage the Guest and Google Log In flow ( Make sure to include the dashboard logout option and all the necessary options required)
+1.1 Integrate Stripe test api key
+2. Ensure Bookings with both flows(after done with the first prompt) (Make sure of what is written on the pages and make payment button)
+3. Reorganize the landing page according to SEO best practices 
+4. Go through each page and make sure the front end is perfect and ready for both mobile and web
+5. Use fleetvtc@gmail and correct contact info and address everywhere required, including passwords and addresses
+6. Make sure that all the links are working for insta twitter etc ()
+7. Integrate the reviews sections as well( find out whats the best SEO way to do it as the landing page being static helps a lot as the reviews would be dynamic
+   figure out the best possible way to do it)
+OKay we are making some changes in the backend structure and front end
+Earlier we decided some factors about in city and city to city ride
+We are gonna change that 
+Lets take this step by step
+First of all the pickup point can only be from the following locations:
 
-(GET ALL THE ABOVE DONE BY TONIGHT)
+
+
+Manage the Guest and Google Log In flow ( Make sure to include the dashboard logout option and all the necessary options required)
+
+I have a guest flow and a login flow.
+
+The landing page should have a login button somewhere according to UI/UX design principles 
+
+The guest flow and the google login flow remains intact for now but how the UI changes matters. 
+
+For example when the user goes to confirm booking and instead of continue as guest does a google login then how the UI changes matters .
+
+How the navbar changes or a hamburg appears i will leave that upto you to decide according to UI/UX best design principles
+
+also we have to make sure of the consistence for example if a user does a google login and clicks on the back or goes to some other URL manually , what impact does that have matters a lot , the UI must reflect the login even if the user does not continue with make payment or goes to some other URL , the GUEST flow remains consistent as well.
+
+Including a logout button a proper dashboard analyze the APIs available that allows user to see his booking that he has made the status analyze the table structure of the backend and make sure everything is done properly according to the backend structure and APIs available
+
+If you deem necessary you can add further APIs in the back end or if require you can further add data fields/paramters in the tables/schema 
+
+Again i am stressing that the best UI/UX principles are followed and analyze how the website is mobile friendly already and how it is being made and make sure that everything remains mobile friendly
+
+What option the users can see in the dashboard I will leave that upto you, according to schema and  the flow of website

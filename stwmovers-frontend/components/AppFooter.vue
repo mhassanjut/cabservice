@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { routes } from '~/constants/routes'
-import { externalLinks } from '~/constants/externalLinks'
+import { homeAnchors, routes } from '~/constants/routes'
 </script>
 
 <template>
@@ -29,17 +28,15 @@ import { externalLinks } from '~/constants/externalLinks'
         <ul class="site-footer__list">
           <li><NuxtLink :to="routes.home">Airport transfers</NuxtLink></li>
           <li><NuxtLink :to="routes.home">City transfers</NuxtLink></li>
-          <li><NuxtLink :to="routes.cars">Fleet</NuxtLink></li>
+          <li><a :href="homeAnchors.booking">Book a transfer</a></li>
         </ul>
       </div>
       <div>
         <p class="site-footer__col-title">Company</p>
         <ul class="site-footer__list">
-          <li><NuxtLink to="/#contact">Contact</NuxtLink></li>
+          <li><a :href="homeAnchors.contact">Contact</a></li>
           <li><NuxtLink :to="routes.confirm">Confirmation</NuxtLink></li>
-          <li>
-            <a :href="externalLinks.tourCta" rel="noopener noreferrer" target="_blank">Partner tours</a>
-          </li>
+          <li><NuxtLink :to="routes.tours">Private Barcelona tours</NuxtLink></li>
         </ul>
       </div>
       <div>

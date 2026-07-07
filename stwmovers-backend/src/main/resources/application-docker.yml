@@ -1,6 +1,7 @@
 spring:
   datasource:
     url: jdbc:postgresql://postgres:5432/stwmovers
-  data:
-    redis:
-      host: redis
+  # REDIS-CONFIG-PRESERVED: Docker Redis host (unused). Re-enable with Redis service in docker-compose.yml.
+  # data:
+  #   redis:
+  #     host: redis

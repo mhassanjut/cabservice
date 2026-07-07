@@ -12,6 +12,19 @@ export const authService = {
       auth: false,
     })
   },
+  googleLogin(idToken: string) {
+    return api<AuthDto>('/api/v1/auth/google', {
+      method: 'POST',
+      body: { idToken },
+      auth: false,
+    })
+  },
+  refresh() {
+    return api<AuthDto>('/api/v1/auth/refresh', { method: 'POST' })
+  },
+  logout() {
+    return api<void>('/api/v1/auth/logout', { method: 'POST' })
+  },
   sendOtp(email: string, bookingReference: string) {
     return api<{ email: string; bookingReference: string; ttlSeconds: number }>(
       '/api/v1/auth/guest/otp/send',

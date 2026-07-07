@@ -3,6 +3,8 @@ import { routes } from '~/constants/routes'
 import { bookingService } from '~/services/api/booking.service'
 import { authService } from '~/services/api/auth.service'
 
+definePageMeta({ middleware: ['checkout-guard'] })
+
 usePageSeo({ title: 'Booking details', path: '/booking' })
 
 const booking = useBookingStore()
@@ -10,34 +12,94 @@ const auth = useAuthStore()
 const router = useRouter()
 const toast = useToastStore()
 
-const step = ref<'auth' | 'otp' | 'done'>('auth')
+const step = ref<'auth' | 'done'>('auth')
 const loading = ref(false)
+const googleLoading = ref(false)
+const otpLoading = ref(false)
+const showOtpModal = ref(false)
+const otpError = ref('')
 const guest = reactive({ fullName: '', email: '', phone: '' })
-const otp = ref('')
 const resendIn = ref(0)
+let resendTimer: ReturnType<typeof setInterval> | null = null
 
 onMounted(async () => {
-  if (!booking.isDraftValid || (!booking.vehicle && !booking.otherCar)) {
+  auth.hydrate()
+  await nextTick()
+  if (booking.guest) {
+    guest.fullName = booking.guest.fullName
+    guest.email = booking.guest.email
+    guest.phone = booking.guest.phone
+  } else if (auth.guestSession) {
+    guest.fullName = auth.guestSession.fullName
+    guest.email = auth.guestSession.email
+    guest.phone = auth.guestSession.phone
+  }
+  if (!booking.isDraftValid) {
+    toast.show('Your trip details are incomplete. Please start from the home page.', 'error')
+    await router.replace(routes.home)
+    return
+  }
+  if (!booking.vehicle && !booking.otherCar) {
     await router.replace(routes.cars)
+    return
   }
   if (auth.isLoggedIn) step.value = 'done'
+})
+
+watch(guest, (value) => {
+  if (auth.isLoggedIn) return
+  const payload = {
+    fullName: value.fullName.trim(),
+    email: value.email.trim(),
+    phone: value.phone.trim(),
+    bookingReference: booking.bookingReference || auth.guestSession?.bookingReference,
+  }
+  if (payload.fullName && payload.email && payload.phone) {
+    booking.guest = { fullName: payload.fullName, email: payload.email, phone: payload.phone }
+    auth.setGuestSession(payload)
+    booking.persistToStorage()
+  }
+}, { deep: true })
+
+onUnmounted(() => {
+  stopResendTimer()
 })
 
 const guestValid = computed(
   () => guest.fullName.trim() && guest.email.trim() && guest.phone.trim(),
 )
 
-const detailsActive = computed(() => !auth.isLoggedIn && step.value === 'auth')
-const detailsDone = computed(() => auth.isLoggedIn || step.value === 'otp')
-const paymentActive = computed(() => auth.isLoggedIn || step.value === 'otp')
+const detailsActive = computed(() => !auth.isLoggedIn && step.value === 'auth' && !showOtpModal.value)
+const detailsDone = computed(() => auth.isLoggedIn || showOtpModal.value || step.value === 'done')
+const paymentActive = computed(() => auth.isLoggedIn || showOtpModal.value || step.value === 'done')
+
+const stopResendTimer = () => {
+  if (resendTimer) {
+    clearInterval(resendTimer)
+    resendTimer = null
+  }
+}
+
+const startResendTimer = (seconds: number) => {
+  stopResendTimer()
+  resendIn.value = seconds
+  resendTimer = setInterval(() => {
+    if (resendIn.value <= 1) {
+      resendIn.value = 0
+      stopResendTimer()
+      return
+    }
+    resendIn.value -= 1
+  }, 1000)
+}
 
 const createBooking = async () => {
+  auth.hydrate()
   loading.value = true
   try {
-    const b = await bookingService.create({
+    const basePayload = {
       carId: booking.otherCar ? undefined : booking.vehicle?.id,
       otherCar: booking.otherCar,
-      rideType: booking.draft.rideType,
       pickupAddress: booking.draft.pickupLocation,
       dropoffAddress: booking.draft.dropoffLocation,
       pickupLat: booking.draft.pickup!.lat,
@@ -45,42 +107,124 @@ const createBooking = async () => {
       dropoffLat: booking.draft.dropoff!.lat,
       dropoffLng: booking.draft.dropoff!.lng,
       distanceKm: booking.draft.distanceKm!,
+      pickupCity: booking.draft.pickupCity!,
       scheduledAt: booking.scheduledAtIso,
       destinationCity: booking.draft.destinationCity,
-      guestName: auth.isLoggedIn ? undefined : guest.fullName,
-      guestEmail: auth.isLoggedIn ? undefined : guest.email,
-      guestPhone: auth.isLoggedIn ? undefined : guest.phone,
-    })
+    }
+
+    if (auth.isLoggedIn) {
+      if (!auth.token) {
+        toast.show('Session expired. Please sign in again.', 'error')
+        await router.push({ path: routes.login, query: { redirect: useRoute().fullPath } })
+        return
+      }
+      booking.clearGuestDetails()
+      const b = await bookingService.create(basePayload, { auth: true })
+      booking.bookingReference = b.bookingReference
+      booking.persistToStorage()
+      await router.push(routes.payment)
+      return
+    }
+
+    if (!guestValid.value) {
+      toast.show('Please enter your contact details to continue as guest.', 'error')
+      return
+    }
+
+    const b = await bookingService.create(
+      {
+        ...basePayload,
+        guestName: guest.fullName.trim(),
+        guestEmail: guest.email.trim(),
+        guestPhone: guest.phone.trim(),
+      },
+      { auth: false },
+    )
     booking.bookingReference = b.bookingReference
     booking.persistToStorage()
     if (b.status === 'OTP_PENDING') {
-      await authService.sendOtp(guest.email, b.bookingReference)
-      resendIn.value = 60
-      step.value = 'otp'
+      auth.setGuestSession({
+        fullName: guest.fullName,
+        email: guest.email,
+        phone: guest.phone,
+        bookingReference: b.bookingReference,
+      })
+      const sent = await authService.sendOtp(guest.email, b.bookingReference)
+      otpError.value = ''
+      startResendTimer(sent.ttlSeconds || 60)
+      showOtpModal.value = true
     } else {
       await router.push(routes.payment)
     }
-  } catch {
-    toast.show('Booking failed. Please try again.', 'error')
+  } catch (e: unknown) {
+    const err = e as { status?: number; statusCode?: number; data?: { message?: string }; message?: string }
+    const status = err.status ?? err.statusCode
+    const msg = err.data?.message ?? err.message ?? 'Booking failed. Please try again.'
+    if (status === 401 && auth.isLoggedIn) {
+      toast.show('Session expired. Please sign in again.', 'error')
+      await router.push({ path: routes.login, query: { redirect: useRoute().fullPath } })
+      return
+    }
+    toast.show(msg, 'error')
   } finally {
     loading.value = false
   }
 }
 
-const verifyOtp = async () => {
-  loading.value = true
+const verifyOtp = async (otp: string) => {
+  otpLoading.value = true
+  otpError.value = ''
   try {
-    await authService.verifyOtp(guest.email, otp.value, booking.bookingReference)
+    await authService.verifyOtp(guest.email, otp, booking.bookingReference)
+    showOtpModal.value = false
+    stopResendTimer()
     await router.push(routes.payment)
   } catch {
-    toast.show('Invalid or expired OTP.', 'error')
+    otpError.value = 'Invalid or expired OTP. Please try again.'
   } finally {
-    loading.value = false
+    otpLoading.value = false
+  }
+}
+
+const resendOtp = async () => {
+  if (resendIn.value > 0 || otpLoading.value || !booking.bookingReference) return
+  otpLoading.value = true
+  otpError.value = ''
+  try {
+    const sent = await authService.sendOtp(guest.email, booking.bookingReference)
+    startResendTimer(sent.ttlSeconds || 60)
+  } catch {
+    otpError.value = 'Could not resend code. Please try again.'
+  } finally {
+    otpLoading.value = false
   }
 }
 
 const continueLoggedIn = async () => {
   await createBooking()
+}
+
+const onGoogleSuccess = async (idToken: string) => {
+  googleLoading.value = true
+  try {
+    const session = await authService.googleLogin(idToken)
+    auth.setSession(session)
+    auth.clearGuestSession()
+    step.value = 'done'
+    if (booking.bookingReference) {
+      await router.push(routes.payment)
+    } else {
+      await continueLoggedIn()
+    }
+  } catch {
+    toast.show('Google sign-in failed. Please try again.', 'error')
+  } finally {
+    googleLoading.value = false
+  }
+}
+
+const onGoogleError = (message: string) => {
+  toast.show(message, 'error')
 }
 </script>
 
@@ -124,7 +268,7 @@ const continueLoggedIn = async () => {
           </div>
           <h2 class="booking-panel__title font-serif">Ready for payment</h2>
           <p class="booking-panel__lead">
-            Your trip is saved under your account. Continue to pay securely and confirm your transfer.
+            Booking as <strong>{{ auth.fullName }}</strong>. Continue to complete your transfer.
           </p>
           <button class="btn btn--solid-gold booking-panel__cta" type="button" :disabled="loading" @click="continueLoggedIn">
             Continue to payment
@@ -133,22 +277,18 @@ const continueLoggedIn = async () => {
         </article>
 
         <!-- Guest auth -->
-        <article v-else-if="step === 'auth'" class="booking-panel__card card card--elevated reveal">
+        <article v-else-if="step === 'auth' && !showOtpModal" class="booking-panel__card card card--elevated reveal">
           <div class="booking-panel__icon booking-panel__icon--blue" aria-hidden="true">
             <i class="fa-solid fa-user-pen" />
           </div>
           <h2 class="booking-panel__title font-serif">Guest checkout</h2>
           <p class="booking-panel__lead">Enter your contact details. We will send a verification code to your email.</p>
 
-          <button
-            class="btn secondary booking-panel__google"
-            type="button"
-            disabled
-            title="Configure Google OAuth on backend"
-          >
-            <i class="fa-brands fa-google" aria-hidden="true" />
-            Continue with Google
-          </button>
+          <GoogleSignInButton
+            class="booking-panel__google"
+            @success="onGoogleSuccess"
+            @error="onGoogleError"
+          />
 
           <div class="booking-panel__divider" role="separator">
             <span>or continue as guest</span>
@@ -174,35 +314,30 @@ const continueLoggedIn = async () => {
           </form>
         </article>
 
-        <!-- OTP -->
-        <article v-else-if="step === 'otp'" class="booking-panel__card card card--elevated reveal">
+        <article v-else-if="showOtpModal" class="booking-panel__card card card--elevated reveal">
           <div class="booking-panel__icon booking-panel__icon--green" aria-hidden="true">
-            <i class="fa-solid fa-envelope-circle-check" />
+            <i class="fa-solid fa-envelope" />
           </div>
-          <h2 class="booking-panel__title font-serif">Verify your email</h2>
+          <h2 class="booking-panel__title font-serif">Check your email</h2>
           <p class="booking-panel__lead">
-            Enter the 6-digit code sent to
-            <strong class="booking-panel__email">{{ guest.email }}</strong>
-          </p>
-
-          <OtpInput v-model="otp" class="booking-otp" />
-
-          <button
-            class="btn btn--solid-gold booking-panel__cta"
-            type="button"
-            :disabled="loading || otp.length < 6"
-            @click="verifyOtp"
-          >
-            Verify &amp; continue
-            <i class="fa-solid fa-arrow-right" aria-hidden="true" />
-          </button>
-          <p v-if="resendIn > 0" class="booking-panel__hint help">
-            Resend available in {{ resendIn }}s
+            We sent a verification code to
+            <strong class="booking-panel__email">{{ guest.email }}</strong>.
+            Enter it in the dialog to continue.
           </p>
         </article>
       </div>
     </div>
 
-    <LoadingOverlay :show="loading" label="Processing your booking…" />
+    <OtpVerifyModal
+      :show="showOtpModal"
+      :email="guest.email"
+      :loading="otpLoading"
+      :error="otpError"
+      :resend-in="resendIn"
+      @verify="verifyOtp"
+      @resend="resendOtp"
+    />
+
+    <LoadingOverlay :show="loading || googleLoading" label="Processing your booking…" />
   </section>
 </template>

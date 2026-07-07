@@ -6,8 +6,28 @@ export const routes = {
   confirm: '/confirm',
   bookings: '/bookings',
   login: '/login',
+  dashboard: '/dashboard',
+  dashboardBookings: '/dashboard/bookings',
+  dashboardAccount: '/dashboard/account',
+  guestBooking: '/guest/booking',
+  tours: '/tours',
+  faq: '/faq',
   driverLogin: '/driver/login',
   driverHome: '/driver',
   adminLogin: '/admin/login',
   adminHome: '/admin',
+  adminRides: '/admin/rides',
+  adminDrivers: '/admin/drivers',
+  adminCars: '/admin/cars',
+  adminPricing: '/admin/pricing',
+  adminCustomRequests: '/admin/custom-requests',
+  adminPayments: '/admin/payments',
+  adminNotifications: '/admin/notifications',
+  adminSettings: '/admin/settings',
+} as const
+
+/** In-page home anchors — use plain `<a>` so Nuxt does not prefetch invalid hash routes. */
+export const homeAnchors = {
+  booking: '/#booking-section',
+  contact: '/#contact',
 } as const

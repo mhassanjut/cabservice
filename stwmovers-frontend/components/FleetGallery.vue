@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { vehicles } from '~/data/vehicles'
+import { fleetFilters, vehicles } from '~/data/vehicles'
 
-const filter = ref('all')
+const filter = ref<(typeof fleetFilters)[number]['id']>('all')
 
 const filtered = computed(() => {
   if (filter.value === 'all') return vehicles
-  return vehicles.filter((v) => v.id === filter.value)
+  if (filter.value === 'van') return vehicles.filter((v) => v.bodyType === 'van')
+  if (filter.value === 'sedan') return vehicles.filter((v) => v.bodyType === 'sedan')
+  if (filter.value === 'luxury') return vehicles.filter((v) => v.category === 'luxury')
+  if (filter.value === 'electric') return vehicles.filter((v) => v.electric)
+  return vehicles
 })
 </script>
 
@@ -13,42 +17,31 @@ const filtered = computed(() => {
   <div>
     <div class="filter-row" role="tablist" aria-label="Filter fleet">
       <button
+        v-for="f in fleetFilters"
+        :key="f.id"
         type="button"
         class="filter-btn"
-        :class="{ 'is-active': filter === 'all' }"
+        :class="{ 'is-active': filter === f.id }"
         role="tab"
-        :aria-selected="filter === 'all'"
-        @click="filter = 'all'"
+        :aria-selected="filter === f.id"
+        @click="filter = f.id"
       >
-        All
-      </button>
-      <button
-        v-for="v in vehicles"
-        :key="v.id"
-        type="button"
-        class="filter-btn"
-        :class="{ 'is-active': filter === v.id }"
-        role="tab"
-        :aria-selected="filter === v.id"
-        @click="filter = v.id"
-      >
-        {{ v.name.replace(' Sedan', '').replace(' Van', '') }}
+        {{ f.label }}
       </button>
     </div>
     <div class="gallery-grid">
-      <article v-for="v in filtered" :key="v.id" class="gallery-item reveal">
-        <img
+      <article v-for="v in filtered" :key="v.backendId" class="gallery-item reveal">
+        <FleetVehicleImage
           class="gallery-item__media"
           :src="v.imagePath"
-          :alt="`${v.name} — ${v.description}`"
-          width="400"
-          height="300"
-          loading="lazy"
+          :alt="`${v.name} — executive chauffeur vehicle Barcelona`"
         />
         <div class="gallery-item__overlay">
           <p class="gallery-item__title">{{ v.name }}</p>
-          <p style="margin: 4px 0 0; font-size: 0.8125rem; color: rgba(255,255,255,0.75)">
-            From €{{ v.priceEur }}
+          <p class="gallery-item__meta">
+            {{ v.seats }} seats · from €{{ v.priceEur }}
+            <span v-if="v.category === 'luxury'"> · Luxury</span>
+            <span v-if="v.electric"> · Electric</span>
           </p>
         </div>
       </article>

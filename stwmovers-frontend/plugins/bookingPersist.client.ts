@@ -1,6 +1,9 @@
-export default defineNuxtPlugin(() => {
-  const booking = useBookingStore()
-  booking.hydrateFromStorage()
+export default defineNuxtPlugin({
+  name: 'stwmovers-booking-persist',
+  dependsOn: ['pinia'],
+  setup() {
+    const booking = useBookingStore()
+    booking.hydrateFromStorage()
 
   watch(
     () => ({
@@ -15,5 +18,6 @@ export default defineNuxtPlugin(() => {
     () => booking.persistToStorage(),
     { deep: true },
   )
+  },
 })
 

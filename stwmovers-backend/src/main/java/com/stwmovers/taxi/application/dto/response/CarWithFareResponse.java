@@ -6,7 +6,6 @@ import java.util.UUID;
 import com.stwmovers.taxi.domain.enums.BodyType;
 import com.stwmovers.taxi.domain.enums.CarCategory;
 import com.stwmovers.taxi.domain.enums.CarType;
-import com.stwmovers.taxi.domain.enums.RideType;
 
 import lombok.Builder;
 import lombok.Value;
@@ -27,5 +26,4 @@ public class CarWithFareResponse {
     Boolean available;
     String imageUrl;
     String description;
-    RideType rideType;
 }

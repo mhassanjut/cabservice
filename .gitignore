@@ -23,9 +23,10 @@
 
 .DS_Store
 Thumbs.db
+Desktop.ini
 
 ########################################
-# Dependencies
+# Dependencies (never commit installed packages)
 ########################################
 
 node_modules/
@@ -33,7 +34,8 @@ node_modules/
 .pnp.js
 
 ########################################
-# Nuxt / Build outputs
+# Nuxt / frontend build outputs
+# NOTE: Do NOT ignore source files (*.vue, *.ts, *.css, etc.) — only generated output.
 ########################################
 
 .nuxt/
@@ -44,6 +46,29 @@ dist-ssr/
 .nitro/
 .vercel/
 .netlify/
+
+########################################
+# Java / Maven build outputs
+# NOTE: Do NOT ignore source (*.java, pom.xml, src/**).
+########################################
+
+target/
+*.class
+*.jar
+*.war
+*.ear
+hs_err_pid*
+replay_pid*
+
+# Maven release plugin backups
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# Spring Boot
+.spring-boot-devtools.properties
 
 ########################################
 # Logs
@@ -73,7 +98,7 @@ coverage/
 *.lcov
 
 ########################################
-# Environment variables (VERY IMPORTANT)
+# Environment variables (secrets)
 ########################################
 
 .env
@@ -91,40 +116,61 @@ coverage/
 .nitro-cache/
 
 ########################################
-# Build tools
+# Build tools / other frameworks
 ########################################
 
 build/
-target/
-
-########################################
-# Frontend tooling
-########################################
-
 .swc/
 .turbo/
 .next/
 .storybook/
 
 ########################################
-# Temporary files
+# Temporary / local scratch files
 ########################################
 
 *.tmp
 *.temp
+**/tmp-*.json
 
 ########################################
-# Package manager lock files (DO NOT IGNORE unless you know why)
+# Redis local data dumps (dev artifacts)
+########################################
+
+dump.rdb
+*.rdb
+
+########################################
+# Backend: Redis Windows binaries (from scripts/setup-redis.ps1)
+########################################
+
+stwmovers-backend/tools/redis/*.exe
+stwmovers-backend/tools/redis/*.pdb
+stwmovers-backend/tools/redis/*.zip
+
+########################################
+# Frontend: portable/offline npm overlay (generated; see portable/README.txt)
+########################################
+
+stwmovers-frontend/portable/node_modules/
+stwmovers-frontend/portable/packages/
+
+# Frontend: generated vehicle image scratch (see scripts/download-vehicle-images.mjs)
+stwmovers-frontend/.tmp-vehicle-previews/
+stwmovers-frontend/public/img/vehicles/_raw/
+
+# Backend: optional npm scratch at repo root (not used by Maven build)
+stwmovers-backend/package.json
+
+# Backend: admin-uploaded car images (runtime; served from /api/v1/media/cars/)
+stwmovers-backend/uploads/
+
+########################################
+# Package manager lock files (keep tracked for reproducible installs)
 ########################################
 # package-lock.json
 # yarn.lock
 # pnpm-lock.yaml
-
-########################################
-# Compiled files (Java/Kotlin if mixed project)
-########################################
-
-*.class
 
 ########################################
 # Keep this file reference safe

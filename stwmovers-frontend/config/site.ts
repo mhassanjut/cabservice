@@ -3,5 +3,7 @@ export const siteConfig = {
   apiBaseUrl: 'http://localhost:8080',
   whatsappNumber: '34632047888',
   whatsappDefaultMessage: 'Hello STW Movers, I want to book a transfer.',
-  externalTourUrl: 'https://bcncitytour.com',
+  toursWhatsappMessage:
+    'Hello STW Movers, I am interested in your private Barcelona tours (coming soon). Please notify me when bookings open.',
+  externalTourUrl: '/tours',
 } as const

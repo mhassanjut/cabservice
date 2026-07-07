@@ -6,6 +6,8 @@
     "merge-portable": "node scripts/merge-portable-node-modules.mjs",
     "install:portable": "node scripts/install-with-portable.mjs",
     "vendor:pack": "node scripts/vendor-pack.mjs",
+    "sync:vehicles": "node scripts/sync-vehicle-images.mjs",
+    "download:vehicles": "node scripts/download-vehicle-images.mjs",
     "dev": "nuxt dev",
     "build": "nuxt build",
     "generate": "nuxt generate",
@@ -14,6 +16,7 @@
     "typecheck": "nuxt typecheck"
   },
   "dependencies": {
+    "@imgly/background-removal-node": "^1.4.5",
     "@pinia/nuxt": "^0.6.1",
     "nuxt": "^3.13.0",
     "ofetch": "^1.4.1",
@@ -21,8 +24,8 @@
   },
   "devDependencies": {
     "eslint": "^9.9.0",
+    "sharp": "^0.35.3",
     "typescript": "^5.6.2",
     "vue-tsc": "^2.0.29"
   }
 }
-

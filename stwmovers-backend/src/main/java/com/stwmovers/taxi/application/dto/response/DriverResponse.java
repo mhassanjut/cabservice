@@ -17,5 +17,7 @@ public class DriverResponse {
     String phone;
     String licenseNumber;
     Boolean active;
+    Long activeRidesCount;
+    Boolean onRide;
     Instant createdAt;
 }
