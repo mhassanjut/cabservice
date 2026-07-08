@@ -45,7 +45,8 @@ jobs:
             echo "Set VPS_HOST, VPS_USER, VPS_SSH_KEY, VPS_FRONTEND_PATH in GitHub production environment."
             exit 1
           fi
-          install -m 600 -d ~/.ssh
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
           echo "$VPS_SSH_KEY" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
           rsync -avz --delete -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
