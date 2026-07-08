@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class BookingReferenceGenerator {
-    //TEST
+
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final String ALPHANUM = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
     private final SecureRandom random = new SecureRandom();
