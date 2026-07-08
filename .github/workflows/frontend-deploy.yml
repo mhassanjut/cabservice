@@ -35,20 +35,20 @@ jobs:
           NUXT_PUBLIC_GOOGLE_CLIENT_ID: ${{ secrets.NUXT_PUBLIC_GOOGLE_CLIENT_ID }}
           NUXT_PUBLIC_STRIPE_PUBLIC_KEY: ${{ secrets.NUXT_PUBLIC_STRIPE_PUBLIC_KEY }}
       - name: Deploy to VPS
-        if: ${{ secrets.VPS_HOST != '' }}
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
           VPS_USER: ${{ secrets.VPS_USER }}
           VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
           VPS_FRONTEND_PATH: ${{ secrets.VPS_FRONTEND_PATH }}
         run: |
+          if [ -z "$VPS_HOST" ]; then
+            echo "Set VPS_HOST, VPS_USER, VPS_SSH_KEY, VPS_FRONTEND_PATH in GitHub production environment."
+            exit 1
+          fi
           install -m 600 -d ~/.ssh
           echo "$VPS_SSH_KEY" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
           rsync -avz --delete -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
             stwmovers-frontend/.output/ "$VPS_USER@$VPS_HOST:${VPS_FRONTEND_PATH:-/opt/stwmovers/frontend}/.output/"
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no "$VPS_USER@$VPS_HOST" \
-            "sudo systemctl restart stwmovers-frontend"
-      - name: Deploy skipped (configure GitHub secrets)
-        if: ${{ secrets.VPS_HOST == '' }}
-        run: echo "Set VPS_HOST, VPS_USER, VPS_SSH_KEY, VPS_FRONTEND_PATH in GitHub production environment."
+            "systemctl restart stwmovers-frontend"
