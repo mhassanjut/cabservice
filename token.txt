@@ -1,0 +1,7 @@
+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
+
+
+
+PS C:\WINDOWS\system32> ssh-keygen -t ed25519 -C "stwmovers-vps"
+Generating public/private ed25519 key pair.
+Enter file in which to save the key (C:\Users\mhassan.nasir/.ssh/id_ed25519):

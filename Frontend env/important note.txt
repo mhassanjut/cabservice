@@ -1,0 +1,4 @@
+File: stwmovers-frontend/.env
+
+NUXT_PUBLIC_STRIPE_PUBLIC_KEY=pk_test_xxxxxxxx
+Not required for hosted Checkout redirect — only needed if you add Stripe.js later.

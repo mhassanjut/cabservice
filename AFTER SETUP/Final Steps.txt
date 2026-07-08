@@ -1,0 +1,52 @@
+Your stack is live over HTTP. Here’s a sensible order for what’s next.
+
+1. Smoke test (do this now)
+Open http://stwmovers.com — home, cars, booking form
+Open http://stwmovers.com/admin/login — admin login (admin@stwmovers.com / your .env password)
+Confirm API calls work (cars load, no CORS errors in browser DevTools → Network)
+If maps/Google login fail, that’s usually missing keys in frontend .env — fix later if needed.
+
+2. Enable HTTPS (Certbot)
+Once DNS is stable (it is):
+
+certbot --nginx -d stwmovers.com -d www.stwmovers.com -d api.stwmovers.com
+Follow prompts (email, agree, redirect HTTP → HTTPS: yes).
+
+Then rebuild frontend with HTTPS API URL:
+
+# On VPS
+nano /opt/stwmovers/frontend/.env
+# Change to: NUXT_PUBLIC_API_BASE_URL=https://api.stwmovers.com
+cd /opt/stwmovers/repo/stwmovers-frontend
+export $(grep -v '^#' /opt/stwmovers/frontend/.env | xargs)
+npm run build
+cp -r .output /opt/stwmovers/frontend/
+chown -R stwmovers:stwmovers /opt/stwmovers/frontend
+systemctl restart stwmovers-frontend
+Update backend .env:
+
+CORS_ORIGINS=https://stwmovers.com,https://www.stwmovers.com
+STRIPE_SUCCESS_URL=https://stwmovers.com/confirm
+STRIPE_CANCEL_URL=https://stwmovers.com/payment?cancelled=1
+systemctl restart stwmovers-backend
+3. Production secrets (before real customers)
+Item	Where
+Strong JWT_SECRET
+/opt/stwmovers/backend/.env
+Change admin password
+.env ADMIN_PASSWORD + restart backend
+Brevo SMTP (MAIL_*)
+backend .env — fixes health DOWN + emails
+Google Maps + OAuth keys
+frontend .env + Google Console referrers
+Stripe live keys + webhook
+backend + frontend .env
+Stripe webhook URL: https://api.stwmovers.com/api/v1/payments/webhook
+
+4. Full booking test
+Home → book → cars → OTP → payment → confirm page.
+
+5. CI/CD (when ready)
+Add GitHub production secrets (VPS_HOST, VPS_SSH_KEY, etc.) so pushes to main auto-deploy.
+
+Immediate next step: run Certbot (step 2), then rebuild/restart frontend with https://api.stwmovers.com. That gets you on HTTPS before going live with payments and email.
