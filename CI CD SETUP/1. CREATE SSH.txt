@@ -1,0 +1,29 @@
+IP: 91.108.102.169
+
+
+1. ssh-keygen -t ed25519 -C "github-actions-deploy" -f C:\Users\Hassan\.ssh\stwmovers_deploy -N ""
+
+
+
+2.Copy public key (for VPS):
+
+ type C:\Users\Hassan\.ssh\stwmovers_deploy.pub
+
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKaRS7pDvShNVjHc0mA2ibuP1+ZCMIXVoP9wUQZ2WV6k github-actions-deploy
+
+3. Copy private key (for GitHub secret VPS_SSH_KEY):
+
+type C:\Users\Hassan\.ssh\stwmovers_deploy
+
+
+-----BEGIN OPENSSH PRIVATE KEY-----
+b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+QyNTUxOQAAACCmkUu6Q70oTVYx3NJgNom7j9fmQjCF1aD/cFEGdllepAAAAJjkHaRb5B2k
+WwAAAAtzc2gtZWQyNTUxOQAAACCmkUu6Q70oTVYx3NJgNom7j9fmQjCF1aD/cFEGdllepA
+AAAEDG4N9oH1KlfNamBxD/46/bPq6gQ+RjsY1oUboXax2L1qaRS7pDvShNVjHc0mA2ibuP
+1+ZCMIXVoP9wUQZ2WV6kAAAAFWdpdGh1Yi1hY3Rpb25zLWRlcGxveQ==
+-----END OPENSSH PRIVATE KEY-----
+
+
+4. Test VPS connection:
+ssh -i C:\Users\Hassan\.ssh\stwmovers_deploy root@91.108.102.169
