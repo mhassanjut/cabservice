@@ -1,0 +1,7 @@
+Step 4 — Verify auto-renewal
+certbot renew --dry-run
+Certbot auto-renews every ~90 days.
+
+Step 5 — Test HTTPS
+curl -I https://stwmovers.com
+curl -I https://api.stwmovers.com/actuator/health

@@ -1,0 +1,1 @@
+nano /opt/stwmovers/backend/.env

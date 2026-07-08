@@ -15,7 +15,7 @@ STRIPE_API_KEY=sk_test_51TmGQYRqM0yLuvc3FHFh3f292TFxeGeUV02f2sD6VNfG2IhO48baDbiA
 STRIPE_WEBHOOK_SECRET=whsec_...
 STRIPE_SUCCESS_URL=https://stwmovers.com/confirm
 STRIPE_CANCEL_URL=https://stwmovers.com/payment?cancelled=1
-GOOGLE_CLIENT_ID=537449081484-inf8p7if7goi05h46thsvl5430l0g6kl.apps.googleusercontent.com
+GOOGLE_CLIENT_ID=340698837549-sj8mo46k09k8d68r7ldtpnoph0iv24fo.apps.googleusercontent.com
 MAIL_FROM=m.hassan.jutt33@gmail.com
 MAIL_PASSWORD=xsmtpsib-f1453849c2cd008cd848ef4f71348dd0e13a67fd400fb4a2de4bd00b5106a3d6IvsICWYUnkH4Zg1y
 MAIL_SSL_ENABLE=false
