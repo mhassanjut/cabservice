@@ -12,9 +12,9 @@ INSERT INTO cars (id, name, car_type, body_type, category, passenger_capacity, b
 ('c0000001-0000-0000-0000-000000000008', 'Toyota Corolla Familiar', 'SEDAN', 'SEDAN', 'STANDARD', 4, 40.00, FALSE, TRUE, TRUE, TRUE, TRUE, '/img/vehicles/comfort.svg', 'Reliable family sedan', 8, NOW(), NOW());
 
 INSERT INTO city_route_pricing (id, from_city, to_city, car_type, price, active, created_at, updated_at) VALUES
-('p0000001-0000-0000-0000-000000000001', 'Barcelona', 'Girona', 'SEDAN', 120.00, TRUE, NOW(), NOW()),
-('p0000001-0000-0000-0000-000000000002', 'Barcelona', 'Girona', 'VAN', 150.00, TRUE, NOW(), NOW()),
-('p0000001-0000-0000-0000-000000000003', 'Barcelona', 'Tarragona', 'SEDAN', 100.00, TRUE, NOW(), NOW()),
-('p0000001-0000-0000-0000-000000000004', 'Barcelona', 'Tarragona', 'VAN', 130.00, TRUE, NOW(), NOW()),
-('p0000001-0000-0000-0000-000000000005', 'Barcelona', 'Sitges', 'SEDAN', 60.00, TRUE, NOW(), NOW()),
-('p0000001-0000-0000-0000-000000000006', 'Barcelona', 'Sitges', 'VAN', 80.00, TRUE, NOW(), NOW());
+('b0000001-0000-0000-0000-000000000001', 'Barcelona', 'Girona', 'SEDAN', 120.00, TRUE, NOW(), NOW()),
+('b0000001-0000-0000-0000-000000000002', 'Barcelona', 'Girona', 'VAN', 150.00, TRUE, NOW(), NOW()),
+('b0000001-0000-0000-0000-000000000003', 'Barcelona', 'Tarragona', 'SEDAN', 100.00, TRUE, NOW(), NOW()),
+('b0000001-0000-0000-0000-000000000004', 'Barcelona', 'Tarragona', 'VAN', 130.00, TRUE, NOW(), NOW()),
+('b0000001-0000-0000-0000-000000000005', 'Barcelona', 'Sitges', 'SEDAN', 60.00, TRUE, NOW(), NOW()),
+('b0000001-0000-0000-0000-000000000006', 'Barcelona', 'Sitges', 'VAN', 80.00, TRUE, NOW(), NOW());
