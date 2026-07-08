@@ -1,4 +1,4 @@
-CREATE TABLE pickup_cities (
+CREATE TABLE IF NOT EXISTS pickup_cities (
     id UUID PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     active BOOLEAN NOT NULL DEFAULT TRUE,
@@ -15,6 +15,10 @@ ON CONFLICT (name) DO NOTHING;
 
 ALTER TABLE city_route_pricing ADD COLUMN IF NOT EXISTS car_id UUID REFERENCES cars(id);
 
+-- Drop car_type uniqueness before expanding one row per car_type into one row per car.
+ALTER TABLE city_route_pricing DROP CONSTRAINT IF EXISTS uq_city_route_pricing_route_car_type;
+ALTER TABLE city_route_pricing DROP CONSTRAINT IF EXISTS city_route_pricing_from_city_to_city_car_type_key;
+
 INSERT INTO city_route_pricing (id, from_city, to_city, car_id, car_type, price, active, created_at, updated_at)
 SELECT gen_random_uuid(), crp.from_city, crp.to_city, c.id, crp.car_type, crp.price, crp.active, NOW(), NOW()
 FROM city_route_pricing crp
@@ -30,7 +34,6 @@ WHERE a.id > b.id
 
 DELETE FROM city_route_pricing WHERE car_id IS NULL;
 
-ALTER TABLE city_route_pricing DROP CONSTRAINT IF EXISTS uq_city_route_pricing_route_car_type;
 ALTER TABLE city_route_pricing DROP COLUMN IF EXISTS car_type;
 
 ALTER TABLE city_route_pricing ALTER COLUMN car_id SET NOT NULL;
