@@ -29,16 +29,19 @@ export const homeExperienceTiles = [
     title: 'Airport Meet & Greet',
     subtitle: 'A professional welcome, flight tracking, and seamless airport transfers.',
     image: '/img/home/experience-airport.jpg',
+    height: 520,
   },
   {
     title: 'Business Travel',
     subtitle: 'Executive transportation that keeps your schedule running smoothly.',
     image: '/img/home/experience-business.jpg',
+    height: 360,
   },
   {
     title: 'Private Chauffeur',
     subtitle: 'A dedicated driver whenever your plans require flexibility.',
     image: '/img/home/experience-chauffeur.jpg',
+    height: 427,
   },
 ] as const
 
