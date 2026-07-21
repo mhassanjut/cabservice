@@ -49,16 +49,34 @@ export const homeExperienceTiles = [
   },
 ] as const
 
-export const homeJourneyCards = [
-  { title: 'La Rambla', image: '/img/home/journey-la-rambla.jpg' },
-  { title: 'Montjuïc', image: '/img/home/journey-montjuic.jpg' },
-  { title: 'Sagrada Familia', image: '/img/home/journey-sagrada.jpg' },
-  { title: 'Park Güell', image: '/img/home/journey-park-guell.jpg' },
-  { title: 'Camp Nou', image: '/img/home/journey-camp-nou.jpg' },
-  { title: 'Casa Batlló', image: '/img/home/journey-casa-batllo.jpg' },
-  { title: 'Gothic Quarter', image: '/img/home/journey-gothic.jpg' },
-  { title: 'Barceloneta Beach', image: '/img/home/journey-barceloneta.jpg' },
-] as const
+/** Figma node 82:88 — collage card positions are px offsets within each group frame */
+export type HomeJourneyCard = {
+  id: string
+  title: string
+  image: string
+  group: 'top' | 'bottom'
+  left: number
+  top: number
+}
+
+const JOURNEY_GROUP_TOP = { width: 691.49, height: 480.576 } as const
+const JOURNEY_GROUP_BOTTOM = { width: 623.5, height: 498 } as const
+const JOURNEY_CARD = { width: 208.5, height: 300 } as const
+
+export const homeJourneyGroupTop = JOURNEY_GROUP_TOP
+export const homeJourneyGroupBottom = JOURNEY_GROUP_BOTTOM
+export const homeJourneyCardSize = JOURNEY_CARD
+
+export const homeJourneyCards: HomeJourneyCard[] = [
+  { id: 'la-rambla', title: 'La Rambla', image: '/img/home/journey-la-rambla.jpg', group: 'top', left: 482.99, top: 0 },
+  { id: 'montjuic', title: 'Montjuïc', image: '/img/home/journey-montjuic.jpg', group: 'top', left: 312.75, top: 103 },
+  { id: 'sagrada', title: 'Sagrada Familia', image: '/img/home/journey-sagrada.jpg', group: 'top', left: 0, top: 72 },
+  { id: 'park-guell', title: 'Park Güell', image: '/img/home/journey-park-guell.jpg', group: 'top', left: 143.25, top: 180.58 },
+  { id: 'camp-nou', title: 'Camp Nou', image: '/img/home/journey-camp-nou.jpg', group: 'bottom', left: 415, top: 28 },
+  { id: 'casa-batllo', title: 'Casa Batlló', image: '/img/home/journey-casa-batllo.jpg', group: 'bottom', left: 0, top: 0 },
+  { id: 'gothic', title: 'Gothic Quarter', image: '/img/home/journey-gothic.jpg', group: 'bottom', left: 137.5, top: 106 },
+  { id: 'barceloneta', title: 'Barceloneta Beach', image: '/img/home/journey-barceloneta.jpg', group: 'bottom', left: 284.25, top: 198 },
+]
 
 export const homeValueProps = [
   {
@@ -111,9 +129,120 @@ export const homeBookingSteps = [
   },
 ] as const
 
+import fleetMercedesEClassImage from '~/assets/images/homepage/homepage-fleet-section/Mercedes E Class 2.svg?url'
+import fleetMercedesSClassImage from '~/assets/images/homepage/homepage-fleet-section/Mercedes S Class 2.svg?url'
+import fleetMercedesVClassImage from '~/assets/images/homepage/homepage-fleet-section/Mercedes V Class 2.svg?url'
+import fleetMercedesVitoVanImage from '~/assets/images/homepage/homepage-fleet-section/Mercedes Vito Van 2.svg?url'
+import fleetMercedesVanImage from '~/assets/images/homepage/homepage-fleet-section/Mercedes Van 2.svg?url'
+import fleetTeslaModelSImage from '~/assets/images/homepage/homepage-fleet-section/Tesla Model S 2.svg?url'
+import fleetHyundaiIoniqImage from '~/assets/images/homepage/homepage-fleet-section/Hyundai Ioniq 2.svg?url'
+import fleetToyotaCorollaImage from '~/assets/images/homepage/homepage-fleet-section/Toyota Corolla Familiar 2.svg?url'
+import fleetBydSealImage from '~/assets/images/homepage/homepage-fleet-section/BYD SEAL 2.svg?url'
+
+/** Figma node 82:205 — fleet filter categories */
 export const homeFleetTabs = [
   { id: 'all', label: 'All' },
-  { id: 'van', label: 'Vans' },
-  { id: 'sedan', label: 'Sedans' },
-  { id: 'luxury', label: 'Luxury' },
+  { id: 'business-class', label: 'Business Class' },
+  { id: 'first-class', label: 'First Class' },
+  { id: 'business-van', label: 'Business Van' },
+  { id: 'mini-bus', label: 'Mini Bus' },
+  { id: 'bus', label: 'Bus' },
+  { id: 'aviation', label: 'Aviation' },
 ] as const
+
+export type HomeFleetTabId = (typeof homeFleetTabs)[number]['id']
+export type HomeFleetCategory = Exclude<HomeFleetTabId, 'all'>
+
+export type HomeFleetVehicle = {
+  id: string
+  backendId?: string
+  name: string
+  image: string
+  seats: number
+  bags: number
+  categories: HomeFleetCategory[]
+}
+
+/** Homepage fleet cards — SVG assets from homepage-fleet-section */
+export const homeFleetVehicles: HomeFleetVehicle[] = [
+  {
+    id: 'mercedes-e-class',
+    backendId: 'c0000001-0000-0000-0000-000000000004',
+    name: 'Mercedes E Class',
+    image: fleetMercedesEClassImage,
+    seats: 4,
+    bags: 3,
+    categories: ['business-class', 'first-class'],
+  },
+  {
+    id: 'mercedes-s-class',
+    backendId: 'c0000001-0000-0000-0000-000000000005',
+    name: 'Mercedes S Class',
+    image: fleetMercedesSClassImage,
+    seats: 4,
+    bags: 3,
+    categories: ['first-class', 'aviation'],
+  },
+  {
+    id: 'mercedes-v-class',
+    backendId: 'c0000001-0000-0000-0000-000000000002',
+    name: 'Mercedes V Class',
+    image: fleetMercedesVClassImage,
+    seats: 7,
+    bags: 6,
+    categories: ['business-van', 'first-class'],
+  },
+  {
+    id: 'mercedes-vito-van',
+    backendId: 'c0000001-0000-0000-0000-000000000001',
+    name: 'Mercedes Vito Van',
+    image: fleetMercedesVitoVanImage,
+    seats: 7,
+    bags: 6,
+    categories: ['business-van'],
+  },
+  {
+    id: 'mercedes-van',
+    backendId: 'c0000001-0000-0000-0000-000000000003',
+    name: 'Mercedes Van',
+    image: fleetMercedesVanImage,
+    seats: 8,
+    bags: 7,
+    categories: ['mini-bus', 'bus'],
+  },
+  {
+    id: 'tesla-model-s',
+    backendId: 'c0000001-0000-0000-0000-000000000006',
+    name: 'Tesla Model S',
+    image: fleetTeslaModelSImage,
+    seats: 4,
+    bags: 3,
+    categories: ['business-class'],
+  },
+  {
+    id: 'hyundai-ioniq',
+    backendId: 'c0000001-0000-0000-0000-000000000007',
+    name: 'Hyundai Ioniq',
+    image: fleetHyundaiIoniqImage,
+    seats: 4,
+    bags: 3,
+    categories: ['business-class'],
+  },
+  {
+    id: 'toyota-corolla',
+    backendId: 'c0000001-0000-0000-0000-000000000008',
+    name: 'Toyota Corolla Familiar',
+    image: fleetToyotaCorollaImage,
+    seats: 4,
+    bags: 3,
+    categories: ['business-class'],
+  },
+  {
+    id: 'byd-seal',
+    name: 'BYD Seal',
+    image: fleetBydSealImage,
+    seats: 4,
+    bags: 3,
+    categories: ['business-class'],
+  },
+]
