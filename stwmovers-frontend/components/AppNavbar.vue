@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { homeAnchors, routes } from '~/constants/routes'
+import logoUrl from '~/assets/icons/Logo.svg?url'
 
 const auth = useAuthStore()
+const route = useRoute()
 const menuOpen = ref(false)
 const scrolled = ref(false)
 const isMobile = useIsMobile()
 const { open: openSignIn } = useCustomerSignIn()
+
+const isHome = computed(() => route.path === '/')
 
 const onScroll = () => {
   scrolled.value = window.scrollY > 24
@@ -39,38 +43,66 @@ const closeMenu = () => {
 </script>
 
 <template>
-  <header class="app-nav" :class="{ 'is-scrolled': scrolled }" role="banner">
+  <header
+    class="app-nav"
+    :class="{ 'is-scrolled': scrolled, 'app-nav--home': isHome }"
+    role="banner"
+  >
+    <img
+      v-if="isHome"
+      class="app-nav__figma-bg"
+      src="/img/home/navbar-bg.jpg"
+      alt=""
+      aria-hidden="true"
+      decoding="async"
+    />
+
     <div class="app-nav__inner">
       <NuxtLink to="/" class="app-nav__brand" @click="closeMenu">
-        <span class="app-nav__mark" aria-hidden="true">STW</span>
-        <span class="app-nav__titles">
-          <span class="app-nav__name">STW Movers</span>
-          <span class="app-nav__tag">Barcelona · Spain</span>
-        </span>
+        <img
+          class="app-nav__logo"
+          :src="logoUrl"
+          alt="STW Movers"
+          width="146"
+          height="40"
+          decoding="async"
+        />
       </NuxtLink>
 
-      <p v-if="auth.isLoggedIn" class="app-nav__greeting">Hi, {{ auth.firstName }}</p>
+      <div class="app-nav__cluster">
+        <nav class="app-nav__links" aria-label="Primary">
+          <template v-if="isHome">
+            <a class="app-nav__link" :href="homeAnchors.experience">Experience</a>
+            <a class="app-nav__link" :href="homeAnchors.journeys">Journeys</a>
+            <NuxtLink class="app-nav__link" :to="routes.tours">Tours</NuxtLink>
+            <a class="app-nav__link" :href="homeAnchors.fleet">Fleet</a>
+            <a class="app-nav__link" :href="homeAnchors.global">Global</a>
+          </template>
+          <template v-else>
+            <NuxtLink class="app-nav__link" :to="routes.home">Home</NuxtLink>
+            <NuxtLink class="app-nav__link" :to="routes.faq">FAQ</NuxtLink>
+            <a class="app-nav__link" :href="homeAnchors.contact">Contact</a>
+            <NuxtLink class="app-nav__link" :to="routes.tours">Tours</NuxtLink>
+          </template>
+        </nav>
 
-      <nav class="app-nav__links" aria-label="Primary">
-        <NuxtLink class="app-nav__link" :to="routes.home">Home</NuxtLink>
-        <NuxtLink class="app-nav__link" :to="routes.faq">FAQ</NuxtLink>
-        <a class="app-nav__link" :href="homeAnchors.contact">Contact</a>
-        <NuxtLink class="app-nav__link" :to="routes.tours">Tours</NuxtLink>
-      </nav>
-
-      <div class="app-nav__actions">
-        <AppUserMenu :mobile-sheet="isMobile" />
-        <a class="btn btn--solid-gold app-nav__cta app-nav__action-btn" :href="homeAnchors.booking">Reserve</a>
-        <button
-          type="button"
-          class="app-nav__burger"
-          :aria-expanded="menuOpen"
-          aria-controls="mobile-nav-drawer"
-          aria-label="Open menu"
-          @click="menuOpen = true"
-        >
-          <i class="fa-solid fa-bars" aria-hidden="true" />
-        </button>
+        <div class="app-nav__actions">
+          <p v-if="auth.isLoggedIn && !isHome" class="app-nav__greeting">Hi, {{ auth.firstName }}</p>
+          <AppUserMenu :mobile-sheet="isMobile" :login-variant="isHome ? 'outline' : 'default'" />
+          <a class="app-nav__journey-cta app-nav__action-btn" :href="homeAnchors.booking">
+            Book Your Journey
+          </a>
+          <button
+            type="button"
+            class="app-nav__burger"
+            :aria-expanded="menuOpen"
+            aria-controls="mobile-nav-drawer"
+            aria-label="Open menu"
+            @click="menuOpen = true"
+          >
+            <i class="fa-solid fa-bars" aria-hidden="true" />
+          </button>
+        </div>
       </div>
     </div>
 
@@ -98,12 +130,21 @@ const closeMenu = () => {
         >
           Your booking
         </NuxtLink>
-        <NuxtLink class="app-nav__drawer-link" :to="routes.home" @click="closeMenu">Home</NuxtLink>
-        <NuxtLink class="app-nav__drawer-link" :to="routes.faq" @click="closeMenu">FAQ</NuxtLink>
-        <a class="app-nav__drawer-link" :href="homeAnchors.contact" @click="closeMenu">Contact</a>
-        <NuxtLink class="app-nav__drawer-link" :to="routes.tours" @click="closeMenu">City tours</NuxtLink>
-        <a class="btn btn--solid-gold app-nav__drawer-cta" :href="homeAnchors.booking" @click="closeMenu">
-          Get a quote
+        <template v-if="isHome">
+          <a class="app-nav__drawer-link" :href="homeAnchors.experience" @click="closeMenu">Experience</a>
+          <a class="app-nav__drawer-link" :href="homeAnchors.journeys" @click="closeMenu">Journeys</a>
+          <NuxtLink class="app-nav__drawer-link" :to="routes.tours" @click="closeMenu">Tours</NuxtLink>
+          <a class="app-nav__drawer-link" :href="homeAnchors.fleet" @click="closeMenu">Fleet</a>
+          <a class="app-nav__drawer-link" :href="homeAnchors.global" @click="closeMenu">Global</a>
+        </template>
+        <template v-else>
+          <NuxtLink class="app-nav__drawer-link" :to="routes.home" @click="closeMenu">Home</NuxtLink>
+          <NuxtLink class="app-nav__drawer-link" :to="routes.faq" @click="closeMenu">FAQ</NuxtLink>
+          <a class="app-nav__drawer-link" :href="homeAnchors.contact" @click="closeMenu">Contact</a>
+          <NuxtLink class="app-nav__drawer-link" :to="routes.tours" @click="closeMenu">City tours</NuxtLink>
+        </template>
+        <a class="app-nav__drawer-cta app-nav__journey-cta" :href="homeAnchors.booking" @click="closeMenu">
+          Book Your Journey
         </a>
       </nav>
     </div>
@@ -111,10 +152,22 @@ const closeMenu = () => {
 </template>
 
 <style scoped>
+.app-nav__logo {
+  display: block;
+  width: auto;
+  height: 40px;
+  max-width: min(146px, 40vw);
+}
+
+.app-nav__cluster {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
 .app-nav__actions {
   display: flex;
   align-items: center;
-  gap: 10px;
 }
 
 .app-nav__greeting {
@@ -124,19 +177,17 @@ const closeMenu = () => {
   color: var(--color-muted);
 }
 
-.app-nav__drawer-button {
-  width: 100%;
-  text-align: left;
-  background: transparent;
-  border: 0;
-  color: inherit;
-  font: inherit;
-  cursor: pointer;
+.app-nav__journey-cta {
+  display: none;
 }
 
 @media (min-width: 860px) {
   .app-nav__greeting {
     display: block;
+  }
+
+  .app-nav__journey-cta {
+    display: inline-flex;
   }
 }
 </style>

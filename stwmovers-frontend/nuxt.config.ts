@@ -4,7 +4,7 @@ import { seoDefaults } from './config/seo'
 export default defineNuxtConfig({
   ssr: true,
   modules: ['@pinia/nuxt'],
-  css: ['~/assets/css/main.css'],
+  css: ['~/assets/styles/css/main.css', '~/assets/styles/css/home.css'],
 
   // Avoid dev.json / #app-manifest errors after `nuxt generate` or stale Vite cache.
   experimental: {
@@ -42,7 +42,7 @@ export default defineNuxtConfig({
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         {
           rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@500;600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap',
+          href: 'https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap',
         },
         {
           rel: 'stylesheet',

@@ -30,4 +30,8 @@ export const routes = {
 export const homeAnchors = {
   booking: '/#booking-section',
   contact: '/#contact',
+  experience: '/#experience',
+  journeys: '/#journeys',
+  fleet: '/#fleet',
+  global: '/#global',
 } as const

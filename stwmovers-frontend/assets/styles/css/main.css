@@ -835,6 +835,37 @@ select.input {
   gap: 8px;
 }
 
+.app-nav__cluster {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-left: auto;
+}
+
+.app-nav__journey-cta {
+  align-items: center;
+  justify-content: center;
+  min-height: 39px;
+  padding: 12px 16px;
+  border-radius: 32px;
+  background: var(--color-gold);
+  color: #050506;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .app-nav__journey-cta:hover {
+    background: var(--color-gold-bright);
+    color: #050506;
+  }
+}
+
 @media (min-width: 860px) {
   .app-nav__links {
     display: flex;
