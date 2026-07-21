@@ -17,7 +17,7 @@ const toggle = (index: number) => {
 <template>
   <section class="home-section home-section--white" aria-labelledby="faq-heading">
     <div class="container">
-      <h2 id="faq-heading" class="home-display" style="font-size: clamp(2rem, 4vw, 3rem); margin: 0 0 4rem">
+      <h2 id="faq-heading" class="home-display" style="font-size: clamp(1.75rem, 3vw, 2.5rem); margin: 0 0 3rem">
         Frequently Asked Questions
       </h2>
       <div class="home-faq__list">

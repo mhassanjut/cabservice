@@ -33,14 +33,14 @@
   --radius: 14px;
   --radius-lg: 20px;
   --radius-xl: 28px;
-  --space-section: clamp(3.5rem, 8vw, 6rem);
-  --space-block: clamp(1.5rem, 4vw, 2.5rem);
+  --space-section: clamp(3rem, 5vw, 5rem);
+  --space-block: clamp(1.25rem, 2.5vw, 2rem);
   --header-h: 76px;
   --mobile-nav-h: 64px;
   --container: 1280px;
   --container-wide: 1320px;
   /* --container-wide: 1440px; */
-  --gutter: clamp(16px, 4vw, 28px);
+  --gutter: clamp(16px, 3vw, 24px);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   /* legacy aliases used in older inline styles */
   --bg: var(--color-bg);
@@ -74,6 +74,9 @@
 
 html {
   scroll-behavior: smooth;
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 html,
