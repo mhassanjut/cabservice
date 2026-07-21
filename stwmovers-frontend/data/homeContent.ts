@@ -1,3 +1,7 @@
+import experienceAirportImage from '~/assets/images/homepage-experience-section/image 1.svg?url'
+import experienceBusinessImage from '~/assets/images/homepage-experience-section/image 3.svg?url'
+import experienceChauffeurImage from '~/assets/images/homepage-experience-section/image 4.svg?url'
+
 export type HomeLocationCard = {
   id: string
   title: string
@@ -28,19 +32,19 @@ export const homeExperienceTiles = [
   {
     title: 'Airport Meet & Greet',
     subtitle: 'A professional welcome, flight tracking, and seamless airport transfers.',
-    image: '/img/home/experience-airport.jpg',
+    image: experienceAirportImage,
     height: 520,
   },
   {
     title: 'Business Travel',
     subtitle: 'Executive transportation that keeps your schedule running smoothly.',
-    image: '/img/home/experience-business.jpg',
+    image: experienceBusinessImage,
     height: 360,
   },
   {
     title: 'Private Chauffeur',
     subtitle: 'A dedicated driver whenever your plans require flexibility.',
-    image: '/img/home/experience-chauffeur.jpg',
+    image: experienceChauffeurImage,
     height: 427,
   },
 ] as const
