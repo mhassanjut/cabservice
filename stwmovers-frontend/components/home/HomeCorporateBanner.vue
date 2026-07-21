@@ -11,13 +11,17 @@
       />
       <div class="home-corporate__overlay" />
     </div>
-    <div class="home-corporate__content">
-      <p class="home-corporate__eyebrow">Corporate Travel</p>
-      <h2 id="corporate-heading">Executive Travel That Works Around Your Business.</h2>
-      <p>
-        From airport transfers and executive meetings to conferences and roadshows, we provide reliable
-        transportation that moves with your schedule.
-      </p>
+    <div class="container home-corporate__content-wrap">
+      <div class="home-corporate__content">
+        <p class="home-corporate__eyebrow">Corporate Travel</p>
+        <div class="home-corporate__copy">
+          <h2 id="corporate-heading">Executive Travel That Works Around Your Business.</h2>
+          <p>
+            From airport transfers and executive meetings to conferences and roadshows, we provide reliable
+            transportation that moves with your schedule.
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 </template>

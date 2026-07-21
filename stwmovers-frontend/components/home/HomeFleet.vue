@@ -135,7 +135,8 @@ onBeforeUnmount(() => {
 
 <template>
   <section id="fleet" class="home-section home-section--white home-fleet" aria-labelledby="fleet-heading">
-    <header class="home-fleet__header">
+    <div class="container container--wide">
+      <header class="home-fleet__header">
       <h2 id="fleet-heading" class="home-fleet__heading">
         Travel In Exceptional Comfort.
       </h2>
@@ -240,6 +241,7 @@ onBeforeUnmount(() => {
           :class="{ 'is-active': bar.active }"
         />
       </div>
+    </div>
     </div>
   </section>
 </template>

@@ -34,4 +34,5 @@ export const homeAnchors = {
   journeys: '/#journeys',
   fleet: '/#fleet',
   global: '/#global',
+  values: '/#values',
 } as const

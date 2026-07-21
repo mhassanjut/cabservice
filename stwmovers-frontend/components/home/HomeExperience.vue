@@ -175,64 +175,66 @@ onUnmounted(() => {
 
 <template>
   <section id="experience" class="home-section home-experience" aria-labelledby="experience-heading">
-    <div class="home-experience__inner">
-      <div class="home-experience__header">
-        <div class="home-experience__header-copy">
-          <h2 id="experience-heading" class="home-experience__heading">
-            <span ref="line1Ref" class="home-experience__heading-line1">From Arrival To Destination, Every</span>
-            <span ref="line2Ref" class="home-experience__heading-line2">Detail Is Taken Care Of.</span>
-          </h2>
-          <p class="home-experience__lead">
-            Whether you're arriving for business, celebrating a special occasion, or discovering a new city, your
-            journey is handled with professionalism, discretion, and genuine hospitality from start to finish.
-          </p>
+    <div class="container">
+      <div class="home-experience__inner">
+        <div class="home-experience__header">
+          <div class="home-experience__header-copy">
+            <h2 id="experience-heading" class="home-experience__heading">
+              <span ref="line1Ref" class="home-experience__heading-line1">From Arrival To Destination, Every</span>
+              <span ref="line2Ref" class="home-experience__heading-line2">Detail Is Taken Care Of.</span>
+            </h2>
+            <p class="home-experience__lead">
+              Whether you're arriving for business, celebrating a special occasion, or discovering a new city, your
+              journey is handled with professionalism, discretion, and genuine hospitality from start to finish.
+            </p>
+          </div>
         </div>
-      </div>
-      <div
-        class="home-experience__carousel-viewport"
-        @mouseenter="onMouseEnter"
-        @mouseleave="onMouseLeave"
-      >
         <div
-          ref="trackRef"
-          class="home-experience__carousel"
-          :class="{
-            'is-dragging': isDragging,
-            'is-autoplaying': isAutoplayActive && !isHovered && !isDragging,
-          }"
-          role="region"
-          aria-roledescription="carousel"
-          aria-label="Experience services"
-          tabindex="0"
-          @pointerdown="onPointerDown"
-          @pointermove="onPointerMove"
-          @pointerup="endDrag"
-          @pointercancel="endDrag"
+          class="home-experience__carousel-viewport"
+          @mouseenter="onMouseEnter"
+          @mouseleave="onMouseLeave"
         >
-          <article
-            v-for="(tile, index) in loopTiles"
-            :key="tile.loopKey"
-            class="home-experience__tile"
-            :style="{ '--tile-height': `${tile.height}px` }"
-            role="group"
-            :aria-hidden="index >= homeExperienceTiles.length ? 'true' : undefined"
-            :aria-label="`${(index % homeExperienceTiles.length) + 1} of ${homeExperienceTiles.length}: ${tile.title}`"
+          <div
+            ref="trackRef"
+            class="home-experience__carousel"
+            :class="{
+              'is-dragging': isDragging,
+              'is-autoplaying': isAutoplayActive && !isHovered && !isDragging,
+            }"
+            role="region"
+            aria-roledescription="carousel"
+            aria-label="Experience services"
+            tabindex="0"
+            @pointerdown="onPointerDown"
+            @pointermove="onPointerMove"
+            @pointerup="endDrag"
+            @pointercancel="endDrag"
           >
-            <img
-              :src="tile.image"
-              :alt="`${tile.title} — STW Movers Barcelona chauffeur service`"
-              loading="lazy"
-              decoding="async"
-              draggable="false"
-              width="628"
-              :height="tile.height"
-            />
-            <div class="home-experience__tile-overlay" aria-hidden="true" />
-            <div class="home-experience__tile-copy">
-              <h3>{{ tile.title }}</h3>
-              <p>{{ tile.subtitle }}</p>
-            </div>
-          </article>
+            <article
+              v-for="(tile, index) in loopTiles"
+              :key="tile.loopKey"
+              class="home-experience__tile"
+              :style="{ '--tile-height': `${tile.height}px` }"
+              role="group"
+              :aria-hidden="index >= homeExperienceTiles.length ? 'true' : undefined"
+              :aria-label="`${(index % homeExperienceTiles.length) + 1} of ${homeExperienceTiles.length}: ${tile.title}`"
+            >
+              <img
+                :src="tile.image"
+                :alt="`${tile.title} — STW Movers Barcelona chauffeur service`"
+                loading="lazy"
+                decoding="async"
+                draggable="false"
+                width="628"
+                :height="tile.height"
+              />
+              <div class="home-experience__tile-overlay" aria-hidden="true" />
+              <div class="home-experience__tile-copy">
+                <h3>{{ tile.title }}</h3>
+                <p>{{ tile.subtitle }}</p>
+              </div>
+            </article>
+          </div>
         </div>
       </div>
     </div>

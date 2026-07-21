@@ -22,7 +22,8 @@ function cardStyle(card: HomeJourneyCard, group: { width: number; height: number
 
 <template>
   <section id="journeys" class="home-section home-journeys" aria-labelledby="journeys-heading">
-    <div class="home-journeys__inner">
+    <div class="container">
+      <div class="home-journeys__inner">
       <div class="home-journeys__copy">
         <h2 id="journeys-heading" class="home-journeys__heading">
           Every Journey is Different. So is Every Experience.
@@ -96,6 +97,7 @@ function cardStyle(card: HomeJourneyCard, group: { width: number; height: number
             </div>
           </article>
         </div>
+      </div>
       </div>
     </div>
   </section>

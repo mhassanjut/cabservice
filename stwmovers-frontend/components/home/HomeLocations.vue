@@ -2,13 +2,17 @@
 import { homeAnchors } from '~/constants/routes'
 import { seoSections } from '~/config/seo'
 import { homeLocationCards } from '~/data/homeContent'
+import { layoutLocationCards } from '~/utils/homeLocationGrid'
 
-const transferCards = computed(() => homeLocationCards.filter((card) => card.type === 'transfer'))
+const transferCards = computed(() =>
+  layoutLocationCards(homeLocationCards.filter((card) => card.type === 'transfer')),
+)
 </script>
 
 <template>
   <section id="global" class="home-section" aria-labelledby="locations-heading">
-    <header style="margin-bottom: 4rem">
+    <div class="container">
+      <header style="margin-bottom: 4rem">
       <h2 id="locations-heading" class="home-display home-display--md" style="margin: 0 0 1rem">
         Barcelona &amp; Costa Brava Transfers
       </h2>
@@ -30,7 +34,8 @@ const transferCards = computed(() => homeLocationCards.filter((card) => card.typ
         :href="homeAnchors.booking"
         class="home-location-card"
         :class="{
-          'home-location-card--wide': card.wide,
+          'home-location-card--wide': card.columnSpan === 2,
+          'home-location-card--full': card.columnSpan === 4,
           'home-location-card--tall': card.tall,
         }"
       >
@@ -50,6 +55,7 @@ const transferCards = computed(() => homeLocationCards.filter((card) => card.typ
           </span>
         </span>
       </a>
+    </div>
     </div>
   </section>
 </template>

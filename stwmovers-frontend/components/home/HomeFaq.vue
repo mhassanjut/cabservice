@@ -16,10 +16,11 @@ const toggle = (index: number) => {
 
 <template>
   <section class="home-section home-section--white" aria-labelledby="faq-heading">
-    <h2 id="faq-heading" class="home-display" style="font-size: clamp(2rem, 4vw, 3rem); margin: 0 0 4rem">
-      Frequently Asked Questions
-    </h2>
-    <div class="home-faq__list">
+    <div class="container">
+      <h2 id="faq-heading" class="home-display" style="font-size: clamp(2rem, 4vw, 3rem); margin: 0 0 4rem">
+        Frequently Asked Questions
+      </h2>
+      <div class="home-faq__list">
       <div
         v-for="(item, index) in faqItems"
         :key="item.q"
@@ -42,8 +43,7 @@ const toggle = (index: number) => {
         </div>
       </div>
     </div>
-    <p style="margin-top: 2rem">
-      <NuxtLink :to="routes.faq">View all FAQs</NuxtLink>
-    </p>
+      
+    </div>
   </section>
 </template>

@@ -34,15 +34,7 @@ usePageSeo({
 
     <HomeFaq />
 
-    <section id="contact" class="home-section home-contact" aria-labelledby="contact-heading">
-      <h2 id="contact-heading" class="home-display home-display--md" style="margin: 0 0 1rem">
-        Contact our Barcelona chauffeur desk
-      </h2>
-      <p class="home-lead home-lead--sm" style="margin: 0 0 3rem">
-        For bespoke routing, corporate accounts, or multi-day executive chauffeur hire — reach the desk directly.
-      </p>
-      <ContactSection />
-    </section>
+    
 
     <HomeFooter />
 

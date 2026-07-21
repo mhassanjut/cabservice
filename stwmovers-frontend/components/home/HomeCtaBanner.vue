@@ -4,7 +4,8 @@ import { homeAnchors } from '~/constants/routes'
 
 <template>
   <section class="home-cta" aria-labelledby="cta-heading">
-    <div class="home-cta__inner">
+    <div class="container">
+      <div class="home-cta__inner">
       <div class="home-cta__media" aria-hidden="true">
         <img
           src="/img/home/cta-banner.jpg"
@@ -21,12 +22,13 @@ import { homeAnchors } from '~/constants/routes'
         <p>
           Whether it's an airport transfer, executive meeting, or private occasion, we're ready when you are.
         </p>
-        <a class="home-btn home-btn--white" :href="homeAnchors.booking">
+        <a class="home-btn home-btn--white home-cta__btn" :href="homeAnchors.booking">
           Book Your Journey
           <span class="home-icon-wrap" style="width: 1.5rem; height: 1.5rem">
             <img class="home-icon" src="/img/home/icons/arrow-outward-dark.svg" alt="" width="24" height="24" />
           </span>
         </a>
+      </div>
       </div>
     </div>
   </section>
