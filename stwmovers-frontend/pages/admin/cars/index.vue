@@ -84,7 +84,7 @@ const closeForm = () => {
   resetForm()
 }
 
-watch(showForm, (open) => {
+watch(showForm, (open: boolean) => {
   if (import.meta.client) document.body.style.overflow = open ? 'hidden' : ''
 })
 
@@ -116,7 +116,7 @@ const buildPayload = () => ({
 })
 
 const syncCarInList = (updated: AdminCarDto) => {
-  const index = cars.value.findIndex((car) => car.id === updated.id)
+  const index = cars.value.findIndex((car: AdminCarDto) => car.id === updated.id)
   if (index >= 0) cars.value[index] = updated
 }
 

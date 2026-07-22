@@ -35,9 +35,9 @@ const parsePrice = (value: string) => roundPrice(Number.parseFloat(value) || 0)
 const destinationRef = ref<HTMLInputElement | null>(null)
 const pickupCityRef = ref<HTMLInputElement | null>(null)
 
-const activePickupCities = computed(() => pickupCities.value.filter((c) => c.active))
-const activeDestinationCities = computed(() => destinationCities.value.filter((c) => c.active))
-const activeCars = computed(() => cars.value.filter((c) => c.active))
+const activePickupCities = computed(() => pickupCities.value.filter((c: PickupCityDto) => c.active))
+const activeDestinationCities = computed(() => destinationCities.value.filter((c: DestinationCityDto) => c.active))
+const activeCars = computed(() => cars.value.filter((c: AdminCarDto) => c.active))
 
 const routeGroups = computed(() => {
   const groups = new Map<string, { fromCity: string; toCity: string; rows: RoutePricingDto[] }>()
@@ -130,7 +130,7 @@ watch([() => form.fromCity, () => form.toCity], () => {
   loadRoutePrices()
 })
 
-watch(activePickupCities, (list) => {
+watch(activePickupCities, (list: PickupCityDto[]) => {
   if (!form.fromCity && list.length) {
     form.fromCity = list[0].name
   }
@@ -147,9 +147,9 @@ const saveRoute = async () => {
     return
   }
 
-  const missing = activeCars.value.filter((car) => parsePrice(carPrices.value[car.id] ?? '') <= 0)
+  const missing = activeCars.value.filter((car: AdminCarDto) => parsePrice(carPrices.value[car.id] ?? '') <= 0)
   if (missing.length) {
-    formError.value = `Enter a price for every vehicle (${missing.map((c) => c.name).join(', ')}).`
+    formError.value = `Enter a price for every vehicle (${missing.map((c: AdminCarDto) => c.name).join(', ')}).`
     return
   }
 
@@ -159,7 +159,7 @@ const saveRoute = async () => {
       fromCity: form.fromCity,
       toCity: form.toCity,
       active: form.active,
-      carPrices: activeCars.value.map((car) => ({
+      carPrices: activeCars.value.map((car: AdminCarDto) => ({
         carId: car.id,
         price: parsePrice(carPrices.value[car.id] ?? ''),
       })),
@@ -183,8 +183,8 @@ const editRouteGroup = (fromCity: string, toCity: string) => {
 const removeRouteGroup = async (fromCity: string, toCity: string) => {
   if (!confirm(`Delete all pricing for ${fromCity} → ${toCity}?`)) return
   try {
-    const rows = routes.value.filter((r) => r.fromCity === fromCity && r.toCity === toCity)
-    await Promise.all(rows.map((row) => adminService.deleteRoutePricing(row.id)))
+    const rows = routes.value.filter((r: RoutePricingDto) => r.fromCity === fromCity && r.toCity === toCity)
+    await Promise.all(rows.map((row: RoutePricingDto) => adminService.deleteRoutePricing(row.id)))
     toast.show('Route pricing deleted.', 'success')
     if (form.fromCity === fromCity && form.toCity === toCity) {
       carPrices.value = {}

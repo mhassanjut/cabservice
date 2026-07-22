@@ -67,7 +67,7 @@ const closeForm = () => {
   resetForm()
 }
 
-watch(showForm, (open) => {
+watch(showForm, (open: boolean) => {
   if (import.meta.client) document.body.style.overflow = open ? 'hidden' : ''
 })
 

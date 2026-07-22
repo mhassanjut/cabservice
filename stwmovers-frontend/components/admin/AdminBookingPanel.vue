@@ -43,7 +43,7 @@ const load = async () => {
 
 watch(
   () => [props.open, props.bookingId] as const,
-  ([open]) => {
+  ([open]: readonly [boolean, string | null]) => {
     if (open) {
       if (import.meta.client) document.body.style.overflow = 'hidden'
       load()

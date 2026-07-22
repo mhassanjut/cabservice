@@ -17,7 +17,7 @@ const otpKey = ref(0)
 
 watch(
   () => props.show,
-  (open) => {
+  (open: boolean) => {
     if (open) {
       otp.value = ''
       otpKey.value += 1
@@ -27,7 +27,7 @@ watch(
 
 watch(
   () => props.error,
-  (message) => {
+  (message: string) => {
     if (message) {
       otp.value = ''
       otpKey.value += 1

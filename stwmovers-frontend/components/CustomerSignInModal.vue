@@ -8,7 +8,7 @@ const onKeydown = (event: KeyboardEvent) => {
   if (event.key === 'Escape') close()
 }
 
-watch(isOpen, (open) => {
+watch(isOpen, (open: boolean) => {
   if (!import.meta.client) return
   document.body.style.overflow = open ? 'hidden' : ''
   if (open) {
