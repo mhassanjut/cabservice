@@ -1,56 +1,36 @@
 <script setup lang="ts">
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import { Autoplay } from 'swiper/modules'
+import 'swiper/css'
+
 const HERO_SLIDES = [
   '/img/home/hero-1.png',
   '/img/home/hero-2.png',
   '/img/home/hero-3.png',
 ] as const
 
-const AUTOPLAY_MS = 5500
+const swiperModules = [Autoplay]
 
-const activeIndex = ref(0)
-const prefersReducedMotion = ref(false)
-
-let autoplayTimer = 0
-
-const trackStyle = computed(() => ({
-  transform: `translate3d(-${activeIndex.value * 100}%, 0, 0)`,
-  transition: 'transform 0.85s ease',
-}))
-
-function nextSlide() {
-  const total = HERO_SLIDES.length
-  activeIndex.value = (activeIndex.value + 1) % total
+const autoplayOptions = {
+  delay: 3500,
+  disableOnInteraction: false,
 }
-
-function startAutoplay() {
-  stopAutoplay()
-  if (prefersReducedMotion.value) return
-  autoplayTimer = window.setInterval(nextSlide, AUTOPLAY_MS)
-}
-
-function stopAutoplay() {
-  if (autoplayTimer) {
-    clearInterval(autoplayTimer)
-    autoplayTimer = 0
-  }
-}
-
-onMounted(() => {
-  prefersReducedMotion.value = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  startAutoplay()
-})
-
-onUnmounted(() => {
-  stopAutoplay()
-})
 </script>
 
 <template>
   <header class="home-hero">
     <div class="home-hero__media" aria-hidden="true">
       <div class="home-hero__slider">
-        <div class="home-hero__track" :style="trackStyle">
-          <div
+        <Swiper
+          class="home-hero__swiper"
+          :modules="swiperModules"
+          :slides-per-view="1"
+          :loop="true"
+          :speed="850"
+          :autoplay="autoplayOptions"
+          :allow-touch-move="true"
+        >
+          <SwiperSlide
             v-for="(src, index) in HERO_SLIDES"
             :key="src"
             class="home-hero__slide"
@@ -67,8 +47,8 @@ onUnmounted(() => {
               decoding="async"
               draggable="false"
             />
-          </div>
-        </div>
+          </SwiperSlide>
+        </Swiper>
       </div>
       <div class="home-hero__overlay" />
     </div>

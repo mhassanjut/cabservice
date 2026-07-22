@@ -24,7 +24,8 @@
     "@pinia/nuxt": "^0.6.1",
     "nuxt": "^3.13.0",
     "ofetch": "^1.4.1",
-    "pinia": "^2.2.2"
+    "pinia": "^2.2.2",
+    "swiper": "^14.0.6"
   },
   "devDependencies": {
     "eslint": "^9.9.0",

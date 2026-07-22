@@ -65,7 +65,7 @@
 }
 
 .site-root--home .app-nav__links {
-  gap: 48px;
+  gap: 5px;
 }
 
 /* Small laptops: 48px gaps + 5 links + login + CTA overflow, so tighten. */
@@ -79,6 +79,7 @@
   }
 
   .site-root--home .app-nav__link {
+    padding: 12px 16px;
     font-size: 13px;
   }
 }
@@ -89,7 +90,7 @@
 
 .site-root--home .app-nav__link {
   position: relative;
-  padding: 12px 16px;
+  padding: 12px 32px;
   border-radius: 0;
   border-bottom: 1px solid transparent;
   font-family: var(--nav-font);
@@ -110,7 +111,6 @@
 
 /* Active page — matches Figma frame: gradient fill + 1px white bottom border */
 .site-root--home .app-nav__link.router-link-exact-active {
-  padding: 12px 32px;
   color: #fff;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.18) 100%);
   border-bottom: 1px solid #ffffff;
@@ -373,15 +373,13 @@
   height: 100%;
 }
 
-.home-hero__track {
-  display: flex;
+.home-hero__swiper,
+.home-hero__swiper .swiper-wrapper {
   width: 100%;
   height: 100%;
-  will-change: transform;
 }
 
 .home-hero__slide {
-  flex: 0 0 100%;
   width: 100%;
   height: 100%;
 }
@@ -571,49 +569,24 @@
 }
 
 .home-experience__carousel {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: 1.5rem;
   width: 100%;
   min-width: 0;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  touch-action: pan-x;
-  scrollbar-width: none;
-  padding-bottom: 0.25rem;
-  cursor: grab;
-  user-select: none;
+  overflow: hidden;
 }
 
-.home-experience__carousel.is-dragging {
-  cursor: grabbing;
-  scroll-snap-type: none;
-}
-
-.home-experience__carousel.is-autoplaying {
-  scroll-snap-type: none;
-}
-
-.home-experience__carousel.is-dragging .home-experience__tile,
-.home-experience__carousel.is-autoplaying .home-experience__tile {
-  scroll-snap-align: none;
-}
-
-.home-experience__carousel::-webkit-scrollbar {
-  display: none;
+/* Continuous, constant-speed marquee scroll (no easing between slides). */
+.home-experience__carousel .swiper-wrapper {
+  align-items: flex-start;
+  transition-timing-function: linear;
 }
 
 .home-experience__tile {
   position: relative;
-  flex: 0 0 min(39.25rem, 100%);
+  flex-shrink: 0;
   width: min(39.25rem, 100%);
   height: var(--tile-height, 32.5rem);
   border-radius: 1.75rem;
   overflow: hidden;
-  scroll-snap-align: start;
 }
 
 .home-experience__tile img {
@@ -663,7 +636,6 @@
 
 @media (max-width: 89.999rem) {
   .home-experience__tile {
-    flex: 0 0 min(39.25rem, calc(100% - 2.5rem));
     width: min(39.25rem, calc(100% - 2.5rem));
   }
 }
@@ -680,7 +652,6 @@
   }
 
   .home-experience__tile {
-    flex: 0 0 min(85vw, 20rem);
     width: min(85vw, 20rem);
     height: clamp(16rem, 60vw, 22rem);
   }

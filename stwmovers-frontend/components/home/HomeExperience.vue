@@ -1,27 +1,22 @@
 <script setup lang="ts">
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import { Autoplay } from 'swiper/modules'
+import 'swiper/css'
 import { homeExperienceTiles } from '~/data/homeContent'
 
-const AUTOPLAY_SPEED = 1
-const RESUME_DELAY_MS = 1000
-
-const trackRef = ref<HTMLElement | null>(null)
 const line1Ref = ref<HTMLElement | null>(null)
 const line2Ref = ref<HTMLElement | null>(null)
-const isDragging = ref(false)
-const isHovered = ref(false)
-const isAutoplayActive = ref(false)
-const dragStartX = ref(0)
-const dragStartScroll = ref(0)
 
-const loopTiles = computed(() =>
-  [...homeExperienceTiles, ...homeExperienceTiles].map((tile, index) => ({
-    ...tile,
-    loopKey: `${tile.title}-${index}`,
-  })),
-)
+const swiperModules = [Autoplay]
 
-let animationFrameId = 0
-let resumeTimeoutId = 0
+// Continuous marquee: lower speed (ms per slide) = faster scroll.
+const MARQUEE_SPEED = 4200
+
+const autoplayOptions = {
+  delay: 0,
+  disableOnInteraction: false,
+}
+
 let headingResizeObserver: ResizeObserver | null = null
 
 function syncHeadingLine2Width() {
@@ -38,123 +33,6 @@ function syncHeadingLine2Width() {
   line2.style.width = `${line1.getBoundingClientRect().width}px`
 }
 
-function getLoopSetWidth(track: HTMLElement) {
-  return track.scrollWidth / 2
-}
-
-function canScroll(track: HTMLElement) {
-  return track.scrollWidth > track.clientWidth + 1
-}
-
-function normalizeScrollPosition() {
-  const track = trackRef.value
-  if (!track) return
-
-  const setWidth = getLoopSetWidth(track)
-  if (setWidth <= 0) return
-
-  while (track.scrollLeft >= setWidth) {
-    track.scrollLeft -= setWidth
-  }
-
-  while (track.scrollLeft < 0) {
-    track.scrollLeft += setWidth
-  }
-}
-
-function tickAutoplay() {
-  const track = trackRef.value
-
-  if (track && isAutoplayActive.value && !isDragging.value && !isHovered.value && canScroll(track)) {
-    track.scrollLeft += AUTOPLAY_SPEED
-    normalizeScrollPosition()
-  }
-
-  animationFrameId = requestAnimationFrame(tickAutoplay)
-}
-
-function startAutoplay() {
-  isAutoplayActive.value = true
-}
-
-function pauseAutoplay() {
-  isAutoplayActive.value = false
-}
-
-function clearResumeTimeout() {
-  if (resumeTimeoutId) {
-    clearTimeout(resumeTimeoutId)
-    resumeTimeoutId = 0
-  }
-}
-
-function scheduleAutoplayResume() {
-  clearResumeTimeout()
-  resumeTimeoutId = window.setTimeout(() => {
-    if (!isHovered.value && !isDragging.value) {
-      startAutoplay()
-    }
-  }, RESUME_DELAY_MS)
-}
-
-function waitForScrollableTrack(startLoop: () => void, attempts = 0) {
-  const track = trackRef.value
-  if (track && canScroll(track)) {
-    track.scrollLeft = 0
-    startLoop()
-    return
-  }
-
-  if (attempts > 120) return
-
-  requestAnimationFrame(() => waitForScrollableTrack(startLoop, attempts + 1))
-}
-
-function onPointerDown(event: PointerEvent) {
-  const track = trackRef.value
-  if (!track || event.button !== 0) return
-
-  pauseAutoplay()
-  clearResumeTimeout()
-  isDragging.value = true
-  dragStartX.value = event.clientX
-  dragStartScroll.value = track.scrollLeft
-  track.setPointerCapture(event.pointerId)
-}
-
-function onPointerMove(event: PointerEvent) {
-  const track = trackRef.value
-  if (!track || !isDragging.value) return
-
-  event.preventDefault()
-  track.scrollLeft = dragStartScroll.value - (event.clientX - dragStartX.value)
-  normalizeScrollPosition()
-}
-
-function endDrag(event: PointerEvent) {
-  const track = trackRef.value
-  if (!track || !isDragging.value) return
-
-  isDragging.value = false
-  if (track.hasPointerCapture(event.pointerId)) {
-    track.releasePointerCapture(event.pointerId)
-  }
-
-  normalizeScrollPosition()
-  scheduleAutoplayResume()
-}
-
-function onMouseEnter() {
-  isHovered.value = true
-  pauseAutoplay()
-  clearResumeTimeout()
-}
-
-function onMouseLeave() {
-  isHovered.value = false
-  scheduleAutoplayResume()
-}
-
 onMounted(() => {
   nextTick(() => {
     syncHeadingLine2Width()
@@ -162,20 +40,12 @@ onMounted(() => {
     if (line1Ref.value) headingResizeObserver.observe(line1Ref.value)
     window.addEventListener('resize', syncHeadingLine2Width, { passive: true })
     document.fonts?.ready.then(syncHeadingLine2Width)
-
-    waitForScrollableTrack(() => {
-      startAutoplay()
-      animationFrameId = requestAnimationFrame(tickAutoplay)
-    })
   })
 })
 
 onUnmounted(() => {
   headingResizeObserver?.disconnect()
   window.removeEventListener('resize', syncHeadingLine2Width)
-  pauseAutoplay()
-  clearResumeTimeout()
-  cancelAnimationFrame(animationFrameId)
 })
 </script>
 
@@ -195,35 +65,27 @@ onUnmounted(() => {
             </p>
           </div>
         </div>
-        <div
-          class="home-experience__carousel-viewport"
-          @mouseenter="onMouseEnter"
-          @mouseleave="onMouseLeave"
-        >
-          <div
-            ref="trackRef"
+        <div class="home-experience__carousel-viewport">
+          <Swiper
             class="home-experience__carousel"
-            :class="{
-              'is-dragging': isDragging,
-              'is-autoplaying': isAutoplayActive && !isHovered && !isDragging,
-            }"
+            :modules="swiperModules"
+            slides-per-view="auto"
+            :space-between="24"
+            :loop="true"
+            :speed="MARQUEE_SPEED"
+            :autoplay="autoplayOptions"
+            :allow-touch-move="false"
             role="region"
             aria-roledescription="carousel"
             aria-label="Experience services"
-            tabindex="0"
-            @pointerdown="onPointerDown"
-            @pointermove="onPointerMove"
-            @pointerup="endDrag"
-            @pointercancel="endDrag"
           >
-            <article
-              v-for="(tile, index) in loopTiles"
-              :key="tile.loopKey"
+            <SwiperSlide
+              v-for="(tile, index) in homeExperienceTiles"
+              :key="tile.title"
               class="home-experience__tile"
               :style="{ '--tile-height': `${tile.height}px` }"
               role="group"
-              :aria-hidden="index >= homeExperienceTiles.length ? 'true' : undefined"
-              :aria-label="`${(index % homeExperienceTiles.length) + 1} of ${homeExperienceTiles.length}: ${tile.title}`"
+              :aria-label="`${index + 1} of ${homeExperienceTiles.length}: ${tile.title}`"
             >
               <!-- Bundled (?url) asset — keep as <img>; @nuxt/image IPX can't process build-asset URLs -->
               <img
@@ -240,8 +102,8 @@ onUnmounted(() => {
                 <h3>{{ tile.title }}</h3>
                 <p>{{ tile.subtitle }}</p>
               </div>
-            </article>
-          </div>
+            </SwiperSlide>
+          </Swiper>
         </div>
       </div>
     </div>
