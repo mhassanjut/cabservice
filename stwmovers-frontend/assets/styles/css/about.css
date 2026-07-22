@@ -1,0 +1,605 @@
+/*
+ * About Us page styles — Figma: sovereign-about-page (node 82:695).
+ * Everything is namespaced under `.about-page` so nothing leaks into other
+ * pages. Design tokens (--home-*) are inherited from the `.home-page` class,
+ * which the page root also carries, keeping colors/fonts identical to the
+ * marketing design system.
+ */
+
+.about-page {
+  --about-gutter: clamp(1.25rem, 5vw, 5rem);
+  --about-section-y: clamp(3rem, 7vw, 7.5rem);
+  --about-radius: 20px;
+  --about-max: 1440px;
+}
+
+.about-page .about-container {
+  width: 100%;
+  max-width: var(--about-max);
+  margin-inline: auto;
+  padding-inline: var(--about-gutter);
+}
+
+.about-page .about-section {
+  padding-block: var(--about-section-y);
+}
+
+/* Shared typography */
+.about-page .about-heading {
+  margin: 0;
+  font-family: var(--home-font-display);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--home-text);
+  font-size: clamp(2rem, 4vw, 4rem);
+}
+
+.about-page .about-heading--sm {
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
+}
+
+.about-page .about-lead {
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: clamp(1rem, 1.25vw, 1.125rem);
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--home-text-muted);
+}
+
+.about-page .about-eyebrow {
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--home-gold);
+}
+
+/* Buttons */
+.about-page .about-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 51px;
+  padding: 0 2rem;
+  border: 1px solid transparent;
+  border-radius: 100px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: filter 0.2s ease, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.about-page .about-btn--gold {
+  background: var(--home-gold);
+  color: #fff;
+}
+
+.about-page .about-btn--gold:hover {
+  filter: brightness(1.06);
+}
+
+/* Outline button on dark backgrounds (hero / final CTA) */
+.about-page .about-btn--outline-light {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.85);
+  color: #fff;
+}
+
+.about-page .about-btn--outline-light:hover {
+  background: #fff;
+  color: var(--home-text);
+}
+
+/* Every framed media image fills and covers its container */
+.about-page .about-hero__media img,
+.about-page .about-philosophy__media img,
+.about-page .about-chauffeur__media img,
+.about-page .about-gallery__item img,
+.about-page .about-promise__media img,
+.about-page .about-cta__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ─── Hero (82:696) ─── */
+.about-page .about-hero {
+  position: relative;
+  min-height: clamp(32rem, 53vw, 47.5rem);
+  display: flex;
+  align-items: flex-end;
+  color: #fff;
+  overflow: hidden;
+}
+
+.about-page .about-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.about-page .about-hero__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(20, 14, 2, 0.55) 0%, rgba(0, 0, 0, 0.15) 55%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+.about-page .about-hero__inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding-block: clamp(2.5rem, 5vw, 4.5rem);
+}
+
+.about-page .about-hero__header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 60rem;
+  margin-bottom: clamp(1.5rem, 3vw, 2rem);
+}
+
+.about-page .about-hero__title {
+  margin: 0;
+  font-family: var(--home-font-display);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-size: clamp(2.5rem, 5.5vw, 5rem);
+}
+
+.about-page .about-hero__footer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.about-page .about-hero__body {
+  margin: 0;
+  max-width: 42.5rem;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.about-page .about-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+@media (min-width: 900px) {
+  .about-page .about-hero__footer {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+}
+
+/* ─── Our Philosophy (82:709) ─── */
+.about-page .about-philosophy__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2rem, 4vw, 3.75rem);
+  align-items: center;
+}
+
+.about-page .about-philosophy__media {
+  border-radius: var(--about-radius);
+  overflow: hidden;
+  aspect-ratio: 680 / 560;
+}
+
+.about-page .about-philosophy__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (min-width: 900px) {
+  .about-page .about-philosophy__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+/* ─── The People (82:715) ─── */
+.about-page .about-people__header {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+.about-page .about-people__heading {
+  margin: 0.75rem 0 0;
+  max-width: 40rem;
+}
+
+.about-page .about-people__subtitle {
+  max-width: 32rem;
+}
+
+.about-page .about-collage {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.about-page .about-chauffeur {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.about-page .about-chauffeur__media {
+  border-radius: var(--about-radius);
+  overflow: hidden;
+  aspect-ratio: 400 / 480;
+}
+
+.about-page .about-chauffeur__caption {
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--home-text);
+}
+
+@media (min-width: 768px) {
+  .about-page .about-people__header {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 3rem;
+  }
+
+  .about-page .about-collage {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  /* Staggered vertical offsets from Figma */
+  .about-page .about-chauffeur--up {
+    transform: translateY(-2.5rem);
+  }
+
+  .about-page .about-chauffeur--down {
+    transform: translateY(2.5rem);
+  }
+}
+
+/* ─── Highlights (82:731) ─── */
+.about-page .about-highlights__heading {
+  margin: 0 0 clamp(2rem, 4vw, 3.5rem);
+}
+
+.about-page .about-features {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem 2rem;
+}
+
+.about-page .about-feature {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.about-page .about-feature__head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.about-page .about-feature__icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--home-gold);
+}
+
+.about-page .about-feature__title {
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--home-text);
+}
+
+.about-page .about-feature__text {
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--home-text-muted);
+}
+
+@media (min-width: 640px) {
+  .about-page .about-features {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1000px) {
+  .about-page .about-features {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* ─── Gallery (82:770) ─── */
+.about-page .about-gallery__header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 50rem;
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+}
+
+.about-page .about-gallery__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.about-page .about-gallery__item {
+  border-radius: var(--about-radius);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+}
+
+@media (min-width: 768px) {
+  .about-page .about-gallery__grid {
+    /* 780:480 ≈ 13:8 (sum 21). Wide spans 13, narrow spans 8, so each row
+       (wide+narrow, then narrow+wide) fills exactly 21 tracks. */
+    grid-template-columns: repeat(21, minmax(0, 1fr));
+  }
+
+  .about-page .about-gallery__item {
+    aspect-ratio: auto;
+    height: clamp(20rem, 30vw, 27.5rem);
+  }
+
+  .about-page .about-gallery__item--wide {
+    grid-column: span 13;
+  }
+
+  .about-page .about-gallery__item--narrow {
+    grid-column: span 8;
+  }
+}
+
+/* ─── Promise (82:781) ─── */
+.about-page .about-promise {
+  padding-block: clamp(2rem, 4vw, 3rem);
+}
+
+.about-page .about-promise__card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: var(--about-radius);
+  min-height: clamp(22rem, 40vw, 37.5rem);
+  padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem);
+  text-align: center;
+  color: #fff;
+}
+
+.about-page .about-promise__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.about-page .about-promise__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+.about-page .about-promise__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 50rem;
+}
+
+.about-page .about-promise__heading {
+  margin: 0;
+  font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #fff;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+}
+
+.about-page .about-promise__body {
+  margin: 0;
+  max-width: 45rem;
+  font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+/* ─── Guest Story / Testimonials (82:789) ─── */
+.about-page .about-testimonial__eyebrow {
+  margin: 0 0 clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.about-page .about-testimonial__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: center;
+}
+
+.about-page .about-testimonial__quote {
+  margin: 0;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--home-text);
+  font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+}
+
+.about-page .about-testimonial__body {
+  margin: 1.5rem 0 0;
+  max-width: 40rem;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  line-height: 1.6;
+  color: var(--home-text-muted);
+}
+
+.about-page .about-testimonial__visual {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.about-page .about-testimonial__photo-stack {
+  position: relative;
+  flex-shrink: 0;
+  width: 13rem;
+  height: 11rem;
+}
+
+.about-page .about-testimonial__photo-stack::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 11.5rem;
+  height: 10rem;
+  background: #ffebc5;
+  border-radius: 12px;
+}
+
+.about-page .about-testimonial__photo {
+  position: absolute;
+  inset: auto 0 0 auto;
+  width: 11.5rem;
+  height: 10rem;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.about-page .about-testimonial__author-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.about-page .about-testimonial__author-name {
+  margin: 0;
+  font-family: 'Poppins', var(--home-font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #000;
+}
+
+.about-page .about-testimonial__author-company {
+  margin: 0;
+  font-family: 'Poppins', var(--home-font-display);
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #4f4f4f;
+}
+
+@media (min-width: 900px) {
+  .about-page .about-testimonial__grid {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
+
+/* ─── Final CTA (82:814) ─── */
+.about-page .about-cta {
+  padding-block: clamp(2rem, 4vw, 3rem);
+}
+
+.about-page .about-cta__card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: var(--about-radius);
+  min-height: clamp(24rem, 45vw, 40.625rem);
+  padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem);
+  text-align: center;
+  color: #fff;
+}
+
+.about-page .about-cta__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.about-page .about-cta__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+.about-page .about-cta__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 50rem;
+}
+
+.about-page .about-cta__heading {
+  margin: 0;
+  font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #fff;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+}
+
+.about-page .about-cta__body {
+  margin: 0;
+  max-width: 37.5rem;
+  font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.about-page .about-cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
