@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@imgly/background-removal-node": "^1.4.5",
+    "@nuxt/image": "^2.0.0",
     "@oxc-minify/binding-win32-x64-msvc": "^0.117.0",
     "@oxc-parser/binding-win32-x64-msvc": "^0.117.0",
     "@oxc-transform/binding-win32-x64-msvc": "^0.117.0",

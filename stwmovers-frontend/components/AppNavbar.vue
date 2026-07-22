@@ -72,17 +72,18 @@ const closeMenu = () => {
       <div class="app-nav__cluster">
         <nav class="app-nav__links" aria-label="Primary">
           <template v-if="isHome">
-            <a class="app-nav__link" :href="homeAnchors.experience">Experience</a>
-            <a class="app-nav__link" :href="homeAnchors.journeys">Journeys</a>
-            <NuxtLink class="app-nav__link" :to="routes.tours">Tours</NuxtLink>
-            <a class="app-nav__link" :href="homeAnchors.fleet">Fleet</a>
-            <a class="app-nav__link" :href="homeAnchors.global">Global</a>
+            <NuxtLink class="app-nav__link" to="/">Home</NuxtLink>
+            <NuxtLink class="app-nav__link" to="/services">Services</NuxtLink>
+            <NuxtLink class="app-nav__link" to="/about-us">About Us</NuxtLink>
+            <NuxtLink class="app-nav__link" to="/journey">Journey</NuxtLink>
+            <NuxtLink class="app-nav__link" to="/tours">Tours</NuxtLink>
           </template>
+
           <template v-else>
-            <NuxtLink class="app-nav__link" :to="routes.home">Home</NuxtLink>
-            <NuxtLink class="app-nav__link" :to="routes.faq">FAQ</NuxtLink>
-            <a class="app-nav__link" :href="homeAnchors.contact">Contact</a>
-            <NuxtLink class="app-nav__link" :to="routes.tours">Tours</NuxtLink>
+            <NuxtLink class="app-nav__link" to="/">Home</NuxtLink>
+            <NuxtLink class="app-nav__link" to="/faq">FAQ</NuxtLink>
+            <NuxtLink class="app-nav__link" to="/contact">Contact</NuxtLink>
+            <NuxtLink class="app-nav__link" to="/tours">Tours</NuxtLink>
           </template>
         </nav>
 

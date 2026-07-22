@@ -3,7 +3,7 @@ import { seoDefaults } from './config/seo'
 
 export default defineNuxtConfig({
   ssr: true,
-  modules: ['@pinia/nuxt'],
+  modules: ['@pinia/nuxt', '@nuxt/image'],
   css: ['~/assets/styles/css/main.css', '~/assets/styles/css/home.css'],
 
   // Avoid dev.json / #app-manifest errors after `nuxt generate` or stale Vite cache.
