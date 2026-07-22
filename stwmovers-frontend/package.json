@@ -17,9 +17,6 @@
   },
   "dependencies": {
     "@imgly/background-removal-node": "^1.4.5",
-    "@oxc-minify/binding-win32-x64-msvc": "^0.117.0",
-    "@oxc-parser/binding-win32-x64-msvc": "^0.117.0",
-    "@oxc-transform/binding-win32-x64-msvc": "^0.117.0",
     "@pinia/nuxt": "^0.6.1",
     "nuxt": "^3.13.0",
     "ofetch": "^1.4.1",
