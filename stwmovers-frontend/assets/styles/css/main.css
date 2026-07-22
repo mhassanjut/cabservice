@@ -953,7 +953,15 @@ select.input {
 
 .app-nav__drawer {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* Use an explicit viewport height instead of `bottom: 0`. When the scrolled
+     navbar applies `backdrop-filter`, the header becomes the containing block
+     for this fixed drawer, so `bottom: 0` would collapse it to the header's
+     height. `100dvh` stays viewport-relative regardless. */
+  height: 100vh;
+  height: 100dvh;
   z-index: 250;
   pointer-events: none;
 }

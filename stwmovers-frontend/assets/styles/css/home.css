@@ -21,6 +21,7 @@
   background: var(--home-bg);
   color: var(--home-text);
   font-family: 'Inter', system-ui, sans-serif;
+  overflow-x: clip;
 }
 
 .site-root--home .layout-main--home {
@@ -65,6 +66,21 @@
 
 .site-root--home .app-nav__links {
   gap: 48px;
+}
+
+/* Small laptops: 48px gaps + 5 links + login + CTA overflow, so tighten. */
+@media (min-width: 860px) and (max-width: 1199px) {
+  .site-root--home .app-nav__cluster {
+    gap: 24px;
+  }
+
+  .site-root--home .app-nav__links {
+    gap: 24px;
+  }
+
+  .site-root--home .app-nav__link {
+    font-size: 13px;
+  }
 }
 
 .site-root--home .app-nav__actions {
@@ -152,6 +168,19 @@
 .site-root--home .app-nav .user-menu .btn.user-menu__login--outline.app-nav__action-btn {
   min-height: 41px;
   padding: 12px 32px;
+}
+
+/* Small phones: the logo + login + burger overflow 320px and cause
+   horizontal scroll, so tighten padding and gaps. */
+@media (max-width: 560px) {
+  .site-root--home .app-nav__actions {
+    gap: 8px;
+  }
+
+  .site-root--home .app-nav .user-menu .btn.user-menu__login--outline,
+  .site-root--home .app-nav .user-menu .btn.user-menu__login--outline.app-nav__action-btn {
+    padding: 9px 16px;
+  }
 }
 
 .site-root--home .app-nav__journey-cta.app-nav__action-btn {
@@ -321,12 +350,39 @@
   right: 0;
   z-index: 0;
   height: var(--home-hero-height);
+  overflow: hidden;
 }
 
 .home-hero__media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.home-hero__slider {
+  width: 100%;
+  height: 100%;
+}
+
+.home-hero__track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+}
+
+.home-hero__slide {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+}
+
+.home-hero__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
 }
 
 .home-hero__overlay {
@@ -382,6 +438,51 @@
   z-index: 5;
   padding: 0;
   margin: 0;
+}
+
+/* ─── Hero responsive (tablet / mobile) ─── */
+/* Below 1100px the booking bar stops being a single fixed-height row, so we
+   switch the hero to normal flow so it can't overlap the next section. */
+@media (max-width: 1099px) {
+  .home-hero {
+    height: auto;
+    min-height: clamp(24rem, 68vh, 34rem);
+    display: flex;
+    flex-direction: column;
+    margin-bottom: clamp(1.5rem, 4vw, 3rem);
+  }
+
+  /* inset both top and bottom so the image stretches to the hero's real
+     height even when the hero itself is auto/min-height driven */
+  .home-hero__media {
+    bottom: 0;
+    height: auto;
+  }
+
+  .home-hero__content {
+    position: relative;
+    top: 0;
+    flex: 1 1 auto;
+    padding-top: calc(72px + clamp(1.5rem, 5vw, 3rem));
+    padding-bottom: clamp(1.5rem, 4vw, 2.5rem);
+  }
+
+  .home-hero__content-inner {
+    min-height: 0;
+  }
+
+  .home-hero__booking {
+    position: relative;
+    top: auto;
+    margin-top: auto;
+    padding-bottom: clamp(1rem, 3vw, 1.5rem);
+  }
+}
+
+@media (max-width: 640px) {
+  .home-hero__lead {
+    font-size: 1rem;
+  }
 }
 
 /* Experience — Figma node 82:68 */
@@ -555,6 +656,34 @@
   .home-experience__tile {
     flex: 0 0 min(39.25rem, calc(100% - 2.5rem));
     width: min(39.25rem, calc(100% - 2.5rem));
+  }
+}
+
+/* Experience — mobile: allow the heading to wrap and shrink tiles */
+@media (max-width: 767px) {
+  .home-experience__heading-line1,
+  .home-experience__heading-line2 {
+    white-space: normal;
+    overflow: visible;
+    text-align: left;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .home-experience__tile {
+    flex: 0 0 min(85vw, 20rem);
+    width: min(85vw, 20rem);
+    height: clamp(16rem, 60vw, 22rem);
+  }
+
+  .home-experience__tile-copy {
+    left: 1.25rem;
+    right: 1.25rem;
+    bottom: 1.25rem;
+  }
+
+  .home-experience__tile-copy h3 {
+    font-size: clamp(1.25rem, 5vw, 1.75rem);
   }
 }
 
@@ -784,13 +913,45 @@
   }
 }
 
+/* Small laptops: side-by-side gets cramped between 1024–1099px, so stack. */
+@media (min-width: 1024px) and (max-width: 1099px) {
+  .home-journeys__inner {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .home-journeys__copy {
+    align-items: center;
+    text-align: center;
+    flex-basis: auto;
+  }
+
+  .home-journeys__collage {
+    align-items: center;
+  }
+
+  .home-journeys__group--top,
+  .home-journeys__group--bottom {
+    margin-left: 0;
+    width: min(100%, 26rem);
+  }
+}
+
+/* Phones: shrink the collage so it doesn't dwarf the copy. */
+@media (max-width: 560px) {
+  .home-journeys__group--top,
+  .home-journeys__group--bottom {
+    width: min(100%, 18rem);
+  }
+}
+
 /* Emotional section (values) — Figma node 82:169 */
 .home-values__header {
   display: flex;
   flex-direction: column;
   gap: 1.625rem;
-  margin-bottom: 5rem;
-  padding-inline: clamp(0, 3vw, 3rem);
+  margin-bottom: clamp(2rem, 5vw, 5rem);
+  padding-inline: clamp(0px, 3vw, 3rem);
 }
 
 .home-values__heading {
@@ -929,7 +1090,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.625rem;
-  margin-bottom: 3.5rem;
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
 }
 
 .home-fleet__heading {
@@ -1212,14 +1373,45 @@
   background: rgba(0, 0, 0, 0.75);
 }
 
+@media (min-width: 900px) and (max-width: 1099px) {
+  .home-fleet__tab {
+    padding: 0.6rem 1rem;
+  }
+}
+
 @media (max-width: 899px) {
   .home-fleet__controls {
     flex-direction: column;
     align-items: stretch;
   }
 
+  /* Wrap the 7 filter tabs to multiple rows so labels aren't cut off */
   .home-fleet__tabs {
+    flex: none;
+    flex-wrap: wrap;
     justify-content: flex-start;
+    gap: 0.5rem;
+    overflow: visible;
+  }
+
+  .home-fleet__tab {
+    padding: 0.5rem 1rem;
+    font-size: 0.8125rem;
+  }
+
+  /* Keep the pagination bars on a single centered row (never wrap) */
+  .home-fleet__pagination {
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 0.375rem;
+  }
+
+  .home-fleet__pagination-bar {
+    width: 1.25rem;
+  }
+
+  .home-fleet__pagination-bar.is-active {
+    width: 2rem;
   }
 
   .home-fleet__card {
@@ -1232,6 +1424,26 @@
   }
 }
 
+/* Phones: smaller fleet cards + tighter title/media */
+@media (max-width: 560px) {
+  .home-fleet__card {
+    min-height: 20rem;
+  }
+
+  .home-fleet__card-head {
+    padding: 1.25rem;
+  }
+
+  .home-fleet__card-cta {
+    right: 1.25rem;
+    bottom: 1.25rem;
+  }
+}
+
+.home-testimonials__title {
+  margin: 0 0 clamp(2rem, 5vw, 5rem);
+}
+
 .home-testimonials__quote {
   margin: 0;
   font-family: 'Playfair Display', Georgia, serif;
@@ -1241,7 +1453,33 @@
   color: #000;
 }
 
+/* Testimonials — stack visual block on tablet/mobile */
+@media (max-width: 899px) {
+  .home-testimonials {
+    gap: 2rem;
+  }
+
+  .home-testimonials__visual {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .home-testimonials__photo-stack {
+    width: 13rem;
+    max-width: 100%;
+  }
+
+  .home-testimonials__author {
+    margin-top: 1.5rem;
+  }
+}
+
 /* Locations bento grid — 4 equal columns on desktop (Figma) */
+.home-locations__header {
+  margin-bottom: clamp(2rem, 5vw, 4rem);
+}
+
 .home-locations__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1365,6 +1603,15 @@
   overflow: hidden;
 }
 
+/* Phones: let the banner grow so its copy isn't clipped by the fixed height */
+@media (max-width: 767px) {
+  .home-corporate {
+    height: auto;
+    min-height: var(--home-corporate-height);
+    padding-block: clamp(2rem, 6vw, 3rem);
+  }
+}
+
 @media (min-width: 768px) {
   .home-corporate {
     --home-corporate-height: clamp(14rem, 28vw, 32rem);
@@ -1442,7 +1689,7 @@
 .home-booking-steps__inner {
   display: flex;
   flex-direction: column;
-  gap: 5rem;
+  gap: clamp(2.5rem, 5vw, 5rem);
 }
 
 @media (min-width: 900px) {
@@ -1461,7 +1708,7 @@
 .home-steps {
   display: flex;
   flex-direction: column;
-  gap: 5rem;
+  gap: clamp(2.5rem, 5vw, 5rem);
 }
 
 @media (min-width: 900px) {
@@ -1483,6 +1730,17 @@
   border-left: 1px solid var(--home-border-soft);
   padding: 2.75rem clamp(1.5rem, 3vw, 3rem);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #fff 100%);
+}
+
+@media (max-width: 899px) {
+  .home-steps__item {
+    /* flex:1 1 0 (from the desktop row layout) + a zeroed min-height collapses
+       the items in the mobile column, so let them size to their content. */
+    flex: none;
+    min-height: 0;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
 }
 
 @media (min-width: 900px) {
@@ -1521,6 +1779,18 @@
 @media (min-width: 900px) {
   .home-steps__title {
     white-space: nowrap;
+  }
+}
+
+/* Small laptops: allow step titles to wrap so they don't overflow. */
+@media (min-width: 900px) and (max-width: 1199px) {
+  .home-steps__title {
+    white-space: normal;
+    font-size: 1.25rem;
+  }
+
+  .home-steps__item {
+    padding-inline: 2rem;
   }
 }
 
@@ -1611,6 +1881,52 @@
   font-weight: 600;
   letter-spacing: 0;
   text-transform: none;
+}
+
+/* CTA banner — responsive padding/spacing */
+@media (max-width: 767px) {
+  .home-cta__inner {
+    min-height: clamp(18rem, 65vw, 26rem);
+    padding: clamp(1.25rem, 5vw, 2rem);
+  }
+
+  .home-cta__content {
+    padding: 0;
+    max-width: 100%;
+  }
+
+  .home-cta__content h2 {
+    margin-bottom: clamp(1.25rem, 5vw, 2rem);
+  }
+
+  .home-cta__content p {
+    margin-bottom: clamp(1.5rem, 6vw, 2.5rem);
+    font-size: 1rem;
+  }
+
+  .home-cta__btn.home-btn--white {
+    width: 100%;
+    padding: 0.875rem 1.25rem;
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1099px) {
+  .home-cta__inner {
+    padding: clamp(2rem, 4vw, 3rem);
+  }
+
+  .home-cta__content {
+    padding: clamp(1.5rem, 3vw, 2.5rem) 0 0;
+  }
+
+  .home-cta__content h2 {
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+
+  .home-cta__content p {
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
 }
 
 /* Testimonials — Figma node 82:398 */

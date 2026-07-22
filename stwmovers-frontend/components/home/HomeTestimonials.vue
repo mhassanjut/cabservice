@@ -1,7 +1,7 @@
 <template>
   <section class="home-section" aria-labelledby="testimonials-heading">
     <div class="container">
-      <h2 id="testimonials-heading" class="home-display home-display--lg" style="margin: 0 0 5rem">
+      <h2 id="testimonials-heading" class="home-display home-display--lg home-testimonials__title">
         Guest Story
       </h2>
       <div class="home-testimonials">
@@ -11,13 +11,15 @@
       </blockquote>
       <div class="home-testimonials__visual">
         <div class="home-testimonials__photo-stack">
-          <img
+          <NuxtImg
             class="home-testimonials__photo"
             src="/img/home/testimonial-photo.jpg"
             alt="STW Movers guest portrait"
             loading="lazy"
+            decoding="async"
             width="187"
             height="162"
+            sizes="187px"
           />
         </div>
         <div class="home-testimonials__author-meta">
@@ -26,7 +28,7 @@
             <p class="home-testimonials__author-company">SomeCompany LLC.</p>
           </div>
           <span class="home-icon-wrap home-testimonials__social">
-            <img
+            <NuxtImg
               class="home-icon"
               src="/img/home/icons/stars.svg"
               alt="Jane Doe on Facebook, Instagram, and Twitter"

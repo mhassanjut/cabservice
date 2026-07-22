@@ -7,13 +7,14 @@ import { homeAnchors } from '~/constants/routes'
     <div class="container">
       <div class="home-cta__inner">
       <div class="home-cta__media" aria-hidden="true">
-        <img
+        <NuxtImg
           src="/img/home/cta-banner.jpg"
           alt=""
           loading="lazy"
           decoding="async"
           width="1440"
           height="854"
+          sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw"
         />
         <div class="home-cta__overlay" />
       </div>
@@ -22,12 +23,12 @@ import { homeAnchors } from '~/constants/routes'
         <p>
           Whether it's an airport transfer, executive meeting, or private occasion, we're ready when you are.
         </p>
-        <a class="home-btn home-btn--white home-cta__btn" :href="homeAnchors.booking">
+        <NuxtLink class="home-btn home-btn--white home-cta__btn" :to="homeAnchors.booking" :prefetch="false">
           Book Your Journey
           <span class="home-icon-wrap" style="width: 1.5rem; height: 1.5rem">
-            <img class="home-icon" src="/img/home/icons/arrow-outward-dark.svg" alt="" width="24" height="24" />
+            <NuxtImg class="home-icon" src="/img/home/icons/arrow-outward-dark.svg" alt="" width="24" height="24" />
           </span>
-        </a>
+        </NuxtLink>
       </div>
       </div>
     </div>

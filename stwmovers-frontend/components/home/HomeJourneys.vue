@@ -32,7 +32,7 @@ function cardStyle(card: HomeJourneyCard, group: { width: number; height: number
           Choose a service tailored to your plans—from airport transfers and executive travel to private city
           experiences and special occasions.
         </p>
-        <a class="home-journeys__cta" :href="homeAnchors.booking">Discover Every Journey</a>
+        <NuxtLink class="home-journeys__cta" :to="homeAnchors.booking" :prefetch="false">Discover Every Journey</NuxtLink>
       </div>
 
       <div class="home-journeys__collage" aria-hidden="true">
@@ -43,7 +43,7 @@ function cardStyle(card: HomeJourneyCard, group: { width: number; height: number
             class="home-journey-card"
             :style="cardStyle(card, homeJourneyGroupTop)"
           >
-            <img
+            <NuxtImg
               class="home-journey-card__photo"
               :src="card.image"
               :alt="`${card.title} — Barcelona destination`"
@@ -51,11 +51,12 @@ function cardStyle(card: HomeJourneyCard, group: { width: number; height: number
               decoding="async"
               width="209"
               height="300"
+              sizes="209px"
             />
             <div class="home-journey-card__overlay">
               <span class="home-journey-card__btn">
                 <span class="home-icon-wrap home-journey-card__btn-icon">
-                  <img class="home-icon" src="/img/home/icons/arrow-up-right.svg" alt="" width="16" height="16" />
+                  <NuxtImg class="home-icon" src="/img/home/icons/arrow-up-right.svg" alt="" width="16" height="16" />
                 </span>
               </span>
               <div class="home-journey-card__label-wrap">
@@ -74,7 +75,7 @@ function cardStyle(card: HomeJourneyCard, group: { width: number; height: number
             class="home-journey-card"
             :style="cardStyle(card, homeJourneyGroupBottom)"
           >
-            <img
+            <NuxtImg
               class="home-journey-card__photo"
               :src="card.image"
               :alt="`${card.title} — Barcelona destination`"
@@ -82,11 +83,12 @@ function cardStyle(card: HomeJourneyCard, group: { width: number; height: number
               decoding="async"
               width="209"
               height="300"
+              sizes="209px"
             />
             <div class="home-journey-card__overlay">
               <span class="home-journey-card__btn">
                 <span class="home-icon-wrap home-journey-card__btn-icon">
-                  <img class="home-icon" src="/img/home/icons/arrow-up-right.svg" alt="" width="16" height="16" />
+                  <NuxtImg class="home-icon" src="/img/home/icons/arrow-up-right.svg" alt="" width="16" height="16" />
                 </span>
               </span>
               <div class="home-journey-card__label-wrap">

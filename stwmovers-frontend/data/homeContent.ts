@@ -129,16 +129,6 @@ export const homeBookingSteps = [
   },
 ] as const
 
-import fleetMercedesEClassImage from '~/assets/images/homepage/homepage-fleet-section/Mercedes E Class 2.svg?url'
-import fleetMercedesSClassImage from '~/assets/images/homepage/homepage-fleet-section/Mercedes S Class 2.svg?url'
-import fleetMercedesVClassImage from '~/assets/images/homepage/homepage-fleet-section/Mercedes V Class 2.svg?url'
-import fleetMercedesVitoVanImage from '~/assets/images/homepage/homepage-fleet-section/Mercedes Vito Van 2.svg?url'
-import fleetMercedesVanImage from '~/assets/images/homepage/homepage-fleet-section/Mercedes Van 2.svg?url'
-import fleetTeslaModelSImage from '~/assets/images/homepage/homepage-fleet-section/Tesla Model S 2.svg?url'
-import fleetHyundaiIoniqImage from '~/assets/images/homepage/homepage-fleet-section/Hyundai Ioniq 2.svg?url'
-import fleetToyotaCorollaImage from '~/assets/images/homepage/homepage-fleet-section/Toyota Corolla Familiar 2.svg?url'
-import fleetBydSealImage from '~/assets/images/homepage/homepage-fleet-section/BYD SEAL 2.svg?url'
-
 /** Figma node 82:205 — fleet filter categories */
 export const homeFleetTabs = [
   { id: 'all', label: 'All' },
@@ -169,7 +159,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'mercedes-e-class',
     backendId: 'c0000001-0000-0000-0000-000000000004',
     name: 'Mercedes E Class',
-    image: fleetMercedesEClassImage,
+    image: '/img/home/fleet-section/Mercedes E Class 2.svg',
     seats: 4,
     bags: 3,
     categories: ['business-class', 'first-class'],
@@ -178,7 +168,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'mercedes-s-class',
     backendId: 'c0000001-0000-0000-0000-000000000005',
     name: 'Mercedes S Class',
-    image: fleetMercedesSClassImage,
+    image: '/img/home/fleet-section/Mercedes S Class 2.svg',
     seats: 4,
     bags: 3,
     categories: ['first-class', 'aviation'],
@@ -187,7 +177,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'mercedes-v-class',
     backendId: 'c0000001-0000-0000-0000-000000000002',
     name: 'Mercedes V Class',
-    image: fleetMercedesVClassImage,
+    image: '/img/home/fleet-section/Mercedes V Class 2.svg',
     seats: 7,
     bags: 6,
     categories: ['business-van', 'first-class'],
@@ -196,7 +186,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'mercedes-vito-van',
     backendId: 'c0000001-0000-0000-0000-000000000001',
     name: 'Mercedes Vito Van',
-    image: fleetMercedesVitoVanImage,
+    image: '/img/home/fleet-section/Mercedes Vito Van 2.svg',
     seats: 7,
     bags: 6,
     categories: ['business-van'],
@@ -205,7 +195,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'mercedes-van',
     backendId: 'c0000001-0000-0000-0000-000000000003',
     name: 'Mercedes Van',
-    image: fleetMercedesVanImage,
+    image: '/img/home/fleet-section/Mercedes Van 2.svg',
     seats: 8,
     bags: 7,
     categories: ['mini-bus', 'bus'],
@@ -214,7 +204,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'tesla-model-s',
     backendId: 'c0000001-0000-0000-0000-000000000006',
     name: 'Tesla Model S',
-    image: fleetTeslaModelSImage,
+    image: '/img/home/fleet-section/Tesla Model S 2.svg',
     seats: 4,
     bags: 3,
     categories: ['business-class'],
@@ -223,7 +213,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'hyundai-ioniq',
     backendId: 'c0000001-0000-0000-0000-000000000007',
     name: 'Hyundai Ioniq',
-    image: fleetHyundaiIoniqImage,
+    image: '/img/home/fleet-section/Hyundai Ioniq 2.svg',
     seats: 4,
     bags: 3,
     categories: ['business-class'],
@@ -232,7 +222,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'toyota-corolla',
     backendId: 'c0000001-0000-0000-0000-000000000008',
     name: 'Toyota Corolla Familiar',
-    image: fleetToyotaCorollaImage,
+    image: '/img/home/fleet-section/Toyota Corolla Familiar 2.svg',
     seats: 4,
     bags: 3,
     categories: ['business-class'],
@@ -240,7 +230,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
   {
     id: 'byd-seal',
     name: 'BYD Seal',
-    image: fleetBydSealImage,
+    image: '/img/home/fleet-section/BYD SEAL 2.svg',
     seats: 4,
     bags: 3,
     categories: ['business-class'],

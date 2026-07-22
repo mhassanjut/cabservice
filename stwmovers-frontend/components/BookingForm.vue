@@ -509,4 +509,58 @@ const onSubmit = async () => {
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+/* ─── Responsive booking bar ─── */
+/* Tablet / small-laptop: 2-column field grid so the bar isn't a tall stack */
+@media (min-width: 768px) and (max-width: 1099px) {
+  .booking-form--bar .booking-form__bar-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1.5rem;
+    row-gap: 0;
+    align-items: stretch;
+  }
+
+  .booking-form--bar .booking-form__field {
+    padding: 12px 0;
+    border-right: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .booking-form--bar .booking-form__field:nth-child(odd) {
+    padding-right: 1.5rem;
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .booking-form--bar .booking-form__submit-wrap {
+    grid-column: 1 / -1;
+    padding-top: 1rem;
+  }
+
+  .booking-form--bar .booking-form__bar-submit {
+    width: 100%;
+  }
+}
+
+/* Below 1100px the fixed 113px height clips the stacked fields */
+@media (max-width: 1099px) {
+  .booking-form--bar {
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    border-radius: var(--home-radius-md, 16px);
+  }
+}
+
+/* Phones: full-width submit and comfortable field spacing */
+@media (max-width: 767px) {
+  .booking-form--bar .booking-form__bar-submit {
+    width: 100%;
+  }
+
+  .booking-form--bar .booking-form__field {
+    padding: 14px 0;
+  }
+}
 </style>

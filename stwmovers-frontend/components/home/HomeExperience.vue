@@ -2,7 +2,7 @@
 import { homeExperienceTiles } from '~/data/homeContent'
 
 const AUTOPLAY_SPEED = 1
-const RESUME_DELAY_MS = 2000
+const RESUME_DELAY_MS = 1000
 
 const trackRef = ref<HTMLElement | null>(null)
 const line1Ref = ref<HTMLElement | null>(null)
@@ -28,6 +28,12 @@ function syncHeadingLine2Width() {
   const line1 = line1Ref.value
   const line2 = line2Ref.value
   if (!line1 || !line2) return
+
+  // On mobile the heading wraps naturally; don't pin line 2 to line 1's width.
+  if (window.matchMedia('(max-width: 767px)').matches) {
+    line2.style.width = ''
+    return
+  }
 
   line2.style.width = `${line1.getBoundingClientRect().width}px`
 }
@@ -219,6 +225,7 @@ onUnmounted(() => {
               :aria-hidden="index >= homeExperienceTiles.length ? 'true' : undefined"
               :aria-label="`${(index % homeExperienceTiles.length) + 1} of ${homeExperienceTiles.length}: ${tile.title}`"
             >
+              <!-- Bundled (?url) asset — keep as <img>; @nuxt/image IPX can't process build-asset URLs -->
               <img
                 :src="tile.image"
                 :alt="`${tile.title} — STW Movers Barcelona chauffeur service`"

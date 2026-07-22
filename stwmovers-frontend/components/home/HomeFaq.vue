@@ -35,7 +35,7 @@ const toggle = (index: number) => {
         >
           {{ item.q }}
           <span class="home-icon-wrap home-faq__icon">
-            <img class="home-icon" src="/img/home/icons/plus.svg" alt="" width="20" height="20" />
+            <NuxtImg class="home-icon" src="/img/home/icons/plus.svg" alt="" width="20" height="20" />
           </span>
         </button>
         <div v-show="openIndex === index" class="home-faq__panel">

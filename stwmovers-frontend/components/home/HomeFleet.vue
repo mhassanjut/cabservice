@@ -171,7 +171,7 @@ onBeforeUnmount(() => {
           @click="goPrev"
         >
           <span class="home-icon-wrap home-fleet__nav-icon">
-            <img class="home-icon" src="/img/home/icons/arrow-back.svg" alt="" width="17" height="17" />
+            <NuxtImg class="home-icon" src="/img/home/icons/arrow-back.svg" alt="" width="17" height="17" />
           </span>
         </button>
         <button
@@ -182,7 +182,7 @@ onBeforeUnmount(() => {
           @click="goNext"
         >
           <span class="home-icon-wrap home-fleet__nav-icon home-fleet__nav-icon--next">
-            <img class="home-icon" src="/img/home/icons/arrow-back.svg" alt="" width="17" height="17" />
+            <NuxtImg class="home-icon" src="/img/home/icons/arrow-back.svg" alt="" width="17" height="17" />
           </span>
         </button>
       </div>
@@ -201,13 +201,13 @@ onBeforeUnmount(() => {
             <div class="home-fleet__card-meta">
               <span class="home-fleet__badge">
                 <span class="home-icon-wrap home-fleet__badge-icon home-fleet__badge-icon--person">
-                  <img class="home-icon" src="/img/home/icons/person.svg" alt="" width="20" height="20" />
+                  <NuxtImg class="home-icon" src="/img/home/icons/person.svg" alt="" width="20" height="20" />
                 </span>
                 <span class="home-fleet__badge-value">{{ vehicle.seats }}</span>
               </span>
               <span class="home-fleet__badge">
                 <span class="home-icon-wrap home-fleet__badge-icon home-fleet__badge-icon--work">
-                  <img class="home-icon" src="/img/home/icons/work.svg" alt="" width="17" height="17" />
+                  <NuxtImg class="home-icon" src="/img/home/icons/work.svg" alt="" width="17" height="17" />
                 </span>
                 <span class="home-fleet__badge-value">{{ vehicle.bags }}</span>
               </span>
@@ -215,7 +215,7 @@ onBeforeUnmount(() => {
           </div>
 
           <div class="home-fleet__card-media">
-            <img
+            <NuxtImg
               class="home-fleet__card-image"
               :src="vehicle.image"
               :alt="`${vehicle.name} — executive chauffeur vehicle Barcelona`"
@@ -224,12 +224,12 @@ onBeforeUnmount(() => {
             />
           </div>
 
-          <a class="home-fleet__card-cta" :href="routes.cars">
+          <NuxtLink class="home-fleet__card-cta" :to="routes.cars">
             Book Now
             <span class="home-fleet__card-cta-icon">
-              <img class="home-icon" src="/img/home/icons/arrow-outward-light.svg" alt="" width="17" height="17" />
+              <NuxtImg class="home-icon" src="/img/home/icons/arrow-outward-light.svg" alt="" width="17" height="17" />
             </span>
-          </a>
+          </NuxtLink>
         </article>
       </div>
 

@@ -14,7 +14,7 @@ import { homeValueProps } from '~/data/homeContent'
       <div class="home-values__grid">
         <article v-for="item in homeValueProps" :key="item.title" class="home-value">
           <span class="home-icon-wrap home-value__icon">
-            <img class="home-icon" :src="item.icon" alt="" width="32" height="32" loading="lazy" />
+            <NuxtImg class="home-icon" :src="item.icon" alt="" width="32" height="32" loading="lazy" />
           </span>
           <h3 class="home-value__title">{{ item.title }}</h3>
           <p class="home-value__text">{{ item.text }}</p>

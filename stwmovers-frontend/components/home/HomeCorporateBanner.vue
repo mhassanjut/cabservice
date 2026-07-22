@@ -1,13 +1,14 @@
 <template>
   <section class="home-corporate" aria-labelledby="corporate-heading">
     <div class="home-corporate__media" aria-hidden="true">
-      <img
+      <NuxtImg
         src="/img/home/corporate-banner.jpg"
         alt=""
         loading="lazy"
         decoding="async"
         width="1440"
         height="612"
+        sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw"
       />
       <div class="home-corporate__overlay" />
     </div>
