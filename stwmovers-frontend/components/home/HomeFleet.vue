@@ -105,7 +105,7 @@ watch(activeTab, () => {
   })
 })
 
-watch(totalPages, (pages) => {
+watch(totalPages, (pages: number) => {
   if (activePage.value > pages - 1) {
     activePage.value = Math.max(0, pages - 1)
     nextTick(() => scrollToPage(activePage.value))
