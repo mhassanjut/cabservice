@@ -360,6 +360,8 @@
   z-index: 0;
   height: var(--home-hero-height);
   overflow: hidden;
+  /* Dark fallback so a not-yet-loaded slide never flashes white on first load. */
+  background-color: #0a0a0c;
 }
 
 .home-hero__media img {
@@ -390,6 +392,16 @@
   object-fit: cover;
   pointer-events: none;
   user-select: none;
+}
+
+/* The global prefers-reduced-motion rule crushes every transition to ~0ms,
+   which turns the hero crossfade into a hard flash and can stall Swiper's
+   autoplay at the loop boundary. Keep a gentle fade here so slides change
+   smoothly instead of flashing. */
+@media (prefers-reduced-motion: reduce) {
+  .home-hero__swiper .swiper-slide {
+    transition-duration: 850ms !important;
+  }
 }
 
 .home-hero__overlay {
