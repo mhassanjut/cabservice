@@ -18,7 +18,7 @@ const localError = ref('')
 
 watch(
   () => props.show,
-  (open) => {
+  (open: boolean) => {
     if (open) {
       phone.value = props.initialPhone ?? ''
       localError.value = ''
@@ -28,7 +28,7 @@ watch(
 
 watch(
   () => props.initialPhone,
-  (value) => {
+  (value: string | undefined) => {
     if (props.show && !phone.value) phone.value = value ?? ''
   },
 )
@@ -39,7 +39,7 @@ const onKeydown = (event: KeyboardEvent) => {
 
 watch(
   () => props.show,
-  (open) => {
+  (open: boolean) => {
     if (!import.meta.client) return
     document.body.style.overflow = open ? 'hidden' : ''
     if (open) {

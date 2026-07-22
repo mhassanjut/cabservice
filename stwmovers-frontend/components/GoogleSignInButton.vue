@@ -20,7 +20,7 @@ onMounted(async () => {
   await mountButton()
 })
 
-watch(isConfigured, async (ready) => {
+watch(isConfigured, async (ready: boolean) => {
   if (ready) await mountButton()
 })
 </script>

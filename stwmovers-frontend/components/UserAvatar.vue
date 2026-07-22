@@ -18,7 +18,7 @@ const initial = computed(() => {
   return label.charAt(0).toUpperCase() || 'U'
 })
 
-watch(resolvedSrc, (url) => {
+watch(resolvedSrc, (url: string) => {
   showPhoto.value = Boolean(url)
 })
 

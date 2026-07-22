@@ -46,7 +46,7 @@ onMounted(async () => {
   if (auth.isLoggedIn) step.value = 'done'
 })
 
-watch(guest, (value) => {
+watch(guest, (value: { fullName: string; email: string; phone: string }) => {
   if (auth.isLoggedIn) return
   const payload = {
     fullName: value.fullName.trim(),

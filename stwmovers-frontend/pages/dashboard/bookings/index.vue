@@ -33,9 +33,9 @@ onMounted(async () => {
 
 const filtered = computed(() => {
   const items = list.value?.content ?? []
-  if (filter.value === 'upcoming') return items.filter((b) => upcoming.includes(b.status))
-  if (filter.value === 'completed') return items.filter((b) => completed.includes(b.status))
-  if (filter.value === 'cancelled') return items.filter((b) => cancelled.includes(b.status))
+  if (filter.value === 'upcoming') return items.filter((b: BookingDto) => upcoming.includes(b.status))
+  if (filter.value === 'completed') return items.filter((b: BookingDto) => completed.includes(b.status))
+  if (filter.value === 'cancelled') return items.filter((b: BookingDto) => cancelled.includes(b.status))
   return items
 })
 

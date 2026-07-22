@@ -3,7 +3,7 @@ const model = defineModel<string>({ default: '' })
 const digits = ref(['', '', '', '', '', ''])
 const inputs = ref<HTMLInputElement[]>([])
 
-watch(digits, (d) => {
+watch(digits, (d: string[]) => {
   model.value = d.join('')
 }, { deep: true })
 

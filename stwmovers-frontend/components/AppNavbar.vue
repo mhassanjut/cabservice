@@ -25,7 +25,7 @@ onUnmounted(() => {
   window.removeEventListener('scroll', onScroll)
 })
 
-watch(menuOpen, (open) => {
+watch(menuOpen, (open: boolean) => {
   if (import.meta.client) document.body.style.overflow = open ? 'hidden' : ''
 })
 

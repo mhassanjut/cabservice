@@ -17,7 +17,7 @@ const onKeydown = (event: KeyboardEvent) => {
 
 watch(
   () => props.show,
-  async (open) => {
+  async (open: boolean) => {
     if (!import.meta.client) return
     document.body.style.overflow = open ? 'hidden' : ''
     if (open) {
