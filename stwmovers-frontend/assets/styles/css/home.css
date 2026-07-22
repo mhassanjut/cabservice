@@ -88,8 +88,10 @@
 }
 
 .site-root--home .app-nav__link {
-  padding: 0;
+  position: relative;
+  padding: 12px 16px;
   border-radius: 0;
+  border-bottom: 1px solid transparent;
   font-family: var(--nav-font);
   font-size: 14px;
   font-weight: 500;
@@ -101,10 +103,17 @@
   white-space: nowrap;
 }
 
-.site-root--home .app-nav__link:hover,
-.site-root--home .app-nav__link.router-link-active {
+.site-root--home .app-nav__link:hover {
   color: #fff;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Active page — matches Figma frame: gradient fill + 1px white bottom border */
+.site-root--home .app-nav__link.router-link-exact-active {
+  padding: 12px 32px;
+  color: #fff;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.18) 100%);
+  border-bottom: 1px solid #ffffff;
 }
 
 .site-root--home .app-nav.is-scrolled {

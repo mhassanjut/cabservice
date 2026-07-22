@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { homeAnchors, routes } from '~/constants/routes'
+import { homeAnchors, routes, PRIMARY_NAV_PATHS } from '~/constants/routes'
 import logoUrl from '~/assets/icons/Logo.svg?url'
 
 const auth = useAuthStore()
@@ -9,7 +9,9 @@ const scrolled = ref(false)
 const isMobile = useIsMobile()
 const { open: openSignIn } = useCustomerSignIn()
 
-const isHome = computed(() => route.path === '/')
+const isPrimaryNav = computed(() =>
+  (PRIMARY_NAV_PATHS as readonly string[]).includes(route.path),
+)
 
 const onScroll = () => {
   scrolled.value = window.scrollY > 24
@@ -45,11 +47,11 @@ const closeMenu = () => {
 <template>
   <header
     class="app-nav"
-    :class="{ 'is-scrolled': scrolled, 'app-nav--home': isHome }"
+    :class="{ 'is-scrolled': scrolled, 'app-nav--home': isPrimaryNav }"
     role="banner"
   >
     <img
-      v-if="isHome"
+      v-if="isPrimaryNav"
       class="app-nav__figma-bg"
       src="/img/home/navbar-bg.jpg"
       alt=""
@@ -71,7 +73,7 @@ const closeMenu = () => {
 
       <div class="app-nav__cluster">
         <nav class="app-nav__links" aria-label="Primary">
-          <template v-if="isHome">
+          <template v-if="isPrimaryNav">
             <NuxtLink class="app-nav__link" to="/">Home</NuxtLink>
             <NuxtLink class="app-nav__link" to="/services">Services</NuxtLink>
             <NuxtLink class="app-nav__link" to="/about-us">About Us</NuxtLink>
@@ -88,8 +90,8 @@ const closeMenu = () => {
         </nav>
 
         <div class="app-nav__actions">
-          <p v-if="auth.isLoggedIn && !isHome" class="app-nav__greeting">Hi, {{ auth.firstName }}</p>
-          <AppUserMenu :mobile-sheet="isMobile" :login-variant="isHome ? 'outline' : 'default'" />
+          <p v-if="auth.isLoggedIn && !isPrimaryNav" class="app-nav__greeting">Hi, {{ auth.firstName }}</p>
+          <AppUserMenu :mobile-sheet="isMobile" :login-variant="isPrimaryNav ? 'outline' : 'default'" />
           <a class="app-nav__journey-cta app-nav__action-btn" :href="homeAnchors.booking">
             Book Your Journey
           </a>
@@ -131,7 +133,7 @@ const closeMenu = () => {
         >
           Your booking
         </NuxtLink>
-        <template v-if="isHome">
+        <template v-if="isPrimaryNav">
           <a class="app-nav__drawer-link" :href="homeAnchors.experience" @click="closeMenu">Experience</a>
           <a class="app-nav__drawer-link" :href="homeAnchors.journeys" @click="closeMenu">Journeys</a>
           <NuxtLink class="app-nav__drawer-link" :to="routes.tours" @click="closeMenu">Tours</NuxtLink>
