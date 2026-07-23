@@ -55,6 +55,7 @@ function cardSizes(columnSpan: number): string {
           :alt="`${card.title} private transfer`"
           loading="lazy"
           decoding="async"
+          placeholder
           width="302"
           height="220"
           :sizes="cardSizes(card.columnSpan)"

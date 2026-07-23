@@ -49,9 +49,10 @@ function cardStyle(card: HomeJourneyCard, group: { width: number; height: number
               :alt="`${card.title} — Barcelona destination`"
               loading="lazy"
               decoding="async"
+              placeholder
               width="209"
               height="300"
-              sizes="209px"
+              sizes="xs:45vw sm:220px md:220px lg:220px xl:220px xxl:220px"
             />
             <div class="home-journey-card__overlay">
               <span class="home-journey-card__btn">
@@ -81,9 +82,10 @@ function cardStyle(card: HomeJourneyCard, group: { width: number; height: number
               :alt="`${card.title} — Barcelona destination`"
               loading="lazy"
               decoding="async"
+              placeholder
               width="209"
               height="300"
-              sizes="209px"
+              sizes="xs:45vw sm:220px md:220px lg:220px xl:220px xxl:220px"
             />
             <div class="home-journey-card__overlay">
               <span class="home-journey-card__btn">

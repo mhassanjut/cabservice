@@ -221,6 +221,10 @@ onBeforeUnmount(() => {
               :alt="`${vehicle.name} — executive chauffeur vehicle Barcelona`"
               loading="lazy"
               decoding="async"
+              placeholder
+              width="900"
+              height="600"
+              sizes="xs:90vw sm:90vw md:45vw lg:45vw xl:600px xxl:600px"
             />
           </div>
 

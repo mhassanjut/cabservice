@@ -6,6 +6,23 @@ export default defineNuxtConfig({
   modules: ['@pinia/nuxt', '@nuxt/image'],
   css: ['~/assets/styles/css/main.css', '~/assets/styles/css/home.css'],
 
+  image: {
+    // Serve modern formats when the browser supports them, fall back gracefully.
+    format: ['webp', 'jpg'],
+    quality: 78,
+    // Breakpoints used to generate srcset. Must be screen-prefixed in `sizes`.
+    screens: {
+      xs: 320,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+      xxl: 1536,
+    },
+    // Reasonable presets for repeated card imagery.
+    densities: [1, 2],
+  },
+
   // Avoid dev.json / #app-manifest errors after `nuxt generate` or stale Vite cache.
   experimental: {
     appManifest: false,

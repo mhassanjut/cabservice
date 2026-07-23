@@ -823,6 +823,8 @@
   aspect-ratio: 208.5 / 300;
   border-radius: 10px;
   overflow: hidden;
+  /* Neutral tone shown until the blurred placeholder / full image paints. */
+  background: #e9e9ec;
 }
 
 .home-journey-card__photo {
@@ -1616,6 +1618,8 @@
 .home-corporate__media {
   position: absolute;
   inset: 0;
+  /* Dark base to match the overlay while the banner loads. */
+  background: #14140f;
 }
 
 .home-corporate__media img {
@@ -1815,6 +1819,8 @@
   inset: 0;
   border-radius: 20px;
   overflow: hidden;
+  /* Dark base to match the overlay while the banner loads. */
+  background: #14140f;
 }
 
 .home-cta__media img {

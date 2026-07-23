@@ -12,6 +12,7 @@ import { homeAnchors } from '~/constants/routes'
           alt=""
           loading="lazy"
           decoding="async"
+          placeholder
           width="1440"
           height="854"
           sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw"

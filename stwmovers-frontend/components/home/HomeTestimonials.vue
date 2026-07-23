@@ -17,9 +17,10 @@
             alt="STW Movers guest portrait"
             loading="lazy"
             decoding="async"
+            placeholder
             width="187"
             height="162"
-            sizes="187px"
+            sizes="xs:187px sm:187px md:187px lg:187px xl:187px xxl:187px"
           />
         </div>
         <div class="home-testimonials__author-meta">
