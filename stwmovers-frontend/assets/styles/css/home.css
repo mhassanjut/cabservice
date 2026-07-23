@@ -517,6 +517,8 @@
 }
 
 .home-experience__carousel-viewport {
+  --home-experience-tile-gap: 1.5rem;
+
   min-width: 0;
   width: 100%;
   overflow: hidden;
@@ -580,16 +582,36 @@
   text-align: left;
 }
 
-.home-experience__carousel {
-  width: 100%;
-  min-width: 0;
-  overflow: hidden;
+.home-experience__marquee-track {
+  display: flex;
+  width: max-content;
+  align-items: flex-start;
+  animation: home-experience-marquee 13s linear infinite;
+  will-change: transform;
 }
 
-/* Continuous, constant-speed marquee scroll (no easing between slides). */
-.home-experience__carousel .swiper-wrapper {
-  align-items: flex-start;
-  transition-timing-function: linear;
+/* Equal spacing between every tile, including across the loop seam (translateX -50%). */
+.home-experience__marquee-track .home-experience__tile {
+  margin-right: var(--home-experience-tile-gap);
+  width: 39.25rem;
+  max-width: none;
+}
+
+@keyframes home-experience-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-experience__marquee-track {
+    animation-duration: 13s !important;
+    animation-iteration-count: infinite !important;
+  }
 }
 
 .home-experience__tile {
@@ -668,6 +690,10 @@
     height: clamp(16rem, 60vw, 22rem);
   }
 
+  .home-experience__marquee-track .home-experience__tile {
+    width: min(85vw, 20rem);
+  }
+
   .home-experience__tile-copy {
     left: 1.25rem;
     right: 1.25rem;
@@ -701,6 +727,11 @@
   }
 
   .home-experience__tile {
+    flex: 0 0 39.25rem;
+    width: 39.25rem;
+  }
+
+  .home-experience__marquee-track .home-experience__tile {
     flex: 0 0 39.25rem;
     width: 39.25rem;
   }

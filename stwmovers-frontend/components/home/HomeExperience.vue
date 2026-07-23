@@ -1,21 +1,10 @@
 <script setup lang="ts">
-import { Swiper, SwiperSlide } from 'swiper/vue'
-import { Autoplay } from 'swiper/modules'
-import 'swiper/css'
 import { homeExperienceTiles } from '~/data/homeContent'
 
 const line1Ref = ref<HTMLElement | null>(null)
 const line2Ref = ref<HTMLElement | null>(null)
 
-const swiperModules = [Autoplay]
-
-// Continuous marquee: lower speed (ms per slide) = faster scroll.
-const MARQUEE_SPEED = 4200
-
-const autoplayOptions = {
-  delay: 0,
-  disableOnInteraction: false,
-}
+const marqueeTiles = computed(() => [...homeExperienceTiles, ...homeExperienceTiles])
 
 let headingResizeObserver: ResizeObserver | null = null
 
@@ -24,7 +13,6 @@ function syncHeadingLine2Width() {
   const line2 = line2Ref.value
   if (!line1 || !line2) return
 
-  // On mobile the heading wraps naturally; don't pin line 2 to line 1's width.
   if (window.matchMedia('(max-width: 767px)').matches) {
     line2.style.width = ''
     return
@@ -65,27 +53,20 @@ onUnmounted(() => {
             </p>
           </div>
         </div>
-        <div class="home-experience__carousel-viewport">
-          <Swiper
-            class="home-experience__carousel"
-            :modules="swiperModules"
-            slides-per-view="auto"
-            :space-between="24"
-            :loop="true"
-            :speed="MARQUEE_SPEED"
-            :autoplay="autoplayOptions"
-            :allow-touch-move="false"
-            role="region"
-            aria-roledescription="carousel"
-            aria-label="Experience services"
-          >
-            <SwiperSlide
-              v-for="(tile, index) in homeExperienceTiles"
-              :key="tile.title"
+        <div class="home-experience__carousel-viewport" role="region" aria-label="Experience services">
+          <div class="home-experience__marquee-track">
+            <div
+              v-for="(tile, index) in marqueeTiles"
+              :key="`${tile.title}-${index}`"
               class="home-experience__tile"
               :style="{ '--tile-height': `${tile.height}px` }"
-              role="group"
-              :aria-label="`${index + 1} of ${homeExperienceTiles.length}: ${tile.title}`"
+              :aria-hidden="index >= homeExperienceTiles.length ? true : undefined"
+              :role="index < homeExperienceTiles.length ? 'group' : undefined"
+              :aria-label="
+                index < homeExperienceTiles.length
+                  ? `${index + 1} of ${homeExperienceTiles.length}: ${tile.title}`
+                  : undefined
+              "
             >
               <!-- Bundled (?url) asset — keep as <img>; @nuxt/image IPX can't process build-asset URLs -->
               <img
@@ -102,8 +83,8 @@ onUnmounted(() => {
                 <h3>{{ tile.title }}</h3>
                 <p>{{ tile.subtitle }}</p>
               </div>
-            </SwiperSlide>
-          </Swiper>
+            </div>
+          </div>
         </div>
       </div>
     </div>
