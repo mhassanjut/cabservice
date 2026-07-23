@@ -14,18 +14,18 @@ export type HomeLocationCard = {
 
 /** Transfer routes only — tour cards from Figma are filtered out at render time */
 export const homeLocationCards: HomeLocationCard[] = [
-  { id: 'santa-susanna', title: 'Barcelona to Santa Susanna', image: '/img/home/location-santa-susanna.jpg', tall: true, type: 'transfer' },
-  { id: 'empuriabrava', title: 'Barcelona to Empuriabrava', image: '/img/home/location-empuriabrava.jpg', type: 'transfer' },
-  { id: 'costa-brava', title: 'Barcelona to Costa Brava', image: '/img/home/location-costa-brava.jpg', wide: true, tall: true, type: 'transfer' },
-  { id: 'palamos', title: 'Barcelona to Palamós', image: '/img/home/location-palamos.jpg', type: 'transfer' },
-  { id: 'begur', title: 'Barcelona to Begur', image: '/img/home/location-begur.jpg', wide: true, tall: true, type: 'transfer' },
-  { id: 'calella', title: 'Barcelona to Calella', image: '/img/home/location-calella.jpg', type: 'transfer' },
-  { id: 'vilanova', title: 'Barcelona to Vilanova i la Geltrú', image: '/img/home/location-vilanova.jpg', type: 'transfer' },
-  { id: 'calafell', title: 'Barcelona to Calafell', image: '/img/home/location-calafell.jpg', type: 'transfer' },
-  { id: 'segur-calafell', title: 'Barcelona to Segur de Calafell', image: '/img/home/location-segur-calafell.jpg', type: 'transfer' },
-  { id: 'salou', title: 'Barcelona to Salou', image: '/img/home/location-salou.jpg', type: 'transfer' },
-  { id: 'portaventura', title: 'Barcelona to PortAventura', image: '/img/home/location-portaventura.jpg', type: 'transfer' },
-  { id: 'blanes', title: 'Barcelona to Blanes', image: '/img/home/location-blanes.jpg', type: 'transfer' },
+  { id: 'santa-susanna', title: 'Barcelona to Santa Susanna', image: '/img/home/_original/location-santa-susanna.jpg', tall: true, type: 'transfer' },
+  { id: 'empuriabrava', title: 'Barcelona to Empuriabrava', image: '/img/home/_original/location-empuriabrava.jpg', type: 'transfer' },
+  { id: 'costa-brava', title: 'Barcelona to Costa Brava', image: '/img/home/_original/location-costa-brava.jpg', wide: true, tall: true, type: 'transfer' },
+  { id: 'palamos', title: 'Barcelona to Palamós', image: '/img/home/_original/location-palamos.jpg', type: 'transfer' },
+  { id: 'begur', title: 'Barcelona to Begur', image: '/img/home/_original/location-begur.jpg', wide: true, tall: true, type: 'transfer' },
+  { id: 'calella', title: 'Barcelona to Calella', image: '/img/home/_original/location-calella.jpg', type: 'transfer' },
+  { id: 'vilanova', title: 'Barcelona to Vilanova i la Geltrú', image: '/img/home/_original/location-vilanova.jpg', type: 'transfer' },
+  { id: 'calafell', title: 'Barcelona to Calafell', image: '/img/home/_original/location-calafell.jpg', type: 'transfer' },
+  { id: 'segur-calafell', title: 'Barcelona to Segur de Calafell', image: '/img/home/_original/location-segur-calafell.jpg', type: 'transfer' },
+  { id: 'salou', title: 'Barcelona to Salou', image: '/img/home/_original/location-salou.jpg', type: 'transfer' },
+  { id: 'portaventura', title: 'Barcelona to PortAventura', image: '/img/home/_original/location-portaventura.jpg', type: 'transfer' },
+  { id: 'blanes', title: 'Barcelona to Blanes', image: '/img/home/_original/location-blanes.jpg', type: 'transfer' },
 ]
 
 export const homeExperienceTiles = [
@@ -68,14 +68,14 @@ export const homeJourneyGroupBottom = JOURNEY_GROUP_BOTTOM
 export const homeJourneyCardSize = JOURNEY_CARD
 
 export const homeJourneyCards: HomeJourneyCard[] = [
-  { id: 'la-rambla', title: 'La Rambla', image: '/img/home/journey-la-rambla.jpg', group: 'top', left: 482.99, top: 0 },
-  { id: 'montjuic', title: 'Montjuïc', image: '/img/home/journey-montjuic.jpg', group: 'top', left: 312.75, top: 103 },
-  { id: 'sagrada', title: 'Sagrada Familia', image: '/img/home/journey-sagrada.jpg', group: 'top', left: 0, top: 72 },
-  { id: 'park-guell', title: 'Park Güell', image: '/img/home/journey-park-guell.jpg', group: 'top', left: 143.25, top: 180.58 },
-  { id: 'camp-nou', title: 'Camp Nou', image: '/img/home/journey-camp-nou.jpg', group: 'bottom', left: 415, top: 28 },
-  { id: 'casa-batllo', title: 'Casa Batlló', image: '/img/home/journey-casa-batllo.jpg', group: 'bottom', left: 0, top: 0 },
-  { id: 'gothic', title: 'Gothic Quarter', image: '/img/home/journey-gothic.jpg', group: 'bottom', left: 137.5, top: 106 },
-  { id: 'barceloneta', title: 'Barceloneta Beach', image: '/img/home/journey-barceloneta.jpg', group: 'bottom', left: 284.25, top: 198 },
+  { id: 'la-rambla', title: 'La Rambla', image: '/img/home/_original/journey-la-rambla.jpg', group: 'top', left: 482.99, top: 0 },
+  { id: 'montjuic', title: 'Montjuïc', image: '/img/home/_original/journey-montjuic.jpg', group: 'top', left: 312.75, top: 103 },
+  { id: 'sagrada', title: 'Sagrada Familia', image: '/img/home/_original/journey-sagrada.jpg', group: 'top', left: 0, top: 72 },
+  { id: 'park-guell', title: 'Park Güell', image: '/img/home/_original/journey-park-guell.jpg', group: 'top', left: 143.25, top: 180.58 },
+  { id: 'camp-nou', title: 'Camp Nou', image: '/img/home/_original/journey-camp-nou.jpg', group: 'bottom', left: 415, top: 28 },
+  { id: 'casa-batllo', title: 'Casa Batlló', image: '/img/home/_original/journey-casa-batllo.jpg', group: 'bottom', left: 0, top: 0 },
+  { id: 'gothic', title: 'Gothic Quarter', image: '/img/home/_original/journey-gothic.jpg', group: 'bottom', left: 137.5, top: 106 },
+  { id: 'barceloneta', title: 'Barceloneta Beach', image: '/img/home/_original/journey-barceloneta.jpg', group: 'bottom', left: 284.25, top: 198 },
 ]
 
 export const homeValueProps = [
@@ -153,13 +153,13 @@ export type HomeFleetVehicle = {
   categories: HomeFleetCategory[]
 }
 
-/** Homepage fleet cards — optimized PNGs rasterized from homepage-fleet-section */
+/** Homepage fleet cards — original SVGs from homepage-fleet-section */
 export const homeFleetVehicles: HomeFleetVehicle[] = [
   {
     id: 'mercedes-e-class',
     backendId: 'c0000001-0000-0000-0000-000000000004',
     name: 'Mercedes E Class',
-    image: '/img/home/fleet-section/Mercedes E Class 2.png',
+    image: '/img/home/fleet-section/_original/Mercedes E Class 2.svg',
     seats: 4,
     bags: 3,
     categories: ['business-class', 'first-class'],
@@ -168,7 +168,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'mercedes-s-class',
     backendId: 'c0000001-0000-0000-0000-000000000005',
     name: 'Mercedes S Class',
-    image: '/img/home/fleet-section/Mercedes S Class 2.png',
+    image: '/img/home/fleet-section/_original/Mercedes S Class 2.svg',
     seats: 4,
     bags: 3,
     categories: ['first-class', 'aviation'],
@@ -177,7 +177,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'mercedes-v-class',
     backendId: 'c0000001-0000-0000-0000-000000000002',
     name: 'Mercedes V Class',
-    image: '/img/home/fleet-section/Mercedes V Class 2.png',
+    image: '/img/home/fleet-section/_original/Mercedes V Class 2.svg',
     seats: 7,
     bags: 6,
     categories: ['business-van', 'first-class'],
@@ -186,7 +186,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'mercedes-vito-van',
     backendId: 'c0000001-0000-0000-0000-000000000001',
     name: 'Mercedes Vito Van',
-    image: '/img/home/fleet-section/Mercedes Vito Van 2.png',
+    image: '/img/home/fleet-section/_original/Mercedes Vito Van 2.svg',
     seats: 7,
     bags: 6,
     categories: ['business-van'],
@@ -195,7 +195,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'mercedes-van',
     backendId: 'c0000001-0000-0000-0000-000000000003',
     name: 'Mercedes Van',
-    image: '/img/home/fleet-section/Mercedes Van 2.png',
+    image: '/img/home/fleet-section/_original/Mercedes Van 2.svg',
     seats: 8,
     bags: 7,
     categories: ['mini-bus', 'bus'],
@@ -204,7 +204,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'tesla-model-s',
     backendId: 'c0000001-0000-0000-0000-000000000006',
     name: 'Tesla Model S',
-    image: '/img/home/fleet-section/Tesla Model S 2.png',
+    image: '/img/home/fleet-section/_original/Tesla Model S 2.svg',
     seats: 4,
     bags: 3,
     categories: ['business-class'],
@@ -213,7 +213,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'hyundai-ioniq',
     backendId: 'c0000001-0000-0000-0000-000000000007',
     name: 'Hyundai Ioniq',
-    image: '/img/home/fleet-section/Hyundai Ioniq 2.png',
+    image: '/img/home/fleet-section/_original/Hyundai Ioniq 2.svg',
     seats: 4,
     bags: 3,
     categories: ['business-class'],
@@ -222,7 +222,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'toyota-corolla',
     backendId: 'c0000001-0000-0000-0000-000000000008',
     name: 'Toyota Corolla Familiar',
-    image: '/img/home/fleet-section/Toyota Corolla Familiar 2.png',
+    image: '/img/home/fleet-section/_original/Toyota Corolla Familiar 2.svg',
     seats: 4,
     bags: 3,
     categories: ['business-class'],
@@ -230,7 +230,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
   {
     id: 'byd-seal',
     name: 'BYD Seal',
-    image: '/img/home/fleet-section/BYD SEAL 2.png',
+    image: '/img/home/fleet-section/_original/BYD SEAL 2.svg',
     seats: 4,
     bags: 3,
     categories: ['business-class'],
