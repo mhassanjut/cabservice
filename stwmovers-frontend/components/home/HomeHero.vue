@@ -5,9 +5,9 @@ import 'swiper/css'
 import 'swiper/css/effect-fade'
 
 const HERO_SLIDES = [
-  '/img/home/hero-1.png',
-  '/img/home/hero-2.png',
-  '/img/home/hero-3.png',
+  '/img/home/_original/hero-1.png',
+  '/img/home/_original/hero-2.png',
+  '/img/home/_original/hero-3.png',
 ] as const
 
 const swiperModules = [Autoplay, EffectFade]
@@ -43,15 +43,14 @@ const autoplayOptions = {
               :key="src"
               class="home-hero__slide"
             >
-              <NuxtImg
+              <!-- Public originals — plain <img> so @nuxt/image IPX does not recompress -->
+              <img
                 :src="src"
                 alt=""
                 width="1440"
                 height="794"
-                sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw"
                 loading="eager"
                 :fetchpriority="index === 0 ? 'high' : 'low'"
-                preload
                 decoding="async"
                 draggable="false"
               />
@@ -62,15 +61,13 @@ const autoplayOptions = {
                the hero never paints blank before Swiper initializes. -->
           <template #fallback>
             <div class="home-hero__slide">
-              <NuxtImg
+              <img
                 :src="HERO_SLIDES[0]"
                 alt=""
                 width="1440"
                 height="794"
-                sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw"
                 loading="eager"
                 fetchpriority="high"
-                preload
                 decoding="async"
                 draggable="false"
               />
