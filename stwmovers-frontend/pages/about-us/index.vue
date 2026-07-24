@@ -29,6 +29,5 @@ usePageSeo({
 
     <AboutFinalCta />
 
-    <HomeFooter />
   </div>
 </template>

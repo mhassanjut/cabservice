@@ -1,5 +1,6 @@
 <script setup lang="ts">
 useLocalBusinessSchema()
+console.log('Home layout rendered')
 </script>
 
 <template>
@@ -8,6 +9,7 @@ useLocalBusinessSchema()
     <main id="main-content" class="layout-main layout-main--home" role="main">
       <slot />
     </main>
+    <HomeFooter />
     <MobileBottomNav />
     <WhatsappFloatingButton />
     <AppToast />

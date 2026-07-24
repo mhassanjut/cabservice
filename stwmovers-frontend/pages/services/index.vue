@@ -39,7 +39,5 @@ const events = servicesSplitSections.find((section) => section.id === 'special-e
     <ServicesSteps />
 
     <ServicesFinalCta />
-
-    <HomeFooter />
   </div>
 </template>

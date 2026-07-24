@@ -34,9 +34,6 @@ usePageSeo({
 
     <HomeFaq />
 
-    
-
-    <HomeFooter />
 
     <!-- Crawlable SEO keywords — visually hidden -->
     <p class="visually-hidden">

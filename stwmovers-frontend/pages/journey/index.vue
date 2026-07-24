@@ -25,6 +25,5 @@ usePageSeo({
 
     <ContactPromise />
 
-    <HomeFooter />
   </div>
 </template>

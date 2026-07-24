@@ -5,6 +5,7 @@ const route = useRoute()
 const hideSiteFooter = computed(() =>
   ['/confirm', '/payment', '/booking'].includes(route.path),
 )
+console.log('Default layout rendered')
 </script>
 
 <template>
