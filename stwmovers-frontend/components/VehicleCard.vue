@@ -89,7 +89,7 @@ watch(
           :disabled="unavailable || continuing"
           @click.stop="!unavailable && $emit('select')"
         >
-          {{ selected ? 'Continue' : 'Book This Vehicle' }}
+          {{ selected ? 'Selected' : 'Book This Vehicle' }}
         </button>
       </div>
     </div>

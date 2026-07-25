@@ -32,6 +32,18 @@ const notes = computed({
   set: (value: string) => booking.setDraft({ notes: value }),
 })
 
+const notesEl = ref<HTMLTextAreaElement | null>(null)
+
+const syncNotesHeight = () => {
+  const el = notesEl.value
+  if (!el) return
+  el.style.height = 'auto'
+  el.style.height = `${el.scrollHeight}px`
+}
+
+watch(notes, () => nextTick(syncNotesHeight), { flush: 'post' })
+onMounted(syncNotesHeight)
+
 const distance = computed(() =>
   booking.draft.distanceKm ? `${Math.round(booking.draft.distanceKm)} km` : '—',
 )
@@ -107,11 +119,13 @@ const estimatedTime = computed(() => {
           <label class="booking-journey__label" for="journey-notes">Notes</label>
           <textarea
             id="journey-notes"
+            ref="notesEl"
             v-model="notes"
             class="booking-journey__notes"
-            rows="2"
+            rows="1"
             maxlength="500"
             placeholder="Add a note for your chauffeur"
+            @input="syncNotesHeight"
           />
         </div>
       </li>

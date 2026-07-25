@@ -64,7 +64,7 @@ const onFilter = async (f: typeof booking.filters) => {
   await fetchCars()
 }
 
-const selectingId = ref<string | null>(null)
+const checkoutBusy = ref(false)
 
 const navigateToCheckout = async () => {
   if (!booking.vehicle && !booking.otherCar) {
@@ -81,39 +81,33 @@ const navigateToCheckout = async () => {
 }
 
 const goToCheckout = async () => {
-  if (selectingId.value) return
-  selectingId.value = 'checkout'
+  if (checkoutBusy.value) return
+  checkoutBusy.value = true
   try {
     await navigateToCheckout()
   } catch {
     toast.show('Could not open checkout. Please try again.', 'error')
   } finally {
-    selectingId.value = null
+    checkoutBusy.value = false
   }
 }
 
-const select = async (id: string) => {
-  if (selectingId.value) return
-  selectingId.value = id
-  try {
-    if (id === 'other') {
-      booking.setVehicle(null, true)
-    } else {
-      const c = booking.cars.find((x) => x.id === id)
-      if (!c && booking.vehicle?.id !== id) {
-        toast.show('Could not select that vehicle. Please try again.', 'error')
-        return
-      }
-      if (c) {
-        booking.setVehicle(booking.toVehicle(c), false)
-      }
+/** Select a vehicle only — stay on /cars; Continue on BookingSelectionBar advances. */
+const select = (id: string) => {
+  if (checkoutBusy.value) return
+  if (id === 'other') {
+    booking.setVehicle(null, true)
+  } else {
+    const c = booking.cars.find((x) => x.id === id)
+    if (!c && booking.vehicle?.id !== id) {
+      toast.show('Could not select that vehicle. Please try again.', 'error')
+      return
     }
-    await navigateToCheckout()
-  } catch {
-    toast.show('Could not open checkout. Please try again.', 'error')
-  } finally {
-    selectingId.value = null
+    if (c) {
+      booking.setVehicle(booking.toVehicle(c), false)
+    }
   }
+  booking.persistToStorage()
 }
 
 const isSelected = (id: string) => booking.vehicle?.id === id && !booking.otherCar
@@ -167,7 +161,7 @@ const vehicleCount = computed(() => booking.cars.filter((c) => c.available).leng
                 :vehicle="booking.toVehicle(c)"
                 :unavailable="!c.available"
                 :selected="isSelected(c.id)"
-                :continuing="selectingId === c.id || selectingId === 'checkout'"
+                :continuing="checkoutBusy"
                 @select="select(c.id)"
               />
 
@@ -207,13 +201,13 @@ const vehicleCount = computed(() => booking.cars.filter((c) => c.available).leng
       </div>
     </div>
 
-    <LoadingOverlay :show="selectingId === 'checkout'" label="Opening checkout…" />
+    <LoadingOverlay :show="checkoutBusy" label="Opening checkout…" />
 
     <BookingSelectionBar
       v-if="hasSelection"
       :vehicle-name="booking.otherCar ? 'Custom request' : booking.vehicle?.name ?? ''"
       :fare="booking.otherCar ? null : booking.vehicle?.priceEur"
-      :busy="Boolean(selectingId)"
+      :busy="checkoutBusy"
       @continue="goToCheckout"
       @back="router.push(editJourneyLocation)"
     />

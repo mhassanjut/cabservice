@@ -167,11 +167,18 @@
   border-bottom: 1px solid var(--bk-border);
 }
 
+.booking-stepper__inner {
+  display: flex;
+  justify-content: center;
+}
+
 .booking-stepper__list {
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
-  justify-content: center;
+  /* `safe` keeps the row reachable instead of clipping its left edge if the
+     steps ever outgrow the gutter-constrained container. */
+  justify-content: safe center;
   gap: 10px;
   min-height: 56px;
   margin: 0;
@@ -422,19 +429,26 @@
 }
 
 .booking-journey__notes {
+  display: block;
   width: 100%;
-  min-height: 44px;
-  margin-top: 4px;
-  padding: 8px 10px;
-  border: 1px solid var(--bk-border);
-  border-radius: var(--bk-radius-xs);
-  background: var(--bk-surface);
+  min-height: 1.45em;
+  margin: 0;
+  padding: 0 0 2px;
+  border: 0;
+  border-bottom: 1px solid var(--bk-border);
+  border-radius: 0;
+  background: transparent;
+  box-sizing: border-box;
   font-family: var(--bk-font);
   font-size: 0.875rem;
   font-weight: 500;
   line-height: 1.45;
   color: var(--bk-text);
-  resize: vertical;
+  resize: none;
+  overflow: hidden;
+  outline: none;
+  field-sizing: content;
+  transition: border-color 0.2s ease;
 }
 
 .booking-journey__notes::placeholder {
@@ -442,9 +456,10 @@
   color: var(--bk-muted);
 }
 
+.booking-journey__notes:focus,
 .booking-journey__notes:focus-visible {
-  outline: 2px solid var(--bk-gold);
-  outline-offset: -1px;
+  border-bottom-color: var(--bk-gold);
+  outline: none;
 }
 
 .booking-journey__metrics {

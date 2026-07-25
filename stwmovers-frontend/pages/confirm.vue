@@ -266,6 +266,7 @@ const newRide = () => {
               <BookingLiveStatus :status="data.status" />
             </article>
 
+            <!-- Guest Google upsell — hidden for now (not in Figma sovereign-booking-confirmation); keep for later
             <article
               v-if="auth.isGuestSession && !auth.isLoggedIn"
               class="checkout-panel__card booking-card confirm-upsell"
@@ -282,6 +283,7 @@ const newRide = () => {
                 View booking as guest
               </NuxtLink>
             </article>
+            -->
           </aside>
         </div>
 
