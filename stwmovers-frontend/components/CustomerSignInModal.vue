@@ -2,13 +2,16 @@
 const { isOpen, redirectTo, close } = useCustomerSignIn()
 const auth = useAuthStore()
 
+const isCustomerLoggedIn = computed(() => auth.isLoggedIn && auth.role === 'CUSTOMER')
+const showModal = computed(() => isOpen.value && !isCustomerLoggedIn.value)
+
 onMounted(() => auth.hydrate())
 
 const onKeydown = (event: KeyboardEvent) => {
   if (event.key === 'Escape') close()
 }
 
-watch(isOpen, (open: boolean) => {
+watch(showModal, (open: boolean) => {
   if (!import.meta.client) return
   document.body.style.overflow = open ? 'hidden' : ''
   if (open) {
@@ -28,7 +31,7 @@ onBeforeUnmount(() => {
 <template>
   <Teleport to="body">
     <div
-      v-if="isOpen && !auth.isLoggedIn"
+      v-if="showModal"
       class="sign-in-modal"
       role="dialog"
       aria-modal="true"

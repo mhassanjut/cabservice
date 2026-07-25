@@ -21,8 +21,13 @@ export type CreateBookingPayload = {
 }
 
 export const bookingService = {
-  create(body: CreateBookingPayload, opts?: { auth?: boolean }) {
-    return api<BookingDto>('/api/v1/bookings', { method: 'POST', body, auth: opts?.auth ?? true })
+  create(body: CreateBookingPayload, opts?: { auth?: boolean; silent?: boolean }) {
+    return api<BookingDto>('/api/v1/bookings', {
+      method: 'POST',
+      body,
+      auth: opts?.auth ?? true,
+      silent: opts?.silent,
+    })
   },
   get(reference: string) {
     return api<BookingDto>(`/api/v1/bookings/${reference}`, { auth: false })

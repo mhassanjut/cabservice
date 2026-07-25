@@ -53,12 +53,12 @@ export const seoSections = {
    */
   tours: {
     primaryTopic: 'Private Barcelona tours and chauffeur-driven sightseeing',
-    pageTitle: 'Private Barcelona Tours with Chauffeur',
+    pageTitle: 'Private Tours in Spain with Chauffeur',
     metaDescription:
-      'Private Barcelona tours with chauffeur and Mercedes transport — coming soon. Custom Gaudí sightseeing, Gothic Quarter routes, and Montserrat, Girona & Costa Brava day trips with hotel pickup.',
-    h1: 'Private Barcelona Tours with Your Own Chauffeur',
+      'Private chauffeur-driven tours across Spain — Montserrat, Barcelona highlights, Costa Brava and wine country. Premium Mercedes fleet, flexible itineraries, and hotel pickup on every experience.',
+    h1: 'Discover Spain, One Journey At A Time.',
     lead:
-      'Tailor-made Barcelona sightseeing and Catalonia day trips — same premium Mercedes fleet and English-speaking chauffeurs you trust for airport transfers. Launching soon.',
+      'Explore carefully curated private experiences with professional chauffeurs and premium vehicles. Every tour is designed to combine comfort, flexibility, and unforgettable destinations.',
     keywords: [
       'private Barcelona tour',
       'private tours Barcelona',
@@ -122,16 +122,28 @@ export const seoSections = {
     ],
     faqs: [
       {
-        q: 'What is a private Barcelona tour with chauffeur?',
-        a: 'A private Barcelona tour pairs a dedicated English-speaking chauffeur and premium Mercedes vehicle with an itinerary built around your interests — from Gaudí landmarks to coastal day trips — with no shared groups or fixed bus schedules.',
+        q: 'Can I customize my itinerary?',
+        a: 'Yes. Every tour can be adjusted to your pace, interests and schedule — our concierge team will tailor stops, timing and duration around what matters most to you.',
       },
       {
-        q: 'Can you combine Barcelona sightseeing with Montserrat or Girona?',
-        a: 'Yes. Our coming-soon tour desk will offer full-day private excursions from Barcelona to Montserrat, Girona and the Costa Brava, with hotel or port pickup and a route timed to avoid peak crowds.',
+        q: 'Are entrance tickets included?',
+        a: 'This varies by experience. Check the "Included" and "Not included" details for each tour, or ask our concierge team when you enquire — we can arrange skip-the-line tickets on request.',
       },
       {
-        q: 'How is STW Movers different from standard Barcelona tour companies?',
-        a: 'We extend the same executive chauffeur standards as our airport transfers: Mercedes fleet, transparent communication over WhatsApp, and fully private vehicles — not hop-on hop-off buses or shared minivan tours.',
+        q: 'Can children join the tours?',
+        a: 'Absolutely. Our vehicles are family-friendly and we can arrange child seats on request — just let us know the ages when you book.',
+      },
+      {
+        q: 'Do you offer hotel pickup?',
+        a: 'Yes. Every private tour includes complimentary pickup and drop-off at your hotel, villa or port of arrival within the tour region.',
+      },
+      {
+        q: 'Can multiple destinations be combined?',
+        a: 'Yes. Our concierge team can combine several destinations into a single custom itinerary spanning one or multiple days — just tell us what you would like to see.',
+      },
+      {
+        q: 'What languages are available?',
+        a: 'Our chauffeurs are English-speaking, with Spanish, French and other languages available on request — let us know your preference when enquiring.',
       },
     ],
   },

@@ -10,6 +10,12 @@ import type {
 
   AdminSettingsDto,
 
+  AdminTourDto,
+
+  TourCarPricingDto,
+
+  TourPricingBatchRequest,
+
   BookingDto,
 
   CityListDto,
@@ -133,6 +139,84 @@ export const adminService = {
   },
 
 
+
+  tours: () => api<AdminTourDto[]>('/api/v1/admin/tours', { auth: true }),
+
+  createTour: (body: Partial<AdminTourDto>) =>
+
+    api<AdminTourDto>('/api/v1/admin/tours', { method: 'POST', body, auth: true }),
+
+  updateTour: (id: string, body: Partial<AdminTourDto>) =>
+
+    api<AdminTourDto>(`/api/v1/admin/tours/${id}`, { method: 'PUT', body, auth: true }),
+
+  deleteTour: (id: string) => api<void>(`/api/v1/admin/tours/${id}`, { method: 'DELETE', auth: true }),
+
+  tourPricing: (tourId: string) =>
+    api<TourCarPricingDto[]>(`/api/v1/admin/tours/${tourId}/pricing`, { auth: true }),
+
+  saveTourPricingBatch: (tourId: string, body: TourPricingBatchRequest) =>
+    api<TourCarPricingDto[]>(`/api/v1/admin/tours/${tourId}/pricing/batch`, {
+      method: 'POST',
+      body,
+      auth: true,
+    }),
+
+  uploadTourImage: async (tourId: string, file: File) => {
+    const config = useRuntimeConfig()
+    const auth = useAuthStore()
+    const toast = useToastStore()
+    const body = new FormData()
+    body.append('file', file)
+    try {
+      const res = await $fetch<import('~/types/api').ApiResponse<AdminTourDto>>(
+        `/api/v1/admin/tours/${tourId}/image`,
+        {
+          baseURL: config.public.apiBaseUrl as string,
+          method: 'POST',
+          body,
+          headers: auth.token ? { Authorization: `Bearer ${auth.token}` } : undefined,
+        },
+      )
+      if (!res.success) throw new Error(res.message ?? 'Upload failed')
+      return res.data
+    } catch (e: unknown) {
+      const err = e as { data?: { message?: string }; message?: string; status?: number; statusCode?: number }
+      const msg = err.data?.message ?? err.message
+      if (msg) toast.show(msg, 'error')
+      else if ((err.status ?? err.statusCode) === 400) toast.show('Unsupported image type.', 'error')
+      else toast.show('Could not upload image.', 'error')
+      throw e
+    }
+  },
+
+  uploadTourImageDraft: async (file: File) => {
+    const config = useRuntimeConfig()
+    const auth = useAuthStore()
+    const toast = useToastStore()
+    const body = new FormData()
+    body.append('file', file)
+    try {
+      const res = await $fetch<import('~/types/api').ApiResponse<{ imageUrl: string }>>(
+        '/api/v1/admin/tours/upload-image',
+        {
+          baseURL: config.public.apiBaseUrl as string,
+          method: 'POST',
+          body,
+          headers: auth.token ? { Authorization: `Bearer ${auth.token}` } : undefined,
+        },
+      )
+      if (!res.success) throw new Error(res.message ?? 'Upload failed')
+      return res.data.imageUrl
+    } catch (e: unknown) {
+      const err = e as { data?: { message?: string }; message?: string; status?: number; statusCode?: number }
+      const msg = err.data?.message ?? err.message
+      if (msg) toast.show(msg, 'error')
+      else if ((err.status ?? err.statusCode) === 400) toast.show('Unsupported image type.', 'error')
+      else toast.show('Could not upload image.', 'error')
+      throw e
+    }
+  },
 
   drivers: () => api<AdminDriverDto[]>('/api/v1/admin/drivers', { auth: true }),
 

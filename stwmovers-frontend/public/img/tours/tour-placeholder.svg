@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-label="Tour image unavailable">
+  <defs>
+    <linearGradient id="tour-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e9e6de"/>
+      <stop offset="100%" stop-color="#dcd8cb"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="480" fill="url(#tour-bg)"/>
+  <g fill="none" stroke="#b8925c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.85">
+    <path d="M96 300 L228 172 L308 252 L392 148 L544 300" />
+    <circle cx="452" cy="128" r="26" />
+  </g>
+  <rect x="96" y="300" width="448" height="4" fill="#b8925c" opacity="0.35"/>
+  <text x="320" y="372" text-anchor="middle" fill="#8a8172" font-family="Inter,Segoe UI,sans-serif" font-size="17" letter-spacing="0.08em">TOUR PHOTO</text>
+</svg>

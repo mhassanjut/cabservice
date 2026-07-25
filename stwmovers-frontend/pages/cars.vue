@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { editJourneyLocation, routes } from '~/constants/routes'
 import { ridesService } from '~/services/api/rides.service'
+import { normalizeCarFilters } from '~/utils/carFilters'
 
 const SHOW_CUSTOM_REQUEST = false
 
@@ -11,18 +12,20 @@ usePageSeo({ title: 'Choose your car', path: '/cars' })
 const booking = useBookingStore()
 const router = useRouter()
 const toast = useToastStore()
-const loading = ref(booking.isDraftValid && !booking.cars.length)
+const resultsLoading = ref(booking.isDraftValid && !booking.cars.length)
 const hasFetched = ref(booking.cars.length > 0)
+
+const SKELETON_COUNT = 3
 
 onMounted(async () => {
   if (!booking.isDraftValid) {
-    loading.value = false
+    resultsLoading.value = false
     await router.replace(routes.home)
     return
   }
   if (!booking.cars.length) await fetchCars()
   else {
-    loading.value = false
+    resultsLoading.value = false
     hasFetched.value = true
   }
   if (import.meta.client) window.scrollTo(0, booking.scrollY)
@@ -35,7 +38,7 @@ onBeforeRouteLeave(() => {
 
 const fetchCars = async () => {
   if (!booking.draft.pickup || !booking.draft.dropoff) return
-  loading.value = true
+  resultsLoading.value = true
   try {
     const res = await ridesService.carsWithFare({
       pickupLat: booking.draft.pickup.lat,
@@ -45,13 +48,13 @@ const fetchCars = async () => {
       distanceKm: booking.draft.distanceKm!,
       pickupCity: booking.draft.pickupCity!,
       destinationCity: booking.draft.destinationCity,
-      filters: booking.filters,
+      filters: normalizeCarFilters(booking.filters),
       page: booking.carsPage,
       size: 20,
     })
     booking.setCars(res.content)
   } finally {
-    loading.value = false
+    resultsLoading.value = false
     hasFetched.value = true
   }
 }
@@ -141,11 +144,23 @@ const vehicleCount = computed(() => booking.cars.filter((c) => c.available).leng
             <header class="vehicle-results__head">
               <h2 class="vehicle-results__title">Available Vehicles</h2>
               <p class="vehicle-results__count">
-                {{ loading ? 'Loading vehicles…' : `Showing ${vehicleCount} premium vehicle${vehicleCount === 1 ? '' : 's'}` }}
+                {{
+                  resultsLoading
+                    ? 'Updating vehicles…'
+                    : `Showing ${vehicleCount} premium vehicle${vehicleCount === 1 ? '' : 's'}`
+                }}
               </p>
             </header>
 
-            <div class="vehicle-results__list">
+            <div
+              class="vehicle-results__list"
+              :class="{ 'vehicle-results__list--loading': resultsLoading }"
+              :aria-busy="resultsLoading"
+            >
+              <template v-if="resultsLoading">
+                <VehicleCardSkeleton v-for="n in SKELETON_COUNT" :key="`skeleton-${n}`" />
+              </template>
+              <template v-else>
               <VehicleCard
                 v-for="c in booking.cars"
                 :key="c.id"
@@ -179,10 +194,11 @@ const vehicleCount = computed(() => booking.cars.filter((c) => c.available).leng
                 </div>
               </article>
 
-              <p v-if="hasFetched && !loading && !booking.cars.length" class="vehicle-results__empty">
+              <p v-if="hasFetched && !resultsLoading && !booking.cars.length" class="vehicle-results__empty">
                 <i class="fa-solid fa-car-side" aria-hidden="true" />
                 No vehicles match your filters. Try adjusting passengers or price range.
               </p>
+              </template>
             </div>
           </section>
 
@@ -191,7 +207,7 @@ const vehicleCount = computed(() => booking.cars.filter((c) => c.available).leng
       </div>
     </div>
 
-    <LoadingOverlay :show="loading || selectingId === 'checkout'" label="Opening checkout…" />
+    <LoadingOverlay :show="selectingId === 'checkout'" label="Opening checkout…" />
 
     <BookingSelectionBar
       v-if="hasSelection"

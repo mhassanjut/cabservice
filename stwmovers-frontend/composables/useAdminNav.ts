@@ -55,6 +55,13 @@ export function useAdminNav() {
       group: 'operations',
     },
     {
+      label: 'Tours',
+      description: 'Private tour experiences',
+      to: routes.adminTours,
+      icon: 'fa-map',
+      group: 'operations',
+    },
+    {
       label: 'Payments',
       description: 'Stripe payment monitoring',
       to: routes.adminPayments,

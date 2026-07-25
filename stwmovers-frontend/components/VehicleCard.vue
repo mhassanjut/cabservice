@@ -25,6 +25,21 @@ const category = computed(() => {
 })
 
 const amenities = 'Wi-Fi, Bottled Water, Phone Charger, Climate Control'
+
+const mediaAspectRatio = ref('16 / 10')
+
+const onMediaLoad = (event: Event) => {
+  const img = event.target as HTMLImageElement | null
+  if (!img?.naturalWidth || !img.naturalHeight) return
+  mediaAspectRatio.value = `${img.naturalWidth} / ${img.naturalHeight}`
+}
+
+watch(
+  () => props.vehicle.imagePath,
+  () => {
+    mediaAspectRatio.value = '16 / 10'
+  },
+)
 </script>
 
 <template>
@@ -37,9 +52,12 @@ const amenities = 'Wi-Fi, Bottled Water, Phone Charger, Climate Control'
     @click="!unavailable && $emit('select')"
     @keydown.enter.prevent="!unavailable && $emit('select')"
   >
-    <div class="vehicle-card__media">
+    <div
+      class="vehicle-card__media"
+      :style="{ '--vehicle-media-ratio': mediaAspectRatio }"
+    >
       <span v-if="unavailable" class="vehicle-card__unavailable">Unavailable</span>
-      <FleetVehicleImage :src="vehicle.imagePath" :alt="vehicle.name" />
+      <FleetVehicleImage :src="vehicle.imagePath" :alt="vehicle.name" @load="onMediaLoad" />
     </div>
 
     <div class="vehicle-card__body">

@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import logoUrl from '~/assets/icons/Logo.svg?url'
 import { routes } from '~/constants/routes'
 
 const auth = useAuthStore()
 const { open: openSignIn } = useCustomerSignIn()
+
+// This navbar only ever renders inside the light booking shell (see layouts/booking.vue),
+// so it always needs the dark logo variant — the white Logo.svg is for the dark homepage nav.
+const logoSrc = '/logo_black.svg'
 
 onMounted(() => {
   auth.hydrate()
@@ -31,7 +34,7 @@ const hasIdentity = computed(() => auth.isLoggedIn || auth.isGuestSession)
       <NuxtLink :to="routes.home" class="booking-nav__brand">
         <img
           class="booking-nav__logo"
-          :src="logoUrl"
+          :src="logoSrc"
           alt="STW Movers"
           width="146"
           height="40"

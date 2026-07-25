@@ -44,22 +44,24 @@ export async function api<T>(path: string, opts: ApiOptions = {}): Promise<T> {
       }
       auth.clear()
       auth.broadcastAuthChange()
-      toast.show('Session expired. Please sign in again.', 'error')
+      if (!opts.silent) toast.show('Session expired. Please sign in again.', 'error')
       const route = useRoute()
       const loginPath = route.fullPath.startsWith('/admin') ? '/admin/login' : '/login'
       await navigateTo({ path: loginPath, query: { redirect: route.fullPath } })
-    } else if (status === 429) {
-      toast.show('Too many requests. Please wait a moment and try again.', 'error')
-    } else if (status === 422) {
-      const msg = err.data?.message
-      if (msg) toast.show(msg, 'error')
-    } else if (status === 400) {
-      const msg = err.data?.message
-      if (msg && !opts.silent) toast.show(msg, 'error')
-    } else if (!status) {
-      toast.show('Connection lost. Tap to retry.', 'error')
-    } else if (status >= 500) {
-      if (!opts.silent) toast.show('Something went wrong. Please try again.', 'error')
+    } else if (!opts.silent) {
+      if (status === 429) {
+        toast.show('Too many requests. Please wait a moment and try again.', 'error')
+      } else if (status === 422) {
+        const msg = err.data?.message
+        if (msg) toast.show(msg, 'error')
+      } else if (status === 400) {
+        const msg = err.data?.message
+        if (msg) toast.show(msg, 'error')
+      } else if (!status) {
+        toast.show('Connection lost. Tap to retry.', 'error')
+      } else if (status >= 500) {
+        toast.show('Something went wrong. Please try again.', 'error')
+      }
     }
     throw e
   } finally {

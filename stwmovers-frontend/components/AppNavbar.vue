@@ -118,7 +118,7 @@ const closeMenu = () => {
       <div class="app-nav__backdrop" @click="closeMenu" />
       <nav class="app-nav__panel" aria-label="Mobile">
         <button
-          v-if="!auth.isLoggedIn && !auth.isGuestSession"
+          v-if="!(auth.isLoggedIn && auth.role === 'CUSTOMER') && !auth.isGuestSession"
           type="button"
           class="app-nav__drawer-link btn"
           @click="closeMenu(); openSignIn()"

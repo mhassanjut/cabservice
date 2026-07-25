@@ -2,8 +2,13 @@ import type { AuthDto, BookingDto } from '~/types/api'
 import { api } from '~/services/http/api'
 
 export const authService = {
-  login(email: string, password: string) {
-    return api<AuthDto>('/api/v1/auth/login', { method: 'POST', body: { email, password }, auth: false })
+  login(email: string, password: string, opts?: { silent?: boolean }) {
+    return api<AuthDto>('/api/v1/auth/login', {
+      method: 'POST',
+      body: { email, password },
+      auth: false,
+      silent: opts?.silent,
+    })
   },
   register(email: string, password: string, fullName: string, phone?: string) {
     return api<AuthDto>('/api/v1/auth/register', {

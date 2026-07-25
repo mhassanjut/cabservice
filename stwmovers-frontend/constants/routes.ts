@@ -22,6 +22,7 @@ export const routes = {
   adminRides: '/admin/rides',
   adminDrivers: '/admin/drivers',
   adminCars: '/admin/cars',
+  adminTours: '/admin/tours',
   adminPricing: '/admin/pricing',
   adminCustomRequests: '/admin/custom-requests',
   adminPayments: '/admin/payments',

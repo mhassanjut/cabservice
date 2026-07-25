@@ -4,7 +4,7 @@ export default defineNuxtPlugin({
   setup() {
     const auth = useAuthStore()
     auth.hydrate()
-    if (auth.isLoggedIn) {
+    if (auth.isLoggedIn && auth.role === 'CUSTOMER') {
       useCustomerSignIn().close()
     }
     auth.listenForAuthChanges(() => auth.syncFromStorage())

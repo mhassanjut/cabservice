@@ -5,7 +5,8 @@ const route = useRoute()
 
 const currentStep = computed(() => {
   if (route.path === routes.booking) return 2
-  if (route.path === routes.payment || route.path === routes.confirm) return 3
+  if (route.path === routes.payment) return 3
+  if (route.path === routes.confirm) return 4
   return 1
 })
 </script>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { authService } from '~/services/api/auth.service'
 import { homeAnchors, routes } from '~/constants/routes'
+import googleGUrl from '~/assets/icons/google-g.svg?url'
 
 const props = withDefaults(defineProps<{
   redirect?: string
@@ -46,12 +47,12 @@ const onGoogleError = (message: string) => {
 </script>
 
 <template>
-  <article class="sign-in-panel card card--elevated">
+  <article class="sign-in-panel">
     <div class="sign-in-panel__icon" aria-hidden="true">
-      <i class="fa-brands fa-google" />
+      <img :src="googleGUrl" alt="" width="28" height="28" />
     </div>
 
-    <h2 id="sign-in-modal-title" class="sign-in-panel__title font-serif">Sign in with Google</h2>
+    <h2 id="sign-in-modal-title" class="sign-in-panel__title">Sign in with Google</h2>
     <p class="sign-in-panel__lead">
       Use your Google account to access your dashboard and enjoy a smoother booking experience.
     </p>

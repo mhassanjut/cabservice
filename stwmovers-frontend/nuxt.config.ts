@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     '~/assets/styles/css/main.css',
     '~/assets/styles/css/home.css',
     '~/assets/styles/css/booking.css',
+    '~/assets/styles/css/tours.css',
   ],
 
   image: {

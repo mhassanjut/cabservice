@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CarFilter, CarType } from '~/types/api'
+import { editJourneyLocation } from '~/constants/routes'
 
 const emit = defineEmits<{ (e: 'change', f: CarFilter): void }>()
 const model = defineModel<CarFilter>({ required: true })
@@ -12,38 +13,22 @@ const carTypes: { value: CarType; label: string; icon: string }[] = [
 
 const passengerOptions = [null, 4, 5, 6, 7, 8] as const
 
-const activeCount = computed(() => {
-  let n = 0
-  const f = model.value
-  if (f.passengerCapacity) n++
-  if (f.carType) n++
-  if (f.minPrice != null && f.minPrice > 0) n++
-  if (f.maxPrice != null && f.maxPrice > 0) n++
-  if (f.electric) n++
-  if (f.luxury) n++
-  return n
-})
-
 /** Filters fetch immediately, so always emit the value we just wrote to the model. */
 const applyNow = (next: CarFilter) => {
   model.value = next
   emit('change', { ...next })
 }
 
-const toggleCarType = (t: CarType) => {
-  applyNow({ ...model.value, carType: model.value.carType === t ? undefined : t })
-}
-
 const setPassengers = (n: number | null) => {
   applyNow({ ...model.value, passengerCapacity: n ?? undefined })
 }
 
-const toggleFlag = (key: 'electric' | 'luxury') => {
-  applyNow({ ...model.value, [key]: !model.value[key] || undefined })
+const setCarType = (t: CarType | null) => {
+  applyNow({ ...model.value, carType: t ?? undefined })
 }
 
-const clearAll = () => {
-  applyNow({})
+const toggleFlag = (key: 'electric' | 'luxury') => {
+  applyNow({ ...model.value, [key]: !model.value[key] || undefined })
 }
 
 /** Price inputs commit on blur/enter so we do not fetch on every keystroke. */
@@ -53,15 +38,8 @@ const applyPrice = () => emit('change', { ...model.value })
 <template>
   <section class="vehicle-filters booking-card">
     <div class="vehicle-filters__head">
-      <h2 class="vehicle-filters__title">Refine Your Fleet</h2>
-      <button
-        v-if="activeCount"
-        type="button"
-        class="vehicle-filters__clear"
-        @click="clearAll"
-      >
-        Clear all
-      </button>
+      <h2 class="vehicle-filters__title">Your Journey</h2>
+      <NuxtLink class="vehicle-filters__edit" :to="editJourneyLocation">Edit Journey</NuxtLink>
     </div>
 
     <hr class="booking-card__divider" />
@@ -72,13 +50,13 @@ const applyPrice = () => emit('change', { ...model.value })
         <div class="vehicle-filters__chips" role="group" aria-labelledby="filter-passengers-label">
           <button
             v-for="n in passengerOptions"
-            :key="n ?? 'any'"
+            :key="n ?? 'all'"
             type="button"
             class="vehicle-filters__chip"
             :class="{ 'is-active': (n == null && !model.passengerCapacity) || model.passengerCapacity === n }"
             @click="setPassengers(n)"
           >
-            {{ n == null ? 'Any' : `${n}+` }}
+            {{ n == null ? 'All' : `${n}+` }}
           </button>
         </div>
       </div>
@@ -87,12 +65,20 @@ const applyPrice = () => emit('change', { ...model.value })
         <span id="filter-type-label" class="vehicle-filters__row-label">Vehicle Type:</span>
         <div class="vehicle-filters__chips" role="group" aria-labelledby="filter-type-label">
           <button
+            type="button"
+            class="vehicle-filters__chip"
+            :class="{ 'is-active': !model.carType }"
+            @click="setCarType(null)"
+          >
+            All
+          </button>
+          <button
             v-for="t in carTypes"
             :key="t.value"
             type="button"
             class="vehicle-filters__chip"
             :class="{ 'is-active': model.carType === t.value }"
-            @click="toggleCarType(t.value)"
+            @click="setCarType(t.value)"
           >
             <i class="fa-solid" :class="t.icon" aria-hidden="true" />
             {{ t.label }}

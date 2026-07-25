@@ -1,7 +1,13 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{ current?: number }>(), { current: 1 })
 
-const steps = ['Select Vehicle', 'Details', 'Payment Confirmation']
+// The final step reads as a single combined "Payment Confirmation" label while it is still
+// upcoming/current, but splits into its own distinct "Confirmed" step once actually reached.
+const steps = computed(() =>
+  props.current > 3
+    ? ['Select Vehicle', 'Details', 'Payment', 'Confirmed']
+    : ['Select Vehicle', 'Details', 'Payment Confirmation'],
+)
 
 const stateOf = (index: number) => {
   const step = index + 1

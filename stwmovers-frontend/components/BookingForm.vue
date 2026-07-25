@@ -9,6 +9,7 @@ const props = withDefaults(
 )
 import { distanceKm } from '~/utils/geo'
 import { resolvePickupCity } from '~/utils/cities'
+import { normalizeCarFilters } from '~/utils/carFilters'
 import { ridesService } from '~/services/api/rides.service'
 import type { BookingDraft } from '~/types/booking'
 
@@ -151,7 +152,7 @@ const onSubmit = async () => {
       distanceKm: form.distanceKm,
       pickupCity: resolvedPickup,
       destinationCity: form.destinationCity,
-      filters: booking.filters,
+      filters: normalizeCarFilters(booking.filters),
       page: 0,
       size: 50,
     })

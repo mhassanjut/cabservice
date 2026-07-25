@@ -141,6 +141,72 @@ export type AdminCarDto = {
   updatedAt?: string
 }
 
+export type TourItineraryItemDto = {
+  dayNumber: number
+  time?: string
+  activity: string
+}
+
+export type TourCarPricingDto = {
+  id: string
+  tourId: string
+  carId: string
+  carName: string
+  price: number
+  active: boolean
+}
+
+export type TourPricingBatchRequest = {
+  active?: boolean
+  carPrices: { carId: string; price: number }[]
+}
+
+/** Public-facing tour shape returned by `/api/v1/tours` — no pricing-admin fields. */
+export type TourDto = {
+  id: string
+  title: string
+  location?: string
+  durationLabel?: string
+  durationHours?: number | null
+  guestMin?: number | null
+  guestMax?: number | null
+  category?: string
+  shortDescription?: string
+  aboutDescription?: string
+  startingPrice?: number | null
+  imageUrl?: string
+  active: boolean
+  displayPriority: number
+  highlights: string[]
+  included: string[]
+  excluded: string[]
+  itinerary: TourItineraryItemDto[]
+}
+
+export type AdminTourDto = {
+  id: string
+  title: string
+  location?: string
+  durationLabel?: string
+  durationHours?: number | null
+  guestMin?: number | null
+  guestMax?: number | null
+  category?: string
+  shortDescription?: string
+  aboutDescription?: string
+  startingPrice?: number | null
+  carPrices?: TourCarPricingDto[]
+  imageUrl?: string
+  active: boolean
+  displayPriority: number
+  highlights: string[]
+  included: string[]
+  excluded: string[]
+  itinerary: TourItineraryItemDto[]
+  createdAt?: string
+  updatedAt?: string
+}
+
 export type AdminDriverDto = {
   id: string
   userId: string
