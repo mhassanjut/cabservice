@@ -4,7 +4,11 @@ import { seoDefaults } from './config/seo'
 export default defineNuxtConfig({
   ssr: true,
   modules: ['@pinia/nuxt', '@nuxt/image'],
-  css: ['~/assets/styles/css/main.css', '~/assets/styles/css/home.css'],
+  css: [
+    '~/assets/styles/css/main.css',
+    '~/assets/styles/css/home.css',
+    '~/assets/styles/css/booking.css',
+  ],
 
   image: {
     // Serve modern formats when the browser supports them, fall back gracefully.

@@ -108,6 +108,7 @@ const createBooking = async () => {
       dropoffLng: booking.draft.dropoff!.lng,
       distanceKm: booking.draft.distanceKm!,
       pickupCity: booking.draft.pickupCity!,
+      passengerCount: booking.draft.passengerCount,
       scheduledAt: booking.scheduledAtIso,
       destinationCity: booking.draft.destinationCity,
     }

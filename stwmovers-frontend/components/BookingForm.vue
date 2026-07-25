@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { routes } from '~/constants/routes'
+import { EDIT_JOURNEY_FLAG, routes } from '~/constants/routes'
 
 const props = withDefaults(
   defineProps<{
@@ -10,12 +10,26 @@ const props = withDefaults(
 import { distanceKm } from '~/utils/geo'
 import { resolvePickupCity } from '~/utils/cities'
 import { ridesService } from '~/services/api/rides.service'
+import type { BookingDraft } from '~/types/booking'
 
 const booking = useBookingStore()
 const toast = useToastStore()
 const router = useRouter()
+const route = useRoute()
 const maps = useGoogleMaps()
 const config = useRuntimeConfig()
+
+/**
+ * Trip details are kept here instead of in the store so every visit to this page starts
+ * blank, even though the store still restores an in-progress booking from localStorage.
+ * The store is written on submit, when the booking funnel actually begins.
+ */
+const form = reactive<BookingDraft>({
+  pickupLocation: '',
+  dropoffLocation: '',
+  pickupDate: '',
+  pickupTime: '',
+})
 
 const loading = ref(false)
 const showPickupModal = ref(false)
@@ -35,17 +49,19 @@ const openPicker = (input: HTMLInputElement | null) => {
     }
   }
 }
-const pickupQuery = ref(booking.draft.pickupLocation)
-const dropoffQuery = ref(booking.draft.dropoffLocation)
+/** Largest seat count in the fleet is 8, so offer the full range. */
+const PASSENGER_CHOICES = [1, 2, 3, 4, 5, 6, 7, 8] as const
+
 const touched = reactive({ pickupLocation: false, dropoffLocation: false, pickupDate: false, pickupTime: false })
 
 const errors = computed(() => {
   const e: Record<string, string> = {}
-  if (!booking.draft.pickupLocation) e.pickupLocation = 'Pickup is required.'
-  if (!booking.draft.dropoffLocation) e.dropoffLocation = 'Drop-off is required.'
-  if (!booking.draft.pickupDate) e.pickupDate = 'Date is required.'
-  if (!booking.draft.pickupTime) e.pickupTime = 'Time is required.'
-  if (!booking.draft.pickup?.lat) e.pickupLocation = 'Select a place from suggestions.'
+  if (!form.pickupLocation) e.pickupLocation = 'Pickup is required.'
+  else if (!form.pickup?.lat) e.pickupLocation = 'Select a place from suggestions.'
+  if (!form.dropoffLocation) e.dropoffLocation = 'Drop-off is required.'
+  else if (!form.dropoff?.lat) e.dropoffLocation = 'Select a place from suggestions.'
+  if (!form.pickupDate) e.pickupDate = 'Date is required.'
+  if (!form.pickupTime) e.pickupTime = 'Time is required.'
   return e
 })
 
@@ -53,24 +69,20 @@ const applyPickup = (p: { label: string; lat: number; lng: number; city?: string
   const resolved = resolvePickupCity(p.city, p.lat, p.lng)
   if (!resolved) {
     showPickupModal.value = true
-    booking.setDraft({
-      pickupLocation: '',
-      pickup: undefined,
-      pickupCity: undefined,
-    })
-    pickupQuery.value = ''
+    form.pickupLocation = ''
+    form.pickup = undefined
+    form.pickupCity = undefined
     return
   }
-  pickupQuery.value = p.label
-  booking.setDraft({
-    pickupLocation: p.label,
-    pickup: { lat: p.lat, lng: p.lng },
-    pickupCity: resolved,
-  })
+  form.pickupLocation = p.label
+  form.pickup = { lat: p.lat, lng: p.lng }
+  form.pickupCity = resolved
   syncDistance()
 }
 
 onMounted(async () => {
+  // Returning via "Edit Journey" is the only case where the saved trip belongs in the form.
+  if (route.query.edit === EDIT_JOURNEY_FLAG) Object.assign(form, booking.draft)
   if (!config.public.googleMapsApiKey) return
   await maps.load()
   if (pickupRef.value) {
@@ -78,32 +90,29 @@ onMounted(async () => {
   }
   if (dropoffRef.value) {
     maps.autocomplete(dropoffRef.value, (p) => {
-      dropoffQuery.value = p.label
-      booking.setDraft({
-        dropoffLocation: p.label,
-        dropoff: { lat: p.lat, lng: p.lng },
-        destinationCity: p.city ?? undefined,
-      })
+      form.dropoffLocation = p.label
+      form.dropoff = { lat: p.lat, lng: p.lng }
+      form.destinationCity = p.city ?? undefined
       syncDistance()
     })
   }
 })
 
 const syncDistance = () => {
-  if (booking.draft.pickup && booking.draft.dropoff) {
-    booking.setDraft({ distanceKm: distanceKm(booking.draft.pickup, booking.draft.dropoff) })
+  if (form.pickup && form.dropoff) {
+    form.distanceKm = distanceKm(form.pickup, form.dropoff)
   }
 }
 
 const barDateLabel = computed(() => {
-  if (!booking.draft.pickupDate) return 'Select Date'
-  const d = new Date(`${booking.draft.pickupDate}T00:00:00`)
+  if (!form.pickupDate) return 'Select Date'
+  const d = new Date(`${form.pickupDate}T00:00:00`)
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 })
 
 const barTimeLabel = computed(() => {
-  if (!booking.draft.pickupTime) return 'Select Time'
-  const [hours, minutes] = booking.draft.pickupTime.split(':')
+  if (!form.pickupTime) return 'Select Time'
+  const [hours, minutes] = form.pickupTime.split(':')
   const hour = Number.parseInt(hours, 10)
   const suffix = hour >= 12 ? 'PM' : 'AM'
   const hour12 = hour % 12 || 12
@@ -112,32 +121,36 @@ const barTimeLabel = computed(() => {
 
 const onSubmit = async () => {
   Object.assign(touched, { pickupLocation: true, dropoffLocation: true, pickupDate: true, pickupTime: true })
-  if (!booking.isDraftValid || Object.keys(errors.value).length) return
-  const resolvedPickup = resolvePickupCity(
-    booking.draft.pickupCity,
-    booking.draft.pickup?.lat,
-    booking.draft.pickup?.lng,
-  )
+  const e = errors.value
+  const firstError = e.pickupLocation || e.dropoffLocation || e.pickupDate || e.pickupTime
+  if (firstError || !form.distanceKm) {
+    // The bar layout has no room for the inline messages the card variant shows.
+    if (props.variant === 'bar') {
+      toast.show(firstError || 'Pickup and drop-off are the same. Choose a different drop-off.', 'error')
+    }
+    return
+  }
+  const resolvedPickup = resolvePickupCity(form.pickupCity, form.pickup?.lat, form.pickup?.lng)
   if (!resolvedPickup) {
     showPickupModal.value = true
     return
   }
-  booking.setDraft({ pickupCity: resolvedPickup })
-  if (!booking.draft.destinationCity) {
+  form.pickupCity = resolvedPickup
+  if (!form.destinationCity) {
     toast.show('Select drop-off from suggestions so we can detect the destination city.', 'error')
     return
   }
   loading.value = true
   try {
-    booking.beginNewTrip()
+    booking.beginNewTrip({ ...form })
     const res = await ridesService.carsWithFare({
-      pickupLat: booking.draft.pickup!.lat,
-      pickupLng: booking.draft.pickup!.lng,
-      dropoffLat: booking.draft.dropoff!.lat,
-      dropoffLng: booking.draft.dropoff!.lng,
-      distanceKm: booking.draft.distanceKm!,
+      pickupLat: form.pickup!.lat,
+      pickupLng: form.pickup!.lng,
+      dropoffLat: form.dropoff!.lat,
+      dropoffLng: form.dropoff!.lng,
+      distanceKm: form.distanceKm,
       pickupCity: resolvedPickup,
-      destinationCity: booking.draft.destinationCity,
+      destinationCity: form.destinationCity,
       filters: booking.filters,
       page: 0,
       size: 50,
@@ -172,7 +185,7 @@ const onSubmit = async () => {
           <input
             id="pickup"
             ref="pickupRef"
-            v-model="pickupQuery"
+            v-model="form.pickupLocation"
             class="booking-form__bar-input"
             placeholder="Select Pickup"
             required
@@ -185,7 +198,7 @@ const onSubmit = async () => {
           <input
             id="dropoff"
             ref="dropoffRef"
-            v-model="dropoffQuery"
+            v-model="form.dropoffLocation"
             class="booking-form__bar-input"
             placeholder="Select Destination"
             required
@@ -200,7 +213,7 @@ const onSubmit = async () => {
             <input
               id="date"
               ref="dateRef"
-              v-model="booking.draft.pickupDate"
+              v-model="form.pickupDate"
               class="booking-form__bar-native"
               type="date"
               required
@@ -217,7 +230,7 @@ const onSubmit = async () => {
             <input
               id="time"
               ref="timeRef"
-              v-model="booking.draft.pickupTime"
+              v-model="form.pickupTime"
               class="booking-form__bar-native"
               type="time"
               required
@@ -229,8 +242,15 @@ const onSubmit = async () => {
         </div>
         <div class="booking-form__field booking-form__field--passengers">
           <label class="booking-form__bar-label" for="passengers-bar">Passengers</label>
-          <select id="passengers-bar" class="booking-form__bar-input booking-form__bar-select">
-            <option value="" selected>Select Passengers</option>
+          <select
+            id="passengers-bar"
+            v-model="form.passengerCount"
+            class="booking-form__bar-input booking-form__bar-select"
+          >
+            <option :value="undefined">Select Passengers</option>
+            <option v-for="n in PASSENGER_CHOICES" :key="n" :value="n">
+              {{ n }} {{ n === 1 ? 'Passenger' : 'Passengers' }}
+            </option>
           </select>
         </div>
         <div class="booking-form__submit-wrap">
@@ -250,7 +270,7 @@ const onSubmit = async () => {
         <input
           id="pickup-card"
           ref="pickupRef"
-          v-model="pickupQuery"
+          v-model="form.pickupLocation"
           class="input"
           required
           autocomplete="off"
@@ -263,7 +283,7 @@ const onSubmit = async () => {
         <input
           id="dropoff-card"
           ref="dropoffRef"
-          v-model="dropoffQuery"
+          v-model="form.dropoffLocation"
           class="input"
           required
           autocomplete="off"
@@ -277,7 +297,7 @@ const onSubmit = async () => {
           <input
             id="date-card"
             ref="dateRef"
-            v-model="booking.draft.pickupDate"
+            v-model="form.pickupDate"
             class="input input--picker"
             type="date"
             required
@@ -295,7 +315,7 @@ const onSubmit = async () => {
           <input
             id="time-card"
             ref="timeRef"
-            v-model="booking.draft.pickupTime"
+            v-model="form.pickupTime"
             class="input input--picker"
             type="time"
             required
@@ -308,7 +328,7 @@ const onSubmit = async () => {
         <p v-if="touched.pickupTime && errors.pickupTime" class="err">{{ errors.pickupTime }}</p>
       </div>
     </div>
-    <p v-if="booking.draft.distanceKm" class="help">Distance ≈ {{ booking.draft.distanceKm }} km</p>
+    <p v-if="form.distanceKm" class="help">Distance ≈ {{ form.distanceKm }} km</p>
     <button class="btn btn--solid-gold" type="submit" :disabled="loading">
       Book Now
     </button>

@@ -30,6 +30,17 @@ export const routes = {
 } as const
 
 /**
+ * The home booking form starts blank on every visit; this flag is the one way back into it
+ * with the saved trip prefilled, so "Edit Journey" style links must use it.
+ */
+export const EDIT_JOURNEY_FLAG = 'journey'
+
+export const editJourneyLocation = {
+  path: routes.home,
+  query: { edit: EDIT_JOURNEY_FLAG },
+}
+
+/**
  * Routes that share the primary (home-style) navbar variant.
  * Keep this in sync with the marketing pages that use the `home` layout.
  */

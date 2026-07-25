@@ -1,10 +1,14 @@
 import type { CarFilter, CarWithFare } from '~/types/api'
+import { vehicles as fleetVehicles } from '~/data/vehicles'
 import {
   VEHICLE_IMAGE_PLACEHOLDER,
   type BookingDraft,
   type GuestDetails,
   type Vehicle,
 } from '~/types/booking'
+
+/** Luggage capacity is not exposed by the cars API — read it from the seed-mirroring fleet data. */
+const bagsByCarId = new Map(fleetVehicles.map((v) => [v.backendId, v.bags]))
 
 const STORAGE_KEY = 'stwmovers.booking.v2'
 const CHECKOUT_COMPLETE_KEY = 'stwmovers.checkout.completedRef'
@@ -76,13 +80,16 @@ export const useBookingStore = defineStore('booking', {
         imagePath: c.imageUrl || VEHICLE_IMAGE_PLACEHOLDER,
         priceEur: Number(c.calculatedFare),
         seats: c.passengerCapacity,
+        bags: bagsByCarId.get(c.id),
       }
     },
     clearGuestDetails() {
       this.guest = null
       if (import.meta.client) this.persistToStorage()
     },
-    beginNewTrip() {
+    /** Replaces the draft outright so no field from a previous trip survives. */
+    beginNewTrip(draft: BookingDraft) {
+      this.draft = { ...draft }
       this.bookingReference = ''
       this.vehicle = null
       this.otherCar = false

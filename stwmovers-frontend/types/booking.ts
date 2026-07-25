@@ -12,6 +12,9 @@ export type BookingDraft = {
   distanceKm?: number
   pickupCity?: string
   destinationCity?: string
+  passengerCount?: number
+  /** Client-side only: the bookings API has no notes field yet, so this is not submitted. */
+  notes?: string
 }
 
 export type GuestDetails = { fullName: string; email: string; phone: string }

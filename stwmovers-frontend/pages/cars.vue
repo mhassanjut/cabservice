@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { routes } from '~/constants/routes'
+import { editJourneyLocation, routes } from '~/constants/routes'
 import { ridesService } from '~/services/api/rides.service'
 
 const SHOW_CUSTOM_REQUEST = false
+
+definePageMeta({ layout: 'booking' })
 
 usePageSeo({ title: 'Choose your car', path: '/cars' })
 
@@ -118,110 +120,86 @@ const vehicleCount = computed(() => booking.cars.filter((c) => c.available).leng
 </script>
 
 <template>
-  <section class="cars-page">
-    <SectionHeading
-      title-level="h1"
-      eyebrow="Fleet"
-      title="Select your vehicle"
-      lead="Compare premium vehicles for your route. Use filters to find the right fit."
-    />
+  <div class="vehicle-page">
+    <div class="vehicle-page__inner booking-shell__inner">
+      <header class="vehicle-page__header">
+        <p class="vehicle-page__eyebrow">Book your journey</p>
+        <h1 class="vehicle-page__title">Choose Your Vehicle</h1>
+        <p class="vehicle-page__lead">
+          Select the vehicle that best suits your journey. Compare capacity, luggage space, and
+          amenities before continuing.
+        </p>
+      </header>
 
-    <div class="cars-trip card card--elevated reveal">
-      <div class="cars-trip__route">
-        <div class="cars-trip__point">
-          <span class="cars-trip__dot cars-trip__dot--pickup" aria-hidden="true" />
-          <div>
-            <span class="cars-trip__label">Pickup</span>
-            <p class="cars-trip__addr">{{ booking.draft.pickupLocation }}</p>
-          </div>
-        </div>
-        <div class="cars-trip__point">
-          <span class="cars-trip__dot cars-trip__dot--dropoff" aria-hidden="true" />
-          <div>
-            <span class="cars-trip__label">Drop-off</span>
-            <p class="cars-trip__addr">{{ booking.draft.dropoffLocation }}</p>
-          </div>
-        </div>
-      </div>
-      <ul class="cars-trip__stats">
-        <li v-if="booking.draft.pickupDate">
-          <i class="fa-regular fa-calendar" aria-hidden="true" />
-          {{ booking.draft.pickupDate }} · {{ booking.draft.pickupTime }}
-        </li>
-        <li v-if="booking.draft.distanceKm">
-          <i class="fa-solid fa-route" aria-hidden="true" />
-          ≈ {{ booking.draft.distanceKm }} km
-        </li>
-      </ul>
-    </div>
+      <div class="vehicle-page__main">
+        <BookingJourneyCard class="vehicle-page__aside" />
 
-    <div class="cars-layout">
-      <CarFilters v-model="booking.filters" @change="onFilter" />
+        <div class="vehicle-page__content">
+          <CarFilters v-model="booking.filters" @change="onFilter" />
 
-      <div class="cars-results">
-        <header class="cars-results__head">
-          <div>
-            <h2 class="cars-results__title font-serif">
-              {{ loading ? 'Loading vehicles…' : `${vehicleCount} vehicle${vehicleCount === 1 ? '' : 's'} available` }}
-            </h2>
-            <p class="cars-results__sub">Tap a card to continue your booking</p>
-          </div>
-          <NuxtLink :to="routes.home" class="cars-results__edit">
-            <i class="fa-solid fa-pen" aria-hidden="true" />
-            Edit trip
-          </NuxtLink>
-        </header>
+          <section class="vehicle-results">
+            <header class="vehicle-results__head">
+              <h2 class="vehicle-results__title">Available Vehicles</h2>
+              <p class="vehicle-results__count">
+                {{ loading ? 'Loading vehicles…' : `Showing ${vehicleCount} premium vehicle${vehicleCount === 1 ? '' : 's'}` }}
+              </p>
+            </header>
 
-        <div class="cars-results__list">
-          <VehicleCard
-            v-for="c in booking.cars"
-            :key="c.id"
-            :vehicle="booking.toVehicle(c)"
-            :unavailable="!c.available"
-            :selected="isSelected(c.id)"
-            :continuing="selectingId === c.id || selectingId === 'checkout'"
-            @select="select(c.id)"
-          />
+            <div class="vehicle-results__list">
+              <VehicleCard
+                v-for="c in booking.cars"
+                :key="c.id"
+                :vehicle="booking.toVehicle(c)"
+                :unavailable="!c.available"
+                :selected="isSelected(c.id)"
+                :continuing="selectingId === c.id || selectingId === 'checkout'"
+                @select="select(c.id)"
+              />
 
-          <article
-            v-show="SHOW_CUSTOM_REQUEST"
-            class="vehicle-card-lux card card--elevated custom-car"
-            role="button"
-            tabindex="0"
-            @click="select('other')"
-          >
-            <div class="custom-car__icon" aria-hidden="true">
-              <i class="fa-solid fa-comments" />
+              <article
+                v-show="SHOW_CUSTOM_REQUEST"
+                class="vehicle-card"
+                role="button"
+                tabindex="0"
+                @click="select('other')"
+              >
+                <div class="vehicle-card__body">
+                  <div class="vehicle-card__title-group">
+                    <h3 class="vehicle-card__name">Custom request</h3>
+                    <p class="vehicle-card__category">Bespoke arrangement</p>
+                  </div>
+                  <p class="vehicle-card__desc">
+                    Need another vehicle or special arrangements? Our team will confirm pricing.
+                  </p>
+                  <div class="vehicle-card__foot">
+                    <button class="vehicle-card__cta" type="button" @click.stop="select('other')">
+                      Request quote
+                    </button>
+                  </div>
+                </div>
+              </article>
+
+              <p v-if="hasFetched && !loading && !booking.cars.length" class="vehicle-results__empty">
+                <i class="fa-solid fa-car-side" aria-hidden="true" />
+                No vehicles match your filters. Try adjusting passengers or price range.
+              </p>
             </div>
-            <div class="custom-car__body">
-              <h3 class="font-serif">Custom request</h3>
-              <p>Need another vehicle or special arrangements? Our team will confirm pricing.</p>
-              <span class="custom-car__link">
-                Request quote
-                <i class="fa-solid fa-arrow-right" aria-hidden="true" />
-              </span>
-            </div>
-          </article>
+          </section>
 
-          <p v-if="hasFetched && !loading && !booking.cars.length" class="cars-empty">
-            <i class="fa-solid fa-car-side" aria-hidden="true" />
-            No vehicles match your filters. Try adjusting passengers or price range.
-          </p>
+          <BookingHelpCard />
         </div>
       </div>
     </div>
 
     <LoadingOverlay :show="loading || selectingId === 'checkout'" label="Opening checkout…" />
 
-    <div v-if="hasSelection" class="cars-continue card card--elevated">
-      <p>
-        <template v-if="booking.otherCar">Custom request selected</template>
-        <template v-else>{{ booking.vehicle?.name }} selected</template>
-      </p>
-      <button class="btn btn--solid-gold" type="button" :disabled="Boolean(selectingId)" @click="goToCheckout">
-        Continue to checkout
-        <i class="fa-solid fa-arrow-right" aria-hidden="true" />
-      </button>
-    </div>
-  </section>
+    <BookingSelectionBar
+      v-if="hasSelection"
+      :vehicle-name="booking.otherCar ? 'Custom request' : booking.vehicle?.name ?? ''"
+      :fare="booking.otherCar ? null : booking.vehicle?.priceEur"
+      :busy="Boolean(selectingId)"
+      @continue="goToCheckout"
+      @back="router.push(editJourneyLocation)"
+    />
+  </div>
 </template>

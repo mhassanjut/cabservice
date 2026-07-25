@@ -1,5 +1,39 @@
 type PlaceResult = { label: string; lat: number; lng: number; city?: string | null }
 
+const READY_CALLBACK = '__stwmoversGoogleMapsReady'
+
+/** Shared so the Maps script is only ever appended once per page load. */
+let scriptLoad: Promise<void> | null = null
+
+function placesAvailable() {
+  const g = (window as unknown as { google?: { maps?: { places?: unknown } } }).google
+  return Boolean(g?.maps?.places)
+}
+
+function loadMapsScript(key: string): Promise<void> {
+  if (scriptLoad) return scriptLoad
+  scriptLoad = new Promise<void>((resolve, reject) => {
+    const w = window as unknown as Record<string, unknown>
+    w[READY_CALLBACK] = () => {
+      delete w[READY_CALLBACK]
+      resolve()
+    }
+    const s = document.createElement('script')
+    // With `loading=async` the script's own load event fires before the libraries are
+    // usable, so Google's callback parameter is what tells us Places is ready.
+    s.src =
+      'https://maps.googleapis.com/maps/api/js' +
+      `?key=${encodeURIComponent(key)}&libraries=places&loading=async&callback=${READY_CALLBACK}`
+    s.async = true
+    s.onerror = () => reject(new Error('Google Maps failed to load'))
+    document.head.appendChild(s)
+  }).catch((err: unknown) => {
+    scriptLoad = null
+    throw err
+  })
+  return scriptLoad
+}
+
 export function extractCityName(place: {
   address_components?: Array<{ long_name: string; types: string[] }>
   name?: string
@@ -23,18 +57,17 @@ export function useGoogleMaps() {  const config = useRuntimeConfig()
       return
     }
     if (import.meta.server) return
-    if ((window as unknown as { google?: unknown }).google) {
+    if (placesAvailable()) {
       ready.value = true
       return
     }
-    await new Promise<void>((resolve, reject) => {
-      const s = document.createElement('script')
-      s.src = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=places`
-      s.async = true
-      s.onload = () => { ready.value = true; resolve() }
-      s.onerror = () => reject(new Error('Google Maps failed to load'))
-      document.head.appendChild(s)
-    })
+    try {
+      await loadMapsScript(key)
+      error.value = null
+      ready.value = true
+    } catch {
+      error.value = 'Google Maps could not be loaded. Check the API key and your connection.'
+    }
   }
 
   const autocomplete = (input: HTMLInputElement, onPick: (p: PlaceResult) => void) => {

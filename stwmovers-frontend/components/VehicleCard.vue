@@ -1,65 +1,78 @@
 <script setup lang="ts">
 import type { Vehicle } from '~/types/booking'
 
-defineProps<{
+const props = defineProps<{
   vehicle: Vehicle
   selected?: boolean
   unavailable?: boolean
   continuing?: boolean
 }>()
 defineEmits<{ (e: 'select'): void }>()
+
+const CAR_TYPE_LABELS: Record<string, string> = {
+  SEDAN: 'Sedan',
+  VAN: 'Van',
+  SUV: 'SUV',
+}
+
+const category = computed(() => {
+  const tier = props.vehicle.electric
+    ? 'Electric'
+    : props.vehicle.category === 'LUXURY'
+      ? 'Luxury'
+      : 'Business'
+  return `${tier} ${CAR_TYPE_LABELS[props.vehicle.carType] ?? props.vehicle.carType}`
+})
+
+const amenities = 'Wi-Fi, Bottled Water, Phone Charger, Climate Control'
 </script>
 
 <template>
   <article
-    class="vehicle-card-lux card card--elevated"
+    class="vehicle-card"
     :class="{ 'is-selected': selected, 'is-dimmed': unavailable }"
     role="button"
-    tabindex="0"
+    :tabindex="unavailable ? -1 : 0"
+    :aria-disabled="unavailable || undefined"
     @click="!unavailable && $emit('select')"
     @keydown.enter.prevent="!unavailable && $emit('select')"
   >
-    <div v-if="unavailable" class="vehicle-unavailable">Unavailable</div>
+    <div class="vehicle-card__media">
+      <span v-if="unavailable" class="vehicle-card__unavailable">Unavailable</span>
+      <FleetVehicleImage :src="vehicle.imagePath" :alt="vehicle.name" />
+    </div>
 
-    <div class="vehicle-card-lux__inner">
-      <div class="vehicle-card-lux__thumb">
-        <FleetVehicleImage :src="vehicle.imagePath" :alt="vehicle.name" />
+    <div class="vehicle-card__body">
+      <div class="vehicle-card__title-group">
+        <h3 class="vehicle-card__name">{{ vehicle.name }}</h3>
+        <p class="vehicle-card__category">{{ category }}</p>
       </div>
 
-      <div class="vehicle-card-lux__body">
-        <div class="vehicle-card-lux__top">
-          <h3 class="vehicle-card-lux__name font-serif">{{ vehicle.name }}</h3>
-          <p v-if="vehicle.description" class="vehicle-card-lux__desc">{{ vehicle.description }}</p>
-        </div>
+      <p v-if="vehicle.description" class="vehicle-card__desc">{{ vehicle.description }}</p>
 
-        <div class="vehicle-card-lux__meta">
-          <span class="pill pill--gold">
-            <i class="fa-solid fa-user" aria-hidden="true" />
-            {{ vehicle.seats }} seats
-          </span>
-          <span class="pill">{{ vehicle.carType }}</span>
-          <span v-if="vehicle.category === 'LUXURY'" class="pill pill--luxury">Luxury</span>
-          <span v-if="vehicle.electric" class="pill pill--electric">
-            <i class="fa-solid fa-bolt" aria-hidden="true" />
-            Electric
-          </span>
-        </div>
+      <ul class="vehicle-card__tags">
+        <li class="vehicle-card__tag">{{ vehicle.seats }} Passengers</li>
+        <li v-if="vehicle.bags" class="vehicle-card__tag">{{ vehicle.bags }} Large Bags</li>
+      </ul>
 
-        <div class="vehicle-card-lux__foot">
-          <div class="vehicle-card-lux__price">
-            <span class="vehicle-card-lux__price-label">From</span>
-            <span class="vehicle-fare">€{{ vehicle.priceEur }}</span>
-          </div>
-          <button
-            class="btn btn--solid-gold vehicle-card-lux__cta"
-            type="button"
-            :disabled="unavailable || continuing"
-            @click.stop="!unavailable && $emit('select')"
-          >
-            {{ selected ? 'Continue' : 'Select' }}
-            <i class="fa-solid fa-arrow-right" aria-hidden="true" />
-          </button>
+      <div class="vehicle-card__amenities">
+        <span class="vehicle-card__amenities-label">Complimentary Amenities</span>
+        <p class="vehicle-card__amenities-list">{{ amenities }}</p>
+      </div>
+
+      <div class="vehicle-card__foot">
+        <div class="vehicle-card__price">
+          <span class="vehicle-card__price-label">Starting from</span>
+          <span class="vehicle-card__price-value">€{{ vehicle.priceEur }}</span>
         </div>
+        <button
+          class="vehicle-card__cta"
+          type="button"
+          :disabled="unavailable || continuing"
+          @click.stop="!unavailable && $emit('select')"
+        >
+          {{ selected ? 'Continue' : 'Book This Vehicle' }}
+        </button>
       </div>
     </div>
   </article>
