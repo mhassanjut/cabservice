@@ -56,6 +56,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/v1/bookings/me").authenticated()
                         .requestMatchers("/api/v1/users/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/v1/media/cars/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/media/tours/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/tours/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/rides/cars").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/bookings").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/bookings/{reference}").permitAll()

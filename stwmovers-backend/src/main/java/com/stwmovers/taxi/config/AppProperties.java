@@ -28,6 +28,7 @@ public class AppProperties {
     @Setter
     public static class Uploads {
         private String carsDir = "uploads/cars";
+        private String toursDir = "uploads/tours";
     }
 
     @Getter

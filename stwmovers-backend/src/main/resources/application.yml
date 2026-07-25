@@ -81,6 +81,7 @@ app:
     password: ${ADMIN_PASSWORD:Admin@12345}
   uploads:
     cars-dir: ${CAR_UPLOADS_DIR:uploads/cars}
+    tours-dir: ${TOUR_UPLOADS_DIR:uploads/tours}
 
 management:
   endpoints:
