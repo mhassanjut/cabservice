@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { routes } from '~/constants/routes'
+import { journeyIcons } from '~/constants/journeyIcons'
 import { bookingService } from '~/services/api/booking.service'
 import { paymentService } from '~/services/api/payment.service'
 import { authService } from '~/services/api/auth.service'
@@ -168,7 +169,13 @@ const newRide = () => {
             :class="isConfirmed ? 'confirm-hero__icon--success' : 'confirm-hero__icon--pending'"
             aria-hidden="true"
           >
-            <i v-if="isConfirmed" class="fa-solid fa-circle-check" />
+            <img
+              v-if="isConfirmed"
+              src="/checkmark-ring.svg"
+              alt=""
+              width="64"
+              height="64"
+            >
             <AppLoader v-else size="xs" compact label="" />
           </div>
 
@@ -210,23 +217,31 @@ const newRide = () => {
               <h2 class="confirm-details__title">Your transfer</h2>
             </header>
 
+            <hr class="booking-card__divider confirm-details__divider" />
+
             <ul class="booking-journey__list confirm-details__list">
               <li class="booking-journey__item">
-                <span class="booking-journey__icon" aria-hidden="true"><i class="fa-solid fa-location-dot" /></span>
+                <span class="booking-journey__icon" aria-hidden="true">
+                  <img :src="journeyIcons.pickup" alt="" width="20" height="20" />
+                </span>
                 <div class="booking-journey__text">
                   <span class="booking-journey__label">Pickup</span>
                   <p class="booking-journey__value">{{ data.pickupAddress }}</p>
                 </div>
               </li>
               <li class="booking-journey__item">
-                <span class="booking-journey__icon" aria-hidden="true"><i class="fa-solid fa-map-pin" /></span>
+                <span class="booking-journey__icon" aria-hidden="true">
+                  <img :src="journeyIcons.dropoff" alt="" width="20" height="20" />
+                </span>
                 <div class="booking-journey__text">
                   <span class="booking-journey__label">Drop-off</span>
                   <p class="booking-journey__value">{{ data.dropoffAddress }}</p>
                 </div>
               </li>
               <li class="booking-journey__item">
-                <span class="booking-journey__icon" aria-hidden="true"><i class="fa-regular fa-calendar" /></span>
+                <span class="booking-journey__icon" aria-hidden="true">
+                  <img :src="journeyIcons.travelDate" alt="" width="20" height="20" />
+                </span>
                 <div class="booking-journey__text">
                   <span class="booking-journey__label">Date &amp; Time</span>
                   <p class="booking-journey__value">{{ scheduledLabel }}</p>
@@ -248,7 +263,7 @@ const newRide = () => {
               </li>
             </ul>
 
-            <hr class="booking-card__divider" />
+            <hr class="booking-card__divider confirm-details__divider" />
 
             <footer class="confirm-details__fare-row">
               <span class="confirm-details__fare-label">Total fare (paid)</span>

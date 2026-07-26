@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { editJourneyLocation } from '~/constants/routes'
+import { journeyIcons } from '~/constants/journeyIcons'
 
 const booking = useBookingStore()
 
@@ -68,7 +69,7 @@ const estimatedTime = computed(() => {
     <ul class="booking-journey__list">
       <li class="booking-journey__item">
         <span class="booking-journey__icon" aria-hidden="true">
-          <i class="fa-solid fa-location-dot" />
+          <img :src="journeyIcons.pickup" alt="" width="20" height="20" />
         </span>
         <div class="booking-journey__text">
           <span class="booking-journey__label">Pickup</span>
@@ -77,7 +78,7 @@ const estimatedTime = computed(() => {
       </li>
       <li class="booking-journey__item">
         <span class="booking-journey__icon" aria-hidden="true">
-          <i class="fa-solid fa-map-pin" />
+          <img :src="journeyIcons.dropoff" alt="" width="20" height="20" />
         </span>
         <div class="booking-journey__text">
           <span class="booking-journey__label">Drop-off</span>
@@ -86,7 +87,7 @@ const estimatedTime = computed(() => {
       </li>
       <li class="booking-journey__item">
         <span class="booking-journey__icon" aria-hidden="true">
-          <i class="fa-regular fa-calendar" />
+          <img :src="journeyIcons.travelDate" alt="" width="20" height="20" />
         </span>
         <div class="booking-journey__text">
           <span class="booking-journey__label">Travel Date</span>
@@ -95,7 +96,7 @@ const estimatedTime = computed(() => {
       </li>
       <li class="booking-journey__item">
         <span class="booking-journey__icon" aria-hidden="true">
-          <i class="fa-regular fa-clock" />
+          <img :src="journeyIcons.pickupTime" alt="" width="20" height="20" />
         </span>
         <div class="booking-journey__text">
           <span class="booking-journey__label">Pickup Time</span>
@@ -104,7 +105,7 @@ const estimatedTime = computed(() => {
       </li>
       <li v-if="passengers" class="booking-journey__item">
         <span class="booking-journey__icon" aria-hidden="true">
-          <i class="fa-solid fa-user" />
+          <img :src="journeyIcons.passengers" alt="" width="20" height="20" />
         </span>
         <div class="booking-journey__text">
           <span class="booking-journey__label">Passengers</span>
@@ -113,7 +114,7 @@ const estimatedTime = computed(() => {
       </li>
       <li class="booking-journey__item">
         <span class="booking-journey__icon" aria-hidden="true">
-          <i class="fa-solid fa-note-sticky" />
+          <img :src="journeyIcons.notes" alt="" width="20" height="20" />
         </span>
         <div class="booking-journey__text">
           <label class="booking-journey__label" for="journey-notes">Notes</label>

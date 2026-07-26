@@ -30,7 +30,23 @@ const idx = computed(() => {
     >
       <span class="live-status__marker" aria-hidden="true">
         <span class="live-status__circle">
-          <i v-if="i < idx" class="fa-solid fa-check" />
+          <!-- <i v-if="i < idx" class="fa-solid fa-check" /> -->
+          <img
+            v-if="i < idx"
+            src="/status-circle-green.svg"
+            alt=""
+            width="24"
+            height="24"
+            class="live-status__icon"
+          >
+          <img
+            v-else-if="i === idx"
+            src="/status-circle-yellow.svg"
+            alt=""
+            width="24"
+            height="24"
+            class="live-status__icon"
+          >
         </span>
         <span v-if="i < steps.length - 1" class="live-status__line" />
       </span>

@@ -5,13 +5,13 @@ import { editJourneyLocation } from '~/constants/routes'
 const emit = defineEmits<{ (e: 'change', f: CarFilter): void }>()
 const model = defineModel<CarFilter>({ required: true })
 
-const carTypes: { value: CarType; label: string; icon: string }[] = [
-  { value: 'SEDAN', label: 'Sedan', icon: 'fa-car-side' },
-  { value: 'VAN', label: 'Van', icon: 'fa-van-shuttle' },
-  { value: 'SUV', label: 'SUV', icon: 'fa-truck' },
+const carTypes: { value: CarType; label: string }[] = [
+  { value: 'SEDAN', label: 'Sedan' },
+  { value: 'SUV', label: 'SUV' },
+  { value: 'VAN', label: 'Van' },
 ]
 
-const passengerOptions = [null, 4, 5, 6, 7, 8] as const
+const passengerOptions = [null, 2, 4, 6, 8] as const
 
 /** Filters fetch immediately, so always emit the value we just wrote to the model. */
 const applyNow = (next: CarFilter) => {
@@ -24,7 +24,11 @@ const setPassengers = (n: number | null) => {
 }
 
 const setCarType = (t: CarType | null) => {
-  applyNow({ ...model.value, carType: t ?? undefined })
+  if (t == null) {
+    applyNow({ ...model.value, carType: undefined, luxury: undefined, electric: undefined })
+    return
+  }
+  applyNow({ ...model.value, carType: t })
 }
 
 const toggleFlag = (key: 'electric' | 'luxury') => {
@@ -56,7 +60,7 @@ const applyPrice = () => emit('change', { ...model.value })
             :class="{ 'is-active': (n == null && !model.passengerCapacity) || model.passengerCapacity === n }"
             @click="setPassengers(n)"
           >
-            {{ n == null ? 'All' : `${n}+` }}
+            {{ n == null ? 'All' : n === 8 ? '8+' : n }}
           </button>
         </div>
       </div>
@@ -67,7 +71,7 @@ const applyPrice = () => emit('change', { ...model.value })
           <button
             type="button"
             class="vehicle-filters__chip"
-            :class="{ 'is-active': !model.carType }"
+            :class="{ 'is-active': !model.carType && !model.luxury && !model.electric }"
             @click="setCarType(null)"
           >
             All
@@ -80,7 +84,6 @@ const applyPrice = () => emit('change', { ...model.value })
             :class="{ 'is-active': model.carType === t.value }"
             @click="setCarType(t.value)"
           >
-            <i class="fa-solid" :class="t.icon" aria-hidden="true" />
             {{ t.label }}
           </button>
           <button
@@ -89,7 +92,6 @@ const applyPrice = () => emit('change', { ...model.value })
             :class="{ 'is-active': model.luxury }"
             @click="toggleFlag('luxury')"
           >
-            <i class="fa-solid fa-gem" aria-hidden="true" />
             Luxury
           </button>
           <button
@@ -98,7 +100,6 @@ const applyPrice = () => emit('change', { ...model.value })
             :class="{ 'is-active': model.electric }"
             @click="toggleFlag('electric')"
           >
-            <i class="fa-solid fa-bolt" aria-hidden="true" />
             Electric
           </button>
         </div>

@@ -137,8 +137,8 @@ const savePhoneAndPay = async (phone: string) => {
         <div class="vehicle-page__content">
           <article class="checkout-panel__card booking-card">
             <div class="checkout-panel__head checkout-panel__head--icon">
-              <span class="checkout-panel__icon checkout-panel__icon--gold" aria-hidden="true">
-                <i class="fa-solid fa-lock" />
+              <span class="checkout-panel__icon checkout-panel__icon--gold checkout-panel__icon--compact" aria-hidden="true">
+                <img class="checkout-panel__icon-img checkout-panel__icon-img--inset" src="/LockLogo.svg" alt="" />
               </span>
               <div>
                 <h2 class="checkout-panel__title">Pay for your ride</h2>
@@ -159,7 +159,7 @@ const savePhoneAndPay = async (phone: string) => {
                 <dt class="payment-box__label">Amount due</dt>
                 <dd class="payment-box__value payment-box__value--amount">{{ fareLabel }}</dd>
               </div>
-              <div class="payment-box__row">
+              <div class="payment-box__row payment-box__row--divided">
                 <dt class="payment-box__label">Payment method</dt>
                 <dd class="payment-box__value payment-box__method">
                   <i class="fa-regular fa-credit-card" aria-hidden="true" />
@@ -169,8 +169,15 @@ const savePhoneAndPay = async (phone: string) => {
             </dl>
 
             <ul class="payment-trust">
-              <li><i class="fa-solid fa-lock" aria-hidden="true" /> Encrypted checkout</li>
-              <li><i class="fa-solid fa-bolt" aria-hidden="true" /> Powered by Stripe</li>
+              <li>
+                <img class="payment-trust__icon" src="/EncryptLogo.svg" alt="" aria-hidden="true" />
+                Encrypted checkout
+              </li>
+              <li class="payment-trust__divider" role="presentation" aria-hidden="true" />
+              <li>
+                <img class="payment-trust__icon" src="/ThunderLogo.svg" alt="" aria-hidden="true" />
+                Powered by Stripe
+              </li>
             </ul>
 
             <button

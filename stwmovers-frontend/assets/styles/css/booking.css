@@ -264,6 +264,26 @@
   }
 }
 
+.booking-stepper--confirm .booking-stepper__badge,
+.booking-stepper--confirm .booking-stepper__item.is-done .booking-stepper__badge,
+.booking-stepper--confirm .booking-stepper__item.is-current .booking-stepper__badge {
+  box-sizing: border-box;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+}
+
+.booking-stepper--confirm .booking-stepper__icon {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+.booking-stepper--confirm .booking-stepper__line.is-done {
+  background: var(--bk-gold);
+}
+
 /* ─── Vehicle selection page ─── */
 .vehicle-page__inner {
   padding-bottom: clamp(48px, 8vw, 120px);
@@ -404,6 +424,13 @@
   color: var(--bk-gold);
 }
 
+.booking-journey__icon img {
+  display: block;
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
 .booking-journey__text {
   display: flex;
   flex: 1 1 0;
@@ -529,7 +556,7 @@
 .vehicle-filters__rows {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 }
 
 .vehicle-filters__row {
@@ -549,22 +576,24 @@
 .vehicle-filters__chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
   min-width: 0;
 }
 
 .vehicle-filters__chip {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
+  justify-content: center;
+  min-height: 36px;
+  padding: 7px 16px;
   border: 1px solid var(--bk-border);
-  border-radius: var(--bk-radius-md);
+  border-radius: var(--bk-radius-pill);
   background: var(--bk-surface);
   font-family: inherit;
   font-size: 0.8125rem;
   font-weight: 500;
-  color: var(--bk-text);
+  line-height: 1;
+  color: var(--bk-text-deep);
   white-space: nowrap;
   cursor: pointer;
   transition: border-color 0.2s ease, background 0.2s ease;
@@ -577,9 +606,9 @@
 }
 
 .vehicle-filters__chip.is-active {
-  border-color: var(--bk-gold);
+  border-color: transparent;
   background: var(--bk-gold);
-  color: var(--bk-text);
+  color: var(--bk-text-deep);
 }
 
 .vehicle-filters__prices {
@@ -1343,8 +1372,8 @@
 }
 
 .checkout-summary__guest-icon {
-  width: 26px;
-  height: 26px;
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
 }
 
@@ -1380,25 +1409,29 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--bk-border);
+  border-radius: var(--bk-radius-sm);
+  background: var(--bk-stepper-bg);
 }
 
 .checkout-summary__vehicle-img {
-  width: 64px;
-  height: 48px;
+  width: 88px;
+  height: 68px;
   flex-shrink: 0;
-  border-radius: var(--bk-radius-xs);
-  background: #f2f1ec;
-  object-fit: contain;
+  border-radius: 10px;
+  background: transparent;
+  object-fit: cover;
 }
 
 .checkout-summary__vehicle-custom {
   display: grid;
   place-items: center;
-  width: 48px;
-  height: 48px;
+  width: 88px;
+  height: 68px;
   flex-shrink: 0;
-  border-radius: var(--bk-radius-xs);
-  background: #f2f1ec;
+  border-radius: 10px;
+  background: #ebeae5;
   color: var(--bk-muted);
 }
 
@@ -1412,17 +1445,26 @@
 .checkout-summary__vehicle-name {
   margin: 0;
   font-family: var(--bk-font);
-  font-size: 0.9375rem;
-  font-weight: 700;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25;
   color: var(--bk-text-deep);
 }
 
 .checkout-summary__vehicle-tag {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  padding: 3px 10px;
+  border: 1px solid var(--bk-border);
+  border-radius: var(--bk-radius-pill);
+  background: var(--bk-surface);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--bk-gold-dark);
+  white-space: nowrap;
 }
 
 .checkout-summary__fare {
@@ -1463,15 +1505,15 @@
 
 .checkout-panel__head--icon {
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
   gap: 16px;
 }
 
 .checkout-panel__icon {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   flex-shrink: 0;
   border-radius: 50%;
   border: 1px solid transparent;
@@ -1480,7 +1522,7 @@
 
 .checkout-panel__icon--gold {
   background: rgba(216, 178, 76, 0.12);
-  border-color: rgba(216, 178, 76, 0.25);
+  border-color: transparent;
   color: var(--bk-gold-dark);
 }
 
@@ -1496,11 +1538,27 @@
   flex-shrink: 0;
 }
 
+.checkout-panel__icon-img--inset {
+  width: 18px;
+  height: 18px;
+}
+
+.checkout-panel__icon--compact {
+  width: 40px;
+  height: 40px;
+}
+
+.checkout-panel__icon--compact .checkout-panel__icon-img--inset {
+  width: 15px;
+  height: 15px;
+}
+
 .checkout-panel__title {
-  margin: 0 0 4px;
+  margin: 0 0 2px;
   font-family: var(--bk-font-display);
   font-size: 1.25rem;
   font-weight: 600;
+  line-height: 1.2;
   color: var(--bk-text);
 }
 
@@ -1642,9 +1700,15 @@
 
 .payment-box__value--amount {
   font-family: var(--bk-font-display);
-  font-size: 1.75rem;
+  font-size: 2.5rem;
   font-weight: 600;
+  line-height: 1.1;
   color: var(--bk-text-deep);
+}
+
+.payment-box__row--divided {
+  padding-top: 16px;
+  border-top: 1px solid var(--bk-border);
 }
 
 .payment-box__method {
@@ -1663,7 +1727,7 @@
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 8px 24px;
+  gap: 0;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -1675,6 +1739,22 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
+}
+
+.payment-trust__divider {
+  display: block;
+  width: 1px;
+  height: 14px;
+  margin: 0 24px;
+  padding: 0;
+  background: var(--bk-border);
+  align-self: center;
+}
+
+.payment-trust__icon {
+  width: 14px;
+  height: auto;
+  flex-shrink: 0;
 }
 
 .payment-trust i {
@@ -1704,16 +1784,23 @@
 }
 
 .live-status__circle {
+  box-sizing: border-box;
   display: grid;
   place-items: center;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   flex-shrink: 0;
-  border: 2px solid var(--bk-border);
+  border: 1px solid rgba(167, 167, 167, 0.45);
   border-radius: 50%;
-  background: var(--bk-surface);
+  background: rgba(167, 167, 167, 0.08);
   font-size: 0.625rem;
   color: var(--bk-faint);
+}
+
+.live-status__icon {
+  display: block;
+  width: 24px;
+  height: 24px;
 }
 
 .live-status__line {
@@ -1724,22 +1811,21 @@
 }
 
 .live-status__item.is-done .live-status__circle {
-  border-color: #22a06b;
-  background: #22a06b;
-  color: #fff;
+  border: none;
+  background: transparent;
 }
 
 .live-status__item.is-done .live-status__line {
-  background: #22a06b;
+  background: #10B981;
 }
 
 .live-status__item.is-current .live-status__circle {
-  border-color: var(--bk-gold);
-  background: var(--bk-gold);
+  border: none;
+  background: transparent;
 }
 
 .live-status__label {
-  padding-top: 2px;
+  padding-top: 5px;
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--bk-faint);
@@ -1769,16 +1855,14 @@
 .confirm-hero__icon {
   display: grid;
   place-items: center;
-  width: 48px;
-  height: 48px;
+  width: 64px;
+  height: 64px;
   margin-bottom: 12px;
-  border-radius: 50%;
   font-size: 1.375rem;
 }
 
 .confirm-hero__icon--success {
-  background: rgba(34, 160, 107, 0.12);
-  color: #22a06b;
+  background: transparent;
 }
 
 .confirm-hero__icon--pending {
@@ -1796,7 +1880,11 @@
 }
 
 .confirm-hero__badge--success {
-  color: #22a06b;
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  background: rgba(16, 185, 129, 0.0705882);
+  color: #10B981;
 }
 
 .confirm-hero__ref-label {
@@ -1818,8 +1906,9 @@
 }
 
 .confirm-hero__divider {
+  align-self: stretch;
   width: 100%;
-  max-width: 22rem;
+  max-width: none;
   margin-bottom: 20px;
 }
 
@@ -1914,8 +2003,14 @@
   padding: clamp(20px, 3vw, 24px);
 }
 
+.confirm-details {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
 .confirm-details__head {
-  margin-bottom: 4px;
+  margin-bottom: 0;
 }
 
 .confirm-details__eyebrow {
@@ -1936,7 +2031,11 @@
 }
 
 .confirm-details__list {
-  margin-top: -4px;
+  margin-top: 0;
+}
+
+.confirm-details__divider {
+  margin: 0;
 }
 
 .confirm-details__fare-row {
@@ -2072,15 +2171,35 @@
     gap: 12px;
   }
 
-  .checkout-panel__icon,
+  .checkout-panel__icon {
+    width: 44px;
+    height: 44px;
+  }
+
   .checkout-panel__icon-img {
     width: 36px;
     height: 36px;
   }
 
-  .checkout-summary__vehicle-img {
-    width: 56px;
-    height: 42px;
+  .checkout-panel__icon-img--inset {
+    width: 18px;
+    height: 18px;
+  }
+
+  .checkout-panel__icon--compact {
+    width: 36px;
+    height: 36px;
+  }
+
+  .checkout-panel__icon--compact .checkout-panel__icon-img--inset {
+    width: 14px;
+    height: 14px;
+  }
+
+  .checkout-summary__vehicle-img,
+  .checkout-summary__vehicle-custom {
+    width: 80px;
+    height: 62px;
   }
 
   .checkout-panel__input,
@@ -2093,11 +2212,14 @@
   }
 
   .payment-box__value--amount {
-    font-size: 1.5rem;
+    font-size: 2rem;
   }
 
   .payment-trust {
     justify-content: flex-start;
-    gap: 8px 16px;
+  }
+
+  .payment-trust__divider {
+    margin: 0 16px;
   }
 }

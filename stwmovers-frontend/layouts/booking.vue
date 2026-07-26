@@ -14,7 +14,10 @@ const currentStep = computed(() => {
 <template>
   <div class="site-root site-root--booking">
     <BookingNavbar />
-    <BookingStepper :current="currentStep" />
+    <BookingStepper
+      :current="currentStep"
+      :confirmed-style="route.path === routes.confirm"
+    />
 
     <main id="main-content" class="layout-main layout-main--booking" role="main">
       <slot />

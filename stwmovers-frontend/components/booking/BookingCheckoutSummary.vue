@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { routes } from '~/constants/routes'
-import guestIconUrl from '~/assets/images/booking-page/ic_guest.svg?url'
-
+import { journeyIcons } from '~/constants/journeyIcons'
 const booking = useBookingStore()
 const auth = useAuthStore()
 
@@ -55,7 +54,7 @@ const fareValue = computed(() => {
       </span>
     </div>
     <div v-else-if="auth.isGuestSession" class="checkout-summary__guest">
-      <img class="checkout-summary__guest-icon" :src="guestIconUrl" alt="" aria-hidden="true" />
+      <img class="checkout-summary__guest-icon" src="/UserCircleLogo.svg" alt="" aria-hidden="true" />
       <span class="checkout-summary__guest-text">
         Guest: <strong>{{ auth.guestSession?.fullName }}</strong>
       </span>
@@ -64,7 +63,7 @@ const fareValue = computed(() => {
     <ul class="booking-journey__list checkout-summary__list">
       <li class="booking-journey__item">
         <span class="booking-journey__icon" aria-hidden="true">
-          <i class="fa-solid fa-location-dot" />
+          <img :src="journeyIcons.pickup" alt="" width="20" height="20" />
         </span>
         <div class="booking-journey__text">
           <span class="booking-journey__label">Pickup</span>
@@ -73,7 +72,7 @@ const fareValue = computed(() => {
       </li>
       <li class="booking-journey__item">
         <span class="booking-journey__icon" aria-hidden="true">
-          <i class="fa-solid fa-map-pin" />
+          <img :src="journeyIcons.dropoff" alt="" width="20" height="20" />
         </span>
         <div class="booking-journey__text">
           <span class="booking-journey__label">Drop-off</span>
@@ -82,7 +81,7 @@ const fareValue = computed(() => {
       </li>
       <li class="booking-journey__item">
         <span class="booking-journey__icon" aria-hidden="true">
-          <i class="fa-regular fa-calendar" />
+          <img :src="journeyIcons.travelDate" alt="" width="20" height="20" />
         </span>
         <div class="booking-journey__text">
           <span class="booking-journey__label">Date &amp; Time</span>
@@ -100,7 +99,7 @@ const fareValue = computed(() => {
       </li>
       <li class="booking-journey__item">
         <span class="booking-journey__icon" aria-hidden="true">
-          <i class="fa-solid fa-note-sticky" />
+          <img :src="journeyIcons.notes" alt="" width="20" height="20" />
         </span>
         <div class="booking-journey__text">
           <span class="booking-journey__label">Notes</span>
@@ -122,7 +121,7 @@ const fareValue = computed(() => {
         <div class="checkout-summary__vehicle-info">
           <p class="checkout-summary__vehicle-name">{{ booking.vehicle.name }}</p>
           <span class="checkout-summary__vehicle-tag">
-            {{ booking.vehicle.carType }} · {{ booking.vehicle.seats }} Seats
+            {{ booking.vehicle.carType }} • {{ booking.vehicle.seats }} Seats
           </span>
         </div>
       </div>
