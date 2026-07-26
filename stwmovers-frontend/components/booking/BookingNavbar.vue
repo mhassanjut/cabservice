@@ -1,31 +1,29 @@
 <script setup lang="ts">
+import BookingUserMenu from '~/components/booking/BookingUserMenu.vue'
 import { routes } from '~/constants/routes'
 
 const auth = useAuthStore()
 const { open: openSignIn } = useCustomerSignIn()
 
-// This navbar only ever renders inside the light booking shell (see layouts/booking.vue),
-// so it always needs the dark logo variant — the white Logo.svg is for the dark homepage nav.
 const logoSrc = '/logo_black.svg'
 
-onMounted(() => {
+if (import.meta.client) {
   auth.hydrate()
+}
+
+onMounted(() => {
   auth.listenForAuthChanges(() => auth.syncFromStorage())
 })
 
-const displayName = computed(
-  () => auth.fullName || auth.guestSession?.fullName || auth.email || 'Guest',
-)
+const showUserMenu = computed(() => auth.isLoggedIn && auth.role === 'CUSTOMER')
+const isGuest = computed(() => auth.isGuestSession && !auth.isLoggedIn)
 
-const initials = computed(() => {
-  const parts = displayName.value.trim().split(/\s+/).filter(Boolean)
-  if (!parts.length) return 'G'
-  const first = parts[0].charAt(0)
-  const last = parts.length > 1 ? parts[parts.length - 1].charAt(0) : ''
-  return (first + last).toUpperCase()
+const guestName = computed(() => auth.guestSession?.fullName || 'Guest')
+
+const guestInitial = computed(() => {
+  const label = guestName.value.trim()
+  return label.charAt(0).toUpperCase() || 'G'
 })
-
-const hasIdentity = computed(() => auth.isLoggedIn || auth.isGuestSession)
 </script>
 
 <template>
@@ -45,15 +43,14 @@ const hasIdentity = computed(() => auth.isLoggedIn || auth.isGuestSession)
       <div class="booking-nav__right">
         <NuxtLink class="booking-nav__help" :to="routes.faq">Need Help?</NuxtLink>
 
-        <ClientOnly>
-          <div v-if="hasIdentity" class="booking-nav__user">
-            <span class="booking-nav__avatar" aria-hidden="true">{{ initials }}</span>
-            <span class="booking-nav__name">{{ displayName }}</span>
-          </div>
-          <button v-else type="button" class="booking-nav__login" @click="openSignIn()">
-            Sign in
-          </button>
-        </ClientOnly>
+        <BookingUserMenu v-if="showUserMenu" />
+        <div v-else-if="isGuest" class="booking-nav__user booking-nav__user--static">
+          <span class="booking-nav__avatar" aria-hidden="true">{{ guestInitial }}</span>
+          <span class="booking-nav__name">{{ guestName }}</span>
+        </div>
+        <button v-else type="button" class="booking-nav__login" @click="openSignIn()">
+          Sign in
+        </button>
       </div>
     </div>
   </header>

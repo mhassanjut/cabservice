@@ -15,13 +15,25 @@ const emit = defineEmits<{
 
 const phone = ref('')
 const localError = ref('')
+const phoneValid = ref(false)
+const shouldAutofocus = ref(false)
+
+const benefits = [
+  'Driver contact at pickup',
+  'Live trip updates when needed',
+  'Saved to your account for future rides',
+]
 
 watch(
   () => props.show,
-  (open: boolean) => {
+  async (open: boolean) => {
     if (open) {
       phone.value = props.initialPhone ?? ''
       localError.value = ''
+      phoneValid.value = false
+      shouldAutofocus.value = true
+    } else {
+      shouldAutofocus.value = false
     }
   },
 )
@@ -32,6 +44,10 @@ watch(
     if (props.show && !phone.value) phone.value = value ?? ''
   },
 )
+
+watch(phone, () => {
+  if (localError.value) localError.value = ''
+})
 
 const onKeydown = (event: KeyboardEvent) => {
   if (event.key === 'Escape' && !props.loading) emit('close')
@@ -59,10 +75,12 @@ onBeforeUnmount(() => {
 const submit = () => {
   localError.value = ''
   const value = normalizePhone(phone.value)
-  if (!isValidPhone(value)) {
-    localError.value = 'Enter a valid mobile number, including country code if applicable.'
+
+  if (!phoneValid.value || !isValidPhone(value)) {
+    localError.value = 'Enter a valid mobile number for the selected country.'
     return
   }
+
   emit('save', value)
 }
 </script>
@@ -88,50 +106,50 @@ const submit = () => {
           <i class="fa-solid fa-xmark" aria-hidden="true" />
         </button>
 
-        <article class="card card--elevated phone-required-modal__panel">
-          <div class="booking-panel__icon booking-panel__icon--gold" aria-hidden="true">
+        <article class="sign-in-panel phone-required-panel">
+          <div class="phone-required-panel__icon" aria-hidden="true">
             <i class="fa-solid fa-phone" />
           </div>
-          <h2 id="phone-required-title" class="booking-panel__title font-serif">Contact number required</h2>
-          <p class="booking-panel__lead">
+
+          <h2 id="phone-required-title" class="phone-required-panel__title">Contact number required</h2>
+          <p class="phone-required-panel__lead">
             We need a reachable mobile number to complete your booking. Your chauffeur and dispatch team use it for
             pickup coordination, arrival updates, and urgent trip changes.
           </p>
-          <ul class="phone-required-modal__points">
-            <li><i class="fa-solid fa-check" aria-hidden="true" /> Driver contact at pickup</li>
-            <li><i class="fa-solid fa-check" aria-hidden="true" /> Live trip updates when needed</li>
-            <li><i class="fa-solid fa-check" aria-hidden="true" /> Saved to your account for future rides</li>
+
+          <ul class="sign-in-panel__benefits phone-required-panel__benefits" aria-label="Why we need your number">
+            <li v-for="benefit in benefits" :key="benefit">
+              <i class="fa-solid fa-check" aria-hidden="true" />
+              <span>{{ benefit }}</span>
+            </li>
           </ul>
 
-          <form class="phone-required-modal__form" @submit.prevent="submit">
-            <div class="field">
-              <label class="label" for="checkout-phone">Mobile number</label>
-              <input
+          <form class="phone-required-panel__form" @submit.prevent="submit">
+            <div class="phone-required-panel__field">
+              <label class="phone-required-panel__label" for="checkout-phone">Mobile number</label>
+              <PhoneInput
                 id="checkout-phone"
                 v-model="phone"
-                class="input"
-                type="tel"
-                autocomplete="tel"
-                inputmode="tel"
-                placeholder="+34 600 000 000"
-                required
                 :disabled="loading"
+                :autofocus="shouldAutofocus"
+                :invalid="Boolean(localError || error)"
+                @validate="phoneValid = $event"
               />
-              <p class="help">Include your country code for international numbers.</p>
             </div>
 
             <p v-if="localError || error" class="err" role="alert">{{ localError || error }}</p>
 
-            <button class="btn btn--solid-gold booking-panel__cta" type="submit" :disabled="loading">
+            <button type="submit" class="phone-required-panel__submit" :disabled="loading">
               <span v-if="loading">Saving…</span>
               <template v-else>
                 Save &amp; continue to payment
                 <i class="fa-solid fa-arrow-right" aria-hidden="true" />
               </template>
             </button>
+
             <button
-              class="btn secondary booking-panel__cta"
               type="button"
+              class="phone-required-panel__cancel"
               :disabled="loading"
               @click="emit('close')"
             >
@@ -162,41 +180,132 @@ const submit = () => {
   width: min(100%, 480px);
 }
 
-.phone-required-modal__panel {
-  padding: clamp(1.35rem, 4vw, 1.75rem);
-  padding-top: clamp(1.5rem, 4vw, 2rem);
+.phone-required-panel {
+  width: 100%;
+  max-width: 480px;
+  padding: clamp(1.5rem, 4vw, 2rem);
+  text-align: left;
+  overflow: visible;
 }
 
-.phone-required-modal__points {
-  list-style: none;
+.phone-required-panel__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  margin-bottom: 1.25rem;
+  background: rgba(216, 178, 76, 0.14);
+  color: #d8b24c;
+  font-size: 1.25rem;
+}
+
+.phone-required-panel__title {
+  margin: 0 0 10px;
+  font-family: var(--font-sans);
+  font-size: clamp(1.35rem, 3vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #111827;
+}
+
+.phone-required-panel__lead {
   margin: 0 0 1.25rem;
-  padding: 0;
-  display: grid;
-  gap: 10px;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: #6b7280;
+  max-width: none;
 }
 
-.phone-required-modal__points li {
+.phone-required-panel__benefits {
+  margin-bottom: 1.25rem;
+}
+
+.phone-required-panel__form {
+  display: grid;
+  gap: 0;
+  overflow: visible;
+}
+
+.phone-required-panel__field {
   display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  font-size: 0.875rem;
-  color: var(--color-text);
-  line-height: 1.45;
+  flex-direction: column;
+  gap: 8px;
+  overflow: visible;
 }
 
-.phone-required-modal__points i {
-  flex-shrink: 0;
-  margin-top: 3px;
-  color: var(--color-gold-bright);
+.phone-required-panel__label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.phone-required-panel__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 52px;
+  margin-top: 1rem;
+  border: 0;
+  border-radius: 100px;
+  background: #d8b24c;
+  font-family: var(--font-eyebrow);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s ease, filter 0.2s ease;
+}
+
+.phone-required-panel__submit:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+.phone-required-panel__submit:disabled {
+  background: #d4d4d4;
+  cursor: not-allowed;
+}
+
+.phone-required-panel__cancel {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 8px;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-eyebrow);
   font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: color 0.15s ease;
 }
 
-.phone-required-modal__form {
-  display: grid;
-  gap: 0.25rem;
+.phone-required-panel__cancel:hover:not(:disabled) {
+  color: #6b7280;
 }
 
-.phone-required-modal__form .booking-panel__cta {
-  margin-top: 0.75rem;
+.phone-required-panel__cancel:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+@media (max-width: 399px) {
+  .phone-required-panel {
+    padding-top: clamp(1.75rem, 5vw, 2rem);
+  }
+
+  .sign-in-modal__close {
+    top: 10px;
+    right: 10px;
+  }
 }
 </style>

@@ -31,7 +31,7 @@ const dayGroups = computed<DayGroup[]>(() => {
   return [...map.values()].sort((a, b) => a.dayNumber - b.dayNumber)
 })
 
-const activeDay = ref(0)
+const activeDay = ref(dayGroups.value[0]?.dayNumber ?? 1)
 watch(
   dayGroups,
   (groups: DayGroup[]) => {
@@ -59,41 +59,61 @@ const onKeydown = (event: KeyboardEvent) => {
   if (event.key === 'Escape') close()
 }
 
-onMounted(() => {
-  document.addEventListener('keydown', onKeydown)
+const lockScroll = () => {
+  const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
   document.body.style.overflow = 'hidden'
+  if (scrollbarWidth > 0) {
+    document.body.style.paddingRight = `${scrollbarWidth}px`
+  }
+}
+
+const unlockScroll = () => {
+  document.body.style.overflow = ''
+  document.body.style.paddingRight = ''
+}
+
+onMounted(() => {
+  lockScroll()
+  document.addEventListener('keydown', onKeydown)
 })
+
 onUnmounted(() => {
   document.removeEventListener('keydown', onKeydown)
-  document.body.style.overflow = ''
+  unlockScroll()
 })
 </script>
 
 <template>
   <div class="tdm-overlay" @mousedown.self="close">
     <div class="tdm-panel" role="dialog" aria-modal="true" :aria-label="tour.title">
-      <div class="tdm-media">
-        <TourImage :src="tour.imageUrl" :alt="tour.title" />
-        <div class="tdm-media__overlay" />
+      <div class="tdm-hero">
+        <TourImage
+          :src="tour.imageUrl"
+          :alt="tour.title"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        />
+        <div class="tdm-hero__overlay" aria-hidden="true" />
 
         <button type="button" class="tdm-close" aria-label="Close" @click="close">
-          <img :src="closeBtnUrl" alt="" />
+          <img :src="closeBtnUrl" alt="" width="36" height="36" />
         </button>
 
-        <div class="tdm-media__caption">
-          <div class="tdm-media__caption-inner">
-            <div class="tdm-media__caption-text">
-              <h2 class="tdm-media__title">{{ tour.title }}</h2>
-              <p v-if="metaLine" class="tdm-media__meta">{{ metaLine }}</p>
+        <div class="tdm-hero__caption">
+          <div class="tdm-hero__caption-inner">
+            <div class="tdm-hero__caption-text">
+              <h2 class="tdm-hero__title">{{ tour.title }}</h2>
+              <p v-if="metaLine" class="tdm-hero__meta">{{ metaLine }}</p>
             </div>
 
-            <div v-if="durationTag || guestsTag" class="tdm-media__tags">
+            <div v-if="durationTag || guestsTag" class="tdm-hero__tags">
               <span v-if="durationTag" class="tdm-pill">
-                <img :src="clockUrl" alt="" />
+                <img :src="clockUrl" alt="" width="14" height="14" />
                 {{ durationTag }}
               </span>
               <span v-if="guestsTag" class="tdm-pill">
-                <img :src="usersUrl" alt="" />
+                <img :src="usersUrl" alt="" width="14" height="14" />
                 {{ guestsTag }}
               </span>
             </div>
@@ -103,15 +123,15 @@ onUnmounted(() => {
 
       <div class="tdm-body">
         <section v-if="tour.aboutDescription" class="tdm-section">
-          <h3 class="tdm-section__title">About This Experience</h3>
+          <h2 class="tdm-section__title">About This Experience</h2>
           <p class="tdm-about">{{ tour.aboutDescription }}</p>
         </section>
 
         <section v-if="tour.highlights?.length" class="tdm-section">
-          <h3 class="tdm-section__title">Tour Highlights</h3>
+          <h2 class="tdm-section__title">Tour Highlights</h2>
           <ul class="tdm-highlights">
             <li v-for="(highlight, index) in tour.highlights" :key="`highlight-${index}`">
-              <img :src="checkYellowUrl" alt="" />
+              <img :src="checkYellowUrl" alt="" width="20" height="20" />
               <span>{{ highlight }}</span>
             </li>
           </ul>
@@ -119,8 +139,8 @@ onUnmounted(() => {
 
         <section v-if="dayGroups.length" class="tdm-section">
           <div class="tdm-plan__head">
-            <h3 class="tdm-section__title">Tour Plan Preview</h3>
-            <div v-if="dayGroups.length > 1" class="tdm-day-tabs">
+            <h2 class="tdm-section__title">Tour Plan Preview</h2>
+            <div class="tdm-day-tabs">
               <button
                 v-for="group in dayGroups"
                 :key="group.dayNumber"
@@ -129,42 +149,48 @@ onUnmounted(() => {
                 :class="{ 'tdm-day-tab--active': group.dayNumber === activeDay }"
                 @click="activeDay = group.dayNumber"
               >
-                <img :src="group.dayNumber === activeDay ? clockWhiteUrl : clockUrl" alt="" />
+                <img
+                  :src="group.dayNumber === activeDay ? clockWhiteUrl : clockUrl"
+                  alt=""
+                  width="16"
+                  height="16"
+                />
                 Day {{ String(group.dayNumber).padStart(2, '0') }}
               </button>
             </div>
-            <span v-else class="tdm-day-tab tdm-day-tab--active tdm-day-tab--static">
-              <img :src="clockWhiteUrl" alt="" />
-              Day 01
-            </span>
           </div>
 
           <ol class="tdm-timeline">
             <li v-for="(item, index) in activeDayItems" :key="`item-${activeDay}-${index}`">
-              <span class="tdm-timeline__marker">
-                <img :src="nodeUrl" alt="" />
-              </span>
-              <span v-if="item.time" class="tdm-timeline__time">{{ item.time }}</span>
-              <span class="tdm-timeline__activity">{{ item.activity }}</span>
+              <div class="tdm-timeline__rail" aria-hidden="true">
+                <span class="tdm-timeline__node">
+                  <img :src="nodeUrl" alt="" width="20" height="20" />
+                </span>
+                <span v-if="index < activeDayItems.length - 1" class="tdm-timeline__connector" />
+              </div>
+              <div class="tdm-timeline__content">
+                <span v-if="item.time" class="tdm-timeline__time">{{ item.time }}</span>
+                <span class="tdm-timeline__activity">{{ item.activity }}</span>
+              </div>
             </li>
           </ol>
         </section>
 
         <section v-if="tour.included?.length || tour.excluded?.length" class="tdm-section tdm-section--split">
           <div v-if="tour.included?.length" class="tdm-list-card">
-            <h4 class="tdm-list-card__title">Included</h4>
+            <h3 class="tdm-list-card__title">Included</h3>
             <ul>
               <li v-for="(entry, index) in tour.included" :key="`included-${index}`">
-                <img :src="checkGreenUrl" alt="" />
+                <img :src="checkGreenUrl" alt="" width="16" height="16" />
                 <span>{{ entry }}</span>
               </li>
             </ul>
           </div>
           <div v-if="tour.excluded?.length" class="tdm-list-card">
-            <h4 class="tdm-list-card__title">Not Included</h4>
+            <h3 class="tdm-list-card__title">Not Included</h3>
             <ul>
               <li v-for="(entry, index) in tour.excluded" :key="`excluded-${index}`">
-                <img :src="circleXUrl" alt="" />
+                <img :src="circleXUrl" alt="" width="16" height="16" />
                 <span>{{ entry }}</span>
               </li>
             </ul>
@@ -178,7 +204,7 @@ onUnmounted(() => {
           <span class="tdm-footer__value">{{ formatTourPrice(tour.startingPrice) }}</span>
         </div>
         <a class="tdm-footer__cta" :href="proceedLink" rel="noopener noreferrer" target="_blank">
-          Proceed With This Tour
+          Proceed with This Tour
         </a>
       </div>
     </div>

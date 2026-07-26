@@ -2,6 +2,7 @@
 const highlights = [
   'Private Chauffeur',
   'Luxury Mercedes Fleet',
+  'Flexible Schedule',
   'Hotel Pickup',
   'Local Knowledge',
   'Custom Itineraries',
@@ -17,20 +18,21 @@ const highlights = [
           alt="Chauffeur welcoming guests to a private tour vehicle"
           loading="lazy"
           decoding="async"
-          width="640"
-          height="480"
+          width="580"
+          height="380"
           sizes="xs:100vw sm:100vw md:50vw"
         />
       </div>
       <div class="tp-why__copy">
         <h2 id="tp-why-heading" class="visually-hidden">Why choose our private tours</h2>
         <p class="tp-why__lead">
-          Every experience combines luxury transportation, local expertise, flexible itineraries, and
-          exceptional hospitality, allowing you to enjoy every destination without worrying about the journey.
+          Every experience combines luxury transportation, local expertise, flexible itineraries,
+          and exceptional hospitality, allowing you to enjoy every destination without worrying
+          about the journey.
         </p>
         <ul class="tp-checklist">
           <li v-for="item in highlights" :key="item">
-            <i class="fa-solid fa-check" aria-hidden="true" />
+            <span class="tp-checklist__dot" aria-hidden="true" />
             <span>{{ item }}</span>
           </li>
         </ul>

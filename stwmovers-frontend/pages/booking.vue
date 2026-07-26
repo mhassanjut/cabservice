@@ -2,6 +2,7 @@
 import { routes } from '~/constants/routes'
 import { bookingService } from '~/services/api/booking.service'
 import { authService } from '~/services/api/auth.service'
+import { isValidPhone, normalizePhone } from '~/utils/phone'
 import guestIconUrl from '~/assets/images/booking-page/ic_guest.svg?url'
 
 definePageMeta({ layout: 'booking', middleware: ['checkout-guard'] })
@@ -20,6 +21,8 @@ const otpLoading = ref(false)
 const showOtpModal = ref(false)
 const otpError = ref('')
 const guest = reactive({ fullName: '', email: '', phone: '' })
+const guestPhoneValid = ref(false)
+const guestPhoneError = ref('')
 const resendIn = ref(0)
 let resendTimer: ReturnType<typeof setInterval> | null = null
 
@@ -49,25 +52,40 @@ onMounted(async () => {
 
 watch(guest, (value: { fullName: string; email: string; phone: string }) => {
   if (isCustomerLoggedIn.value) return
+  const normalizedPhone = normalizePhone(value.phone)
   const payload = {
     fullName: value.fullName.trim(),
     email: value.email.trim(),
-    phone: value.phone.trim(),
+    phone: normalizedPhone,
     bookingReference: booking.bookingReference || auth.guestSession?.bookingReference,
   }
-  if (payload.fullName && payload.email && payload.phone) {
+  if (
+    payload.fullName &&
+    payload.email &&
+    payload.phone &&
+    guestPhoneValid.value &&
+    isValidPhone(payload.phone)
+  ) {
     booking.guest = { fullName: payload.fullName, email: payload.email, phone: payload.phone }
     auth.setGuestSession(payload)
     booking.persistToStorage()
   }
 }, { deep: true })
 
+watch(() => guest.phone, () => {
+  if (guestPhoneError.value) guestPhoneError.value = ''
+})
+
 onUnmounted(() => {
   stopResendTimer()
 })
 
 const guestValid = computed(
-  () => guest.fullName.trim() && guest.email.trim() && guest.phone.trim(),
+  () =>
+    guest.fullName.trim() &&
+    guest.email.trim() &&
+    guestPhoneValid.value &&
+    isValidPhone(normalizePhone(guest.phone)),
 )
 
 const isCustomerLoggedIn = computed(() => auth.isLoggedIn && auth.isCustomer)
@@ -126,17 +144,20 @@ const createBooking = async () => {
       return
     }
 
-    if (!guestValid.value) {
+    const normalizedPhone = normalizePhone(guest.phone)
+    if (!guestValid.value || !isValidPhone(normalizedPhone)) {
+      guestPhoneError.value = 'Enter a valid mobile number for the selected country.'
       toast.show('Please enter your contact details to continue as guest.', 'error')
       return
     }
+    guest.phone = normalizedPhone
 
     const b = await bookingService.create(
       {
         ...basePayload,
         guestName: guest.fullName.trim(),
         guestEmail: guest.email.trim(),
-        guestPhone: guest.phone.trim(),
+        guestPhone: normalizedPhone,
       },
       { auth: false, silent: true },
     )
@@ -312,14 +333,13 @@ const onGoogleError = (message: string) => {
               </div>
               <div class="checkout-panel__field">
                 <label class="checkout-panel__label" for="guest-phone">Phone</label>
-                <input
+                <PhoneInput
                   id="guest-phone"
                   v-model="guest.phone"
-                  class="checkout-panel__input"
-                  type="tel"
-                  autocomplete="tel"
-                  required
+                  :invalid="Boolean(guestPhoneError)"
+                  @validate="guestPhoneValid = $event"
                 />
+                <p v-if="guestPhoneError" class="err" role="alert">{{ guestPhoneError }}</p>
               </div>
               <button
                 class="checkout-panel__submit"

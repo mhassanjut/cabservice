@@ -1,5 +1,9 @@
 <script setup lang="ts">
-definePageMeta({ middleware: ['customer', 'no-guest-dashboard'], ssr: false })
+definePageMeta({
+  layout: 'booking',
+  middleware: ['customer', 'no-guest-dashboard'],
+  ssr: false,
+})
 
 import type { BookingDto } from '~/types/api'
 import { bookingService } from '~/services/api/booking.service'
@@ -33,23 +37,21 @@ onMounted(async () => {
 </script>
 
 <template>
-  <DashboardShell>
-    <section>
-      <LoadingOverlay :show="loading" label="Loading booking…" />
-      <article v-if="booking" class="card card--elevated booking-detail">
-        <p class="eyebrow">Booking detail</p>
-        <h1 class="font-serif">{{ booking.bookingReference }}</h1>
-        <BookingStateTracker :status="booking.status" />
-        <dl class="summary-grid">
-          <div><dt>Route</dt><dd>{{ booking.pickupAddress }} → {{ booking.dropoffAddress }}</dd></div>
-          <div><dt>Scheduled</dt><dd>{{ booking.scheduledAt }}</dd></div>
-          <div><dt>Fare</dt><dd>€{{ booking.calculatedFare ?? '—' }}</dd></div>
-          <div><dt>Driver</dt><dd>{{ booking.driverId ? 'Assigned' : 'Pending assignment' }}</dd></div>
-          <div v-if="paymentStatus"><dt>Payment</dt><dd>{{ paymentStatus }}</dd></div>
-        </dl>
-      </article>
-    </section>
-  </DashboardShell>
+  <section>
+    <LoadingOverlay :show="loading" label="Loading booking…" />
+    <article v-if="booking" class="card card--elevated booking-detail">
+      <p class="eyebrow">Booking detail</p>
+      <h1 class="font-serif">{{ booking.bookingReference }}</h1>
+      <BookingStateTracker :status="booking.status" />
+      <dl class="summary-grid">
+        <div><dt>Route</dt><dd>{{ booking.pickupAddress }} → {{ booking.dropoffAddress }}</dd></div>
+        <div><dt>Scheduled</dt><dd>{{ booking.scheduledAt }}</dd></div>
+        <div><dt>Fare</dt><dd>€{{ booking.calculatedFare ?? '—' }}</dd></div>
+        <div><dt>Driver</dt><dd>{{ booking.driverId ? 'Assigned' : 'Pending assignment' }}</dd></div>
+        <div v-if="paymentStatus"><dt>Payment</dt><dd>{{ paymentStatus }}</dd></div>
+      </dl>
+    </article>
+  </section>
 </template>
 
 <style scoped>

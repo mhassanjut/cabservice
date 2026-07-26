@@ -9,6 +9,8 @@ export default defineNuxtConfig({
     '~/assets/styles/css/home.css',
     '~/assets/styles/css/booking.css',
     '~/assets/styles/css/tours.css',
+    '~/assets/styles/css/dashboard.css',
+    'vue-tel-input/vue-tel-input.css',
   ],
 
   image: {

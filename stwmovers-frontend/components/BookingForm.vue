@@ -120,6 +120,11 @@ const barTimeLabel = computed(() => {
   return `${String(hour12).padStart(2, '0')}:${minutes} ${suffix}`
 })
 
+const onPickupModalChoose = () => {
+  showPickupModal.value = false
+  nextTick(() => pickupRef.value?.focus())
+}
+
 const onSubmit = async () => {
   Object.assign(touched, { pickupLocation: true, dropoffLocation: true, pickupDate: true, pickupTime: true })
   const e = errors.value
@@ -174,7 +179,11 @@ const onSubmit = async () => {
     :class="props.variant === 'bar' ? 'booking-form--bar' : 'card card--elevated'"
     @submit.prevent="onSubmit"
   >
-    <PickupValidationModal :show="showPickupModal" @close="showPickupModal = false" />
+    <PickupValidationModal
+      :show="showPickupModal"
+      @close="showPickupModal = false"
+      @choose-pickup="onPickupModalChoose"
+    />
     <template v-if="props.variant === 'bar'">
       <p v-if="maps.error" class="booking-form__bar-notice err env-warn">{{ maps.error }}</p>
       <p v-else-if="!config.public.googleMapsApiKey" class="booking-form__bar-notice err env-warn">
