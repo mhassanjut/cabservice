@@ -3,8 +3,8 @@
  * oxc native .node binaries. Nuxt falls back to WASI bindings when native load
  * fails, but npm skips wasm32 packages on x64 unless installed with --force.
  *
- * Native win32-x64-msvc bindings are declared in package.json; this script only
- * installs wasm32 fallbacks when those native packages are absent.
+ * Native platform bindings are installed automatically by oxc via optionalDependencies.
+ * This script only installs wasm32 fallbacks on Windows when native packages are absent.
  */
 import { execSync } from 'node:child_process'
 import { existsSync } from 'node:fs'
