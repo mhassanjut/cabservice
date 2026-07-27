@@ -48,7 +48,7 @@ onMounted(async () => {
 
   auth.hydrate()
 
-  if (!auth.isLoggedIn || !auth.token) {
+  if (!auth.isLoggedIn) {
 
     loading.value = false
 

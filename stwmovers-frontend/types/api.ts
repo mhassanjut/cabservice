@@ -82,6 +82,7 @@ export type BookingDto = {
 
 export type AuthDto = {
   accessToken: string
+  refreshToken?: string
   tokenType: string
   expiresInMs: number
   userId: string

@@ -31,7 +31,7 @@ const fareLabel = computed(() => {
 })
 
 const loadProfilePhone = async () => {
-  if (!isCustomerLoggedIn.value || !auth.token) return
+  if (!isCustomerLoggedIn.value) return
   try {
     const profile = await userService.profile()
     userPhone.value = profile.phone ?? ''

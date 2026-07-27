@@ -138,7 +138,7 @@ const createBooking = async () => {
     }
 
     if (isCustomerLoggedIn.value) {
-      if (!auth.token) {
+      if (!auth.isLoggedIn) {
         toast.show('Session expired. Please sign in again.', 'error')
         await router.push({ path: routes.login, query: { redirect: useRoute().fullPath } })
         return

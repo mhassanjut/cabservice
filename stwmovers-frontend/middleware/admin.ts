@@ -9,7 +9,7 @@ export default defineNuxtRouteMiddleware((to) => {
     return
   }
 
-  if (!auth.token) {
+  if (!auth.isLoggedIn) {
     return navigateTo({ path: '/admin/login', query: { redirect: to.fullPath } })
   }
 

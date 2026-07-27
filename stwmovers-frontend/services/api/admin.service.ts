@@ -94,6 +94,7 @@ export const adminService = {
         {
           baseURL: config.public.apiBaseUrl as string,
           method: 'POST',
+          credentials: 'include',
           body,
           headers: auth.token ? { Authorization: `Bearer ${auth.token}` } : undefined,
         },
@@ -122,6 +123,7 @@ export const adminService = {
         {
           baseURL: config.public.apiBaseUrl as string,
           method: 'POST',
+          credentials: 'include',
           body,
           headers: auth.token ? { Authorization: `Bearer ${auth.token}` } : undefined,
         },
@@ -174,6 +176,7 @@ export const adminService = {
         {
           baseURL: config.public.apiBaseUrl as string,
           method: 'POST',
+          credentials: 'include',
           body,
           headers: auth.token ? { Authorization: `Bearer ${auth.token}` } : undefined,
         },
@@ -202,6 +205,7 @@ export const adminService = {
         {
           baseURL: config.public.apiBaseUrl as string,
           method: 'POST',
+          credentials: 'include',
           body,
           headers: auth.token ? { Authorization: `Bearer ${auth.token}` } : undefined,
         },

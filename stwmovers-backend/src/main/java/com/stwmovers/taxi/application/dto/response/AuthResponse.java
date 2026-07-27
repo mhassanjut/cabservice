@@ -12,6 +12,7 @@ import lombok.Value;
 public class AuthResponse {
 
     String accessToken;
+    String refreshToken;
     String tokenType;
     long expiresInMs;
     UUID userId;

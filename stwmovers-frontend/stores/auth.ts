@@ -1,4 +1,4 @@
-import type { AuthDto, Role } from '~/types/api'
+import type { AuthDto, Role, UserProfileDto } from '~/types/api'
 import type { GuestDetails } from '~/types/booking'
 
 const AUTH_KEY = 'stwmovers.auth.v1'
@@ -12,6 +12,7 @@ export type GuestSession = GuestDetails & {
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: '' as string,
+    refreshToken: '' as string,
     userId: '' as string,
     email: '',
     fullName: '',
@@ -19,13 +20,25 @@ export const useAuthStore = defineStore('auth', {
     profilePictureUrl: '' as string,
     guestSession: null as GuestSession | null,
     hydrated: false,
+    cookieAuthEnabled: false,
+    sessionVerified: false,
   }),
   getters: {
-    isLoggedIn: (s) => Boolean(s.token),
+    isLoggedIn(state): boolean {
+      if (state.cookieAuthEnabled) {
+        return Boolean(state.userId && state.role)
+      }
+      return Boolean(state.token)
+    },
     isCustomer: (s) => s.role === 'CUSTOMER',
     isAdmin: (s) => s.role === 'ADMIN',
     isDriver: (s) => s.role === 'DRIVER',
-    isGuestSession: (s) => Boolean(s.guestSession && !s.token),
+    isGuestSession(state): boolean {
+      if (state.cookieAuthEnabled) {
+        return Boolean(state.guestSession && !(state.userId && state.role))
+      }
+      return Boolean(state.guestSession && !state.token)
+    },
     firstName: (s) => s.fullName.trim().split(/\s+/)[0] || s.email.split('@')[0] || 'Guest',
     displayName: (s) => s.fullName || s.guestSession?.fullName || s.email || 'Guest',
     avatarUrl: (s) => s.profilePictureUrl || '',
@@ -36,12 +49,21 @@ export const useAuthStore = defineStore('auth', {
   },
   actions: {
     setSession(d: AuthDto) {
-      this.token = d.accessToken
-      this.userId = d.userId
-      this.email = d.email
-      this.fullName = d.fullName
-      this.role = d.role
-      this.profilePictureUrl = d.profilePictureUrl ?? ''
+      this.applyProfile({
+        userId: d.userId,
+        email: d.email,
+        fullName: d.fullName,
+        role: d.role,
+        profilePictureUrl: d.profilePictureUrl,
+      })
+      if (!this.cookieAuthEnabled) {
+        this.token = d.accessToken
+        this.refreshToken = d.refreshToken ?? this.refreshToken
+      } else {
+        this.token = ''
+        this.refreshToken = ''
+        this.sessionVerified = true
+      }
       this.guestSession = null
       if (import.meta.client) {
         sessionStorage.removeItem(GUEST_KEY)
@@ -49,6 +71,16 @@ export const useAuthStore = defineStore('auth', {
       }
       this.persistAuth()
       this.broadcastAuthChange()
+      if (import.meta.client && this.cookieAuthEnabled) {
+        void this.verifySession()
+      }
+    },
+    applyProfile(profile: Pick<UserProfileDto, 'userId' | 'email' | 'fullName' | 'role' | 'profilePictureUrl'>) {
+      this.userId = profile.userId
+      this.email = profile.email
+      this.fullName = profile.fullName
+      this.role = profile.role
+      this.profilePictureUrl = profile.profilePictureUrl ?? ''
     },
     setGuestSession(guest: GuestSession) {
       this.guestSession = { ...guest }
@@ -60,41 +92,60 @@ export const useAuthStore = defineStore('auth', {
     },
     hydrate() {
       if (!import.meta.client || this.hydrated) return
+      const config = useRuntimeConfig()
+      this.cookieAuthEnabled = Boolean(config.public.cookieAuth)
+      this.migrateLegacyAuthStorage()
       this.syncFromStorage()
       this.hydrated = true
+    },
+    migrateLegacyAuthStorage() {
+      if (!import.meta.client || !this.cookieAuthEnabled) return
+      const raw = localStorage.getItem(AUTH_KEY)
+      if (!raw) return
+      try {
+        const parsed = JSON.parse(raw) as Record<string, unknown>
+        if ('token' in parsed || 'refreshToken' in parsed) {
+          delete parsed.token
+          delete parsed.refreshToken
+          localStorage.setItem(AUTH_KEY, JSON.stringify(parsed))
+        }
+      } catch {
+        localStorage.removeItem(AUTH_KEY)
+      }
     },
     syncFromStorage() {
       if (!import.meta.client) return
       const raw = localStorage.getItem(AUTH_KEY)
       if (!raw) {
-        if (this.token) {
+        if (this.userId || this.token) {
           this.token = ''
+          this.refreshToken = ''
           this.userId = ''
           this.email = ''
           this.fullName = ''
           this.role = null
           this.profilePictureUrl = ''
+          this.sessionVerified = false
         }
       } else {
         try {
           const parsed = JSON.parse(raw) as Partial<typeof this.$state>
-          this.token = parsed.token ?? ''
+          if (!this.cookieAuthEnabled) {
+            this.token = parsed.token ?? ''
+            this.refreshToken = parsed.refreshToken ?? ''
+          }
           this.userId = parsed.userId ?? ''
           this.email = parsed.email ?? ''
           this.fullName = parsed.fullName ?? ''
           this.role = parsed.role ?? null
           this.profilePictureUrl = parsed.profilePictureUrl ?? ''
+          this.sessionVerified = false
         } catch {
           localStorage.removeItem(AUTH_KEY)
-          this.token = ''
-          this.userId = ''
-          this.email = ''
-          this.fullName = ''
-          this.role = null
-          this.profilePictureUrl = ''
+          this.clear()
         }
       }
-      if (!this.token) {
+      if (!this.isLoggedIn) {
         const guestRaw = sessionStorage.getItem(GUEST_KEY)
         if (guestRaw) {
           try {
@@ -110,24 +161,54 @@ export const useAuthStore = defineStore('auth', {
     },
     persistAuth() {
       if (!import.meta.client) return
-      localStorage.setItem(
-        AUTH_KEY,
-        JSON.stringify({
-          token: this.token,
-          userId: this.userId,
-          email: this.email,
-          fullName: this.fullName,
-          role: this.role,
-          profilePictureUrl: this.profilePictureUrl,
-        }),
-      )
+      const payload: Record<string, unknown> = {
+        userId: this.userId,
+        email: this.email,
+        fullName: this.fullName,
+        role: this.role,
+        profilePictureUrl: this.profilePictureUrl,
+      }
+      if (!this.cookieAuthEnabled) {
+        payload.token = this.token
+        payload.refreshToken = this.refreshToken
+      }
+      localStorage.setItem(AUTH_KEY, JSON.stringify(payload))
+    },
+    async verifySession() {
+      if (!import.meta.client) return false
+      try {
+        const { userService } = await import('~/services/api/user.service')
+        const profile = await userService.profile()
+        this.applyProfile(profile)
+        this.sessionVerified = true
+        this.persistAuth()
+        return true
+      } catch {
+        if (this.cookieAuthEnabled && this.isLoggedIn) {
+          this.clear()
+          this.broadcastAuthChange()
+        }
+        return false
+      }
+    },
+    async restoreSession() {
+      if (!import.meta.client || !this.cookieAuthEnabled) return false
+      try {
+        const { userService } = await import('~/services/api/user.service')
+        const profile = await userService.profile()
+        this.applyProfile(profile)
+        this.sessionVerified = true
+        this.persistAuth()
+        this.broadcastAuthChange()
+        return true
+      } catch {
+        return false
+      }
     },
     async logout() {
       try {
-        if (this.token) {
-          const { authService } = await import('~/services/api/auth.service')
-          await authService.logout()
-        }
+        const { authService } = await import('~/services/api/auth.service')
+        await authService.logout()
       } catch {
         /* client logout still proceeds */
       }
@@ -136,11 +217,13 @@ export const useAuthStore = defineStore('auth', {
     },
     clear() {
       this.token = ''
+      this.refreshToken = ''
       this.userId = ''
       this.email = ''
       this.fullName = ''
       this.role = null
       this.profilePictureUrl = ''
+      this.sessionVerified = false
       this.clearGuestSession()
       if (import.meta.client) localStorage.removeItem(AUTH_KEY)
     },

@@ -42,6 +42,7 @@ export default defineNuxtConfig({
       siteUrl: siteConfig.siteUrl,
       apiBaseUrl: siteConfig.apiBaseUrl,
       externalTourUrl: siteConfig.externalTourUrl,
+      cookieAuth: false,
       googleMapsApiKey: '',
       googleClientId: '',
       stripePublicKey: '',
