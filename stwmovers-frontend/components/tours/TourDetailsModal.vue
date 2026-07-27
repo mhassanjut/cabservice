@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type { TourDto } from '~/types/api'
+import { routes } from '~/constants/routes'
 import { formatTourDuration, formatTourGuests, formatTourMeta, formatTourPrice } from '~/utils/tourFormat'
-import { siteConfig } from '~/config/site'
-import { buildWhatsappUrl } from '~/utils/whatsapp'
 import closeBtnUrl from '~/assets/images/tour-page/modal-icons/close-btn.svg?url'
 import clockUrl from '~/assets/images/tour-page/modal-icons/clock.svg?url'
 import clockWhiteUrl from '~/assets/images/tour-page/modal-icons/clock-white.svg?url'
@@ -14,6 +13,10 @@ import nodeUrl from '~/assets/images/tour-page/modal-icons/node.svg?url'
 
 const props = defineProps<{ tour: TourDto }>()
 const emit = defineEmits<{ close: [] }>()
+
+const booking = useBookingStore()
+const router = useRouter()
+const toast = useToastStore()
 
 const metaLine = computed(() => formatTourMeta(props.tour))
 const durationTag = computed(() => formatTourDuration(props.tour))
@@ -46,12 +49,26 @@ const activeDayItems = computed(
   () => dayGroups.value.find((g: DayGroup) => g.dayNumber === activeDay.value)?.items ?? [],
 )
 
-const proceedLink = computed(() =>
-  buildWhatsappUrl({
-    phone: siteConfig.whatsappNumber,
-    text: `Hello STW Movers, I would like to book the "${props.tour.title}" private tour. Could you share availability?`,
-  }),
-)
+const proceedBusy = ref(false)
+
+const proceedWithTour = async () => {
+  if (proceedBusy.value) return
+  proceedBusy.value = true
+  try {
+    booking.beginTour({
+      id: props.tour.id,
+      title: props.tour.title,
+      location: props.tour.location,
+    })
+    booking.persistToStorage()
+    close()
+    await router.push(routes.cars)
+  } catch {
+    toast.show('Could not start tour booking. Please try again.', 'error')
+  } finally {
+    proceedBusy.value = false
+  }
+}
 
 const close = () => emit('close')
 
@@ -203,9 +220,14 @@ onUnmounted(() => {
           <span class="tdm-footer__label">Starting From</span>
           <span class="tdm-footer__value">{{ formatTourPrice(tour.startingPrice) }}</span>
         </div>
-        <a class="tdm-footer__cta" :href="proceedLink" rel="noopener noreferrer" target="_blank">
-          Proceed with This Tour
-        </a>
+        <button
+          type="button"
+          class="tdm-footer__cta"
+          :disabled="proceedBusy"
+          @click="proceedWithTour"
+        >
+          Proceed With This Tour
+        </button>
       </div>
     </div>
   </div>

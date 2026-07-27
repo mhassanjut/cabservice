@@ -1,8 +1,14 @@
 <script setup lang="ts">
-import { editJourneyLocation } from '~/constants/routes'
+import { editJourneyLocation, routes } from '~/constants/routes'
 import { journeyIcons } from '~/constants/journeyIcons'
+import { PASSENGER_CAPACITY_CHOICES, passengerCapacityLabel } from '~/constants/passengers'
+import { formatDistanceKm } from '~/utils/geo'
+
+const emit = defineEmits<{ (e: 'passengers-change', count?: number): void }>()
 
 const booking = useBookingStore()
+const isTour = computed(() => booking.isTourBooking)
+const editLink = computed(() => (isTour.value ? routes.tours : editJourneyLocation))
 
 const travelDate = computed(() => {
   const raw = booking.draft.pickupDate
@@ -22,10 +28,13 @@ const pickupTime = computed(() => {
   return `${display}:${String(minutes).padStart(2, '0')} ${suffix}`
 })
 
-const passengers = computed(() => {
-  const count = booking.draft.passengerCount
-  if (!count) return null
-  return `${count} ${count === 1 ? 'Adult' : 'Adults'}`
+const passengerCount = computed({
+  get: () => booking.draft.passengerCount ?? '',
+  set: (value: number | string) => {
+    const count = value === '' ? undefined : Number(value)
+    booking.setDraft({ passengerCount: count })
+    emit('passengers-change', count)
+  },
 })
 
 const notes = computed({
@@ -46,11 +55,12 @@ watch(notes, () => nextTick(syncNotesHeight), { flush: 'post' })
 onMounted(syncNotesHeight)
 
 const distance = computed(() =>
-  booking.draft.distanceKm ? `${Math.round(booking.draft.distanceKm)} km` : '—',
+  booking.draft.distanceKm ? formatDistanceKm(booking.draft.distanceKm) : '—',
 )
 
-/** Display-only estimate at an average city/route speed of ~40 km/h. */
 const estimatedTime = computed(() => {
+  const mins = booking.draft.durationMinutes
+  if (mins) return `${mins} min`
   const km = booking.draft.distanceKm
   if (!km) return '—'
   return `${Math.max(5, Math.round(km * 1.5))} min`
@@ -61,12 +71,24 @@ const estimatedTime = computed(() => {
   <aside class="booking-journey booking-card">
     <div class="booking-journey__head">
       <h2 class="booking-journey__title">Your Journey</h2>
-      <NuxtLink class="booking-journey__edit" :to="editJourneyLocation">Edit Journey</NuxtLink>
+      <NuxtLink class="booking-journey__edit" :to="editLink">Edit Journey</NuxtLink>
     </div>
 
     <hr class="booking-card__divider" />
 
     <ul class="booking-journey__list">
+      <template v-if="isTour">
+        <li class="booking-journey__item">
+          <span class="booking-journey__icon" aria-hidden="true">
+            <img :src="journeyIcons.travelDate" alt="" width="20" height="20" />
+          </span>
+          <div class="booking-journey__text">
+            <span class="booking-journey__label">Tour</span>
+            <p class="booking-journey__value">{{ booking.draft.tourTitle || '—' }}</p>
+          </div>
+        </li>
+      </template>
+      <template v-else>
       <li class="booking-journey__item">
         <span class="booking-journey__icon" aria-hidden="true">
           <img :src="journeyIcons.pickup" alt="" width="20" height="20" />
@@ -103,13 +125,23 @@ const estimatedTime = computed(() => {
           <p class="booking-journey__value">{{ pickupTime }}</p>
         </div>
       </li>
-      <li v-if="passengers" class="booking-journey__item">
+      </template>
+      <li class="booking-journey__item">
         <span class="booking-journey__icon" aria-hidden="true">
           <img :src="journeyIcons.passengers" alt="" width="20" height="20" />
         </span>
         <div class="booking-journey__text">
-          <span class="booking-journey__label">Passengers</span>
-          <p class="booking-journey__value">{{ passengers }}</p>
+          <label class="booking-journey__label" for="journey-passengers">Passengers</label>
+          <select
+            id="journey-passengers"
+            v-model="passengerCount"
+            class="booking-journey__notes booking-journey__select"
+          >
+            <option value="">Select passengers</option>
+            <option v-for="n in PASSENGER_CAPACITY_CHOICES" :key="n" :value="n">
+              {{ passengerCapacityLabel(n) }}
+            </option>
+          </select>
         </div>
       </li>
       <li class="booking-journey__item">
@@ -132,6 +164,7 @@ const estimatedTime = computed(() => {
       </li>
     </ul>
 
+    <template v-if="!isTour">
     <hr class="booking-card__divider" />
 
     <div class="booking-journey__metrics">
@@ -144,5 +177,6 @@ const estimatedTime = computed(() => {
         <p class="booking-journey__metric-value">{{ estimatedTime }}</p>
       </div>
     </div>
+    </template>
   </aside>
 </template>

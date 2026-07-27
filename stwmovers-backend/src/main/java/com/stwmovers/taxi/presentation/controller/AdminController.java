@@ -226,6 +226,7 @@ public class AdminController {
             @RequestParam(defaultValue = "20") int size,
             @RequestParam(required = false) BookingStatus status,
             @RequestParam(required = false) RideType rideType,
+            @RequestParam(required = false) RideType excludeRideType,
             @RequestParam(required = false) Boolean customRequest,
             @RequestParam(required = false) String search,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant fromDate,
@@ -233,7 +234,7 @@ public class AdminController {
             @RequestParam(defaultValue = "createdAt") String sortBy,
             @RequestParam(defaultValue = "desc") String sortDir) {
         return ResponseEntity.ok(ApiResponse.ok(bookingService.listAdminBookings(
-                status, rideType, customRequest, search, fromDate, toDate, sortBy, sortDir, page, size)));
+                status, rideType, excludeRideType, customRequest, search, fromDate, toDate, sortBy, sortDir, page, size)));
     }
 
     @GetMapping("/bookings/{id}")

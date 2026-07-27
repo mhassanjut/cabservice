@@ -566,7 +566,8 @@
   color: var(--bk-text);
 }
 
-.booking-journey__notes {
+.booking-journey__notes,
+.booking-journey__select {
   display: block;
   width: 100%;
   min-height: 1.45em;
@@ -582,11 +583,19 @@
   font-weight: 500;
   line-height: 1.45;
   color: var(--bk-text);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.booking-journey__notes {
   resize: none;
   overflow: hidden;
-  outline: none;
   field-sizing: content;
-  transition: border-color 0.2s ease;
+}
+
+.booking-journey__select {
+  cursor: pointer;
+  appearance: none;
 }
 
 .booking-journey__notes::placeholder {
@@ -595,7 +604,9 @@
 }
 
 .booking-journey__notes:focus,
-.booking-journey__notes:focus-visible {
+.booking-journey__notes:focus-visible,
+.booking-journey__select:focus,
+.booking-journey__select:focus-visible {
   border-bottom-color: var(--bk-gold);
   outline: none;
 }
@@ -1684,6 +1695,11 @@
 
 .checkout-panel__google {
   width: 100%;
+}
+
+.checkout-panel__card .checkout-panel__google.google-signin-slot {
+  overflow: visible;
+  padding-block: 3px;
 }
 
 .checkout-panel__divider {

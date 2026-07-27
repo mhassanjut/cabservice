@@ -26,11 +26,15 @@ type BookingState = {
 }
 
 const emptyDraft = (): BookingDraft => ({
+  bookingKind: 'transfer',
   pickupLocation: '',
   dropoffLocation: '',
   pickupDate: '',
   pickupTime: '',
 })
+
+/** Default Barcelona coordinates used as placeholders for tour bookings. */
+const TOUR_PICKUP = { lat: 41.3874, lng: 2.1686 }
 
 export const useBookingStore = defineStore('booking', {
   state: (): BookingState => ({
@@ -45,8 +49,12 @@ export const useBookingStore = defineStore('booking', {
     scrollY: 0,
   }),
   getters: {
-    isDraftValid: (s) =>
-      Boolean(
+    isTourBooking: (s) => s.draft.bookingKind === 'tour',
+    isDraftValid: (s) => {
+      if (s.draft.bookingKind === 'tour') {
+        return Boolean(s.draft.tourId && s.draft.tourTitle && s.draft.pickupDate && s.draft.pickupTime)
+      }
+      return Boolean(
         s.draft.pickupLocation &&
           s.draft.dropoffLocation &&
           s.draft.pickupDate &&
@@ -54,7 +62,8 @@ export const useBookingStore = defineStore('booking', {
           s.draft.pickup &&
           s.draft.dropoff &&
           s.draft.distanceKm,
-      ),
+      )
+    },
     scheduledAtIso: (s) => {
       if (!s.draft.pickupDate || !s.draft.pickupTime) return ''
       return new Date(`${s.draft.pickupDate}T${s.draft.pickupTime}:00`).toISOString()
@@ -89,11 +98,40 @@ export const useBookingStore = defineStore('booking', {
     },
     /** Replaces the draft outright so no field from a previous trip survives. */
     beginNewTrip(draft: BookingDraft) {
-      this.draft = { ...draft }
+      this.draft = { bookingKind: 'transfer', ...draft }
       this.bookingReference = ''
       this.vehicle = null
       this.otherCar = false
+      if (draft.passengerCount != null && draft.passengerCount > 0) {
+        this.filters = { ...this.filters, passengerCapacity: draft.passengerCount }
+      } else {
+        const next = { ...this.filters }
+        delete next.passengerCapacity
+        this.filters = next
+      }
       if (import.meta.client) sessionStorage.removeItem(CHECKOUT_COMPLETE_KEY)
+    },
+    beginTour(tour: { id: string; title: string; location?: string }) {
+      const date = new Date()
+      date.setDate(date.getDate() + 7)
+      const pickupDate = date.toISOString().slice(0, 10)
+      this.beginNewTrip({
+        bookingKind: 'tour',
+        tourId: tour.id,
+        tourTitle: tour.title,
+        tourLocation: tour.location,
+        pickupLocation: tour.location || 'Flexible pickup — Barcelona area',
+        dropoffLocation: tour.title,
+        pickup: TOUR_PICKUP,
+        dropoff: TOUR_PICKUP,
+        pickupCity: 'Barcelona',
+        destinationCity: tour.location,
+        distanceKm: 0,
+        pickupDate,
+        pickupTime: '09:00',
+      })
+      this.cars = []
+      this.carsPage = 0
     },
     completeCheckout(_reference: string) {
       this.clear()

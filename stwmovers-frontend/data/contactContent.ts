@@ -4,6 +4,11 @@
  * presentational. Images are served from `public/img/contact/`.
  */
 
+import { siteConfig } from '~/config/site'
+
+const contactEmail = siteConfig.contactEmail
+const contactMailto = `mailto:${contactEmail}`
+
 export type ContactChannel = {
   /** Font Awesome icon class. */
   icon: string
@@ -57,8 +62,8 @@ export const contactChannels: ContactChannel[] = [
   {
     icon: 'fa-solid fa-envelope',
     label: 'Concierge Email',
-    value: 'concierge@stwmovers.com',
-    href: 'mailto:concierge@stwmovers.com',
+    value: contactEmail,
+    href: contactMailto,
   },
   {
     icon: 'fa-brands fa-whatsapp',
@@ -86,9 +91,9 @@ export const contactCards: ContactCard[] = [
   },
   {
     icon: 'fa-solid fa-envelope',
-    title: 'Corporate & Press Email',
-    value: 'concierge@stwmovers.com',
-    href: 'mailto:concierge@stwmovers.com',
+    title: 'Contact Email',
+    value: contactEmail,
+    href: contactMailto,
     description:
       'Receive a personalised response from our luxury dispatch team regarding multi-car bookings or corporate contracts.',
   },

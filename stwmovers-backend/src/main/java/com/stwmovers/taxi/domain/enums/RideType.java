@@ -7,5 +7,6 @@ package com.stwmovers.taxi.domain.enums;
 public enum RideType {
     STANDARD,
     IN_CITY,
-    CITY_TO_CITY
+    CITY_TO_CITY,
+    TOUR
 }

@@ -39,8 +39,13 @@ onMounted(async () => {
     guest.phone = auth.guestSession.phone
   }
   if (!booking.isDraftValid) {
-    toast.show('Your trip details are incomplete. Please start from the home page.', 'error')
-    await router.replace(routes.home)
+    toast.show(
+      booking.isTourBooking
+        ? 'Your tour details are incomplete. Please start from the tours page.'
+        : 'Your trip details are incomplete. Please start from the home page.',
+      'error',
+    )
+    await router.replace(booking.isTourBooking ? routes.tours : routes.home)
     return
   }
   if (!booking.vehicle && !booking.otherCar) {
@@ -123,11 +128,13 @@ const createBooking = async () => {
       pickupLng: booking.draft.pickup!.lng,
       dropoffLat: booking.draft.dropoff!.lat,
       dropoffLng: booking.draft.dropoff!.lng,
-      distanceKm: booking.draft.distanceKm!,
+      distanceKm: booking.draft.distanceKm ?? 0,
       pickupCity: booking.draft.pickupCity!,
       passengerCount: booking.draft.passengerCount,
       scheduledAt: booking.scheduledAtIso,
       destinationCity: booking.draft.destinationCity,
+      notes: booking.draft.notes?.trim() || undefined,
+      tourId: booking.isTourBooking ? booking.draft.tourId : undefined,
     }
 
     if (isCustomerLoggedIn.value) {

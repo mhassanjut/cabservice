@@ -1,6 +1,6 @@
 export type ApiResponse<T> = { success: boolean; message?: string; data: T; timestamp?: string }
 
-export type RideType = 'STANDARD' | 'IN_CITY' | 'CITY_TO_CITY'
+export type RideType = 'STANDARD' | 'IN_CITY' | 'CITY_TO_CITY' | 'TOUR'
 export type BookingStatus =
   | 'CREATED' | 'OTP_PENDING' | 'PAYMENT_PENDING' | 'CONFIRMED' | 'DRIVER_ASSIGNED'
   | 'DRIVER_ACCEPTED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED' | 'REFUNDED'
@@ -71,6 +71,9 @@ export type BookingDto = {
   scheduledAt: string
   calculatedFare?: number
   destinationCity?: string
+  notes?: string
+  tourId?: string
+  tourTitle?: string
   driverId?: string
   rideStatus?: RideStatus
   createdAt?: string
@@ -287,6 +290,7 @@ export type AdminBookingQuery = {
   size?: number
   status?: BookingStatus
   rideType?: RideType
+  excludeRideType?: RideType
   customRequest?: boolean
   search?: string
   fromDate?: string

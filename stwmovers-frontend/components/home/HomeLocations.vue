@@ -1,12 +1,18 @@
 <script setup lang="ts">
-import { homeAnchors } from '~/constants/routes'
+import { homeAnchors, journeyWithRoute } from '~/constants/routes'
 import { seoSections } from '~/config/seo'
 import { homeLocationCards } from '~/data/homeContent'
 import { layoutLocationCards } from '~/utils/homeLocationGrid'
+import { parseTransferRouteTitle } from '~/utils/journeyRoute'
 
 const transferCards = computed(() =>
   layoutLocationCards(homeLocationCards.filter((card) => card.type === 'transfer')),
 )
+
+function cardJourneyLink(title: string) {
+  const route = parseTransferRouteTitle(title)
+  return route ? journeyWithRoute(route) : journeyWithRoute({})
+}
 
 // Match the grid: 2 columns on mobile, 4 columns from 768px up.
 // Map each card's column span to the width it actually renders at so the
@@ -41,7 +47,7 @@ function cardSizes(columnSpan: number): string {
       <NuxtLink
         v-for="card in transferCards"
         :key="card.id"
-        :to="homeAnchors.booking"
+        :to="cardJourneyLink(card.title)"
         :prefetch="false"
         class="home-location-card"
         :class="{

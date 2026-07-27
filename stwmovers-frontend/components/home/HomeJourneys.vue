@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { homeAnchors } from '~/constants/routes'
+import { homeAnchors, journeyWithDestination } from '~/constants/routes'
 import {
   homeJourneyCards,
   homeJourneyCardSize,
@@ -35,13 +35,16 @@ function cardStyle(card: HomeJourneyCard, group: { width: number; height: number
         <NuxtLink class="home-journeys__cta" :to="homeAnchors.booking" :prefetch="false">Discover Every Journey</NuxtLink>
       </div>
 
-      <div class="home-journeys__collage" aria-hidden="true">
+      <div class="home-journeys__collage">
         <div class="home-journeys__group home-journeys__group--top">
-          <article
+          <NuxtLink
             v-for="card in topCards"
             :key="card.id"
+            :to="journeyWithDestination(card.title)"
+            :prefetch="false"
             class="home-journey-card"
             :style="cardStyle(card, homeJourneyGroupTop)"
+            :aria-label="`Plan a journey to ${card.title}`"
           >
             <NuxtImg
               class="home-journey-card__photo"
@@ -66,15 +69,18 @@ function cardStyle(card: HomeJourneyCard, group: { width: number; height: number
                 </div>
               </div>
             </div>
-          </article>
+          </NuxtLink>
         </div>
 
         <div class="home-journeys__group home-journeys__group--bottom">
-          <article
+          <NuxtLink
             v-for="card in bottomCards"
             :key="card.id"
+            :to="journeyWithDestination(card.title)"
+            :prefetch="false"
             class="home-journey-card"
             :style="cardStyle(card, homeJourneyGroupBottom)"
+            :aria-label="`Plan a journey to ${card.title}`"
           >
             <NuxtImg
               class="home-journey-card__photo"
@@ -99,7 +105,7 @@ function cardStyle(card: HomeJourneyCard, group: { width: number; height: number
                 </div>
               </div>
             </div>
-          </article>
+          </NuxtLink>
         </div>
       </div>
       </div>

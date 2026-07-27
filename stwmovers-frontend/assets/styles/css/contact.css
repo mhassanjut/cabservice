@@ -302,6 +302,23 @@
   box-shadow: 0 0 0 3px rgba(216, 178, 76, 0.15);
 }
 
+.contact-page .contact-input--select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23666' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+}
+
+.contact-page .contact-input--picker {
+  cursor: pointer;
+}
+
+.contact-page .contact-field__picker {
+  display: block;
+  cursor: pointer;
+}
+
 .contact-page .contact-form__submit {
   margin-top: 0.5rem;
 }

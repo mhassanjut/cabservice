@@ -15,6 +15,8 @@ export type CreateBookingPayload = {
   passengerCount?: number
   scheduledAt: string
   destinationCity?: string
+  notes?: string
+  tourId?: string
   guestName?: string
   guestEmail?: string
   guestPhone?: string

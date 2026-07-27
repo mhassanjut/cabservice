@@ -87,6 +87,7 @@ public final class EntityMapper {
                 .scheduledAt(booking.getScheduledAt())
                 .calculatedFare(booking.getCalculatedFare())
                 .destinationCity(booking.getDestinationCity())
+                .notes(booking.getNotes())
                 .rideStatus(booking.getRideStatus())
                 .createdAt(booking.getCreatedAt())
                 .updatedAt(booking.getUpdatedAt());
@@ -99,6 +100,9 @@ public final class EntityMapper {
         }
         if (booking.getDriver() != null) {
             builder.driverId(booking.getDriver().getId());
+        }
+        if (booking.getTour() != null) {
+            builder.tourId(booking.getTour().getId()).tourTitle(booking.getTour().getTitle());
         }
         return builder.build();
     }

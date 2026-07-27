@@ -25,6 +25,8 @@ import com.stwmovers.taxi.application.service.fare.FareCalculationService;
 import com.stwmovers.taxi.domain.entity.Booking;
 import com.stwmovers.taxi.domain.entity.Car;
 import com.stwmovers.taxi.domain.entity.Driver;
+import com.stwmovers.taxi.domain.entity.Tour;
+import com.stwmovers.taxi.domain.entity.TourCarPricing;
 import com.stwmovers.taxi.domain.entity.User;
 import com.stwmovers.taxi.domain.enums.BookingStatus;
 import com.stwmovers.taxi.domain.entity.Payment;
@@ -32,6 +34,8 @@ import com.stwmovers.taxi.domain.enums.PaymentStatus;
 import com.stwmovers.taxi.domain.repository.BookingRepository;
 import com.stwmovers.taxi.domain.repository.CarRepository;
 import com.stwmovers.taxi.domain.repository.DriverRepository;
+import com.stwmovers.taxi.domain.repository.TourCarPricingRepository;
+import com.stwmovers.taxi.domain.repository.TourRepository;
 import com.stwmovers.taxi.domain.enums.RideType;
 import com.stwmovers.taxi.domain.repository.PaymentRepository;
 import com.stwmovers.taxi.domain.repository.UserRepository;
@@ -55,6 +59,8 @@ public class BookingService {
     private final FareCalculationService fareCalculationService;
     private final BookingReferenceGenerator bookingReferenceGenerator;
     private final PaymentRepository paymentRepository;
+    private final TourRepository tourRepository;
+    private final TourCarPricingRepository tourCarPricingRepository;
 
     public BookingService(
             BookingRepository bookingRepository,
@@ -63,7 +69,9 @@ public class BookingService {
             DriverRepository driverRepository,
             FareCalculationService fareCalculationService,
             BookingReferenceGenerator bookingReferenceGenerator,
-            PaymentRepository paymentRepository) {
+            PaymentRepository paymentRepository,
+            TourRepository tourRepository,
+            TourCarPricingRepository tourCarPricingRepository) {
         this.bookingRepository = bookingRepository;
         this.carRepository = carRepository;
         this.userRepository = userRepository;
@@ -71,10 +79,13 @@ public class BookingService {
         this.fareCalculationService = fareCalculationService;
         this.bookingReferenceGenerator = bookingReferenceGenerator;
         this.paymentRepository = paymentRepository;
+        this.tourRepository = tourRepository;
+        this.tourCarPricingRepository = tourCarPricingRepository;
     }
 
     @Transactional
     public BookingResponse createBooking(CreateBookingRequest request) {
+        boolean isTourBooking = request.getTourId() != null;
         boolean otherCar = Boolean.TRUE.equals(request.getOtherCar());
         if (!otherCar && request.getCarId() == null) {
             throw new BadRequestException("carId is required unless otherCar is true");
@@ -82,16 +93,31 @@ public class BookingService {
         if (otherCar && request.getCarId() != null) {
             throw new BadRequestException("carId must be null when otherCar is true");
         }
-
-        if (!CityNameUtils.isValidPickupCity(
-                request.getPickupCity(), request.getPickupLat(), request.getPickupLng())) {
-            throw new BadRequestException(
-                    "Pickup is only available from Barcelona (including El Prat Airport), Tarragona, or Girona");
+        if (isTourBooking && otherCar) {
+            throw new BadRequestException("Custom vehicle requests are not supported for tour bookings");
         }
 
-        String pickupCity = CityNameUtils.resolvePickupCity(
-                request.getPickupCity(), request.getPickupLat(), request.getPickupLng());
-        RideType rideType = RideType.STANDARD;
+        String pickupCity;
+        RideType rideType;
+        Tour tour = null;
+
+        if (isTourBooking) {
+            tour = tourRepository.findById(request.getTourId())
+                    .filter(Tour::getActive)
+                    .orElseThrow(() -> new ResourceNotFoundException("Tour not found"));
+            pickupCity = CityNameUtils.resolvePickupCity(
+                    request.getPickupCity(), request.getPickupLat(), request.getPickupLng());
+            rideType = RideType.TOUR;
+        } else {
+            if (!CityNameUtils.isValidPickupCity(
+                    request.getPickupCity(), request.getPickupLat(), request.getPickupLng())) {
+                throw new BadRequestException(
+                        "Pickup is only available from Barcelona (including El Prat Airport), Tarragona, or Girona");
+            }
+            pickupCity = CityNameUtils.resolvePickupCity(
+                    request.getPickupCity(), request.getPickupLat(), request.getPickupLng());
+            rideType = RideType.STANDARD;
+        }
 
         User currentUser = resolveCurrentUser();
         boolean isGuest = currentUser == null;
@@ -116,12 +142,20 @@ public class BookingService {
         if (!otherCar) {
             car = carRepository.findById(request.getCarId())
                     .orElseThrow(() -> new ResourceNotFoundException("Car not found"));
-            FareCalculationContext context = FareCalculationContext.builder()
-                    .distanceKm(request.getDistanceKm())
-                    .pickupCity(pickupCity)
-                    .destinationCity(request.getDestinationCity())
-                    .build();
-            calculatedFare = fareCalculationService.calculateFare(car, context);
+            if (isTourBooking) {
+                TourCarPricing pricing = tourCarPricingRepository
+                        .findActiveByTourAndCarId(tour.getId(), car.getId())
+                        .orElseThrow(() -> new BadRequestException(
+                                "No active tour price is configured for the selected vehicle"));
+                calculatedFare = pricing.getPrice();
+            } else {
+                FareCalculationContext context = FareCalculationContext.builder()
+                        .distanceKm(request.getDistanceKm())
+                        .pickupCity(pickupCity)
+                        .destinationCity(request.getDestinationCity())
+                        .build();
+                calculatedFare = fareCalculationService.calculateFare(car, context);
+            }
         }
 
         BookingStatus initialStatus = isGuest ? BookingStatus.OTP_PENDING : BookingStatus.PAYMENT_PENDING;
@@ -136,6 +170,7 @@ public class BookingService {
                 .customRequest(customRequest)
                 .status(initialStatus)
                 .rideType(rideType)
+                .tour(tour)
                 .pickupAddress(request.getPickupAddress())
                 .dropoffAddress(request.getDropoffAddress())
                 .pickupLat(request.getPickupLat())
@@ -147,6 +182,7 @@ public class BookingService {
                 .scheduledAt(request.getScheduledAt())
                 .calculatedFare(calculatedFare)
                 .destinationCity(request.getDestinationCity())
+                .notes(normalizeNotes(request.getNotes()))
                 .build();
 
         return EntityMapper.toBookingResponse(bookingRepository.save(booking));
@@ -207,6 +243,7 @@ public class BookingService {
     public PagedResponse<BookingResponse> listAdminBookings(
             BookingStatus status,
             RideType rideType,
+            RideType excludeRideType,
             Boolean customRequest,
             String search,
             Instant fromDate,
@@ -217,7 +254,7 @@ public class BookingService {
             int size) {
         PageRequest pageable = PageRequest.of(page, size, resolveAdminBookingSort(sortBy, sortDir));
         Specification<Booking> spec = BookingSpecification.adminFilter(
-                status, rideType, customRequest, search, fromDate, toDate);
+                status, rideType, excludeRideType, customRequest, search, fromDate, toDate);
         Page<Booking> bookings = bookingRepository.findAll(spec, pageable);
         return toPaged(bookings);
     }
@@ -388,5 +425,13 @@ public class BookingService {
                 .totalElements(page.getTotalElements())
                 .totalPages(page.getTotalPages())
                 .build();
+    }
+
+    private static String normalizeNotes(String notes) {
+        if (notes == null) {
+            return null;
+        }
+        String trimmed = notes.trim();
+        return trimmed.isEmpty() ? null : trimmed;
     }
 }

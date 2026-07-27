@@ -344,10 +344,12 @@ const toggleActive = async (tour: AdminTourDto) => {
 }
 
 const removeTour = async (tour: AdminTourDto) => {
+  if (!confirm(`Remove "${tour.title}" permanently? This cannot be undone.`)) return
   try {
     await adminService.deleteTour(tour.id)
+    tours.value = tours.value.filter((row: AdminTourDto) => row.id !== tour.id)
+    if (editing.value?.id === tour.id) closeForm()
     toast.show('Tour removed.', 'success')
-    await load()
   } catch {
     toast.show('Could not remove tour.', 'error')
   }

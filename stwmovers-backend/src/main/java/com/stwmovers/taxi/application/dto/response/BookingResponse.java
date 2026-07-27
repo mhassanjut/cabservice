@@ -37,6 +37,9 @@ public class BookingResponse {
     Instant scheduledAt;
     BigDecimal calculatedFare;
     String destinationCity;
+    String notes;
+    UUID tourId;
+    String tourTitle;
     UUID driverId;
     RideStatus rideStatus;
     Instant createdAt;

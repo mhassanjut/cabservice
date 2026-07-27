@@ -20,6 +20,7 @@ export const routes = {
   adminLogin: '/admin/login',
   adminHome: '/admin',
   adminRides: '/admin/rides',
+  adminTourBookings: '/admin/tour-bookings',
   adminDrivers: '/admin/drivers',
   adminCars: '/admin/cars',
   adminTours: '/admin/tours',
@@ -39,6 +40,23 @@ export const EDIT_JOURNEY_FLAG = 'journey'
 export const editJourneyLocation = {
   path: routes.home,
   query: { edit: EDIT_JOURNEY_FLAG },
+}
+
+/** Journey page with pickup and/or destination prefilled in the booking form. */
+export function journeyWithRoute(params: { pickup?: string; destination?: string }) {
+  const query: Record<string, string> = {}
+  if (params.pickup) query.pickup = params.pickup
+  if (params.destination) query.destination = params.destination
+  return {
+    path: routes.journey,
+    hash: '#book-journey',
+    query,
+  }
+}
+
+/** Journey page with destination prefilled in the booking form. */
+export function journeyWithDestination(destination: string) {
+  return journeyWithRoute({ destination })
 }
 
 /**

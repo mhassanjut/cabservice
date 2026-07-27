@@ -1048,6 +1048,10 @@
   overflow: hidden;
   /* Neutral tone shown until the blurred placeholder / full image paints. */
   background: #e9e9ec;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
 }
 
 .home-journey-card__photo {

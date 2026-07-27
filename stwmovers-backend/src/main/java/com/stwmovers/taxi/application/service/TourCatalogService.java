@@ -19,6 +19,8 @@ import com.stwmovers.taxi.application.dto.response.TourCarPricingResponse;
 import com.stwmovers.taxi.application.dto.response.TourResponse;
 import com.stwmovers.taxi.domain.entity.Tour;
 import com.stwmovers.taxi.domain.entity.TourItineraryItem;
+import com.stwmovers.taxi.domain.repository.BookingRepository;
+import com.stwmovers.taxi.domain.repository.TourCarPricingRepository;
 import com.stwmovers.taxi.domain.repository.TourRepository;
 import com.stwmovers.taxi.exception.ResourceNotFoundException;
 import com.stwmovers.taxi.util.EntityMapper;
@@ -29,14 +31,20 @@ public class TourCatalogService {
     private final TourRepository tourRepository;
     private final TourImageStorageService tourImageStorageService;
     private final TourPricingService tourPricingService;
+    private final BookingRepository bookingRepository;
+    private final TourCarPricingRepository tourCarPricingRepository;
 
     public TourCatalogService(
             TourRepository tourRepository,
             TourImageStorageService tourImageStorageService,
-            TourPricingService tourPricingService) {
+            TourPricingService tourPricingService,
+            BookingRepository bookingRepository,
+            TourCarPricingRepository tourCarPricingRepository) {
         this.tourRepository = tourRepository;
         this.tourImageStorageService = tourImageStorageService;
         this.tourPricingService = tourPricingService;
+        this.bookingRepository = bookingRepository;
+        this.tourCarPricingRepository = tourCarPricingRepository;
     }
 
     @Transactional(readOnly = true)
@@ -158,8 +166,10 @@ public class TourCatalogService {
     public void deleteTour(UUID id) {
         Tour tour = tourRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Tour not found: " + id));
-        tour.setActive(false);
-        tourRepository.save(tour);
+        bookingRepository.clearTourReference(id);
+        tourCarPricingRepository.deleteByTourId(id);
+        tourImageStorageService.deleteIfStored(tour.getImageUrl());
+        tourRepository.delete(tour);
     }
 
     private TourResponse toEnrichedResponse(Tour tour, boolean includeCarPrices) {

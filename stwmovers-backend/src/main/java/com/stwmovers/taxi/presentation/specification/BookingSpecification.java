@@ -20,6 +20,7 @@ public final class BookingSpecification {
     public static Specification<Booking> adminFilter(
             BookingStatus status,
             RideType rideType,
+            RideType excludeRideType,
             Boolean customRequest,
             String search,
             Instant fromDate,
@@ -32,6 +33,9 @@ public final class BookingSpecification {
             }
             if (rideType != null) {
                 predicates.add(cb.equal(root.get("rideType"), rideType));
+            }
+            if (excludeRideType != null) {
+                predicates.add(cb.notEqual(root.get("rideType"), excludeRideType));
             }
             if (customRequest != null) {
                 predicates.add(cb.equal(root.get("customRequest"), customRequest));

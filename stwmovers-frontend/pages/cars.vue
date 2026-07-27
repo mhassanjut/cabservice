@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { editJourneyLocation, routes } from '~/constants/routes'
 import { ridesService } from '~/services/api/rides.service'
+import { toursService } from '~/services/api/tours.service'
 import { normalizeCarFilters } from '~/utils/carFilters'
+import { routeEndpointFromDraft } from '~/utils/routeEndpoint'
 
 const SHOW_CUSTOM_REQUEST = false
 
@@ -12,24 +14,80 @@ usePageSeo({ title: 'Choose your car', path: '/cars' })
 const booking = useBookingStore()
 const router = useRouter()
 const toast = useToastStore()
+const maps = useGoogleMaps()
+const config = useRuntimeConfig()
 const resultsLoading = ref(booking.isDraftValid && !booking.cars.length)
 const hasFetched = ref(booking.cars.length > 0)
 
 const SKELETON_COUNT = 3
 
 onMounted(async () => {
+  booking.hydrateFromStorage()
   if (!booking.isDraftValid) {
     resultsLoading.value = false
-    await router.replace(routes.home)
+    await router.replace(booking.isTourBooking ? routes.tours : routes.home)
     return
+  }
+  if (
+    booking.draft.passengerCount &&
+    booking.filters.passengerCapacity !== booking.draft.passengerCount
+  ) {
+    booking.setFilters({ ...booking.filters, passengerCapacity: booking.draft.passengerCount })
+  }
+  if (!booking.isTourBooking) {
+    const origin = routeEndpointFromDraft(booking.draft.pickupLocation, booking.draft.pickup)
+    const destination = routeEndpointFromDraft(booking.draft.dropoffLocation, booking.draft.dropoff)
+    if (origin && destination && config.public.googleMapsApiKey) {
+      await maps.load()
+      const route = await maps.resolveDrivingRoute(origin, destination)
+      const distanceChanged = route.distanceKm !== booking.draft.distanceKm
+      const durationChanged = route.durationMinutes !== booking.draft.durationMinutes
+      booking.setDraft({
+        distanceKm: route.distanceKm,
+        durationMinutes: route.durationMinutes,
+      })
+      if (distanceChanged || durationChanged) booking.setCars([])
+    }
+  } else {
+    booking.setCars([])
   }
   if (!booking.cars.length) await fetchCars()
   else {
     resultsLoading.value = false
     hasFetched.value = true
+    clearInvalidSelection()
   }
   if (import.meta.client) window.scrollTo(0, booking.scrollY)
 })
+
+const clearInvalidSelection = () => {
+  if (!booking.vehicle) return
+  const count = booking.draft.passengerCount
+  if (count && booking.vehicle.seats < count) {
+    booking.setVehicle(null, false)
+    return
+  }
+  if (!booking.cars.some((c) => c.id === booking.vehicle!.id && c.available)) {
+    booking.setVehicle(null, false)
+  }
+}
+
+const syncPassengerFilter = (count?: number) => {
+  const next = { ...booking.filters }
+  if (count != null && count > 0) {
+    next.passengerCapacity = count
+  } else {
+    delete next.passengerCapacity
+  }
+  booking.setFilters(next)
+}
+
+const onPassengersChange = async (count?: number) => {
+  syncPassengerFilter(count)
+  clearInvalidSelection()
+  await fetchCars()
+  booking.persistToStorage()
+}
 
 onBeforeRouteLeave(() => {
   if (import.meta.client) booking.scrollY = window.scrollY
@@ -37,9 +95,18 @@ onBeforeRouteLeave(() => {
 })
 
 const fetchCars = async () => {
-  if (!booking.draft.pickup || !booking.draft.dropoff) return
   resultsLoading.value = true
   try {
+    if (booking.isTourBooking && booking.draft.tourId) {
+      const res = await toursService.carsWithFare(booking.draft.tourId, {
+        filters: normalizeCarFilters(booking.filters),
+        page: booking.carsPage,
+        size: 20,
+      })
+      booking.setCars(res.content)
+      return
+    }
+    if (!booking.draft.pickup || !booking.draft.dropoff) return
     const res = await ridesService.carsWithFare({
       pickupLat: booking.draft.pickup.lat,
       pickupLng: booking.draft.pickup.lng,
@@ -53,6 +120,14 @@ const fetchCars = async () => {
       size: 20,
     })
     booking.setCars(res.content)
+  } catch {
+    toast.show(
+      booking.isTourBooking
+        ? 'Could not load vehicles for this tour. Please try again.'
+        : 'Could not load vehicles. Please try again.',
+      'error',
+    )
+    booking.setCars([])
   } finally {
     resultsLoading.value = false
     hasFetched.value = true
@@ -61,7 +136,12 @@ const fetchCars = async () => {
 
 const onFilter = async (f: typeof booking.filters) => {
   booking.setFilters(f)
+  booking.setDraft({
+    passengerCount: f.passengerCapacity != null && f.passengerCapacity > 0 ? f.passengerCapacity : undefined,
+  })
+  clearInvalidSelection()
   await fetchCars()
+  booking.persistToStorage()
 }
 
 const checkoutBusy = ref(false)
@@ -72,8 +152,13 @@ const navigateToCheckout = async () => {
     return
   }
   if (!booking.isDraftValid) {
-    toast.show('Your trip details are incomplete. Edit your trip from the home page.', 'error')
-    await router.replace(routes.home)
+    toast.show(
+      booking.isTourBooking
+        ? 'Your tour details are incomplete. Please start from the tours page.'
+        : 'Your trip details are incomplete. Edit your trip from the home page.',
+      'error',
+    )
+    await router.replace(booking.isTourBooking ? routes.tours : routes.home)
     return
   }
   booking.persistToStorage()
@@ -113,6 +198,7 @@ const select = (id: string) => {
 const isSelected = (id: string) => booking.vehicle?.id === id && !booking.otherCar
 const hasSelection = computed(() => Boolean(booking.vehicle || booking.otherCar))
 
+const backTarget = computed(() => (booking.isTourBooking ? routes.tours : editJourneyLocation))
 const vehicleCount = computed(() => booking.cars.filter((c) => c.available).length)
 </script>
 
@@ -129,7 +215,7 @@ const vehicleCount = computed(() => booking.cars.filter((c) => c.available).leng
       </header>
 
       <div class="vehicle-page__main">
-        <BookingJourneyCard class="vehicle-page__aside" />
+        <BookingJourneyCard class="vehicle-page__aside" @passengers-change="onPassengersChange" />
 
         <div class="vehicle-page__content">
           <CarFilters v-model="booking.filters" @change="onFilter" />
@@ -209,7 +295,7 @@ const vehicleCount = computed(() => booking.cars.filter((c) => c.available).leng
       :fare="booking.otherCar ? null : booking.vehicle?.priceEur"
       :busy="checkoutBusy"
       @continue="goToCheckout"
-      @back="router.push(editJourneyLocation)"
+      @back="router.push(backTarget)"
     />
   </div>
 </template>

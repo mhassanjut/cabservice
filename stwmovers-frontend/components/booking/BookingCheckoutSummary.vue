@@ -4,6 +4,7 @@ import { journeyIcons } from '~/constants/journeyIcons'
 const booking = useBookingStore()
 const auth = useAuthStore()
 
+const isTour = computed(() => booking.isTourBooking)
 const isCustomerLoggedIn = computed(() => auth.isLoggedIn && auth.isCustomer)
 
 onMounted(() => {
@@ -61,6 +62,27 @@ const fareValue = computed(() => {
     </div>
 
     <ul class="booking-journey__list checkout-summary__list">
+      <template v-if="isTour">
+        <li class="booking-journey__item">
+          <span class="booking-journey__icon" aria-hidden="true">
+            <img :src="journeyIcons.travelDate" alt="" width="20" height="20" />
+          </span>
+          <div class="booking-journey__text">
+            <span class="booking-journey__label">Tour</span>
+            <p class="booking-journey__value">{{ booking.draft.tourTitle || '—' }}</p>
+          </div>
+        </li>
+        <li class="booking-journey__item">
+          <span class="booking-journey__icon" aria-hidden="true">
+            <img :src="journeyIcons.notes" alt="" width="20" height="20" />
+          </span>
+          <div class="booking-journey__text">
+            <span class="booking-journey__label">Notes</span>
+            <p class="booking-journey__value">{{ notes }}</p>
+          </div>
+        </li>
+      </template>
+      <template v-else>
       <li class="booking-journey__item">
         <span class="booking-journey__icon" aria-hidden="true">
           <img :src="journeyIcons.pickup" alt="" width="20" height="20" />
@@ -106,6 +128,7 @@ const fareValue = computed(() => {
           <p class="booking-journey__value">{{ notes }}</p>
         </div>
       </li>
+      </template>
     </ul>
 
     <hr class="booking-card__divider" />

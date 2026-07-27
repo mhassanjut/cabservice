@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -49,4 +50,8 @@ public interface BookingRepository extends JpaRepository<Booking, UUID>, JpaSpec
 
     @Query("SELECT COUNT(b) FROM Booking b WHERE b.status = com.stwmovers.taxi.domain.enums.BookingStatus.IN_PROGRESS")
     long countInProgressRides();
+
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("UPDATE Booking b SET b.tour = null WHERE b.tour.id = :tourId")
+    void clearTourReference(@Param("tourId") UUID tourId);
 }

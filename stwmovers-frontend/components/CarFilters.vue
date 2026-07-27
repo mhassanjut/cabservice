@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { CarFilter, CarType } from '~/types/api'
 import { editJourneyLocation } from '~/constants/routes'
+import { PASSENGER_CAPACITY_CHOICES, passengerCapacityLabel } from '~/constants/passengers'
 
 const emit = defineEmits<{ (e: 'change', f: CarFilter): void }>()
 const model = defineModel<CarFilter>({ required: true })
@@ -11,7 +12,7 @@ const carTypes: { value: CarType; label: string }[] = [
   { value: 'VAN', label: 'Van' },
 ]
 
-const passengerOptions = [null, 2, 4, 6, 8] as const
+const passengerOptions = [null, ...PASSENGER_CAPACITY_CHOICES] as const
 
 /** Filters fetch immediately, so always emit the value we just wrote to the model. */
 const applyNow = (next: CarFilter) => {
@@ -60,7 +61,7 @@ const applyPrice = () => emit('change', { ...model.value })
             :class="{ 'is-active': (n == null && !model.passengerCapacity) || model.passengerCapacity === n }"
             @click="setPassengers(n)"
           >
-            {{ n == null ? 'All' : n === 8 ? '8+' : n }}
+            {{ n == null ? 'All' : passengerCapacityLabel(n) }}
           </button>
         </div>
       </div>

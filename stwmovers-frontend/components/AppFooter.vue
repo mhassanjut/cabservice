@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { siteConfig } from '~/config/site'
 import { homeAnchors, routes } from '~/constants/routes'
 </script>
 
@@ -15,7 +16,7 @@ import { homeAnchors, routes } from '~/constants/routes'
           <a href="https://wa.me/34632047888" rel="noopener noreferrer" target="_blank" aria-label="WhatsApp">
             <i class="fa-brands fa-whatsapp" aria-hidden="true" />
           </a>
-          <a href="mailto:concierge@stwmovers.com" aria-label="Email">
+          <a :href="`mailto:${siteConfig.contactEmail}`" aria-label="Email">
             <i class="fa-solid fa-envelope" aria-hidden="true" />
           </a>
           <a href="https://instagram.com" rel="noopener noreferrer" target="_blank" aria-label="Instagram">
