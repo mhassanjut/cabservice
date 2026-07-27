@@ -4,12 +4,12 @@ import { routes } from '~/constants/routes'
 const auth = useAuthStore()
 const route = useRoute()
 
-const redirect = computed(() => (route.query.redirect as string) || routes.dashboard)
+const redirect = computed(() => (route.query.redirect as string) || undefined)
 
 onMounted(() => {
   auth.hydrate()
   if (auth.isLoggedIn) {
-    navigateTo(redirect.value)
+    navigateTo(redirect.value ?? routes.home)
   }
 })
 

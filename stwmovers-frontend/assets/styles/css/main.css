@@ -1388,7 +1388,7 @@ select.input {
 .loading-overlay {
   position: fixed;
   inset: 0;
-  z-index: 400;
+  z-index: 550;
   display: grid;
   place-items: center;
   padding: 1.5rem;
@@ -2753,6 +2753,7 @@ select.input {
   width: 100%;
   display: flex;
   justify-content: center;
+  overflow: visible;
 }
 
 .sign-in-panel__guest {
@@ -2884,6 +2885,11 @@ select.input {
   background: rgba(10, 10, 10, 0.82);
   backdrop-filter: blur(4px);
   animation: sign-in-fade-in 0.2s ease;
+}
+
+.sign-in-modal--busy {
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .sign-in-modal__dialog {

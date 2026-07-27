@@ -43,15 +43,22 @@ watch(isConfigured, async (ready: boolean) => {
 .google-signin-slot {
   width: 100%;
   max-width: 100%;
-  min-height: 44px;
+  min-height: 50px;
   display: flex;
   justify-content: center;
-  overflow: hidden;
+  align-items: center;
+  overflow: visible;
+  padding-block: 3px;
 }
 
 .google-signin-slot :deep(div),
 .google-signin-slot :deep(iframe) {
   max-width: 100% !important;
+}
+
+.google-signin-slot :deep(iframe) {
+  display: block;
+  min-height: 44px;
 }
 
 .google-signin-slot__fallback {

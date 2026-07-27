@@ -14,10 +14,9 @@ export default defineNuxtPlugin({
     }
 
     auth.listenForAuthChanges(() => {
-      if (auth.cookieAuthEnabled) {
-        auth.authReady = false
-        void auth.bootstrapSession()
-      }
+      if (!auth.cookieAuthEnabled || auth.sessionVerified) return
+      auth.authReady = false
+      void auth.bootstrapSession()
     })
   },
 })

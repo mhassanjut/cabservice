@@ -3,6 +3,8 @@ export function useCustomerSignIn() {
   const redirectTo = useState<string | null>('customer-sign-in-redirect', () => null)
 
   const open = (redirect?: string | null) => {
+    const auth = useAuthStore()
+    if (auth.isLoggedIn && auth.role === 'CUSTOMER') return
     redirectTo.value = redirect ?? null
     isOpen.value = true
   }
