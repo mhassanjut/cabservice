@@ -168,7 +168,6 @@ stwmovers-backend/uploads/
 ########################################
 # Package manager lock files
 ########################################
-stwmovers-frontend/package-lock.json
 # yarn.lock
 # pnpm-lock.yaml
 
