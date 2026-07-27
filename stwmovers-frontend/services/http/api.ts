@@ -73,8 +73,11 @@ export async function api<T>(path: string, opts: ApiOptions = {}): Promise<T> {
         )
       }
       const route = useRoute()
-      const loginPath = route.fullPath.startsWith('/admin') ? '/admin/login' : '/login'
-      await navigateTo({ path: loginPath, query: { redirect: route.fullPath } })
+      if (route.fullPath.startsWith('/admin')) {
+        await navigateTo({ path: '/admin/login', query: { redirect: route.fullPath } })
+      } else {
+        useCustomerSignIn().open(route.fullPath)
+      }
     } else if (!opts.silent) {
       if (status === 429) {
         toast.show('Too many requests. Please wait a moment and try again.', 'error')

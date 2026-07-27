@@ -55,7 +55,7 @@ const hideOnAdminDriver = computed(() => route.path.startsWith('/admin') || rout
       </NuxtLink>
       <button
         type="button"
-        :class="{ 'is-active': signInOpen || route.path === '/login' }"
+        :class="{ 'is-active': signInOpen }"
         @click="openSignIn()"
       >
         <i class="fa-solid fa-right-to-bracket" aria-hidden="true" />

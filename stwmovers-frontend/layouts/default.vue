@@ -3,7 +3,7 @@ useLocalBusinessSchema()
 </script>
 
 <template>
-  <div class="site-root">
+  <div class="site-root site-root--home">
     <AppNavbar />
     <main id="main-content" class="layout-main container" role="main">
       <slot />

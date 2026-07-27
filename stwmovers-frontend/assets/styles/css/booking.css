@@ -271,6 +271,11 @@
   }
 }
 
+/* Fixed homepage nav offset for customer dashboard (AppNavbar is position: fixed). */
+.site-root--home.site-root--booking .dashboard-tabs {
+  margin-top: 72px;
+}
+
 /* ─── Stepper bar ─── */
 .booking-stepper {
   background: var(--bk-stepper-bg);

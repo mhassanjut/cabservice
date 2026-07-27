@@ -1,6 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
-  layout: 'booking',
+  layout: 'customer',
   middleware: ['customer', 'no-guest-dashboard'],
   ssr: false,
 })

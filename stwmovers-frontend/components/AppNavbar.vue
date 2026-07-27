@@ -9,25 +9,30 @@ const scrolled = ref(false)
 const isMobile = useIsMobile()
 const { open: openSignIn } = useCustomerSignIn()
 
-const isPrimaryNav = computed(() =>
+const hasHeroBackdrop = computed(() =>
   (PRIMARY_NAV_PATHS as readonly string[]).includes(route.path),
 )
 
-const onScroll = () => {
-  scrolled.value = window.scrollY > 24
+const syncNavScroll = () => {
+  if (!import.meta.client) return
+  scrolled.value = hasHeroBackdrop.value ? window.scrollY > 24 : true
 }
 
 onMounted(() => {
   auth.hydrate()
-  onScroll()
-  window.addEventListener('scroll', onScroll, { passive: true })
+  syncNavScroll()
+  window.addEventListener('scroll', syncNavScroll, { passive: true })
   auth.listenForAuthChanges(() => {
     if (!auth.isLoggedIn && !auth.isGuestSession) menuOpen.value = false
   })
 })
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', onScroll)
+  window.removeEventListener('scroll', syncNavScroll)
+})
+
+watch(() => route.path, () => {
+  nextTick(syncNavScroll)
 })
 
 watch(menuOpen, (open: boolean) => {
@@ -45,12 +50,12 @@ const closeMenu = () => {
 
 <template>
   <header
-    class="app-nav"
-    :class="{ 'is-scrolled': scrolled, 'app-nav--home': isPrimaryNav }"
+    class="app-nav app-nav--home"
+    :class="{ 'is-scrolled': scrolled }"
     role="banner"
   >
     <img
-      v-if="isPrimaryNav"
+      v-if="hasHeroBackdrop && !scrolled"
       class="app-nav__figma-bg"
       src="/img/home/navbar-bg.jpg"
       alt=""
@@ -72,25 +77,15 @@ const closeMenu = () => {
 
       <div class="app-nav__cluster">
         <nav class="app-nav__links" aria-label="Primary">
-          <template v-if="isPrimaryNav">
-            <NuxtLink class="app-nav__link" to="/">Home</NuxtLink>
-            <NuxtLink class="app-nav__link" to="/services">Services</NuxtLink>
-            <NuxtLink class="app-nav__link" to="/about-us">About Us</NuxtLink>
-            <NuxtLink class="app-nav__link" to="/journey">Journey</NuxtLink>
-            <NuxtLink class="app-nav__link" to="/tours">Tours</NuxtLink>
-          </template>
-
-          <template v-else>
-            <NuxtLink class="app-nav__link" to="/">Home</NuxtLink>
-            <NuxtLink class="app-nav__link" to="/faq">FAQ</NuxtLink>
-            <NuxtLink class="app-nav__link" to="/contact">Contact</NuxtLink>
-            <NuxtLink class="app-nav__link" to="/tours">Tours</NuxtLink>
-          </template>
+          <NuxtLink class="app-nav__link" to="/">Home</NuxtLink>
+          <NuxtLink class="app-nav__link" to="/services">Services</NuxtLink>
+          <NuxtLink class="app-nav__link" to="/about-us">About Us</NuxtLink>
+          <NuxtLink class="app-nav__link" to="/journey">Journey</NuxtLink>
+          <NuxtLink class="app-nav__link" to="/tours">Tours</NuxtLink>
         </nav>
 
         <div class="app-nav__actions">
-          <p v-if="auth.isLoggedIn && !isPrimaryNav" class="app-nav__greeting">Hi, {{ auth.firstName }}</p>
-          <AppUserMenu :mobile-sheet="isMobile" :login-variant="isPrimaryNav ? 'outline' : 'default'" />
+          <AppUserMenu :mobile-sheet="isMobile" login-variant="outline" />
           <a class="app-nav__journey-cta app-nav__action-btn" :href="homeAnchors.booking">
             Book Your Journey
           </a>
@@ -115,90 +110,58 @@ const closeMenu = () => {
       aria-hidden="true"
     >
       <div class="app-nav__backdrop" @click="closeMenu" />
-      <nav
-        class="app-nav__panel"
-        :class="{ 'app-nav__panel--home': isPrimaryNav }"
-        aria-label="Mobile"
-      >
-        <template v-if="isPrimaryNav">
-          <div class="app-nav__drawer-head">
-            <p class="app-nav__drawer-eyebrow">Menu</p>
+      <nav class="app-nav__panel app-nav__panel--home" aria-label="Mobile">
+        <div class="app-nav__drawer-head">
+          <p class="app-nav__drawer-eyebrow">Menu</p>
+          <button
+            type="button"
+            class="app-nav__drawer-close"
+            aria-label="Close menu"
+            @click="closeMenu"
+          >
+            <i class="fa-solid fa-xmark" aria-hidden="true" />
+          </button>
+        </div>
+
+        <div class="app-nav__drawer-body">
+          <div class="app-nav__drawer-links">
+            <NuxtLink class="app-nav__drawer-link" :to="routes.home" @click="closeMenu">Home</NuxtLink>
+            <NuxtLink class="app-nav__drawer-link" :to="routes.services" @click="closeMenu">Services</NuxtLink>
+            <NuxtLink class="app-nav__drawer-link" :to="routes.aboutUs" @click="closeMenu">About Us</NuxtLink>
+            <NuxtLink class="app-nav__drawer-link" :to="routes.journey" @click="closeMenu">Journey</NuxtLink>
+            <NuxtLink class="app-nav__drawer-link" :to="routes.tours" @click="closeMenu">Tours</NuxtLink>
+          </div>
+        </div>
+
+        <div class="app-nav__drawer-foot">
+          <div
+            v-if="!(auth.isLoggedIn && auth.role === 'CUSTOMER') && !auth.isGuestSession"
+            class="user-menu app-nav__drawer-login"
+          >
             <button
               type="button"
-              class="app-nav__drawer-close"
-              aria-label="Close menu"
-              @click="closeMenu"
+              class="btn user-menu__login app-nav__action-btn user-menu__login--outline"
+              @click="closeMenu(); openSignIn()"
             >
-              <i class="fa-solid fa-xmark" aria-hidden="true" />
+              Login
             </button>
           </div>
-
-          <div class="app-nav__drawer-body">
-            <div class="app-nav__drawer-links">
-              <NuxtLink class="app-nav__drawer-link" :to="routes.home" @click="closeMenu">Home</NuxtLink>
-              <NuxtLink class="app-nav__drawer-link" :to="routes.services" @click="closeMenu">Services</NuxtLink>
-              <NuxtLink class="app-nav__drawer-link" :to="routes.aboutUs" @click="closeMenu">About Us</NuxtLink>
-              <NuxtLink class="app-nav__drawer-link" :to="routes.journey" @click="closeMenu">Journey</NuxtLink>
-              <NuxtLink class="app-nav__drawer-link" :to="routes.tours" @click="closeMenu">Tours</NuxtLink>
-            </div>
-          </div>
-
-          <div class="app-nav__drawer-foot">
-            <div
-              v-if="!(auth.isLoggedIn && auth.role === 'CUSTOMER') && !auth.isGuestSession"
-              class="user-menu app-nav__drawer-login"
-            >
-              <button
-                type="button"
-                class="btn user-menu__login app-nav__action-btn user-menu__login--outline"
-                @click="closeMenu(); openSignIn()"
-              >
-                Login
-              </button>
-            </div>
-            <NuxtLink
-              v-else-if="auth.isGuestSession"
-              class="app-nav__drawer-link app-nav__drawer-link--guest"
-              :to="routes.guestBooking"
-              @click="closeMenu"
-            >
-              Your booking
-            </NuxtLink>
-            <a
-              class="app-nav__drawer-cta app-nav__drawer-cta--gold"
-              :href="homeAnchors.booking"
-              @click="closeMenu"
-            >
-              Book Your Journey
-            </a>
-          </div>
-        </template>
-
-        <template v-else>
-          <button
-            v-if="!(auth.isLoggedIn && auth.role === 'CUSTOMER') && !auth.isGuestSession"
-            type="button"
-            class="app-nav__drawer-link btn"
-            @click="closeMenu(); openSignIn()"
-          >
-            Login
-          </button>
           <NuxtLink
             v-else-if="auth.isGuestSession"
-            class="app-nav__drawer-link"
+            class="app-nav__drawer-link app-nav__drawer-link--guest"
             :to="routes.guestBooking"
             @click="closeMenu"
           >
             Your booking
           </NuxtLink>
-          <NuxtLink class="app-nav__drawer-link" :to="routes.home" @click="closeMenu">Home</NuxtLink>
-          <NuxtLink class="app-nav__drawer-link" :to="routes.faq" @click="closeMenu">FAQ</NuxtLink>
-          <a class="app-nav__drawer-link" :href="homeAnchors.contact" @click="closeMenu">Contact</a>
-          <NuxtLink class="app-nav__drawer-link" :to="routes.tours" @click="closeMenu">City tours</NuxtLink>
-          <a class="app-nav__drawer-cta app-nav__journey-cta" :href="homeAnchors.booking" @click="closeMenu">
+          <a
+            class="app-nav__drawer-cta app-nav__drawer-cta--gold"
+            :href="homeAnchors.booking"
+            @click="closeMenu"
+          >
             Book Your Journey
           </a>
-        </template>
+        </div>
       </nav>
     </div>
   </header>
@@ -223,13 +186,6 @@ const closeMenu = () => {
   align-items: center;
 }
 
-.app-nav__greeting {
-  display: none;
-  margin: 0;
-  font-size: 0.8125rem;
-  color: var(--color-muted);
-}
-
 .app-nav__journey-cta {
   display: none;
 }
@@ -246,10 +202,6 @@ const closeMenu = () => {
 }
 
 @media (min-width: 860px) {
-  .app-nav__greeting {
-    display: block;
-  }
-
   .app-nav__journey-cta {
     display: inline-flex;
   }

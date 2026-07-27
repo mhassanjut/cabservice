@@ -5,7 +5,6 @@ import type { CountryCode } from 'libphonenumber-js'
 import {
   DEFAULT_PHONE_COUNTRY,
   getPhonePlaceholder,
-  PREFERRED_PHONE_COUNTRIES,
 } from '~/utils/phone'
 
 const props = withDefaults(
@@ -64,40 +63,123 @@ const onValidate = (phoneObject: PhoneObject) => {
 const onCountryChanged = (country: CountryObject) => {
   selectedCountry.value = country.iso2
 }
+
+const rootRef = ref<HTMLElement | null>(null)
+const ready = ref(false)
+
+function bindDropdownFix() {
+  const dropdown = rootRef.value?.querySelector('.vti__dropdown')
+  if (!dropdown || dropdown.getAttribute('data-dropdown-fix-bound') === 'true') {
+    return
+  }
+
+  dropdown.setAttribute('data-dropdown-fix-bound', 'true')
+
+  dropdown.addEventListener('mousedown', (event: MouseEvent) => {
+    const target = event.target
+    if (!(target instanceof Element)) return
+
+    // Let the search field and country list handle focus/clicks normally.
+    if (target.closest('.vti__dropdown-list, .vti__search_box, .vti__search_box_container')) {
+      return
+    }
+
+    // Prevent focus churn on the tel field from swallowing the first toggle click.
+    event.preventDefault()
+  })
+
+  dropdown.addEventListener('click', (event: MouseEvent) => {
+    const target = event.target
+    if (!(target instanceof Element)) return
+
+    // Keep list/search interactions working; only isolate the toggle button click.
+    if (target.closest('.vti__dropdown-list')) {
+      return
+    }
+
+    // Keep the opening click from reaching vue-tel-input's body click-outside handler.
+    event.stopPropagation()
+  })
+
+  // vue-tel-input attaches type-to-find on the dropdown wrapper; route typing to search instead.
+  dropdown.addEventListener('keydown', (event: KeyboardEvent) => {
+    if (!dropdown.classList.contains('open')) return
+
+    const searchBox = dropdown.querySelector<HTMLInputElement>('.vti__search_box')
+    if (!searchBox) return
+
+    if (event.target instanceof Element && event.target.closest('.vti__search_box')) {
+      return
+    }
+
+    const isPrintable =
+      event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey
+
+    if (!isPrintable) return
+
+    event.preventDefault()
+    event.stopImmediatePropagation()
+
+    searchBox.focus({ preventScroll: true })
+    searchBox.value = `${searchBox.value}${event.key}`
+    searchBox.dispatchEvent(new Event('input', { bubbles: true }))
+  }, true)
+}
+
+function setupSearchInteraction() {
+  nextTick(() => {
+    const searchBox = rootRef.value?.querySelector<HTMLInputElement>('.vti__search_box')
+    if (!searchBox) return
+
+    if (searchBox.getAttribute('data-search-fix-bound') !== 'true') {
+      searchBox.setAttribute('data-search-fix-bound', 'true')
+      searchBox.addEventListener('keydown', (event: KeyboardEvent) => {
+        event.stopPropagation()
+      })
+    }
+
+    searchBox.focus({ preventScroll: true })
+  })
+}
+
+onMounted(async () => {
+  ready.value = true
+  await nextTick()
+  bindDropdownFix()
+})
 </script>
 
 <template>
-  <div class="phone-input">
-    <ClientOnly>
-      <VueTelInput
-        v-model="phone"
-        class="phone-input__control"
-        :class="{ 'phone-input__control--invalid': invalid }"
-        mode="international"
-        :default-country="defaultCountry"
-        :preferred-countries="PREFERRED_PHONE_COUNTRIES"
-        :auto-default-country="false"
-        valid-characters-only
-        :disabled="disabled"
-        :input-options="inputOptions"
-        :dropdown-options="{
-          showFlags: true,
-          showSearchBox: true,
-          showDialCodeInList: true,
-          showDialCodeInSelection: true,
-          searchBoxPlaceholder: 'Search country',
-        }"
-        @validate="onValidate"
-        @country-changed="onCountryChanged"
-      />
+  <div ref="rootRef" class="phone-input">
+    <VueTelInput
+      v-if="ready"
+      v-model="phone"
+      class="phone-input__control"
+      :class="{ 'phone-input__control--invalid': invalid }"
+      mode="international"
+      :default-country="defaultCountry"
+      :preferred-countries="[]"
+      :auto-default-country="false"
+      valid-characters-only
+      :disabled="disabled"
+      :input-options="inputOptions"
+      :dropdown-options="{
+        showFlags: true,
+        showSearchBox: true,
+        showDialCodeInList: true,
+        showDialCodeInSelection: true,
+        searchBoxPlaceholder: 'Search country',
+        tabindex: -1,
+      }"
+      @validate="onValidate"
+      @country-changed="onCountryChanged"
+      @open="setupSearchInteraction"
+    />
 
-      <template #fallback>
-        <div class="phone-input__fallback" aria-hidden="true">
-          <span class="phone-input__fallback-flag" />
-          <span class="phone-input__fallback-field" />
-        </div>
-      </template>
-    </ClientOnly>
+    <div v-else class="phone-input__fallback" aria-hidden="true">
+      <span class="phone-input__fallback-flag" />
+      <span class="phone-input__fallback-field" />
+    </div>
   </div>
 </template>
 
@@ -254,23 +336,46 @@ const onCountryChanged = (country: CountryObject) => {
   color: #1a1a1a;
 }
 
-.phone-input__control :deep(.vti__search_box) {
-  box-sizing: border-box;
-  width: calc(100% - 12px);
-  margin: 4px 6px 6px;
-  padding: 8px 10px;
-  border: 1px solid #e5e5e5;
-  border-radius: 8px;
-  background: #fff;
-  color: #1a1a1a;
-  font-size: 0.875rem;
+.phone-input__control :deep(.vti__search_box_container) {
+  display: block;
+  flex: none;
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
 
-.phone-input__control :deep(.vti__search_box::placeholder) {
+.phone-input__control :deep(input.vti__search_box.vti__input) {
+  box-sizing: border-box;
+  display: block;
+  flex: none;
+  width: calc(100% - 12px) !important;
+  min-width: 0;
+  height: 38px;
+  min-height: 38px;
+  margin: 4px 6px 6px;
+  padding: 9px 10px !important;
+  border: 1px solid #e5e5e5 !important;
+  border-radius: 8px !important;
+  background: #fff !important;
+  color: #1a1a1a;
+  font: 400 0.875rem/1.25 var(--font-sans, Inter, sans-serif) !important;
+  outline: none;
+  box-shadow: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.phone-input__control :deep(input.vti__search_box.vti__input::placeholder) {
   color: #9ca3af;
 }
 
-.phone-input__control :deep(.vti__input) {
+.phone-input__control :deep(input.vti__search_box.vti__input:focus) {
+  outline: none;
+  box-shadow: none;
+  border-color: #e5e5e5 !important;
+}
+
+.phone-input__control :deep(.vti__input:not(.vti__search_box)) {
   flex: 1 1 auto;
   min-width: 0;
   width: auto !important;
@@ -286,11 +391,11 @@ const onCountryChanged = (country: CountryObject) => {
   color: #1a1a1a;
 }
 
-.phone-input__control :deep(.vti__input::placeholder) {
+.phone-input__control :deep(.vti__input:not(.vti__search_box)::placeholder) {
   color: #a7a7a7;
 }
 
-.phone-input__control :deep(.vti__input:focus) {
+.phone-input__control :deep(.vti__input:not(.vti__search_box):focus) {
   outline: none;
   box-shadow: none;
 }

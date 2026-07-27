@@ -139,7 +139,7 @@ const createBooking = async () => {
     if (isCustomerLoggedIn.value) {
       if (!auth.isLoggedIn) {
         toast.show('Session expired. Please sign in again.', 'error')
-        await router.push({ path: routes.login, query: { redirect: useRoute().fullPath } })
+        useCustomerSignIn().open(useRoute().fullPath)
         return
       }
       booking.clearGuestDetails()
@@ -189,7 +189,7 @@ const createBooking = async () => {
     const msg = err.data?.message ?? err.message ?? 'Booking failed. Please try again.'
     if (status === 401 && isCustomerLoggedIn.value) {
       toast.show('Session expired. Please sign in again.', 'error')
-      await router.push({ path: routes.login, query: { redirect: useRoute().fullPath } })
+      useCustomerSignIn().open(useRoute().fullPath)
       return
     }
     toast.show(msg, 'error')

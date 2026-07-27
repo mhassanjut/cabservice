@@ -1,6 +1,5 @@
 <script setup lang="ts">
 useLocalBusinessSchema()
-console.log('Home layout rendered')
 </script>
 
 <template>
