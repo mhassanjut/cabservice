@@ -23,10 +23,7 @@ const closeDrawer = () => {
 
 <template>
   <div v-if="!ready" class="admin-boot" aria-live="polite">
-    <div class="admin-boot__inner card card--elevated">
-      <p class="eyebrow">STW Movers Admin</p>
-      <p class="font-serif">Loading console…</p>
-    </div>
+    <AppLoader label="Loading console…" size="md" />
   </div>
   <div v-else class="admin-app">
     <aside class="admin-sidebar card card--elevated" aria-label="Admin navigation">

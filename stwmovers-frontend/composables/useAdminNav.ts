@@ -21,9 +21,16 @@ export function useAdminNav() {
     },
     {
       label: 'Rides',
-      description: 'All customer bookings',
+      description: 'Transfer and point-to-point bookings',
       to: routes.adminRides,
       icon: 'fa-route',
+      group: 'main',
+    },
+    {
+      label: 'Tour bookings',
+      description: 'Private tour experiences with vehicle selection',
+      to: routes.adminTourBookings,
+      icon: 'fa-map-location-dot',
       group: 'main',
     },
     {
@@ -52,6 +59,13 @@ export function useAdminNav() {
       description: 'City routes and fares',
       to: routes.adminPricing,
       icon: 'fa-map-location-dot',
+      group: 'operations',
+    },
+    {
+      label: 'Tours',
+      description: 'Private tour experiences',
+      to: routes.adminTours,
+      icon: 'fa-map',
       group: 'operations',
     },
     {

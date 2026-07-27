@@ -1,6 +1,6 @@
 export type ApiResponse<T> = { success: boolean; message?: string; data: T; timestamp?: string }
 
-export type RideType = 'STANDARD' | 'IN_CITY' | 'CITY_TO_CITY'
+export type RideType = 'STANDARD' | 'IN_CITY' | 'CITY_TO_CITY' | 'TOUR'
 export type BookingStatus =
   | 'CREATED' | 'OTP_PENDING' | 'PAYMENT_PENDING' | 'CONFIRMED' | 'DRIVER_ASSIGNED'
   | 'DRIVER_ACCEPTED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED' | 'REFUNDED'
@@ -71,6 +71,9 @@ export type BookingDto = {
   scheduledAt: string
   calculatedFare?: number
   destinationCity?: string
+  notes?: string
+  tourId?: string
+  tourTitle?: string
   driverId?: string
   rideStatus?: RideStatus
   createdAt?: string
@@ -78,7 +81,8 @@ export type BookingDto = {
 }
 
 export type AuthDto = {
-  accessToken: string
+  accessToken?: string
+  refreshToken?: string
   tokenType: string
   expiresInMs: number
   userId: string
@@ -137,6 +141,72 @@ export type AdminCarDto = {
   imageUrl?: string
   description?: string
   displayPriority: number
+  createdAt?: string
+  updatedAt?: string
+}
+
+export type TourItineraryItemDto = {
+  dayNumber: number
+  time?: string
+  activity: string
+}
+
+export type TourCarPricingDto = {
+  id: string
+  tourId: string
+  carId: string
+  carName: string
+  price: number
+  active: boolean
+}
+
+export type TourPricingBatchRequest = {
+  active?: boolean
+  carPrices: { carId: string; price: number }[]
+}
+
+/** Public-facing tour shape returned by `/api/v1/tours` — no pricing-admin fields. */
+export type TourDto = {
+  id: string
+  title: string
+  location?: string
+  durationLabel?: string
+  durationHours?: number | null
+  guestMin?: number | null
+  guestMax?: number | null
+  category?: string
+  shortDescription?: string
+  aboutDescription?: string
+  startingPrice?: number | null
+  imageUrl?: string
+  active: boolean
+  displayPriority: number
+  highlights: string[]
+  included: string[]
+  excluded: string[]
+  itinerary: TourItineraryItemDto[]
+}
+
+export type AdminTourDto = {
+  id: string
+  title: string
+  location?: string
+  durationLabel?: string
+  durationHours?: number | null
+  guestMin?: number | null
+  guestMax?: number | null
+  category?: string
+  shortDescription?: string
+  aboutDescription?: string
+  startingPrice?: number | null
+  carPrices?: TourCarPricingDto[]
+  imageUrl?: string
+  active: boolean
+  displayPriority: number
+  highlights: string[]
+  included: string[]
+  excluded: string[]
+  itinerary: TourItineraryItemDto[]
   createdAt?: string
   updatedAt?: string
 }
@@ -221,6 +291,7 @@ export type AdminBookingQuery = {
   size?: number
   status?: BookingStatus
   rideType?: RideType
+  excludeRideType?: RideType
   customRequest?: boolean
   search?: string
   fromDate?: string

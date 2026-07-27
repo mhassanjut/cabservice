@@ -7,3 +7,8 @@ export function distanceKm(a: { lat: number; lng: number }, b: { lat: number; ln
     Math.cos((a.lat * Math.PI) / 180) * Math.cos((b.lat * Math.PI) / 180) * Math.sin(dLng / 2) ** 2
   return Math.round(R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x)) * 10) / 10
 }
+
+export function formatDistanceKm(km: number): string {
+  const rounded = Math.round(km * 10) / 10
+  return Number.isInteger(rounded) ? `${rounded} km` : `${rounded.toFixed(1)} km`
+}

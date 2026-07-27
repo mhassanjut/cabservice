@@ -27,18 +27,24 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
     private final GoogleTokenVerifier googleTokenVerifier;
+    private final RefreshTokenService refreshTokenService;
+    private final TokenRevocationService tokenRevocationService;
 
     public AuthService(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
             JwtTokenProvider jwtTokenProvider,
             AuthenticationManager authenticationManager,
-            GoogleTokenVerifier googleTokenVerifier) {
+            GoogleTokenVerifier googleTokenVerifier,
+            RefreshTokenService refreshTokenService,
+            TokenRevocationService tokenRevocationService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
         this.authenticationManager = authenticationManager;
         this.googleTokenVerifier = googleTokenVerifier;
+        this.refreshTokenService = refreshTokenService;
+        this.tokenRevocationService = tokenRevocationService;
     }
 
     @Transactional
@@ -55,7 +61,7 @@ public class AuthService {
                 .active(true)
                 .build();
         userRepository.save(user);
-        return buildAuthResponse(user);
+        return issueSession(user);
     }
 
     public AuthResponse login(LoginRequest request) {
@@ -65,7 +71,7 @@ public class AuthService {
                         request.getPassword()));
         User user = userRepository.findByEmailAndActiveTrue(request.getEmail().trim().toLowerCase())
                 .orElseThrow(() -> new BadRequestException("Invalid credentials"));
-        return buildAuthResponse(user);
+        return issueSession(user);
     }
 
     @Transactional
@@ -93,7 +99,43 @@ public class AuthService {
         if (!Boolean.TRUE.equals(user.getActive())) {
             throw new BadRequestException("User account is inactive");
         }
-        return buildAuthResponse(user);
+        return reissueAccessToken(user);
+    }
+
+    public AuthResponse issueSession(User user) {
+        UserPrincipal principal = UserPrincipal.from(user);
+        JwtTokenProvider.AccessToken accessToken = jwtTokenProvider.generateAccessToken(principal);
+        tokenRevocationService.trackSession(user.getId(), accessToken.jti(), accessToken.expiresAtEpochMs());
+
+        String refreshToken = refreshTokenService.create(user.getId());
+        return buildAuthResponse(user, accessToken, refreshToken);
+    }
+
+    private AuthResponse reissueAccessToken(User user) {
+        UserPrincipal principal = UserPrincipal.from(user);
+        JwtTokenProvider.AccessToken accessToken = jwtTokenProvider.generateAccessToken(principal);
+        tokenRevocationService.trackSession(user.getId(), accessToken.jti(), accessToken.expiresAtEpochMs());
+        return buildAuthResponse(user, accessToken, null);
+    }
+
+    private AuthResponse buildAuthResponse(User user, JwtTokenProvider.AccessToken accessToken, String refreshToken) {
+        return AuthResponse.builder()
+                .accessToken(accessToken.token())
+                .refreshToken(refreshToken)
+                .tokenType("Bearer")
+                .expiresInMs(jwtTokenProvider.getAccessExpirationMs())
+                .userId(user.getId())
+                .email(user.getEmail())
+                .fullName(user.getFullName())
+                .role(user.getRole())
+                .profilePictureUrl(user.getProfilePictureUrl())
+                .build();
+    }
+
+    @Transactional
+    public void revokeAllSessions(java.util.UUID userId) {
+        tokenRevocationService.revokeAllForUser(userId);
+        refreshTokenService.revokeAllForUser(userId);
     }
 
     @Transactional
@@ -105,7 +147,7 @@ public class AuthService {
             user.setFullName(fullName);
         }
         userRepository.save(user);
-        return buildAuthResponse(user);
+        return issueSession(user);
     }
 
     private AuthResponse linkOrCreateGoogleUser(String googleId, String email, String fullName, String picture) {
@@ -122,7 +164,7 @@ public class AuthService {
                         existing.setProfilePictureUrl(picture);
                     }
                     userRepository.save(existing);
-                    return buildAuthResponse(existing);
+                    return issueSession(existing);
                 })
                 .orElseGet(() -> {
                     User user = User.builder()
@@ -134,22 +176,7 @@ public class AuthService {
                             .active(true)
                             .build();
                     userRepository.save(user);
-                    return buildAuthResponse(user);
+                    return issueSession(user);
                 });
-    }
-
-    private AuthResponse buildAuthResponse(User user) {
-        UserPrincipal principal = UserPrincipal.from(user);
-        String token = jwtTokenProvider.generateToken(principal);
-        return AuthResponse.builder()
-                .accessToken(token)
-                .tokenType("Bearer")
-                .expiresInMs(jwtTokenProvider.getExpirationMs())
-                .userId(user.getId())
-                .email(user.getEmail())
-                .fullName(user.getFullName())
-                .role(user.getRole())
-                .profilePictureUrl(user.getProfilePictureUrl())
-                .build();
     }
 }

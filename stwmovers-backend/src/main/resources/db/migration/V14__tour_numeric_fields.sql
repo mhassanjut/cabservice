@@ -1,0 +1,6 @@
+ALTER TABLE tours ADD COLUMN duration_hours INTEGER;
+ALTER TABLE tours ADD COLUMN guest_min INTEGER;
+ALTER TABLE tours ADD COLUMN guest_max INTEGER;
+
+ALTER TABLE tours DROP COLUMN IF EXISTS hours_label;
+ALTER TABLE tours DROP COLUMN IF EXISTS guests_label;

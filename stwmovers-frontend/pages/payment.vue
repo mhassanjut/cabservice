@@ -6,7 +6,7 @@ import { userService } from '~/services/api/user.service'
 import type { BookingDto } from '~/types/api'
 import { isValidPhone } from '~/utils/phone'
 
-definePageMeta({ middleware: ['checkout-guard'] })
+definePageMeta({ layout: 'booking', middleware: ['checkout-guard'] })
 
 usePageSeo({ title: 'Secure payment', path: '/payment' })
 const booking = useBookingStore()
@@ -22,6 +22,8 @@ const showPhoneModal = ref(false)
 const phoneSaving = ref(false)
 const phoneError = ref('')
 
+const isCustomerLoggedIn = computed(() => auth.isLoggedIn && auth.isCustomer)
+
 const fareLabel = computed(() => {
   if (bookingData.value?.calculatedFare != null) return `€${bookingData.value.calculatedFare}`
   if (booking.vehicle?.priceEur) return `€${booking.vehicle.priceEur}`
@@ -29,7 +31,7 @@ const fareLabel = computed(() => {
 })
 
 const loadProfilePhone = async () => {
-  if (!auth.isLoggedIn || !auth.token) return
+  if (!isCustomerLoggedIn.value) return
   try {
     const profile = await userService.profile()
     userPhone.value = profile.phone ?? ''
@@ -39,7 +41,6 @@ const loadProfilePhone = async () => {
 }
 
 onMounted(async () => {
-  auth.hydrate()
   booking.hydrateFromStorage()
 
   if (route.query.cancelled === '1') {
@@ -91,7 +92,7 @@ const proceedToCheckout = async () => {
 const pay = async () => {
   if (loading.value || phoneSaving.value || !booking.bookingReference) return
 
-  if (auth.isLoggedIn && !isValidPhone(userPhone.value)) {
+  if (isCustomerLoggedIn.value && !isValidPhone(userPhone.value)) {
     phoneError.value = ''
     showPhoneModal.value = true
     return
@@ -119,60 +120,77 @@ const savePhoneAndPay = async (phone: string) => {
 </script>
 
 <template>
-  <section class="booking-page payment-page">
-    <SectionHeading
-      title-level="h1"
-      eyebrow="Checkout"
-      title="Secure payment"
-      lead="Complete your transfer with Stripe. You will be redirected to a secure checkout page."
-    />
-
-    <BookingCheckoutProgress details-done payment-active />
-
-    <div class="booking-layout">
-      <BookingSummary />
-
-      <article class="booking-panel__card card card--elevated payment-panel reveal">
-        <div class="booking-panel__icon booking-panel__icon--gold" aria-hidden="true">
-          <i class="fa-solid fa-lock" />
-        </div>
-        <h2 class="booking-panel__title font-serif">Pay for your ride</h2>
-        <p class="booking-panel__lead">
-          <template v-if="auth.isLoggedIn">
-            Booking as <strong>{{ auth.fullName }}</strong>.
-          </template>
-          <template v-else-if="auth.isGuestSession">
-            Guest booking for <strong>{{ auth.guestSession?.fullName }}</strong>.
-          </template>
-          Reference <strong>{{ booking.bookingReference }}</strong>
+  <div class="vehicle-page">
+    <div class="vehicle-page__inner booking-shell__inner">
+      <header class="vehicle-page__header">
+        <p class="vehicle-page__eyebrow">Checkout</p>
+        <h1 class="vehicle-page__title checkout-page__title">Secure payment</h1>
+        <p class="vehicle-page__lead">
+          Complete your transfer with Stripe. You will be redirected to a secure checkout page.
         </p>
+      </header>
 
-        <dl class="payment-panel__summary">
-          <div>
-            <dt>Amount due</dt>
-            <dd class="summary-fare">{{ fareLabel }}</dd>
-          </div>
-          <div>
-            <dt>Payment method</dt>
-            <dd>Card via Stripe Checkout</dd>
-          </div>
-        </dl>
+      <div class="vehicle-page__main">
+        <BookingCheckoutSummary class="vehicle-page__aside" />
 
-        <ul class="payment-panel__trust">
-          <li><i class="fa-solid fa-shield-halved" aria-hidden="true" /> Encrypted checkout</li>
-          <li><i class="fa-brands fa-stripe" aria-hidden="true" /> Powered by Stripe</li>
-        </ul>
+        <div class="vehicle-page__content">
+          <article class="checkout-panel__card booking-card">
+            <div class="checkout-panel__head checkout-panel__head--icon">
+              <span class="checkout-panel__icon checkout-panel__icon--gold checkout-panel__icon--compact" aria-hidden="true">
+                <img class="checkout-panel__icon-img checkout-panel__icon-img--inset" src="/LockLogo.svg" alt="" />
+              </span>
+              <div>
+                <h2 class="checkout-panel__title">Pay for your ride</h2>
+                <p class="checkout-panel__lead">
+                  <template v-if="isCustomerLoggedIn">
+                    Booking as <strong>{{ auth.fullName }}</strong>
+                  </template>
+                  <template v-else-if="auth.isGuestSession">
+                    Booking as <strong>{{ auth.guestSession?.fullName }}</strong>
+                  </template>
+                  &nbsp;· Reference <strong>{{ booking.bookingReference }}</strong>
+                </p>
+              </div>
+            </div>
 
-        <button
-          class="btn btn--solid-gold booking-panel__cta"
-          type="button"
-          :disabled="loading"
-          @click="pay"
-        >
-          Pay now
-          <i class="fa-solid fa-arrow-right" aria-hidden="true" />
-        </button>
-      </article>
+            <dl class="payment-box">
+              <div class="payment-box__row">
+                <dt class="payment-box__label">Amount due</dt>
+                <dd class="payment-box__value payment-box__value--amount">{{ fareLabel }}</dd>
+              </div>
+              <div class="payment-box__row payment-box__row--divided">
+                <dt class="payment-box__label">Payment method</dt>
+                <dd class="payment-box__value payment-box__method">
+                  <i class="fa-regular fa-credit-card" aria-hidden="true" />
+                  Card via Stripe Checkout
+                </dd>
+              </div>
+            </dl>
+
+            <ul class="payment-trust">
+              <li>
+                <img class="payment-trust__icon" src="/EncryptLogo.svg" alt="" aria-hidden="true" />
+                Encrypted checkout
+              </li>
+              <li class="payment-trust__divider" role="presentation" aria-hidden="true" />
+              <li>
+                <img class="payment-trust__icon" src="/ThunderLogo.svg" alt="" aria-hidden="true" />
+                Powered by Stripe
+              </li>
+            </ul>
+
+            <button
+              class="checkout-panel__submit"
+              type="button"
+              :disabled="loading"
+              @click="pay"
+            >
+              Pay now
+              <i class="fa-solid fa-arrow-right" aria-hidden="true" />
+            </button>
+          </article>
+        </div>
+      </div>
     </div>
 
     <LoadingOverlay :show="loading" label="Redirecting to Stripe…" />
@@ -185,48 +203,5 @@ const savePhoneAndPay = async (phone: string) => {
       @save="savePhoneAndPay"
       @close="showPhoneModal = false"
     />
-  </section>
+  </div>
 </template>
-
-<style scoped>
-.payment-panel {
-  padding: clamp(1.25rem, 3vw, 1.75rem);
-}
-
-.payment-panel__summary {
-  display: grid;
-  gap: 12px;
-  margin: 1.25rem 0;
-  padding: 1rem 1.25rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  background: var(--color-bg-elevated);
-}
-
-.payment-panel__summary dt {
-  font-size: 0.75rem;
-  color: var(--color-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.payment-panel__summary dd {
-  margin: 4px 0 0;
-}
-
-.payment-panel__trust {
-  list-style: none;
-  margin: 0 0 1.25rem;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px 20px;
-  color: var(--color-muted);
-  font-size: 0.875rem;
-}
-
-.payment-panel__trust i {
-  color: var(--color-gold-bright);
-  margin-right: 6px;
-}
-</style>

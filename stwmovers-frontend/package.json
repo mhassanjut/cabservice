@@ -13,14 +13,19 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "lint": "eslint .",
-    "typecheck": "nuxt typecheck"
+    "typecheck": "nuxt typecheck",
+    "postinstall": "node scripts/ensure-oxc-wasi.mjs"
   },
   "dependencies": {
     "@imgly/background-removal-node": "^1.4.5",
+    "@nuxt/image": "^2.0.0",
     "@pinia/nuxt": "^0.6.1",
+    "libphonenumber-js": "^1.13.9",
     "nuxt": "^3.13.0",
     "ofetch": "^1.4.1",
-    "pinia": "^2.2.2"
+    "pinia": "^2.2.2",
+    "swiper": "^14.0.6",
+    "vue-tel-input": "^9.8.0"
   },
   "devDependencies": {
     "eslint": "^9.9.0",

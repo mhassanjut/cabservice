@@ -5,6 +5,6 @@ definePageMeta({ layout: 'admin', middleware: 'admin' })
 <template>
   <AdminBookingsPage
     title="Rides"
-    description="View, filter, and manage all customer bookings."
+    description="View, filter, and manage all customer bookings including tours."
   />
 </template>

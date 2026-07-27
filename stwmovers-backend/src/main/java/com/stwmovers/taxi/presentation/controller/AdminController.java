@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.stwmovers.taxi.application.dto.request.AddDestinationCityRequest;
 import com.stwmovers.taxi.application.dto.request.AdminCarRequest;
 import com.stwmovers.taxi.application.dto.request.AdminDriverRequest;
+import com.stwmovers.taxi.application.dto.request.AdminTourRequest;
 import com.stwmovers.taxi.application.dto.request.AssignDriverRequest;
 import com.stwmovers.taxi.application.dto.request.CancelBookingAdminRequest;
 import com.stwmovers.taxi.application.dto.request.CityRoutePricingRequest;
@@ -31,6 +32,7 @@ import com.stwmovers.taxi.application.dto.request.RoutePricingBatchRequest;
 import com.stwmovers.taxi.application.dto.request.SetCustomFareRequest;
 import com.stwmovers.taxi.application.dto.request.UpdateBookingStatusRequest;
 import com.stwmovers.taxi.application.dto.request.UpdateDriverRequest;
+import com.stwmovers.taxi.application.dto.request.TourPricingBatchRequest;
 import com.stwmovers.taxi.application.dto.response.AdminBookingDetailResponse;
 import com.stwmovers.taxi.application.dto.response.AdminSettingsResponse;
 import com.stwmovers.taxi.application.dto.response.BookingResponse;
@@ -44,10 +46,16 @@ import com.stwmovers.taxi.application.dto.response.DriverResponse;
 import com.stwmovers.taxi.application.dto.response.PagedResponse;
 import com.stwmovers.taxi.application.dto.response.PickupCityResponse;
 import com.stwmovers.taxi.application.dto.response.PaymentResponse;
+import com.stwmovers.taxi.application.dto.response.TourCarPricingResponse;
+import com.stwmovers.taxi.application.dto.response.TourImageUploadResponse;
+import com.stwmovers.taxi.application.dto.response.TourResponse;
 import com.stwmovers.taxi.application.service.AdminDashboardService;
 import com.stwmovers.taxi.application.service.BookingService;
 import com.stwmovers.taxi.application.service.CarImageStorageService;
 import com.stwmovers.taxi.application.service.CarCatalogService;
+import com.stwmovers.taxi.application.service.TourCatalogService;
+import com.stwmovers.taxi.application.service.TourImageStorageService;
+import com.stwmovers.taxi.application.service.TourPricingService;
 import com.stwmovers.taxi.config.ApiResponse;
 import com.stwmovers.taxi.domain.enums.BookingStatus;
 import com.stwmovers.taxi.domain.enums.PaymentStatus;
@@ -62,16 +70,25 @@ public class AdminController {
     private final AdminDashboardService adminDashboardService;
     private final CarCatalogService carCatalogService;
     private final CarImageStorageService carImageStorageService;
+    private final TourCatalogService tourCatalogService;
+    private final TourImageStorageService tourImageStorageService;
+    private final TourPricingService tourPricingService;
     private final BookingService bookingService;
 
     public AdminController(
             AdminDashboardService adminDashboardService,
             CarCatalogService carCatalogService,
             CarImageStorageService carImageStorageService,
+            TourCatalogService tourCatalogService,
+            TourImageStorageService tourImageStorageService,
+            TourPricingService tourPricingService,
             BookingService bookingService) {
         this.adminDashboardService = adminDashboardService;
         this.carCatalogService = carCatalogService;
         this.carImageStorageService = carImageStorageService;
+        this.tourCatalogService = tourCatalogService;
+        this.tourImageStorageService = tourImageStorageService;
+        this.tourPricingService = tourPricingService;
         this.bookingService = bookingService;
     }
 
@@ -122,6 +139,59 @@ public class AdminController {
         return ResponseEntity.ok(ApiResponse.ok(null));
     }
 
+    @GetMapping("/tours")
+    public ResponseEntity<ApiResponse<List<TourResponse>>> listTours() {
+        return ResponseEntity.ok(ApiResponse.ok(tourCatalogService.listAllTours()));
+    }
+
+    @GetMapping("/tours/{id}")
+    public ResponseEntity<ApiResponse<TourResponse>> getTour(@PathVariable UUID id) {
+        return ResponseEntity.ok(ApiResponse.ok(tourCatalogService.getTour(id)));
+    }
+
+    @PostMapping(value = "/tours/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ApiResponse<TourResponse>> uploadTourImageForTour(
+            @PathVariable UUID id, @RequestParam("file") MultipartFile file) {
+        return ResponseEntity.ok(ApiResponse.ok(tourCatalogService.updateTourImage(id, file)));
+    }
+
+    @PostMapping(value = "/tours/upload-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ApiResponse<TourImageUploadResponse>> uploadTourImage(
+            @RequestParam("file") MultipartFile file) {
+        String imageUrl = tourImageStorageService.store(file);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.ok(TourImageUploadResponse.builder().imageUrl(imageUrl).build()));
+    }
+
+    @PostMapping("/tours")
+    public ResponseEntity<ApiResponse<TourResponse>> createTour(@Valid @RequestBody AdminTourRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.ok(tourCatalogService.createTour(request)));
+    }
+
+    @PutMapping("/tours/{id}")
+    public ResponseEntity<ApiResponse<TourResponse>> updateTour(
+            @PathVariable UUID id, @Valid @RequestBody AdminTourRequest request) {
+        return ResponseEntity.ok(ApiResponse.ok(tourCatalogService.updateTour(id, request)));
+    }
+
+    @DeleteMapping("/tours/{id}")
+    public ResponseEntity<ApiResponse<Void>> deleteTour(@PathVariable UUID id) {
+        tourCatalogService.deleteTour(id);
+        return ResponseEntity.ok(ApiResponse.ok(null));
+    }
+
+    @GetMapping("/tours/{tourId}/pricing")
+    public ResponseEntity<ApiResponse<List<TourCarPricingResponse>>> listTourPricing(@PathVariable UUID tourId) {
+        return ResponseEntity.ok(ApiResponse.ok(tourPricingService.listForTour(tourId)));
+    }
+
+    @PostMapping("/tours/{tourId}/pricing/batch")
+    public ResponseEntity<ApiResponse<List<TourCarPricingResponse>>> saveTourPricingBatch(
+            @PathVariable UUID tourId, @Valid @RequestBody TourPricingBatchRequest request) {
+        return ResponseEntity.ok(ApiResponse.ok(tourPricingService.saveBatch(tourId, request)));
+    }
+
     @GetMapping("/drivers")
     public ResponseEntity<ApiResponse<List<DriverResponse>>> listDrivers() {
         return ResponseEntity.ok(ApiResponse.ok(adminDashboardService.listDrivers()));
@@ -156,6 +226,7 @@ public class AdminController {
             @RequestParam(defaultValue = "20") int size,
             @RequestParam(required = false) BookingStatus status,
             @RequestParam(required = false) RideType rideType,
+            @RequestParam(required = false) RideType excludeRideType,
             @RequestParam(required = false) Boolean customRequest,
             @RequestParam(required = false) String search,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant fromDate,
@@ -163,7 +234,7 @@ public class AdminController {
             @RequestParam(defaultValue = "createdAt") String sortBy,
             @RequestParam(defaultValue = "desc") String sortDir) {
         return ResponseEntity.ok(ApiResponse.ok(bookingService.listAdminBookings(
-                status, rideType, customRequest, search, fromDate, toDate, sortBy, sortDir, page, size)));
+                status, rideType, excludeRideType, customRequest, search, fromDate, toDate, sortBy, sortDir, page, size)));
     }
 
     @GetMapping("/bookings/{id}")

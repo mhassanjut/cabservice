@@ -2,8 +2,10 @@
 import { routes } from '~/constants/routes'
 import { bookingService } from '~/services/api/booking.service'
 import { authService } from '~/services/api/auth.service'
+import { isValidPhone, normalizePhone } from '~/utils/phone'
+import guestIconUrl from '~/assets/images/booking-page/ic_guest.svg?url'
 
-definePageMeta({ middleware: ['checkout-guard'] })
+definePageMeta({ layout: 'booking', middleware: ['checkout-guard'] })
 
 usePageSeo({ title: 'Booking details', path: '/booking' })
 
@@ -19,11 +21,12 @@ const otpLoading = ref(false)
 const showOtpModal = ref(false)
 const otpError = ref('')
 const guest = reactive({ fullName: '', email: '', phone: '' })
+const guestPhoneValid = ref(false)
+const guestPhoneError = ref('')
 const resendIn = ref(0)
 let resendTimer: ReturnType<typeof setInterval> | null = null
 
 onMounted(async () => {
-  auth.hydrate()
   await nextTick()
   if (booking.guest) {
     guest.fullName = booking.guest.fullName
@@ -35,43 +38,61 @@ onMounted(async () => {
     guest.phone = auth.guestSession.phone
   }
   if (!booking.isDraftValid) {
-    toast.show('Your trip details are incomplete. Please start from the home page.', 'error')
-    await router.replace(routes.home)
+    toast.show(
+      booking.isTourBooking
+        ? 'Your tour details are incomplete. Please start from the tours page.'
+        : 'Your trip details are incomplete. Please start from the home page.',
+      'error',
+    )
+    await router.replace(booking.isTourBooking ? routes.tours : routes.home)
     return
   }
   if (!booking.vehicle && !booking.otherCar) {
     await router.replace(routes.cars)
     return
   }
-  if (auth.isLoggedIn) step.value = 'done'
+  if (isCustomerLoggedIn.value) step.value = 'done'
 })
 
 watch(guest, (value: { fullName: string; email: string; phone: string }) => {
-  if (auth.isLoggedIn) return
+  if (isCustomerLoggedIn.value) return
+  const normalizedPhone = normalizePhone(value.phone)
   const payload = {
     fullName: value.fullName.trim(),
     email: value.email.trim(),
-    phone: value.phone.trim(),
+    phone: normalizedPhone,
     bookingReference: booking.bookingReference || auth.guestSession?.bookingReference,
   }
-  if (payload.fullName && payload.email && payload.phone) {
+  if (
+    payload.fullName &&
+    payload.email &&
+    payload.phone &&
+    guestPhoneValid.value &&
+    isValidPhone(payload.phone)
+  ) {
     booking.guest = { fullName: payload.fullName, email: payload.email, phone: payload.phone }
     auth.setGuestSession(payload)
     booking.persistToStorage()
   }
 }, { deep: true })
 
+watch(() => guest.phone, () => {
+  if (guestPhoneError.value) guestPhoneError.value = ''
+})
+
 onUnmounted(() => {
   stopResendTimer()
 })
 
 const guestValid = computed(
-  () => guest.fullName.trim() && guest.email.trim() && guest.phone.trim(),
+  () =>
+    guest.fullName.trim() &&
+    guest.email.trim() &&
+    guestPhoneValid.value &&
+    isValidPhone(normalizePhone(guest.phone)),
 )
 
-const detailsActive = computed(() => !auth.isLoggedIn && step.value === 'auth' && !showOtpModal.value)
-const detailsDone = computed(() => auth.isLoggedIn || showOtpModal.value || step.value === 'done')
-const paymentActive = computed(() => auth.isLoggedIn || showOtpModal.value || step.value === 'done')
+const isCustomerLoggedIn = computed(() => auth.isLoggedIn && auth.isCustomer)
 
 const stopResendTimer = () => {
   if (resendTimer) {
@@ -106,39 +127,45 @@ const createBooking = async () => {
       pickupLng: booking.draft.pickup!.lng,
       dropoffLat: booking.draft.dropoff!.lat,
       dropoffLng: booking.draft.dropoff!.lng,
-      distanceKm: booking.draft.distanceKm!,
+      distanceKm: booking.draft.distanceKm ?? 0,
       pickupCity: booking.draft.pickupCity!,
+      passengerCount: booking.draft.passengerCount,
       scheduledAt: booking.scheduledAtIso,
       destinationCity: booking.draft.destinationCity,
+      notes: booking.draft.notes?.trim() || undefined,
+      tourId: booking.isTourBooking ? booking.draft.tourId : undefined,
     }
 
-    if (auth.isLoggedIn) {
-      if (!auth.token) {
+    if (isCustomerLoggedIn.value) {
+      if (!auth.isLoggedIn) {
         toast.show('Session expired. Please sign in again.', 'error')
-        await router.push({ path: routes.login, query: { redirect: useRoute().fullPath } })
+        useCustomerSignIn().open(useRoute().fullPath)
         return
       }
       booking.clearGuestDetails()
-      const b = await bookingService.create(basePayload, { auth: true })
+      const b = await bookingService.create(basePayload, { auth: true, silent: true })
       booking.bookingReference = b.bookingReference
       booking.persistToStorage()
       await router.push(routes.payment)
       return
     }
 
-    if (!guestValid.value) {
+    const normalizedPhone = normalizePhone(guest.phone)
+    if (!guestValid.value || !isValidPhone(normalizedPhone)) {
+      guestPhoneError.value = 'Enter a valid mobile number for the selected country.'
       toast.show('Please enter your contact details to continue as guest.', 'error')
       return
     }
+    guest.phone = normalizedPhone
 
     const b = await bookingService.create(
       {
         ...basePayload,
         guestName: guest.fullName.trim(),
         guestEmail: guest.email.trim(),
-        guestPhone: guest.phone.trim(),
+        guestPhone: normalizedPhone,
       },
-      { auth: false },
+      { auth: false, silent: true },
     )
     booking.bookingReference = b.bookingReference
     booking.persistToStorage()
@@ -160,9 +187,9 @@ const createBooking = async () => {
     const err = e as { status?: number; statusCode?: number; data?: { message?: string }; message?: string }
     const status = err.status ?? err.statusCode
     const msg = err.data?.message ?? err.message ?? 'Booking failed. Please try again.'
-    if (status === 401 && auth.isLoggedIn) {
+    if (status === 401 && isCustomerLoggedIn.value) {
       toast.show('Session expired. Please sign in again.', 'error')
-      await router.push({ path: routes.login, query: { redirect: useRoute().fullPath } })
+      useCustomerSignIn().open(useRoute().fullPath)
       return
     }
     toast.show(msg, 'error')
@@ -229,102 +256,123 @@ const onGoogleError = (message: string) => {
 </script>
 
 <template>
-  <section class="booking-page">
-    <SectionHeading
-      title-level="h1"
-      eyebrow="Checkout"
-      title="Complete your booking"
-      lead="Confirm your details to proceed to secure payment."
-    />
+  <div class="vehicle-page">
+    <div class="vehicle-page__inner booking-shell__inner">
+      <header class="vehicle-page__header">
+        <p class="vehicle-page__eyebrow">Checkout</p>
+        <h1 class="vehicle-page__title checkout-page__title">Complete your booking</h1>
+        <p class="vehicle-page__lead">Confirm your details to proceed to secure payment.</p>
+      </header>
 
-    <nav class="booking-progress reveal" aria-label="Booking progress">
-      <ol class="booking-progress__list">
-        <li class="booking-progress__item is-done">
-          <span class="booking-progress__num"><i class="fa-solid fa-check" aria-hidden="true" /></span>
-          <span class="booking-progress__text">Vehicle</span>
-        </li>
-        <li class="booking-progress__item" :class="{ 'is-active': detailsActive, 'is-done': detailsDone }">
-          <span class="booking-progress__num">
-            <i v-if="detailsDone" class="fa-solid fa-check" aria-hidden="true" />
-            <template v-else>2</template>
-          </span>
-          <span class="booking-progress__text">Details</span>
-        </li>
-        <li class="booking-progress__item" :class="{ 'is-active': paymentActive }">
-          <span class="booking-progress__num">3</span>
-          <span class="booking-progress__text">Payment</span>
-        </li>
-      </ol>
-    </nav>
+      <div class="vehicle-page__main">
+        <BookingCheckoutSummary class="vehicle-page__aside" />
 
-    <div class="booking-layout">
-      <BookingSummary />
-
-      <div class="booking-panel">
-        <!-- Logged-in -->
-        <article v-if="auth.isLoggedIn" class="booking-panel__card card card--elevated reveal">
-          <div class="booking-panel__icon booking-panel__icon--gold" aria-hidden="true">
-            <i class="fa-solid fa-shield-halved" />
-          </div>
-          <h2 class="booking-panel__title font-serif">Ready for payment</h2>
-          <p class="booking-panel__lead">
-            Booking as <strong>{{ auth.fullName }}</strong>. Continue to complete your transfer.
-          </p>
-          <button class="btn btn--solid-gold booking-panel__cta" type="button" :disabled="loading" @click="continueLoggedIn">
-            Continue to payment
-            <i class="fa-solid fa-arrow-right" aria-hidden="true" />
-          </button>
-        </article>
-
-        <!-- Guest auth -->
-        <article v-else-if="step === 'auth' && !showOtpModal" class="booking-panel__card card card--elevated reveal">
-          <div class="booking-panel__icon booking-panel__icon--blue" aria-hidden="true">
-            <i class="fa-solid fa-user-pen" />
-          </div>
-          <h2 class="booking-panel__title font-serif">Guest checkout</h2>
-          <p class="booking-panel__lead">Enter your contact details. We will send a verification code to your email.</p>
-
-          <GoogleSignInButton
-            class="booking-panel__google"
-            @success="onGoogleSuccess"
-            @error="onGoogleError"
-          />
-
-          <div class="booking-panel__divider" role="separator">
-            <span>or continue as guest</span>
-          </div>
-
-          <form class="booking-form" @submit.prevent="createBooking">
-            <div class="field">
-              <label class="label" for="guest-name">Full name</label>
-              <input id="guest-name" v-model="guest.fullName" class="input" type="text" autocomplete="name" required />
+        <div class="vehicle-page__content">
+          <!-- Logged-in -->
+          <article v-if="isCustomerLoggedIn" class="checkout-panel__card booking-card">
+            <div class="checkout-panel__head checkout-panel__head--icon">
+              <span class="checkout-panel__icon checkout-panel__icon--gold" aria-hidden="true">
+                <i class="fa-solid fa-shield-halved" />
+              </span>
+              <div>
+                <h2 class="checkout-panel__title">Ready for payment</h2>
+                <p class="checkout-panel__lead">
+                  Booking as <strong>{{ auth.fullName }}</strong>. Continue to complete your transfer.
+                </p>
+              </div>
             </div>
-            <div class="field">
-              <label class="label" for="guest-email">Email</label>
-              <input id="guest-email" v-model="guest.email" class="input" type="email" autocomplete="email" required />
-            </div>
-            <div class="field">
-              <label class="label" for="guest-phone">Phone</label>
-              <input id="guest-phone" v-model="guest.phone" class="input" type="tel" autocomplete="tel" required />
-            </div>
-            <button class="btn btn--solid-gold booking-panel__cta" type="submit" :disabled="loading || !guestValid">
+            <button
+              class="checkout-panel__submit"
+              type="button"
+              :disabled="loading"
+              @click="continueLoggedIn"
+            >
               Continue
               <i class="fa-solid fa-arrow-right" aria-hidden="true" />
             </button>
-          </form>
-        </article>
+          </article>
 
-        <article v-else-if="showOtpModal" class="booking-panel__card card card--elevated reveal">
-          <div class="booking-panel__icon booking-panel__icon--green" aria-hidden="true">
-            <i class="fa-solid fa-envelope" />
-          </div>
-          <h2 class="booking-panel__title font-serif">Check your email</h2>
-          <p class="booking-panel__lead">
-            We sent a verification code to
-            <strong class="booking-panel__email">{{ guest.email }}</strong>.
-            Enter it in the dialog to continue.
-          </p>
-        </article>
+          <!-- Guest auth -->
+          <article v-else-if="step === 'auth' && !showOtpModal" class="checkout-panel__card booking-card">
+            <div class="checkout-panel__head checkout-panel__head--icon">
+              <img class="checkout-panel__icon-img" :src="guestIconUrl" alt="" aria-hidden="true" />
+              <div>
+                <h2 class="checkout-panel__title">Guest Checkout or create account</h2>
+                <p class="checkout-panel__lead">
+                  Enter your contact details. We will send a verification code to your email.
+                </p>
+              </div>
+            </div>
+
+            <GoogleSignInButton
+              class="checkout-panel__google"
+              @success="onGoogleSuccess"
+              @error="onGoogleError"
+            />
+
+            <div class="checkout-panel__divider" role="separator">
+              <span>Or continue as guest</span>
+            </div>
+
+            <form class="checkout-panel__form" @submit.prevent="createBooking">
+              <div class="checkout-panel__field">
+                <label class="checkout-panel__label" for="guest-name">Full Name</label>
+                <input
+                  id="guest-name"
+                  v-model="guest.fullName"
+                  class="checkout-panel__input"
+                  type="text"
+                  autocomplete="name"
+                  required
+                />
+              </div>
+              <div class="checkout-panel__field">
+                <label class="checkout-panel__label" for="guest-email">Email</label>
+                <input
+                  id="guest-email"
+                  v-model="guest.email"
+                  class="checkout-panel__input"
+                  type="email"
+                  autocomplete="email"
+                  required
+                />
+              </div>
+              <div class="checkout-panel__field">
+                <label class="checkout-panel__label" for="guest-phone">Phone</label>
+                <PhoneInput
+                  id="guest-phone"
+                  v-model="guest.phone"
+                  :invalid="Boolean(guestPhoneError)"
+                  @validate="guestPhoneValid = $event"
+                />
+                <p v-if="guestPhoneError" class="err" role="alert">{{ guestPhoneError }}</p>
+              </div>
+              <button
+                class="checkout-panel__submit"
+                type="submit"
+                :disabled="loading || !guestValid"
+              >
+                Continue
+                <i class="fa-solid fa-arrow-right" aria-hidden="true" />
+              </button>
+            </form>
+          </article>
+
+          <article v-else-if="showOtpModal" class="checkout-panel__card booking-card">
+            <div class="checkout-panel__head checkout-panel__head--icon">
+              <span class="checkout-panel__icon checkout-panel__icon--green" aria-hidden="true">
+                <i class="fa-solid fa-envelope" />
+              </span>
+              <div>
+                <h2 class="checkout-panel__title">Check your email</h2>
+                <p class="checkout-panel__lead">
+                  We sent a verification code to
+                  <strong>{{ guest.email }}</strong>. Enter it in the dialog to continue.
+                </p>
+              </div>
+            </div>
+          </article>
+        </div>
       </div>
     </div>
 
@@ -339,5 +387,5 @@ const onGoogleError = (message: string) => {
     />
 
     <LoadingOverlay :show="loading || googleLoading" label="Processing your booking…" />
-  </section>
+  </div>
 </template>

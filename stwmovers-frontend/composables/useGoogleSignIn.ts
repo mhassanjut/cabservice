@@ -92,7 +92,7 @@ export function useGoogleSignIn() {
         theme: 'outline',
         size: 'large',
         text: 'continue_with',
-        shape: 'rectangular',
+        shape: 'pill',
         width: Math.max(container.clientWidth, 280),
       })
     } catch {

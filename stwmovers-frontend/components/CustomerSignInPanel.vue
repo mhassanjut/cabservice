@@ -1,17 +1,22 @@
 <script setup lang="ts">
 import { authService } from '~/services/api/auth.service'
-import { homeAnchors, routes } from '~/constants/routes'
+import { homeAnchors } from '~/constants/routes'
+import googleGUrl from '~/assets/icons/google-g.svg?url'
 
 const props = withDefaults(defineProps<{
   redirect?: string
   showGuestLink?: boolean
+  externalLoader?: boolean
 }>(), {
   showGuestLink: true,
+  externalLoader: false,
 })
 
 const emit = defineEmits<{
   signedIn: []
   close: []
+  signingIn: []
+  signInError: []
 }>()
 
 const auth = useAuthStore()
@@ -25,17 +30,19 @@ const benefits = [
 ]
 
 const onGoogleSuccess = async (idToken: string) => {
+  if (props.externalLoader) emit('signingIn')
   googleLoading.value = true
   try {
     const res = await authService.googleLogin(idToken)
     auth.setSession(res)
     auth.clearGuestSession()
     emit('signedIn')
-    const target = props.redirect || routes.dashboard
-    await navigateTo(target)
+    if (props.redirect) {
+      await navigateTo(props.redirect)
+    }
   } catch {
     toast.show('Google sign-in failed. Please try again.', 'error')
-  } finally {
+    if (props.externalLoader) emit('signInError')
     googleLoading.value = false
   }
 }
@@ -46,12 +53,12 @@ const onGoogleError = (message: string) => {
 </script>
 
 <template>
-  <article class="sign-in-panel card card--elevated">
+  <article class="sign-in-panel">
     <div class="sign-in-panel__icon" aria-hidden="true">
-      <i class="fa-brands fa-google" />
+      <img :src="googleGUrl" alt="" width="28" height="28" />
     </div>
 
-    <h2 id="sign-in-modal-title" class="sign-in-panel__title font-serif">Sign in with Google</h2>
+    <h2 id="sign-in-modal-title" class="sign-in-panel__title">Sign in with Google</h2>
     <p class="sign-in-panel__lead">
       Use your Google account to access your dashboard and enjoy a smoother booking experience.
     </p>
@@ -74,6 +81,10 @@ const onGoogleError = (message: string) => {
       <a :href="homeAnchors.booking" @click="emit('close')">Book as a guest</a>
     </p>
 
-    <LoadingOverlay :show="googleLoading" label="Signing in with Google…" />
+    <LoadingOverlay
+      v-if="!externalLoader"
+      :show="googleLoading"
+      label="Signing in with Google…"
+    />
   </article>
 </template>

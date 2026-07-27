@@ -1,0 +1,545 @@
+/*
+ * Services page styles — Figma: sovereign-services-page (node 82:491).
+ * Everything is namespaced under `.services-page` so nothing leaks into other
+ * pages. Design tokens (--home-*) are inherited from the `.home-page` class,
+ * which the page root also carries, keeping colors/fonts identical to the
+ * marketing design system.
+ */
+
+.services-page {
+  --services-gutter: clamp(1.25rem, 5vw, 5rem);
+  --services-section-y: clamp(3rem, 7vw, 7.5rem);
+  --services-radius: 20px;
+  --services-max: 1440px;
+}
+
+.services-page .services-container {
+  width: 100%;
+  max-width: var(--services-max);
+  margin-inline: auto;
+  padding-inline: var(--services-gutter);
+}
+
+.services-page .services-section {
+  padding-block: var(--services-section-y);
+}
+
+/* Shared typography */
+.services-page .services-heading {
+  margin: 0;
+  font-family: var(--home-font-display);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--home-text);
+  font-size: clamp(2rem, 4vw, 4rem);
+}
+
+.services-page .services-heading--sm {
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
+}
+
+.services-page .services-lead {
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: clamp(1rem, 1.25vw, 1.125rem);
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--home-text-muted);
+}
+
+.services-page .services-eyebrow {
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--home-gold);
+}
+
+/* Buttons */
+.services-page .services-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 51px;
+  padding: 0 2rem;
+  border: 1px solid transparent;
+  border-radius: 100px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: filter 0.2s ease, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.services-page .services-btn--gold {
+  background: var(--home-gold);
+  color: #fff;
+}
+
+.services-page .services-btn--gold:hover {
+  filter: brightness(1.06);
+}
+
+.services-page .services-btn--outline {
+  background: transparent;
+  border-color: var(--home-text);
+  color: var(--home-text);
+}
+
+.services-page .services-btn--outline:hover {
+  background: var(--home-text);
+  color: #fff;
+}
+
+/* Outline button on dark backgrounds (hero / final CTA) */
+.services-page .services-btn--outline-light {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.85);
+  color: #fff;
+}
+
+.services-page .services-btn--outline-light:hover {
+  background: #fff;
+  color: var(--home-text);
+}
+
+/* Highlight tags */
+.services-page .services-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.875rem;
+}
+
+.services-page .services-tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 43px;
+  padding: 0 1.5rem;
+  border: 1px solid var(--home-border-soft);
+  border-radius: 100px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--home-text);
+  background: #fff;
+}
+
+/* ─── Hero (82:492) ─── */
+.services-page .services-hero {
+  position: relative;
+  min-height: clamp(34rem, 57vw, 51.25rem);
+  display: flex;
+  align-items: flex-end;
+  color: #fff;
+  overflow: hidden;
+}
+
+.services-page .services-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* Every framed media image fills and covers its container */
+.services-page .services-hero__media img,
+.services-page .services-intro__media img,
+.services-page .services-split__media img,
+.services-page .services-collage__item img,
+.services-page .services-hourly__media img,
+.services-page .services-quote__media img,
+.services-page .services-cta__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.services-page .services-hero__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(20, 14, 2, 0.55) 0%, rgba(0, 0, 0, 0.15) 55%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+.services-page .services-hero__inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding-block: clamp(2.5rem, 5vw, 4.5rem);
+}
+
+.services-page .services-hero__header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 60rem;
+  margin-bottom: clamp(1.5rem, 3vw, 2rem);
+}
+
+.services-page .services-hero__title {
+  margin: 0;
+  font-family: var(--home-font-display);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-size: clamp(2.5rem, 5.5vw, 5rem);
+}
+
+.services-page .services-hero__footer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.services-page .services-hero__body {
+  margin: 0;
+  max-width: 42.5rem;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+@media (min-width: 900px) {
+  .services-page .services-hero__footer {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+}
+
+/* ─── Introduction (82:514) ─── */
+.services-page .services-intro__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2rem, 4vw, 3.75rem);
+  align-items: center;
+}
+
+.services-page .services-intro__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.services-page .services-intro__media {
+  border-radius: var(--services-radius);
+  overflow: hidden;
+  aspect-ratio: 580 / 480;
+}
+
+@media (min-width: 900px) {
+  .services-page .services-intro__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+/* ─── Split sections (Airport / Business / Events) ─── */
+.services-page .services-split__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2rem, 4vw, 3.75rem);
+  align-items: center;
+}
+
+.services-page .services-split__media {
+  border-radius: var(--services-radius);
+  overflow: hidden;
+  aspect-ratio: 68 / 56;
+}
+
+.services-page .services-split__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.services-page .services-split__actions {
+  margin-top: 0.5rem;
+}
+
+@media (min-width: 900px) {
+  .services-page .services-split__grid {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  }
+
+  .services-page .services-split__grid--reverse .services-split__media {
+    order: 2;
+  }
+
+  .services-page .services-split__grid--reverse .services-split__copy {
+    order: 1;
+  }
+}
+
+/* ─── Hourly (82:553) ─── */
+.services-page .services-hourly__header {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 47.5rem;
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+}
+
+.services-page .services-hourly__media {
+  border-radius: var(--services-radius);
+  overflow: hidden;
+  aspect-ratio: 128 / 50;
+}
+
+/* ─── Private Experiences (82:558) ─── */
+.services-page .services-experiences__header {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 50rem;
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+}
+
+.services-page .services-collage {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.services-page .services-collage__item {
+  border-radius: var(--services-radius);
+  overflow: hidden;
+}
+
+.services-page .services-collage__item--short {
+  aspect-ratio: 628 / 360;
+}
+
+.services-page .services-collage__item--tall {
+  aspect-ratio: 628 / 480;
+}
+
+@media (min-width: 768px) {
+  .services-page .services-collage {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ─── Why Choose (82:577) ─── */
+.services-page .services-why__heading {
+  margin: 0 0 clamp(2rem, 4vw, 3.5rem);
+}
+
+.services-page .services-features {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem 2rem;
+}
+
+.services-page .services-feature {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.services-page .services-feature__head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.services-page .services-feature__icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--home-gold);
+}
+
+.services-page .services-feature__title {
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--home-text);
+}
+
+.services-page .services-feature__text {
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--home-text-muted);
+}
+
+@media (min-width: 640px) {
+  .services-page .services-features {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1000px) {
+  .services-page .services-features {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* ─── Quote (82:616) ─── */
+.services-page .services-quote {
+  text-align: center;
+}
+
+.services-page .services-quote__text {
+  margin: 0 auto;
+  max-width: 62.5rem;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--home-text);
+  font-size: clamp(1.75rem, 3.6vw, 3.5rem);
+}
+
+.services-page .services-quote__attribution {
+  margin: 1.5rem auto 0;
+  max-width: 45rem;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  line-height: 1.6;
+  color: var(--home-text-muted);
+}
+
+.services-page .services-quote__media {
+  margin-top: clamp(2.5rem, 5vw, 3.75rem);
+  border-radius: var(--services-radius);
+  overflow: hidden;
+  aspect-ratio: 128 / 56;
+}
+
+/* ─── Booking Process (82:621) ─── */
+.services-page .services-steps__heading {
+  margin: 0 0 clamp(2rem, 4vw, 3.5rem);
+}
+
+.services-page .services-steps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.services-page .services-step {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: clamp(1.75rem, 3vw, 2.5rem);
+  border: 1px solid var(--home-border);
+  border-radius: var(--services-radius);
+  background: #fff;
+}
+
+.services-page .services-step__num {
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: clamp(2.5rem, 4vw, 3.75rem);
+  font-weight: 200;
+  line-height: 1;
+  color: var(--home-gold);
+}
+
+.services-page .services-step__title {
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--home-text);
+}
+
+.services-page .services-step__text {
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--home-text-muted);
+}
+
+@media (min-width: 768px) {
+  .services-page .services-steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* ─── Final CTA (82:636) ─── */
+.services-page .services-cta {
+  padding-block: clamp(2rem, 4vw, 3rem);
+}
+
+.services-page .services-cta__card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: var(--services-radius);
+  min-height: clamp(24rem, 45vw, 40.625rem);
+  padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem);
+  text-align: center;
+  color: #fff;
+}
+
+.services-page .services-cta__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.services-page .services-cta__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+.services-page .services-cta__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 50rem;
+}
+
+.services-page .services-cta__heading {
+  margin: 0;
+  font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #fff;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+}
+
+.services-page .services-cta__body {
+  margin: 0;
+  max-width: 37.5rem;
+  font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.services-page .services-cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}

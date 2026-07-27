@@ -2,12 +2,12 @@ name: Frontend CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, staging]
     paths:
       - 'stwmovers-frontend/**'
       - '.github/workflows/frontend-*.yml'
   pull_request:
-    branches: [main]
+    branches: [main, staging]
     paths:
       - 'stwmovers-frontend/**'
       - '.github/workflows/frontend-*.yml'
@@ -21,6 +21,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Verify frontend package files
+        run: |
+          test -f package.json || {
+            echo "Missing package.json in stwmovers-frontend."
+            ls -la
+            exit 1
+          }
+          test -f package-lock.json || {
+            echo "Missing package-lock.json in stwmovers-frontend."
+            exit 1
+          }
       - uses: actions/setup-node@v4
         with:
           node-version: '20'

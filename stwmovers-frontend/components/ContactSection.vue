@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { siteConfig } from '~/config/site'
+
 const form = reactive({
   name: '',
   email: '',
@@ -12,7 +14,7 @@ const onSubmit = () => {
   const body = encodeURIComponent(
     `Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`,
   )
-  window.location.href = `mailto:concierge@stwmovers.com?subject=${subject}&body=${body}`
+  window.location.href = `mailto:${siteConfig.contactEmail}?subject=${subject}&body=${body}`
   submitted.value = true
 }
 </script>
@@ -30,8 +32,8 @@ const onSubmit = () => {
       <div class="contact-detail">
         <i class="fa-solid fa-envelope" aria-hidden="true" />
         <div>
-          <div class="contact-detail__label">Email</div>
-          <a class="contact-detail__value" href="mailto:concierge@stwmovers.com">concierge@stwmovers.com</a>
+          <div class="contact-detail__label">Contact Email</div>
+          <a class="contact-detail__value" :href="`mailto:${siteConfig.contactEmail}`">{{ siteConfig.contactEmail }}</a>
         </div>
       </div>
       <div class="contact-detail">

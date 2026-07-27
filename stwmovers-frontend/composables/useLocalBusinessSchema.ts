@@ -13,7 +13,7 @@ export function useLocalBusinessSchema() {
     image: `${siteUrl}${seoDefaults.defaultOgImagePath}`,
     url: siteUrl,
     telephone: `+${siteConfig.whatsappNumber.replace(/\D/g, '')}`,
-    email: 'concierge@stwmovers.com',
+    email: siteConfig.contactEmail,
     address: {
       '@type': 'PostalAddress',
       streetAddress: 'Passeig de Gràcia 21',

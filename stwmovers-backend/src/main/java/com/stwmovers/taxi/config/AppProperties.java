@@ -15,6 +15,8 @@ public class AppProperties {
 
     private Cors cors = new Cors();
     private Jwt jwt = new Jwt();
+    private Cookie cookie = new Cookie();
+    private Security security = new Security();
     private BarcelonaBounds barcelona = new BarcelonaBounds();
     private Fare fare = new Fare();
     private Otp otp = new Otp();
@@ -28,6 +30,7 @@ public class AppProperties {
     @Setter
     public static class Uploads {
         private String carsDir = "uploads/cars";
+        private String toursDir = "uploads/tours";
     }
 
     @Getter
@@ -48,6 +51,24 @@ public class AppProperties {
     public static class Jwt {
         private String secret;
         private long expirationMs = 86400000L;
+        private long accessExpirationMs = 86400000L;
+        private long refreshExpirationMs = 604800000L;
+
+        public long getAccessExpirationMs() {
+            return accessExpirationMs > 0 ? accessExpirationMs : expirationMs;
+        }
+    }
+
+    @Getter
+    @Setter
+    public static class Cookie {
+        private boolean secure = false;
+    }
+
+    @Getter
+    @Setter
+    public static class Security {
+        private boolean csrfEnabled = false;
     }
 
     @Getter

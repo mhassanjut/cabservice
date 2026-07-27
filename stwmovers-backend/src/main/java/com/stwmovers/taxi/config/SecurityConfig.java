@@ -17,6 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import com.stwmovers.taxi.infrastructure.security.JwtAuthenticationFilter;
@@ -32,30 +34,54 @@ public class SecurityConfig {
     private final RateLimitFilter rateLimitFilter;
     private final UserDetailsServiceImpl userDetailsService;
     private final CorsConfigurationSource corsConfigurationSource;
+    private final AppProperties appProperties;
 
     public SecurityConfig(
             JwtAuthenticationFilter jwtAuthenticationFilter,
             RateLimitFilter rateLimitFilter,
             UserDetailsServiceImpl userDetailsService,
-            CorsConfigurationSource corsConfigurationSource) {
+            CorsConfigurationSource corsConfigurationSource,
+            AppProperties appProperties) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.rateLimitFilter = rateLimitFilter;
         this.userDetailsService = userDetailsService;
         this.corsConfigurationSource = corsConfigurationSource;
+        this.appProperties = appProperties;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors.configurationSource(corsConfigurationSource))
+        if (appProperties.getSecurity().isCsrfEnabled()) {
+            CsrfTokenRequestAttributeHandler requestHandler = new CsrfTokenRequestAttributeHandler();
+            requestHandler.setCsrfRequestAttributeName(null);
+            http.csrf(csrf -> csrf
+                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                    .csrfTokenRequestHandler(requestHandler)
+                    .ignoringRequestMatchers(
+                            "/api/v1/auth/login",
+                            "/api/v1/auth/register",
+                            "/api/v1/auth/google",
+                            "/api/v1/auth/refresh",
+                            "/api/v1/auth/guest/**",
+                            "/api/v1/auth/logout",
+                            "/api/v1/payments/webhook",
+                            "/actuator/**"));
+        } else {
+            http.csrf(AbstractHttpConfigurer::disable);
+        }
+
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/actuator/health", "/actuator/info").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/refresh").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/logout-all").authenticated()
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/bookings/me").authenticated()
                         .requestMatchers("/api/v1/users/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/v1/media/cars/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/media/tours/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/tours/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/tours/*/cars").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/rides/cars").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/bookings").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/bookings/{reference}").permitAll()

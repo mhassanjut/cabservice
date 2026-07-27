@@ -28,6 +28,12 @@ app:
   jwt:
     secret: test-secret-key-must-be-at-least-256-bits-long-for-hmac-sha256-algorithm
     expiration-ms: 3600000
+    access-expiration-ms: 3600000
+    refresh-expiration-ms: 604800000
+  cookie:
+    secure: false
+  security:
+    csrf-enabled: false
   barcelona:
     min-lat: 41.270
     max-lat: 41.469

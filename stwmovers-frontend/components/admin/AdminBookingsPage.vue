@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { AdminBookingQuery, BookingDto } from '~/types/api'
+import type { AdminBookingQuery, BookingDto, RideType } from '~/types/api'
 import { adminService } from '~/services/api/admin.service'
 import { bookingStatusTone, formatStatusLabel } from '~/utils/adminStatus'
 
@@ -7,6 +7,9 @@ const props = defineProps<{
   title: string
   description: string
   defaultCustomRequest?: boolean
+  fixedRideType?: RideType
+  excludeRideType?: RideType
+  hideRideTypeFilter?: boolean
 }>()
 
 const bookings = ref<BookingDto[]>([])
@@ -40,7 +43,8 @@ const load = async () => {
     const res = await adminService.bookings({
       search: filters.search || undefined,
       status: (filters.status || undefined) as AdminBookingQuery['status'],
-      rideType: (filters.rideType || undefined) as AdminBookingQuery['rideType'],
+      rideType: props.fixedRideType ?? ((filters.rideType || undefined) as AdminBookingQuery['rideType']),
+      excludeRideType: props.excludeRideType,
       customRequest: filters.customRequest,
       sortBy: filters.sortBy,
       sortDir: filters.sortDir,
@@ -63,10 +67,15 @@ const openDetail = (id: string) => {
   panelOpen.value = true
 }
 
+const routeLabel = (row: BookingDto) => {
+  if (row.rideType === 'TOUR' && row.tourTitle) return row.tourTitle
+  return `${row.pickupAddress} → ${row.dropoffAddress}`
+}
+
 const clearFilters = () => {
   filters.search = ''
   filters.status = ''
-  filters.rideType = ''
+  if (!props.fixedRideType) filters.rideType = ''
   filters.sortBy = 'createdAt'
   filters.sortDir = 'desc'
   page.value = 0
@@ -98,11 +107,12 @@ const onSortChange = (event: Event) => {
         <option value="COMPLETED">Completed</option>
         <option value="CANCELLED">Cancelled</option>
       </select>
-      <select v-model="filters.rideType" class="input input--select">
+      <select v-if="!hideRideTypeFilter && !fixedRideType" v-model="filters.rideType" class="input input--select">
         <option value="">All ride types</option>
         <option value="STANDARD">Standard</option>
-        <option value="IN_CITY">In city (legacy)</option>
-        <option value="CITY_TO_CITY">City to city (legacy)</option>
+        <option value="IN_CITY">In city</option>
+        <option value="CITY_TO_CITY">City to city</option>
+        <option value="TOUR">Tour</option>
       </select>
       <select
         class="input input--select admin-toolbar__sort"
@@ -159,7 +169,7 @@ const onSortChange = (event: Event) => {
             <tr v-for="row in bookings" :key="row.id">
               <td>{{ row.bookingReference }}</td>
               <td>{{ row.guestName || '—' }}</td>
-              <td>{{ row.pickupAddress }} → {{ row.dropoffAddress }}</td>
+              <td>{{ routeLabel(row) }}</td>
               <td>{{ row.rideType }}</td>
               <td>€{{ row.calculatedFare ?? '—' }}</td>
               <td>
@@ -186,7 +196,7 @@ const onSortChange = (event: Event) => {
           </div>
           <div class="admin-row-card__meta">
             <span>{{ row.guestName || 'Guest' }}</span>
-            <span>{{ row.pickupAddress }}</span>
+            <span>{{ routeLabel(row) }}</span>
             <span>€{{ row.calculatedFare ?? '—' }} · {{ row.rideType }}</span>
           </div>
           <div class="admin-row-card__actions">

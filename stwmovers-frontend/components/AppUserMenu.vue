@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import { routes } from '~/constants/routes'
 
-const props = defineProps<{ mobileSheet?: boolean }>()
+const props = withDefaults(
+  defineProps<{
+    mobileSheet?: boolean
+    loginVariant?: 'default' | 'outline'
+  }>(),
+  { loginVariant: 'default' },
+)
 const emit = defineEmits<{ close: [] }>()
 
 const auth = useAuthStore()
@@ -72,7 +78,15 @@ watch(() => route.fullPath, close)
       <i class="fa-solid fa-chevron-down" aria-hidden="true" />
     </button>
 
-    <button v-else type="button" class="btn user-menu__login app-nav__action-btn" @click="openSignIn()">Login</button>
+    <button
+      v-else
+      type="button"
+      class="btn user-menu__login app-nav__action-btn"
+      :class="{ 'user-menu__login--outline': loginVariant === 'outline' }"
+      @click="openSignIn()"
+    >
+      Login
+    </button>
 
     <div v-if="open && isCustomer" class="user-menu__panel" :class="{ 'user-menu__panel--sheet': mobileSheet }">
       <div v-if="mobileSheet" class="user-menu__handle" aria-hidden="true" />
@@ -240,5 +254,23 @@ watch(() => route.fullPath, close)
 @keyframes sheet-up {
   from { transform: translateY(100%); }
   to { transform: translateY(0); }
+}
+
+.user-menu__login--outline {
+  background: transparent;
+  border: 1px solid var(--color-border-strong);
+  color: var(--color-text);
+}
+
+.user-menu__login--outline::before {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .user-menu__login--outline:hover {
+    color: var(--color-text);
+    border-color: rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.06);
+  }
 }
 </style>

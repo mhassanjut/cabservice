@@ -1,4 +1,4 @@
-import type { AuthDto, Role } from '~/types/api'
+import type { AuthDto, Role, UserProfileDto } from '~/types/api'
 import type { GuestDetails } from '~/types/booking'
 
 const AUTH_KEY = 'stwmovers.auth.v1'
@@ -9,9 +9,12 @@ export type GuestSession = GuestDetails & {
   bookingReference?: string
 }
 
+let bootstrapPromise: Promise<boolean> | null = null
+
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: '' as string,
+    refreshToken: '' as string,
     userId: '' as string,
     email: '',
     fullName: '',
@@ -19,13 +22,26 @@ export const useAuthStore = defineStore('auth', {
     profilePictureUrl: '' as string,
     guestSession: null as GuestSession | null,
     hydrated: false,
+    cookieAuthEnabled: false,
+    sessionVerified: false,
+    authReady: false,
   }),
   getters: {
-    isLoggedIn: (s) => Boolean(s.token),
+    isLoggedIn(state): boolean {
+      if (state.cookieAuthEnabled) {
+        return state.sessionVerified && Boolean(state.userId && state.role)
+      }
+      return Boolean(state.token)
+    },
     isCustomer: (s) => s.role === 'CUSTOMER',
     isAdmin: (s) => s.role === 'ADMIN',
     isDriver: (s) => s.role === 'DRIVER',
-    isGuestSession: (s) => Boolean(s.guestSession && !s.token),
+    isGuestSession(state): boolean {
+      if (state.cookieAuthEnabled) {
+        return Boolean(state.guestSession && !state.sessionVerified)
+      }
+      return Boolean(state.guestSession && !state.token)
+    },
     firstName: (s) => s.fullName.trim().split(/\s+/)[0] || s.email.split('@')[0] || 'Guest',
     displayName: (s) => s.fullName || s.guestSession?.fullName || s.email || 'Guest',
     avatarUrl: (s) => s.profilePictureUrl || '',
@@ -36,19 +52,44 @@ export const useAuthStore = defineStore('auth', {
   },
   actions: {
     setSession(d: AuthDto) {
-      this.token = d.accessToken
-      this.userId = d.userId
-      this.email = d.email
-      this.fullName = d.fullName
-      this.role = d.role
-      this.profilePictureUrl = d.profilePictureUrl ?? ''
+      this.applyProfile({
+        userId: d.userId,
+        email: d.email,
+        fullName: d.fullName,
+        role: d.role,
+        profilePictureUrl: d.profilePictureUrl,
+      })
+      if (!this.cookieAuthEnabled) {
+        this.token = d.accessToken ?? ''
+        this.refreshToken = d.refreshToken ?? this.refreshToken
+        this.persistLegacyAuth()
+      } else {
+        this.token = ''
+        this.refreshToken = ''
+        this.sessionVerified = true
+        this.authReady = true
+      }
       this.guestSession = null
       if (import.meta.client) {
         sessionStorage.removeItem(GUEST_KEY)
         useBookingStore().clearGuestDetails()
       }
-      this.persistAuth()
       this.broadcastAuthChange()
+    },
+    applyProfile(profile: Pick<UserProfileDto, 'userId' | 'email' | 'fullName' | 'role' | 'profilePictureUrl'>) {
+      this.userId = profile.userId
+      this.email = profile.email
+      this.fullName = profile.fullName
+      this.role = profile.role
+      this.profilePictureUrl = profile.profilePictureUrl ?? ''
+    },
+    clearProfile() {
+      this.userId = ''
+      this.email = ''
+      this.fullName = ''
+      this.role = null
+      this.profilePictureUrl = ''
+      this.sessionVerified = false
     },
     setGuestSession(guest: GuestSession) {
       this.guestSession = { ...guest }
@@ -60,60 +101,65 @@ export const useAuthStore = defineStore('auth', {
     },
     hydrate() {
       if (!import.meta.client || this.hydrated) return
-      this.syncFromStorage()
+      const config = useRuntimeConfig()
+      this.cookieAuthEnabled = Boolean(config.public.cookieAuth)
+      if (this.cookieAuthEnabled) {
+        localStorage.removeItem(AUTH_KEY)
+      } else {
+        this.syncLegacyAuthFromStorage()
+      }
+      this.loadGuestSession()
       this.hydrated = true
     },
-    syncFromStorage() {
+    syncLegacyAuthFromStorage() {
       if (!import.meta.client) return
       const raw = localStorage.getItem(AUTH_KEY)
       if (!raw) {
-        if (this.token) {
+        if (this.userId || this.token) {
           this.token = ''
-          this.userId = ''
-          this.email = ''
-          this.fullName = ''
-          this.role = null
-          this.profilePictureUrl = ''
+          this.refreshToken = ''
+          this.clearProfile()
         }
-      } else {
-        try {
-          const parsed = JSON.parse(raw) as Partial<typeof this.$state>
-          this.token = parsed.token ?? ''
-          this.userId = parsed.userId ?? ''
-          this.email = parsed.email ?? ''
-          this.fullName = parsed.fullName ?? ''
-          this.role = parsed.role ?? null
-          this.profilePictureUrl = parsed.profilePictureUrl ?? ''
-        } catch {
-          localStorage.removeItem(AUTH_KEY)
-          this.token = ''
-          this.userId = ''
-          this.email = ''
-          this.fullName = ''
-          this.role = null
-          this.profilePictureUrl = ''
-        }
+        return
       }
-      if (!this.token) {
-        const guestRaw = sessionStorage.getItem(GUEST_KEY)
-        if (guestRaw) {
-          try {
-            this.guestSession = JSON.parse(guestRaw) as GuestSession
-          } catch {
-            sessionStorage.removeItem(GUEST_KEY)
-            this.guestSession = null
-          }
-        } else {
-          this.guestSession = null
-        }
+      try {
+        const parsed = JSON.parse(raw) as Partial<typeof this.$state>
+        this.token = parsed.token ?? ''
+        this.refreshToken = parsed.refreshToken ?? ''
+        this.userId = parsed.userId ?? ''
+        this.email = parsed.email ?? ''
+        this.fullName = parsed.fullName ?? ''
+        this.role = parsed.role ?? null
+        this.profilePictureUrl = parsed.profilePictureUrl ?? ''
+      } catch {
+        localStorage.removeItem(AUTH_KEY)
+        this.clear()
       }
     },
-    persistAuth() {
-      if (!import.meta.client) return
+    loadGuestSession() {
+      if (!import.meta.client || this.isLoggedIn) {
+        if (this.isLoggedIn) this.guestSession = null
+        return
+      }
+      const guestRaw = sessionStorage.getItem(GUEST_KEY)
+      if (!guestRaw) {
+        this.guestSession = null
+        return
+      }
+      try {
+        this.guestSession = JSON.parse(guestRaw) as GuestSession
+      } catch {
+        sessionStorage.removeItem(GUEST_KEY)
+        this.guestSession = null
+      }
+    },
+    persistLegacyAuth() {
+      if (!import.meta.client || this.cookieAuthEnabled) return
       localStorage.setItem(
         AUTH_KEY,
         JSON.stringify({
           token: this.token,
+          refreshToken: this.refreshToken,
           userId: this.userId,
           email: this.email,
           fullName: this.fullName,
@@ -122,12 +168,50 @@ export const useAuthStore = defineStore('auth', {
         }),
       )
     },
+    async bootstrapSession(): Promise<boolean> {
+      if (!import.meta.client || !this.cookieAuthEnabled) return this.isLoggedIn
+      if (this.authReady && this.sessionVerified) return true
+      if (this.authReady && !this.sessionVerified) return false
+      if (bootstrapPromise) return bootstrapPromise
+
+      bootstrapPromise = (async () => {
+        try {
+          const { userService } = await import('~/services/api/user.service')
+          const profile = await userService.profile({ silent: true })
+          this.applyProfile(profile)
+          this.sessionVerified = true
+          this.authReady = true
+          this.loadGuestSession()
+          return true
+        } catch {
+          this.clearProfile()
+          this.authReady = true
+          this.loadGuestSession()
+          return false
+        } finally {
+          bootstrapPromise = null
+        }
+      })()
+
+      return bootstrapPromise
+    },
+    async ensureSession(): Promise<boolean> {
+      this.hydrate()
+      if (this.cookieAuthEnabled) return this.bootstrapSession()
+      return this.isLoggedIn
+    },
+    /** @deprecated Use bootstrapSession */
+    async verifySession() {
+      return this.bootstrapSession()
+    },
+    /** @deprecated Use bootstrapSession */
+    async restoreSession() {
+      return this.bootstrapSession()
+    },
     async logout() {
       try {
-        if (this.token) {
-          const { authService } = await import('~/services/api/auth.service')
-          await authService.logout()
-        }
+        const { authService } = await import('~/services/api/auth.service')
+        await authService.logout()
       } catch {
         /* client logout still proceeds */
       }
@@ -136,17 +220,15 @@ export const useAuthStore = defineStore('auth', {
     },
     clear() {
       this.token = ''
-      this.userId = ''
-      this.email = ''
-      this.fullName = ''
-      this.role = null
-      this.profilePictureUrl = ''
+      this.refreshToken = ''
+      this.clearProfile()
+      this.authReady = this.cookieAuthEnabled
       this.clearGuestSession()
-      if (import.meta.client) localStorage.removeItem(AUTH_KEY)
+      if (import.meta.client && !this.cookieAuthEnabled) localStorage.removeItem(AUTH_KEY)
     },
     applyAuthPayload(payload: Partial<typeof this.$state>) {
       Object.assign(this, payload)
-      this.persistAuth()
+      if (!this.cookieAuthEnabled) this.persistLegacyAuth()
     },
     broadcastAuthChange() {
       if (!import.meta.client) return
@@ -156,9 +238,6 @@ export const useAuthStore = defineStore('auth', {
       if (!import.meta.client) return () => {}
       const handler = () => onChange()
       window.addEventListener(AUTH_EVENT, handler)
-      window.addEventListener('storage', (e) => {
-        if (e.key === AUTH_KEY) handler()
-      })
       return () => window.removeEventListener(AUTH_EVENT, handler)
     },
   },

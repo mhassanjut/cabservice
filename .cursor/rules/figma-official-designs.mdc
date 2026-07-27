@@ -1,0 +1,49 @@
+---
+description: Official Figma designs for STW Movers — only Final Workflow and Tour Flow sections
+alwaysApply: true
+---
+
+# Official Figma Designs (STW Movers)
+
+When answering design, UI, or implementation questions for this project, use **only** the screens under these two labeled sections in the official Figma file. Ignore older iterations in **Drafts**, hero variations, and duplicate `sovereign-*` frames elsewhere in the file.
+
+**Figma file:** [SWT-movers](https://www.figma.com/design/CVUgrkA8k2yHziSf6fC6e3/SWT-movers?node-id=0-1)
+**File key:** `CVUgrkA8k2yHziSf6fC6e3`
+
+## Final Workflow
+
+Main site, booking checkout, payment, confirmation, auth modals, and customer account screens.
+
+| Frame name | Node ID |
+|---|---|
+| sovereign-homepage | `82:31` |
+| sovereign-services-page | `82:491` |
+| sovereign-about-page | `82:695` |
+| sovereign-contact-page | `82:885` |
+| sovereign-booking-vehicle-selection | `82:1547` |
+| sovereign-booking-checkout | `82:2383` |
+| sovereign-secure-payment | `82:2606` |
+| sovereign-booking-confirmation | `82:2725` |
+| sovereign-google-signin-modal | `82:2871` |
+| sovereign-contact-modal | `82:2509` |
+| sovereign-customer-dashboard | `82:2952` |
+| sovereign-my-bookings | `82:3076` |
+| sovereign-account-settings | `82:3267` |
+
+**Design tokens reference (supporting):** `design-system-reference` → `4:1833`
+
+## Tour Flow
+
+Private tours marketing and tour-specific booking checkout.
+
+| Frame name | Node ID |
+|---|---|
+| sovereign-tours | `97:31` |
+| sovereign-booking-checkout (tour) | `97:336` |
+
+## Rules for the agent
+
+1. Do **not** treat `executive-chauffeur-website`, Drafts-section duplicates, or hero variations as official.
+2. Prefer **Instrument Sans** (display) + **Inter** (UI) from these frames; style guide uses Inter at `4:1833`.
+3. Official palette: light base `#FAFAF8`, gold `#D8B24C`, dark sections `#090909`–`#171717`.
+4. When using Figma MCP, pass the node ID from the tables above for the screen in question.

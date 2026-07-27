@@ -1,9 +1,18 @@
 import type { AuthDto, BookingDto } from '~/types/api'
 import { api } from '~/services/http/api'
 
+function isCookieAuthEnabled() {
+  return Boolean(useRuntimeConfig().public.cookieAuth)
+}
+
 export const authService = {
-  login(email: string, password: string) {
-    return api<AuthDto>('/api/v1/auth/login', { method: 'POST', body: { email, password }, auth: false })
+  login(email: string, password: string, opts?: { silent?: boolean }) {
+    return api<AuthDto>('/api/v1/auth/login', {
+      method: 'POST',
+      body: { email, password },
+      auth: false,
+      silent: opts?.silent,
+    })
   },
   register(email: string, password: string, fullName: string, phone?: string) {
     return api<AuthDto>('/api/v1/auth/register', {
@@ -19,11 +28,18 @@ export const authService = {
       auth: false,
     })
   },
-  refresh() {
-    return api<AuthDto>('/api/v1/auth/refresh', { method: 'POST' })
+  refresh(refreshToken?: string) {
+    if (isCookieAuthEnabled()) {
+      return api<AuthDto>('/api/v1/auth/refresh', { method: 'POST', auth: false })
+    }
+    return api<AuthDto>('/api/v1/auth/refresh', {
+      method: 'POST',
+      body: refreshToken ? { refreshToken } : undefined,
+      auth: !refreshToken,
+    })
   },
   logout() {
-    return api<void>('/api/v1/auth/logout', { method: 'POST' })
+    return api<void>('/api/v1/auth/logout', { method: 'POST', auth: false })
   },
   sendOtp(email: string, bookingReference: string) {
     return api<{ email: string; bookingReference: string; ttlSeconds: number }>(

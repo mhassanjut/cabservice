@@ -2,6 +2,7 @@ package com.stwmovers.taxi.infrastructure.security;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.crypto.SecretKey;
 
@@ -16,6 +17,9 @@ import io.jsonwebtoken.security.Keys;
 @Component
 public class JwtTokenProvider {
 
+    public record AccessToken(String token, String jti, long expiresAtEpochMs) {
+    }
+
     private final AppProperties appProperties;
     private final SecretKey secretKey;
 
@@ -25,9 +29,16 @@ public class JwtTokenProvider {
     }
 
     public String generateToken(UserPrincipal principal) {
+        return generateAccessToken(principal).token();
+    }
+
+    public AccessToken generateAccessToken(UserPrincipal principal) {
         Date now = new Date();
-        Date expiry = new Date(now.getTime() + appProperties.getJwt().getExpirationMs());
-        return Jwts.builder()
+        long accessExpirationMs = getAccessExpirationMs();
+        Date expiry = new Date(now.getTime() + accessExpirationMs);
+        String jti = UUID.randomUUID().toString();
+        String token = Jwts.builder()
+                .id(jti)
                 .subject(principal.getEmail())
                 .claim("userId", principal.getId().toString())
                 .claim("role", principal.getRole().name())
@@ -35,6 +46,7 @@ public class JwtTokenProvider {
                 .expiration(expiry)
                 .signWith(secretKey)
                 .compact();
+        return new AccessToken(token, jti, expiry.getTime());
     }
 
     public Claims parseClaims(String token) {
@@ -45,7 +57,11 @@ public class JwtTokenProvider {
                 .getPayload();
     }
 
+    public long getAccessExpirationMs() {
+        return appProperties.getJwt().getAccessExpirationMs();
+    }
+
     public long getExpirationMs() {
-        return appProperties.getJwt().getExpirationMs();
+        return getAccessExpirationMs();
     }
 }

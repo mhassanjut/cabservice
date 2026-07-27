@@ -13,19 +13,36 @@ type ApiOptions = {
 let slowTimer: ReturnType<typeof setTimeout> | null = null
 let refreshing: Promise<boolean> | null = null
 
+function getCsrfToken(): string | undefined {
+  if (!import.meta.client) return undefined
+  const match = document.cookie.match(/(?:^|;\s*)XSRF-TOKEN=([^;]*)/)
+  return match ? decodeURIComponent(match[1]) : undefined
+}
+
 export async function api<T>(path: string, opts: ApiOptions = {}): Promise<T> {
   const config = useRuntimeConfig()
   const auth = useAuthStore()
   const toast = useToastStore()
   const headers: Record<string, string> = { Accept: 'application/json' }
   if (opts.body) headers['Content-Type'] = 'application/json'
-  if (opts.auth !== false && auth.token) headers.Authorization = `Bearer ${auth.token}`
+
+  const cookieAuth = Boolean(config.public.cookieAuth)
+  if (opts.auth !== false && auth.token && !cookieAuth) {
+    headers.Authorization = `Bearer ${auth.token}`
+  }
+
+  const method = (opts.method ?? 'GET').toUpperCase()
+  const csrfToken = getCsrfToken()
+  if (csrfToken && ['POST', 'PUT', 'PATCH', 'DELETE'].includes(method)) {
+    headers['X-XSRF-TOKEN'] = csrfToken
+  }
 
   slowTimer = setTimeout(() => toast.show('Still working…', 'info'), 8000)
   try {
     const res = await $fetch<ApiResponse<T>>(path, {
       baseURL: config.public.apiBaseUrl as string,
-      method: (opts.method ?? 'GET') as 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH',
+      credentials: 'include',
+      method: method as 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH',
       body: opts.body as Record<string, unknown> | undefined,
       headers,
       timeout: opts.timeout ?? 30000,
@@ -36,30 +53,45 @@ export async function api<T>(path: string, opts: ApiOptions = {}): Promise<T> {
     const err = e as { status?: number; statusCode?: number; data?: { message?: string }; message?: string }
     const status = err.status ?? err.statusCode
 
+    const hasSession = cookieAuth
+      ? auth.sessionVerified
+      : Boolean(auth.token || auth.refreshToken)
     const isAuthFailure = status === 401 || status === 403
-    if (isAuthFailure && auth.token && opts.auth !== false && !opts._retried401) {
-      const refreshed = await tryRefreshSession(auth)
+    if (isAuthFailure && hasSession && opts.auth !== false && !opts._retried401) {
+      const refreshed = await tryRefreshSession(auth, cookieAuth)
       if (refreshed) {
         return api<T>(path, { ...opts, _retried401: true })
       }
       auth.clear()
       auth.broadcastAuthChange()
-      toast.show('Session expired. Please sign in again.', 'error')
+      if (!opts.silent) {
+        toast.show(
+          status === 403
+            ? 'Security token expired. Please refresh the page.'
+            : 'Session expired. Please sign in again.',
+          'error',
+        )
+      }
       const route = useRoute()
-      const loginPath = route.fullPath.startsWith('/admin') ? '/admin/login' : '/login'
-      await navigateTo({ path: loginPath, query: { redirect: route.fullPath } })
-    } else if (status === 429) {
-      toast.show('Too many requests. Please wait a moment and try again.', 'error')
-    } else if (status === 422) {
-      const msg = err.data?.message
-      if (msg) toast.show(msg, 'error')
-    } else if (status === 400) {
-      const msg = err.data?.message
-      if (msg && !opts.silent) toast.show(msg, 'error')
-    } else if (!status) {
-      toast.show('Connection lost. Tap to retry.', 'error')
-    } else if (status >= 500) {
-      if (!opts.silent) toast.show('Something went wrong. Please try again.', 'error')
+      if (route.fullPath.startsWith('/admin')) {
+        await navigateTo({ path: '/admin/login', query: { redirect: route.fullPath } })
+      } else {
+        useCustomerSignIn().open(route.fullPath)
+      }
+    } else if (!opts.silent) {
+      if (status === 429) {
+        toast.show('Too many requests. Please wait a moment and try again.', 'error')
+      } else if (status === 422) {
+        const msg = err.data?.message
+        if (msg) toast.show(msg, 'error')
+      } else if (status === 400) {
+        const msg = err.data?.message
+        if (msg) toast.show(msg, 'error')
+      } else if (!status) {
+        toast.show('Connection lost. Tap to retry.', 'error')
+      } else if (status >= 500) {
+        toast.show('Something went wrong. Please try again.', 'error')
+      }
     }
     throw e
   } finally {
@@ -67,11 +99,14 @@ export async function api<T>(path: string, opts: ApiOptions = {}): Promise<T> {
   }
 }
 
-async function tryRefreshSession(auth: ReturnType<typeof useAuthStore>): Promise<boolean> {
-  if (!auth.token) return false
+async function tryRefreshSession(
+  auth: ReturnType<typeof useAuthStore>,
+  cookieAuth: boolean,
+): Promise<boolean> {
+  if (!cookieAuth && !auth.refreshToken && !auth.token) return false
   if (!refreshing) {
     refreshing = authService
-      .refresh()
+      .refresh(cookieAuth ? undefined : auth.refreshToken || undefined)
       .then((session) => {
         auth.setSession(session)
         return true
