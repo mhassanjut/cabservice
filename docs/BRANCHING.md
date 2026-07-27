@@ -16,9 +16,9 @@ Legacy branches `cursor/taxi-booking-backend` and `cursor/taxi-booking-frontend`
 | Workflow | Triggers when | Job |
 |----------|---------------|-----|
 | `backend-ci.yml` | Changes under `stwmovers-backend/` | Maven test + JAR build |
-| `frontend-ci.yml` | Changes under `stwmovers-frontend/` | Typecheck + Nuxt build |
+| `frontend-ci.yml` | Changes under `stwmovers-frontend/` | Typecheck; on `main`, production build + upload artifact |
 | `backend-deploy.yml` | After successful Backend CI on `main` | SSH JAR to VPS + systemd restart |
-| `frontend-deploy.yml` | After successful Frontend CI on `main` | rsync `.output` to VPS + systemd restart |
+| `frontend-deploy.yml` | After successful Frontend CI on `main` | Download CI artifact, rsync `.output` to VPS + systemd restart |
 
 Path filters keep backend and frontend pipelines independent: a frontend-only push does not run backend tests.
 

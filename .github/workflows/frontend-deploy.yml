@@ -7,6 +7,10 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  actions: read
+  contents: read
+
 jobs:
   deploy:
     if: >
@@ -21,7 +25,9 @@ jobs:
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - name: Download CI build artifact
+        id: download
         if: github.event_name == 'workflow_run'
+        continue-on-error: true
         uses: actions/download-artifact@v4
         with:
           name: frontend-output
@@ -30,14 +36,14 @@ jobs:
           path: stwmovers-frontend
 
       - uses: actions/setup-node@v4
-        if: github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'workflow_dispatch' || steps.download.outcome != 'success'
         with:
           node-version: '20'
           cache: npm
           cache-dependency-path: stwmovers-frontend/package-lock.json
 
-      - name: Build (manual deploy only)
-        if: github.event_name == 'workflow_dispatch'
+      - name: Build
+        if: github.event_name == 'workflow_dispatch' || steps.download.outcome != 'success'
         working-directory: stwmovers-frontend
         run: |
           npm ci
@@ -52,7 +58,6 @@ jobs:
         run: |
           if [ ! -f stwmovers-frontend/.output/server/index.mjs ]; then
             echo "Missing stwmovers-frontend/.output/server/index.mjs"
-            echo "Ensure Frontend CI uploaded frontend-output, or use workflow_dispatch to build here."
             ls -la stwmovers-frontend/.output 2>/dev/null || ls -la stwmovers-frontend/ || true
             exit 1
           fi
