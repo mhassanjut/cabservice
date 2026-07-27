@@ -42,13 +42,39 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
       - name: Build
+        if: github.event_name != 'push' || github.ref != 'refs/heads/main'
         run: npm run build
         env:
           NUXT_PUBLIC_API_BASE_URL: https://api.stwmovers.com
           NUXT_PUBLIC_GOOGLE_MAPS_API_KEY: ci-placeholder
           NUXT_PUBLIC_GOOGLE_CLIENT_ID: ci-placeholder
+          NUXT_PUBLIC_STRIPE_PUBLIC_KEY: ci-placeholder
+
+  production-build:
+    needs: typecheck-build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment: production
+    defaults:
+      run:
+        working-directory: stwmovers-frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: stwmovers-frontend/package-lock.json
+      - name: Install
+        run: npm ci
+      - name: Build for production deploy
+        run: npm run build
+        env:
+          NUXT_PUBLIC_API_BASE_URL: ${{ secrets.NUXT_PUBLIC_API_BASE_URL }}
+          NUXT_PUBLIC_GOOGLE_MAPS_API_KEY: ${{ secrets.NUXT_PUBLIC_GOOGLE_MAPS_API_KEY }}
+          NUXT_PUBLIC_GOOGLE_CLIENT_ID: ${{ secrets.NUXT_PUBLIC_GOOGLE_CLIENT_ID }}
+          NUXT_PUBLIC_STRIPE_PUBLIC_KEY: ${{ secrets.NUXT_PUBLIC_STRIPE_PUBLIC_KEY }}
       - name: Upload build artifact
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         uses: actions/upload-artifact@v4
         with:
           name: frontend-output

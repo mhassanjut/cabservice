@@ -86,7 +86,7 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    preset: 'netlify',
+    preset: 'node-server',
     prerender: {
       routes: ['/', '/cars', '/tours', '/faq'],
     },
