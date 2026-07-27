@@ -1,8 +1,8 @@
-export default defineNuxtRouteMiddleware((to) => {
+export default defineNuxtRouteMiddleware(async (to) => {
   if (import.meta.server) return
 
   const auth = useAuthStore()
-  auth.hydrate()
+  await auth.ensureSession()
 
   if (to.path === '/admin/login') {
     if (auth.isAdmin) return navigateTo('/admin')

@@ -9,6 +9,8 @@ export type GuestSession = GuestDetails & {
   bookingReference?: string
 }
 
+let bootstrapPromise: Promise<boolean> | null = null
+
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: '' as string,
@@ -22,11 +24,12 @@ export const useAuthStore = defineStore('auth', {
     hydrated: false,
     cookieAuthEnabled: false,
     sessionVerified: false,
+    authReady: false,
   }),
   getters: {
     isLoggedIn(state): boolean {
       if (state.cookieAuthEnabled) {
-        return Boolean(state.userId && state.role)
+        return state.sessionVerified && Boolean(state.userId && state.role)
       }
       return Boolean(state.token)
     },
@@ -35,7 +38,7 @@ export const useAuthStore = defineStore('auth', {
     isDriver: (s) => s.role === 'DRIVER',
     isGuestSession(state): boolean {
       if (state.cookieAuthEnabled) {
-        return Boolean(state.guestSession && !(state.userId && state.role))
+        return Boolean(state.guestSession && !state.sessionVerified)
       }
       return Boolean(state.guestSession && !state.token)
     },
@@ -57,23 +60,21 @@ export const useAuthStore = defineStore('auth', {
         profilePictureUrl: d.profilePictureUrl,
       })
       if (!this.cookieAuthEnabled) {
-        this.token = d.accessToken
+        this.token = d.accessToken ?? ''
         this.refreshToken = d.refreshToken ?? this.refreshToken
+        this.persistLegacyAuth()
       } else {
         this.token = ''
         this.refreshToken = ''
         this.sessionVerified = true
+        this.authReady = true
       }
       this.guestSession = null
       if (import.meta.client) {
         sessionStorage.removeItem(GUEST_KEY)
         useBookingStore().clearGuestDetails()
       }
-      this.persistAuth()
       this.broadcastAuthChange()
-      if (import.meta.client && this.cookieAuthEnabled) {
-        void this.verifySession()
-      }
     },
     applyProfile(profile: Pick<UserProfileDto, 'userId' | 'email' | 'fullName' | 'role' | 'profilePictureUrl'>) {
       this.userId = profile.userId
@@ -81,6 +82,14 @@ export const useAuthStore = defineStore('auth', {
       this.fullName = profile.fullName
       this.role = profile.role
       this.profilePictureUrl = profile.profilePictureUrl ?? ''
+    },
+    clearProfile() {
+      this.userId = ''
+      this.email = ''
+      this.fullName = ''
+      this.role = null
+      this.profilePictureUrl = ''
+      this.sessionVerified = false
     },
     setGuestSession(guest: GuestSession) {
       this.guestSession = { ...guest }
@@ -94,116 +103,110 @@ export const useAuthStore = defineStore('auth', {
       if (!import.meta.client || this.hydrated) return
       const config = useRuntimeConfig()
       this.cookieAuthEnabled = Boolean(config.public.cookieAuth)
-      this.migrateLegacyAuthStorage()
-      this.syncFromStorage()
+      if (this.cookieAuthEnabled) {
+        localStorage.removeItem(AUTH_KEY)
+      } else {
+        this.syncLegacyAuthFromStorage()
+      }
+      this.loadGuestSession()
       this.hydrated = true
     },
-    migrateLegacyAuthStorage() {
-      if (!import.meta.client || !this.cookieAuthEnabled) return
-      const raw = localStorage.getItem(AUTH_KEY)
-      if (!raw) return
-      try {
-        const parsed = JSON.parse(raw) as Record<string, unknown>
-        if ('token' in parsed || 'refreshToken' in parsed) {
-          delete parsed.token
-          delete parsed.refreshToken
-          localStorage.setItem(AUTH_KEY, JSON.stringify(parsed))
-        }
-      } catch {
-        localStorage.removeItem(AUTH_KEY)
-      }
-    },
-    syncFromStorage() {
+    syncLegacyAuthFromStorage() {
       if (!import.meta.client) return
       const raw = localStorage.getItem(AUTH_KEY)
       if (!raw) {
         if (this.userId || this.token) {
           this.token = ''
           this.refreshToken = ''
-          this.userId = ''
-          this.email = ''
-          this.fullName = ''
-          this.role = null
-          this.profilePictureUrl = ''
-          this.sessionVerified = false
+          this.clearProfile()
         }
-      } else {
+        return
+      }
+      try {
+        const parsed = JSON.parse(raw) as Partial<typeof this.$state>
+        this.token = parsed.token ?? ''
+        this.refreshToken = parsed.refreshToken ?? ''
+        this.userId = parsed.userId ?? ''
+        this.email = parsed.email ?? ''
+        this.fullName = parsed.fullName ?? ''
+        this.role = parsed.role ?? null
+        this.profilePictureUrl = parsed.profilePictureUrl ?? ''
+      } catch {
+        localStorage.removeItem(AUTH_KEY)
+        this.clear()
+      }
+    },
+    loadGuestSession() {
+      if (!import.meta.client || this.isLoggedIn) {
+        if (this.isLoggedIn) this.guestSession = null
+        return
+      }
+      const guestRaw = sessionStorage.getItem(GUEST_KEY)
+      if (!guestRaw) {
+        this.guestSession = null
+        return
+      }
+      try {
+        this.guestSession = JSON.parse(guestRaw) as GuestSession
+      } catch {
+        sessionStorage.removeItem(GUEST_KEY)
+        this.guestSession = null
+      }
+    },
+    persistLegacyAuth() {
+      if (!import.meta.client || this.cookieAuthEnabled) return
+      localStorage.setItem(
+        AUTH_KEY,
+        JSON.stringify({
+          token: this.token,
+          refreshToken: this.refreshToken,
+          userId: this.userId,
+          email: this.email,
+          fullName: this.fullName,
+          role: this.role,
+          profilePictureUrl: this.profilePictureUrl,
+        }),
+      )
+    },
+    async bootstrapSession(): Promise<boolean> {
+      if (!import.meta.client || !this.cookieAuthEnabled) return this.isLoggedIn
+      if (this.authReady && this.sessionVerified) return true
+      if (this.authReady && !this.sessionVerified) return false
+      if (bootstrapPromise) return bootstrapPromise
+
+      bootstrapPromise = (async () => {
         try {
-          const parsed = JSON.parse(raw) as Partial<typeof this.$state>
-          if (!this.cookieAuthEnabled) {
-            this.token = parsed.token ?? ''
-            this.refreshToken = parsed.refreshToken ?? ''
-          }
-          this.userId = parsed.userId ?? ''
-          this.email = parsed.email ?? ''
-          this.fullName = parsed.fullName ?? ''
-          this.role = parsed.role ?? null
-          this.profilePictureUrl = parsed.profilePictureUrl ?? ''
-          this.sessionVerified = false
+          const { userService } = await import('~/services/api/user.service')
+          const profile = await userService.profile({ silent: true })
+          this.applyProfile(profile)
+          this.sessionVerified = true
+          this.authReady = true
+          this.loadGuestSession()
+          return true
         } catch {
-          localStorage.removeItem(AUTH_KEY)
-          this.clear()
+          this.clearProfile()
+          this.authReady = true
+          this.loadGuestSession()
+          return false
+        } finally {
+          bootstrapPromise = null
         }
-      }
-      if (!this.isLoggedIn) {
-        const guestRaw = sessionStorage.getItem(GUEST_KEY)
-        if (guestRaw) {
-          try {
-            this.guestSession = JSON.parse(guestRaw) as GuestSession
-          } catch {
-            sessionStorage.removeItem(GUEST_KEY)
-            this.guestSession = null
-          }
-        } else {
-          this.guestSession = null
-        }
-      }
+      })()
+
+      return bootstrapPromise
     },
-    persistAuth() {
-      if (!import.meta.client) return
-      const payload: Record<string, unknown> = {
-        userId: this.userId,
-        email: this.email,
-        fullName: this.fullName,
-        role: this.role,
-        profilePictureUrl: this.profilePictureUrl,
-      }
-      if (!this.cookieAuthEnabled) {
-        payload.token = this.token
-        payload.refreshToken = this.refreshToken
-      }
-      localStorage.setItem(AUTH_KEY, JSON.stringify(payload))
+    async ensureSession(): Promise<boolean> {
+      this.hydrate()
+      if (this.cookieAuthEnabled) return this.bootstrapSession()
+      return this.isLoggedIn
     },
+    /** @deprecated Use bootstrapSession */
     async verifySession() {
-      if (!import.meta.client) return false
-      try {
-        const { userService } = await import('~/services/api/user.service')
-        const profile = await userService.profile()
-        this.applyProfile(profile)
-        this.sessionVerified = true
-        this.persistAuth()
-        return true
-      } catch {
-        if (this.cookieAuthEnabled && this.isLoggedIn) {
-          this.clear()
-          this.broadcastAuthChange()
-        }
-        return false
-      }
+      return this.bootstrapSession()
     },
+    /** @deprecated Use bootstrapSession */
     async restoreSession() {
-      if (!import.meta.client || !this.cookieAuthEnabled) return false
-      try {
-        const { userService } = await import('~/services/api/user.service')
-        const profile = await userService.profile()
-        this.applyProfile(profile)
-        this.sessionVerified = true
-        this.persistAuth()
-        this.broadcastAuthChange()
-        return true
-      } catch {
-        return false
-      }
+      return this.bootstrapSession()
     },
     async logout() {
       try {
@@ -218,18 +221,14 @@ export const useAuthStore = defineStore('auth', {
     clear() {
       this.token = ''
       this.refreshToken = ''
-      this.userId = ''
-      this.email = ''
-      this.fullName = ''
-      this.role = null
-      this.profilePictureUrl = ''
-      this.sessionVerified = false
+      this.clearProfile()
+      this.authReady = this.cookieAuthEnabled
       this.clearGuestSession()
-      if (import.meta.client) localStorage.removeItem(AUTH_KEY)
+      if (import.meta.client && !this.cookieAuthEnabled) localStorage.removeItem(AUTH_KEY)
     },
     applyAuthPayload(payload: Partial<typeof this.$state>) {
       Object.assign(this, payload)
-      this.persistAuth()
+      if (!this.cookieAuthEnabled) this.persistLegacyAuth()
     },
     broadcastAuthChange() {
       if (!import.meta.client) return
@@ -239,9 +238,6 @@ export const useAuthStore = defineStore('auth', {
       if (!import.meta.client) return () => {}
       const handler = () => onChange()
       window.addEventListener(AUTH_EVENT, handler)
-      window.addEventListener('storage', (e) => {
-        if (e.key === AUTH_KEY) handler()
-      })
       return () => window.removeEventListener(AUTH_EVENT, handler)
     },
   },

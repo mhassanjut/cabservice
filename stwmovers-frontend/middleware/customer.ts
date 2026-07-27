@@ -1,9 +1,8 @@
-export default defineNuxtRouteMiddleware((to) => {
-  // Auth lives in localStorage — only enforce after client hydration to avoid login flash on refresh.
+export default defineNuxtRouteMiddleware(async (to) => {
   if (import.meta.server) return
 
   const auth = useAuthStore()
-  auth.hydrate()
+  await auth.ensureSession()
   if (!auth.isLoggedIn || auth.role !== 'CUSTOMER') {
     return navigateTo({ path: '/login', query: { redirect: to.fullPath } })
   }

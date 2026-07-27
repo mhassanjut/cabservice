@@ -41,7 +41,6 @@ const loadProfilePhone = async () => {
 }
 
 onMounted(async () => {
-  auth.syncFromStorage()
   booking.hydrateFromStorage()
 
   if (route.query.cancelled === '1') {

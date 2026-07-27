@@ -84,7 +84,6 @@ export const adminService = {
 
   uploadCarImage: async (carId: string, file: File) => {
     const config = useRuntimeConfig()
-    const auth = useAuthStore()
     const toast = useToastStore()
     const body = new FormData()
     body.append('file', file)
@@ -96,7 +95,6 @@ export const adminService = {
           method: 'POST',
           credentials: 'include',
           body,
-          headers: auth.token ? { Authorization: `Bearer ${auth.token}` } : undefined,
         },
       )
       if (!res.success) throw new Error(res.message ?? 'Upload failed')
@@ -113,7 +111,6 @@ export const adminService = {
 
   uploadCarImageDraft: async (file: File) => {
     const config = useRuntimeConfig()
-    const auth = useAuthStore()
     const toast = useToastStore()
     const body = new FormData()
     body.append('file', file)
@@ -125,7 +122,6 @@ export const adminService = {
           method: 'POST',
           credentials: 'include',
           body,
-          headers: auth.token ? { Authorization: `Bearer ${auth.token}` } : undefined,
         },
       )
       if (!res.success) throw new Error(res.message ?? 'Upload failed')
@@ -166,7 +162,6 @@ export const adminService = {
 
   uploadTourImage: async (tourId: string, file: File) => {
     const config = useRuntimeConfig()
-    const auth = useAuthStore()
     const toast = useToastStore()
     const body = new FormData()
     body.append('file', file)
@@ -178,7 +173,6 @@ export const adminService = {
           method: 'POST',
           credentials: 'include',
           body,
-          headers: auth.token ? { Authorization: `Bearer ${auth.token}` } : undefined,
         },
       )
       if (!res.success) throw new Error(res.message ?? 'Upload failed')
@@ -195,7 +189,6 @@ export const adminService = {
 
   uploadTourImageDraft: async (file: File) => {
     const config = useRuntimeConfig()
-    const auth = useAuthStore()
     const toast = useToastStore()
     const body = new FormData()
     body.append('file', file)
@@ -207,7 +200,6 @@ export const adminService = {
           method: 'POST',
           credentials: 'include',
           body,
-          headers: auth.token ? { Authorization: `Bearer ${auth.token}` } : undefined,
         },
       )
       if (!res.success) throw new Error(res.message ?? 'Upload failed')

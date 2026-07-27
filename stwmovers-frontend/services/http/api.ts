@@ -54,7 +54,7 @@ export async function api<T>(path: string, opts: ApiOptions = {}): Promise<T> {
     const status = err.status ?? err.statusCode
 
     const hasSession = cookieAuth
-      ? Boolean(auth.isLoggedIn || auth.userId)
+      ? auth.sessionVerified
       : Boolean(auth.token || auth.refreshToken)
     const isAuthFailure = status === 401 || status === 403
     if (isAuthFailure && hasSession && opts.auth !== false && !opts._retried401) {

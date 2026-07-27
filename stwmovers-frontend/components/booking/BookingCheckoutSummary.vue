@@ -7,10 +7,6 @@ const auth = useAuthStore()
 const isTour = computed(() => booking.isTourBooking)
 const isCustomerLoggedIn = computed(() => auth.isLoggedIn && auth.isCustomer)
 
-onMounted(() => {
-  auth.syncFromStorage()
-})
-
 const dateTime = computed(() => {
   const date = booking.draft.pickupDate
   const time = booking.draft.pickupTime

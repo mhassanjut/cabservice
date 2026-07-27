@@ -6,16 +6,18 @@ export default defineNuxtPlugin({
     auth.hydrate()
 
     if (auth.cookieAuthEnabled) {
-      if (auth.isLoggedIn) {
-        await auth.verifySession()
-      } else {
-        await auth.restoreSession()
-      }
+      await auth.bootstrapSession()
     }
 
     if (auth.isLoggedIn && auth.role === 'CUSTOMER') {
       useCustomerSignIn().close()
     }
-    auth.listenForAuthChanges(() => auth.syncFromStorage())
+
+    auth.listenForAuthChanges(() => {
+      if (auth.cookieAuthEnabled) {
+        auth.authReady = false
+        void auth.bootstrapSession()
+      }
+    })
   },
 })

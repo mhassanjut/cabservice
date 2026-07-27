@@ -66,7 +66,7 @@ public class AuthController {
             HttpServletResponse response) {
         AuthResponse auth = authService.register(request);
         setAuthCookies(response, auth);
-        return ResponseEntity.ok(ApiResponse.ok(auth));
+        return ResponseEntity.ok(ApiResponse.ok(auth.withoutTokens()));
     }
 
     @PostMapping("/login")
@@ -75,7 +75,7 @@ public class AuthController {
             HttpServletResponse response) {
         AuthResponse auth = authService.login(request);
         setAuthCookies(response, auth);
-        return ResponseEntity.ok(ApiResponse.ok(auth));
+        return ResponseEntity.ok(ApiResponse.ok(auth.withoutTokens()));
     }
 
     @PostMapping("/google")
@@ -84,7 +84,7 @@ public class AuthController {
             HttpServletResponse response) {
         AuthResponse auth = authService.loginWithGoogle(request);
         setAuthCookies(response, auth);
-        return ResponseEntity.ok(ApiResponse.ok(auth));
+        return ResponseEntity.ok(ApiResponse.ok(auth.withoutTokens()));
     }
 
     @PostMapping("/refresh")
@@ -103,7 +103,7 @@ public class AuthController {
             throw new UnauthorizedException("Refresh token required");
         }
         setAuthCookies(response, auth);
-        return ResponseEntity.ok(ApiResponse.ok(auth));
+        return ResponseEntity.ok(ApiResponse.ok(auth.withoutTokens()));
     }
 
     @PostMapping("/logout")

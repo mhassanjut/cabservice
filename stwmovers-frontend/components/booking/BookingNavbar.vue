@@ -11,10 +11,6 @@ if (import.meta.client) {
   auth.hydrate()
 }
 
-onMounted(() => {
-  auth.listenForAuthChanges(() => auth.syncFromStorage())
-})
-
 const showUserMenu = computed(() => auth.isLoggedIn && auth.role === 'CUSTOMER')
 const isGuest = computed(() => auth.isGuestSession && !auth.isLoggedIn)
 

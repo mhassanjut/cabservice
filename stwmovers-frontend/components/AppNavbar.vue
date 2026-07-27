@@ -22,7 +22,6 @@ onMounted(() => {
   onScroll()
   window.addEventListener('scroll', onScroll, { passive: true })
   auth.listenForAuthChanges(() => {
-    auth.syncFromStorage()
     if (!auth.isLoggedIn && !auth.isGuestSession) menuOpen.value = false
   })
 })

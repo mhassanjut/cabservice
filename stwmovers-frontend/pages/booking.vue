@@ -27,7 +27,6 @@ const resendIn = ref(0)
 let resendTimer: ReturnType<typeof setInterval> | null = null
 
 onMounted(async () => {
-  auth.syncFromStorage()
   await nextTick()
   if (booking.guest) {
     guest.fullName = booking.guest.fullName
