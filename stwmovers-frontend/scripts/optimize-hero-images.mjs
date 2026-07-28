@@ -1,6 +1,6 @@
 /**
- * One-shot (re-runnable) conversion of hero masters to WebP for production use.
- * Sources stay in _original/ or assets/; outputs go under public/.
+ * One-shot (re-runnable) conversion of large masters to WebP for production use.
+ * Sources stay in _original/, assets/, or alongside; outputs go under public/.
  */
 import fs from 'node:fs'
 import path from 'node:path'
@@ -37,6 +37,25 @@ const jobs = [
     maxWidth: 1600,
   },
 ]
+
+const vehicleNames = [
+  'mercedes-vito-van',
+  'mercedes-v-class',
+  'mercedes-van-8-passenger',
+  'mercedes-e-class',
+  'mercedes-s-class',
+  'tesla-model-s',
+  'hyundai-ioniq',
+  'toyota-corolla-familiar',
+]
+
+for (const name of vehicleNames) {
+  jobs.push({
+    input: `public/img/vehicles/${name}.png`,
+    output: `public/img/vehicles/${name}.webp`,
+    maxWidth: 1200,
+  })
+}
 
 async function convert({ input, output, maxWidth }) {
   const inputPath = path.join(root, input)

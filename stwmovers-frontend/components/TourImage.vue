@@ -1,10 +1,30 @@
 <script setup lang="ts">
 import { TOUR_IMAGE_PLACEHOLDER, isSvgTourImageUrl, resolveTourImageUrl } from '~/utils/tourImage'
 
-const props = defineProps<{
-  src?: string | null
-  alt: string
-}>()
+defineOptions({ inheritAttrs: false })
+
+const props = withDefaults(
+  defineProps<{
+    src?: string | null
+    alt: string
+    width?: number
+    height?: number
+    sizes?: string
+    loading?: 'lazy' | 'eager'
+    fetchpriority?: 'high' | 'low' | 'auto'
+    preload?: boolean
+  }>(),
+  {
+    width: 900,
+    height: 600,
+    sizes: 'xs:100vw sm:100vw md:50vw lg:50vw xl:50vw',
+    loading: 'lazy',
+    fetchpriority: 'auto',
+    preload: false,
+  },
+)
+
+const attrs = useAttrs()
 
 const displaySrc = ref(resolveTourImageUrl(props.src))
 
@@ -25,12 +45,30 @@ const onError = () => {
 </script>
 
 <template>
-  <img
+  <NuxtImg
+    v-if="!isSvg"
     :src="displaySrc"
     :alt="alt"
-    loading="lazy"
-    :class="{ 'tour-image--svg': isSvg }"
-    v-bind="$attrs"
+    preset="card"
+    :width="width"
+    :height="height"
+    :sizes="sizes"
+    :loading="loading"
+    :fetchpriority="fetchpriority"
+    :preload="preload"
+    fit="cover"
+    decoding="async"
+    v-bind="attrs"
+    @error="onError"
+  />
+  <img
+    v-else
+    :src="displaySrc"
+    :alt="alt"
+    :loading="loading"
+    decoding="async"
+    class="tour-image--svg"
+    v-bind="attrs"
     @error="onError"
   />
 </template>

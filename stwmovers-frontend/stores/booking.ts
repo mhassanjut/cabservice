@@ -1,4 +1,5 @@
 import type { CarFilter, CarWithFare } from '~/types/api'
+import { fleetImageManifest } from '~/data/fleetImageManifest'
 import { vehicles as fleetVehicles } from '~/data/vehicles'
 import {
   VEHICLE_IMAGE_PLACEHOLDER,
@@ -8,7 +9,12 @@ import {
 } from '~/types/booking'
 
 /** Luggage capacity is not exposed by the cars API — read it from the seed-mirroring fleet data. */
-const bagsByCarId = new Map(fleetVehicles.map((v) => [v.backendId, v.bags]))
+const bagsByCarId = new Map<string, number>(fleetVehicles.map((v) => [v.backendId, v.bags]))
+
+/** Prefer pre-optimized local WebP when the API omits imageUrl. */
+const localImageByCarId = new Map<string, string>(
+  fleetImageManifest.map((e) => [e.backendId, e.imagePath]),
+)
 
 const STORAGE_KEY = 'stwmovers.booking.v2'
 const CHECKOUT_COMPLETE_KEY = 'stwmovers.checkout.completedRef'
@@ -86,7 +92,7 @@ export const useBookingStore = defineStore('booking', {
     toVehicle(c: CarWithFare): Vehicle {
       return {
         ...c,
-        imagePath: c.imageUrl || VEHICLE_IMAGE_PLACEHOLDER,
+        imagePath: c.imageUrl || localImageByCarId.get(c.id) || VEHICLE_IMAGE_PLACEHOLDER,
         priceEur: Number(c.calculatedFare),
         seats: c.passengerCapacity,
         bags: bagsByCarId.get(c.id),

@@ -17,6 +17,18 @@ export default defineNuxtConfig({
     // Serve modern formats when the browser supports them, fall back gracefully.
     format: ['webp', 'jpg'],
     quality: 78,
+    // Allow IPX to fetch/optimize backend media (car/tour uploads).
+    domains: [
+      ...(() => {
+        try {
+          return [new URL(siteConfig.apiBaseUrl).hostname]
+        } catch {
+          return ['localhost']
+        }
+      })(),
+      'stwmovers.com',
+      'www.stwmovers.com',
+    ],
     // Breakpoints used to generate srcset. Must be screen-prefixed in `sizes`.
     screens: {
       xs: 320,
