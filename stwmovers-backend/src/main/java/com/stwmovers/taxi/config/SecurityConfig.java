@@ -77,6 +77,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/logout-all").authenticated()
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/bookings/me").authenticated()
+                        // Anonymous probe for cookie-auth bootstrap (returns 200 + null when logged out).
+                        .requestMatchers(HttpMethod.GET, "/api/v1/users/me").permitAll()
                         .requestMatchers("/api/v1/users/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/v1/media/cars/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/media/tours/**").permitAll()
