@@ -15,7 +15,7 @@ import { servicesIntro } from '~/data/servicesContent'
           alt="Chauffeur opening the door of a luxury vehicle for a guest"
           width="580"
           height="480"
-          sizes="100vw md:50vw"
+          sizes="xs:100vw sm:100vw md:50vw lg:50vw xl:50vw xxl:50vw"
           loading="lazy"
           decoding="async"
         />

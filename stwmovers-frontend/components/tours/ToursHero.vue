@@ -1,17 +1,16 @@
-<script setup lang="ts">
-import heroImageUrl from '~/assets/images/tour-page/hero-image.png?url'
-</script>
-
 <template>
   <header class="tours-hero" aria-labelledby="tours-hero-title">
     <div class="tours-hero__media" aria-hidden="true">
-      <img
-        :src="heroImageUrl"
+      <NuxtImg
+        src="/img/tours/hero.webp"
         alt=""
-        width="1440"
-        height="820"
+        preset="hero"
+        width="1600"
+        height="911"
+        sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw"
         loading="eager"
         fetchpriority="high"
+        preload
         decoding="async"
       />
       <div class="tours-hero__overlay" />

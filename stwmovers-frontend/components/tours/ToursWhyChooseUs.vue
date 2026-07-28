@@ -20,7 +20,7 @@ const highlights = [
           decoding="async"
           width="580"
           height="380"
-          sizes="xs:100vw sm:100vw md:50vw"
+          sizes="xs:100vw sm:100vw md:50vw lg:50vw xl:50vw xxl:50vw"
         />
       </div>
       <div class="tp-why__copy">

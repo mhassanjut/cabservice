@@ -2,13 +2,14 @@
   <section class="home-corporate" aria-labelledby="corporate-heading">
     <div class="home-corporate__media" aria-hidden="true">
       <NuxtImg
-        src="/img/home/_original/corporate-banner.jpg"
+        src="/img/home/corporate-banner.webp"
         alt=""
+        preset="hero"
         loading="lazy"
         decoding="async"
         placeholder
-        width="1440"
-        height="612"
+        width="1600"
+        height="1000"
         sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw"
       />
       <div class="home-corporate__overlay" />

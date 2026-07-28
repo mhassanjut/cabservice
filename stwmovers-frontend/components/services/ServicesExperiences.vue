@@ -23,7 +23,7 @@ import { servicesExperiences } from '~/data/servicesContent'
             :alt="item.alt"
             width="628"
             :height="item.span === 'tall' ? 480 : 360"
-            sizes="100vw md:50vw"
+            sizes="xs:100vw sm:100vw md:50vw lg:50vw xl:50vw xxl:50vw"
             loading="lazy"
             decoding="async"
           />

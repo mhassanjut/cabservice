@@ -26,8 +26,22 @@ export default defineNuxtConfig({
       xl: 1280,
       xxl: 1536,
     },
-    // Reasonable presets for repeated card imagery.
     densities: [1, 2],
+    presets: {
+      hero: {
+        modifiers: {
+          fit: 'cover',
+          format: 'webp',
+          quality: 78,
+        },
+      },
+      card: {
+        modifiers: {
+          format: 'webp',
+          quality: 75,
+        },
+      },
+    },
   },
 
   // Avoid dev.json / #app-manifest errors after `nuxt generate` or stale Vite cache.

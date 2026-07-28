@@ -4,10 +4,12 @@ import { Autoplay, EffectFade } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/effect-fade'
 
+const HERO_SIZES = 'xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw'
+
 const HERO_SLIDES = [
-  '/img/home/_original/hero-1.png',
-  '/img/home/_original/hero-2.png',
-  '/img/home/_original/hero-3.png',
+  { src: '/img/home/hero-1.webp', width: 1440, height: 780 },
+  { src: '/img/home/hero-2.webp', width: 1440, height: 820 },
+  { src: '/img/home/hero-3.webp', width: 1440, height: 760 },
 ] as const
 
 const swiperModules = [Autoplay, EffectFade]
@@ -39,17 +41,18 @@ const autoplayOptions = {
             :allow-touch-move="true"
           >
             <SwiperSlide
-              v-for="(src, index) in HERO_SLIDES"
-              :key="src"
+              v-for="(slide, index) in HERO_SLIDES"
+              :key="slide.src"
               class="home-hero__slide"
             >
-              <!-- Public originals — plain <img> so @nuxt/image IPX does not recompress -->
-              <img
-                :src="src"
+              <NuxtImg
+                :src="slide.src"
                 alt=""
-                width="1440"
-                height="794"
-                loading="eager"
+                preset="hero"
+                :width="slide.width"
+                :height="slide.height"
+                :sizes="HERO_SIZES"
+                :loading="index === 0 ? 'eager' : 'lazy'"
                 :fetchpriority="index === 0 ? 'high' : 'low'"
                 decoding="async"
                 draggable="false"
@@ -61,13 +64,16 @@ const autoplayOptions = {
                the hero never paints blank before Swiper initializes. -->
           <template #fallback>
             <div class="home-hero__slide">
-              <img
-                :src="HERO_SLIDES[0]"
+              <NuxtImg
+                :src="HERO_SLIDES[0].src"
                 alt=""
-                width="1440"
-                height="794"
+                preset="hero"
+                :width="HERO_SLIDES[0].width"
+                :height="HERO_SLIDES[0].height"
+                :sizes="HERO_SIZES"
                 loading="eager"
                 fetchpriority="high"
+                preload
                 decoding="async"
                 draggable="false"
               />

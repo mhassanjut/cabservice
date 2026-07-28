@@ -8,6 +8,7 @@
     "vendor:pack": "node scripts/vendor-pack.mjs",
     "sync:vehicles": "node scripts/sync-vehicle-images.mjs",
     "download:vehicles": "node scripts/download-vehicle-images.mjs",
+    "optimize:images": "node scripts/optimize-hero-images.mjs",
     "dev": "nuxt dev",
     "build": "nuxt build",
     "generate": "nuxt generate",
