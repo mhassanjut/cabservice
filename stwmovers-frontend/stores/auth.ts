@@ -178,6 +178,12 @@ export const useAuthStore = defineStore('auth', {
         try {
           const { userService } = await import('~/services/api/user.service')
           const profile = await userService.profile({ silent: true })
+          if (!profile) {
+            this.clearProfile()
+            this.authReady = true
+            this.loadGuestSession()
+            return false
+          }
           this.applyProfile(profile)
           this.sessionVerified = true
           this.authReady = true

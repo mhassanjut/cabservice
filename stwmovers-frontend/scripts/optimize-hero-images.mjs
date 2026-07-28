@@ -57,6 +57,27 @@ for (const name of vehicleNames) {
   })
 }
 
+/** Homepage fleet carousel — rasterize large SVG masters to WebP (keep SVG under _original/). */
+const fleetSectionSvgs = [
+  ['Mercedes E Class 2.svg', 'mercedes-e-class.webp'],
+  ['Mercedes S Class 2.svg', 'mercedes-s-class.webp'],
+  ['Mercedes V Class 2.svg', 'mercedes-v-class.webp'],
+  ['Mercedes Vito Van 2.svg', 'mercedes-vito-van.webp'],
+  ['Mercedes Van 2.svg', 'mercedes-van.webp'],
+  ['Tesla Model S 2.svg', 'tesla-model-s.webp'],
+  ['Hyundai Ioniq 2.svg', 'hyundai-ioniq.webp'],
+  ['Toyota Corolla Familiar 2.svg', 'toyota-corolla-familiar.webp'],
+  ['BYD SEAL 2.svg', 'byd-seal.webp'],
+]
+
+for (const [svgName, webpName] of fleetSectionSvgs) {
+  jobs.push({
+    input: `public/img/home/fleet-section/_original/${svgName}`,
+    output: `public/img/home/fleet-section/${webpName}`,
+    maxWidth: 900,
+  })
+}
+
 async function convert({ input, output, maxWidth }) {
   const inputPath = path.join(root, input)
   const outputPath = path.join(root, output)
@@ -68,7 +89,8 @@ async function convert({ input, output, maxWidth }) {
 
   fs.mkdirSync(path.dirname(outputPath), { recursive: true })
 
-  let pipeline = sharp(inputPath)
+  const isSvg = path.extname(inputPath).toLowerCase() === '.svg'
+  let pipeline = sharp(inputPath, isSvg ? { density: 144 } : undefined)
   const meta = await pipeline.metadata()
 
   if (maxWidth && meta.width && meta.width > maxWidth) {

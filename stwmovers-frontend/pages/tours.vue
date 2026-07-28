@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import '~/assets/styles/css/tours.css'
 import { seoDefaults, seoSections } from '~/config/seo'
 import { routes } from '~/constants/routes'
 

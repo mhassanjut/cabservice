@@ -430,7 +430,7 @@
 
 .about-page .about-promise__heading {
   margin: 0;
-  font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-weight: 700;
   line-height: 1.2;
   color: #fff;
@@ -440,7 +440,7 @@
 .about-page .about-promise__body {
   margin: 0;
   max-width: 45rem;
-  font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: clamp(1rem, 1.2vw, 1.125rem);
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.82);
@@ -460,7 +460,7 @@
 
 .about-page .about-testimonial__quote {
   margin: 0;
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Instrument Sans', 'Inter', system-ui, sans-serif;
   font-weight: 400;
   line-height: 1.25;
   letter-spacing: -0.01em;
@@ -517,7 +517,7 @@
 
 .about-page .about-testimonial__author-name {
   margin: 0;
-  font-family: 'Poppins', var(--home-font-display);
+  font-family: var(--home-font-display);
   font-size: 1rem;
   font-weight: 700;
   color: #000;
@@ -525,7 +525,7 @@
 
 .about-page .about-testimonial__author-company {
   margin: 0;
-  font-family: 'Poppins', var(--home-font-display);
+  font-family: var(--home-font-display);
   font-size: 0.875rem;
   font-weight: 400;
   color: #4f4f4f;
@@ -580,7 +580,7 @@
 
 .about-page .about-cta__heading {
   margin: 0;
-  font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-weight: 700;
   line-height: 1.2;
   color: #fff;
@@ -590,7 +590,7 @@
 .about-page .about-cta__body {
   margin: 0;
   max-width: 37.5rem;
-  font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: clamp(1rem, 1.2vw, 1.125rem);
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.82);

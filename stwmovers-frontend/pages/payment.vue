@@ -34,7 +34,7 @@ const loadProfilePhone = async () => {
   if (!isCustomerLoggedIn.value) return
   try {
     const profile = await userService.profile()
-    userPhone.value = profile.phone ?? ''
+    userPhone.value = profile?.phone ?? ''
   } catch {
     /* api client handles user-facing errors */
   }

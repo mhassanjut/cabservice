@@ -189,12 +189,11 @@ onBeforeUnmount(() => {
     </div>
 
     <div class="home-fleet__stage">
-      <div ref="carouselRef" class="home-fleet__carousel" role="list">
-        <article
+      <ul ref="carouselRef" class="home-fleet__carousel">
+        <li
           v-for="vehicle in filtered"
           :key="vehicle.id"
           class="home-fleet__card"
-          role="listitem"
         >
           <div class="home-fleet__card-head">
             <h3 class="home-fleet__card-title">{{ vehicle.name }}</h3>
@@ -234,8 +233,8 @@ onBeforeUnmount(() => {
               <NuxtImg class="home-icon" src="/img/home/icons/arrow-outward-light.svg" alt="" width="17" height="17" />
             </span>
           </NuxtLink>
-        </article>
-      </div>
+        </li>
+      </ul>
 
       <div class="home-fleet__pagination" aria-hidden="true">
         <span

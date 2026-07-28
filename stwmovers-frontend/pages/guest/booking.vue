@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import '~/assets/styles/css/dashboard.css'
 import type { BookingDto } from '~/types/api'
 import { journeyIcons } from '~/constants/journeyIcons'
 import { routes } from '~/constants/routes'

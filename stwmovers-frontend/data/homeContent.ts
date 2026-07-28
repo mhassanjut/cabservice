@@ -153,13 +153,13 @@ export type HomeFleetVehicle = {
   categories: HomeFleetCategory[]
 }
 
-/** Homepage fleet cards — original SVGs from homepage-fleet-section */
+/** Homepage fleet cards — WebP from SVG masters in fleet-section/_original/ */
 export const homeFleetVehicles: HomeFleetVehicle[] = [
   {
     id: 'mercedes-e-class',
     backendId: 'c0000001-0000-0000-0000-000000000004',
     name: 'Mercedes E Class',
-    image: '/img/home/fleet-section/_original/Mercedes E Class 2.svg',
+    image: '/img/home/fleet-section/mercedes-e-class.webp',
     seats: 4,
     bags: 3,
     categories: ['business-class', 'first-class'],
@@ -168,7 +168,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'mercedes-s-class',
     backendId: 'c0000001-0000-0000-0000-000000000005',
     name: 'Mercedes S Class',
-    image: '/img/home/fleet-section/_original/Mercedes S Class 2.svg',
+    image: '/img/home/fleet-section/mercedes-s-class.webp',
     seats: 4,
     bags: 3,
     categories: ['first-class', 'aviation'],
@@ -177,7 +177,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'mercedes-v-class',
     backendId: 'c0000001-0000-0000-0000-000000000002',
     name: 'Mercedes V Class',
-    image: '/img/home/fleet-section/_original/Mercedes V Class 2.svg',
+    image: '/img/home/fleet-section/mercedes-v-class.webp',
     seats: 7,
     bags: 6,
     categories: ['business-van', 'first-class'],
@@ -186,7 +186,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'mercedes-vito-van',
     backendId: 'c0000001-0000-0000-0000-000000000001',
     name: 'Mercedes Vito Van',
-    image: '/img/home/fleet-section/_original/Mercedes Vito Van 2.svg',
+    image: '/img/home/fleet-section/mercedes-vito-van.webp',
     seats: 7,
     bags: 6,
     categories: ['business-van'],
@@ -195,7 +195,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'mercedes-van',
     backendId: 'c0000001-0000-0000-0000-000000000003',
     name: 'Mercedes Van',
-    image: '/img/home/fleet-section/_original/Mercedes Van 2.svg',
+    image: '/img/home/fleet-section/mercedes-van.webp',
     seats: 8,
     bags: 7,
     categories: ['mini-bus', 'bus'],
@@ -204,7 +204,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'tesla-model-s',
     backendId: 'c0000001-0000-0000-0000-000000000006',
     name: 'Tesla Model S',
-    image: '/img/home/fleet-section/_original/Tesla Model S 2.svg',
+    image: '/img/home/fleet-section/tesla-model-s.webp',
     seats: 4,
     bags: 3,
     categories: ['business-class'],
@@ -213,7 +213,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'hyundai-ioniq',
     backendId: 'c0000001-0000-0000-0000-000000000007',
     name: 'Hyundai Ioniq',
-    image: '/img/home/fleet-section/_original/Hyundai Ioniq 2.svg',
+    image: '/img/home/fleet-section/hyundai-ioniq.webp',
     seats: 4,
     bags: 3,
     categories: ['business-class'],
@@ -222,7 +222,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'toyota-corolla',
     backendId: 'c0000001-0000-0000-0000-000000000008',
     name: 'Toyota Corolla Familiar',
-    image: '/img/home/fleet-section/_original/Toyota Corolla Familiar 2.svg',
+    image: '/img/home/fleet-section/toyota-corolla-familiar.webp',
     seats: 4,
     bags: 3,
     categories: ['business-class'],
@@ -230,7 +230,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
   {
     id: 'byd-seal',
     name: 'BYD Seal',
-    image: '/img/home/fleet-section/_original/BYD SEAL 2.svg',
+    image: '/img/home/fleet-section/byd-seal.webp',
     seats: 4,
     bags: 3,
     categories: ['business-class'],

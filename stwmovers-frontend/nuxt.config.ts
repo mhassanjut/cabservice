@@ -7,10 +7,6 @@ export default defineNuxtConfig({
   css: [
     '~/assets/styles/css/main.css',
     '~/assets/styles/css/home.css',
-    '~/assets/styles/css/booking.css',
-    '~/assets/styles/css/tours.css',
-    '~/assets/styles/css/dashboard.css',
-    'vue-tel-input/vue-tel-input.css',
   ],
 
   image: {
@@ -93,15 +89,18 @@ export default defineNuxtConfig({
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         {
           rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Inter:wght@200;400;500;600;700&family=Manrope:wght@400;600&family=Montserrat:wght@500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Poppins:wght@400;700&display=swap',
+          href: 'https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Inter:wght@200;400;500;600;700&display=swap',
         },
-        {
-          rel: 'stylesheet',
-          href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css',
-          crossorigin: 'anonymous',
-          referrerpolicy: 'no-referrer',
-        },
+        // Font Awesome: loaded async via plugins/fontawesome.client.ts (non-blocking).
+        // Noscript fallback below for users without JS.
+        { rel: 'preconnect', href: 'https://cdnjs.cloudflare.com', crossorigin: '' },
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+      ],
+      noscript: [
+        {
+          innerHTML:
+            '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">',
+        },
       ],
     },
   },
@@ -109,6 +108,22 @@ export default defineNuxtConfig({
   routeRules: {
     '/admin': { ssr: false },
     '/admin/**': { ssr: false },
+    // Long-lived cache for optimized/static assets (Lighthouse cache-insight).
+    '/_ipx/**': {
+      headers: {
+        'cache-control': 'public, max-age=31536000, immutable',
+      },
+    },
+    '/_nuxt/**': {
+      headers: {
+        'cache-control': 'public, max-age=31536000, immutable',
+      },
+    },
+    '/img/**': {
+      headers: {
+        'cache-control': 'public, max-age=2592000',
+      },
+    },
   },
 
   nitro: {

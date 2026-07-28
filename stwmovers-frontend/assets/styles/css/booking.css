@@ -25,7 +25,7 @@
   --bk-bar-h: 96px;
   --bk-font: 'Inter', system-ui, sans-serif;
   --bk-font-display: 'Instrument Sans', 'Inter', system-ui, sans-serif;
-  --bk-font-body: 'Manrope', 'Inter', system-ui, sans-serif;
+  --bk-font-body: 'Inter', system-ui, sans-serif;
 
   display: flex;
   flex-direction: column;

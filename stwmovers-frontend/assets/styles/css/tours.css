@@ -20,7 +20,7 @@
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.9);
   color: #fff;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.875rem;
   font-weight: 600;
 }
@@ -90,7 +90,7 @@
 
 .tours-hero__eyebrow {
   margin: 0;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 0.06em;
@@ -170,7 +170,7 @@
 .tp-section-head__lead {
   margin: 0;
   max-width: 50rem;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: clamp(1rem, 1.4vw, 1.25rem);
   line-height: 1.5;
   color: rgba(0, 0, 0, 0.6);
@@ -257,7 +257,7 @@
 
 .tp-card__eyebrow {
   margin: 0;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -267,7 +267,7 @@
 
 .tp-card__desc {
   margin: 0;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: clamp(0.9375rem, 1.1vw, 1rem);
   line-height: 1.6;
   color: rgba(0, 0, 0, 0.6);
@@ -293,7 +293,7 @@
   border-radius: var(--home-radius-pill);
   background: transparent;
   color: #1a1a1a;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.8125rem;
   font-weight: 600;
   overflow-wrap: anywhere;
@@ -309,7 +309,7 @@
 
 .tp-card__included-label {
   margin: 0;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -319,7 +319,7 @@
 
 .tp-card__included-value {
   margin: 0;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.45;
@@ -353,7 +353,7 @@
 }
 
 .tp-card__price-label {
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.75rem;
   font-weight: 400;
   color: rgba(0, 0, 0, 0.6);
@@ -368,7 +368,7 @@
 
 .tp-card__cta {
   padding: 1rem 2rem;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.875rem;
   font-weight: 600;
   white-space: nowrap;
@@ -537,7 +537,7 @@
 
 .tp-why__lead {
   margin: 0;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: clamp(1rem, 1.4vw, 1.25rem);
   line-height: 1.6;
   color: rgba(0, 0, 0, 0.6);
@@ -555,7 +555,7 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 1rem;
   font-weight: 600;
   color: #1a1a1a;
@@ -596,7 +596,7 @@
 .tp-unique__lead {
   margin: 0;
   max-width: 50rem;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: clamp(1rem, 1.4vw, 1.25rem);
   line-height: 1.5;
   color: rgba(0, 0, 0, 0.6);
@@ -692,7 +692,7 @@
 .tp-cta__content p {
   margin: 0;
   max-width: 40rem;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: clamp(1rem, 1.4vw, 1.25rem);
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.75);
@@ -841,7 +841,7 @@
   border-radius: 100px;
   background: #fff;
   color: var(--tdm-text);
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.75rem;
   font-weight: 600;
   white-space: nowrap;
@@ -866,7 +866,7 @@
 
 .tdm-hero__meta {
   margin: 0.25rem 0 0;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.8125rem;
   font-weight: 400;
   line-height: 1.35;
@@ -921,7 +921,7 @@
 
 .tdm-about {
   margin: 0;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: clamp(0.9375rem, 1.1vw, 1rem);
   line-height: 1.6;
   color: var(--tdm-text-muted);
@@ -940,7 +940,7 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.25;
@@ -979,7 +979,7 @@
   border-radius: 100px;
   background: #fff;
   color: var(--tdm-gold);
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.8125rem;
   font-weight: 600;
   white-space: nowrap;
@@ -1076,7 +1076,7 @@
 .tdm-timeline__time {
   flex-shrink: 0;
   width: 3.75rem;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.875rem;
   font-weight: 700;
   line-height: 1.25;
@@ -1086,7 +1086,7 @@
 .tdm-timeline__activity {
   flex: 1 1 auto;
   min-width: 0;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.35;
@@ -1129,7 +1129,7 @@
   display: flex;
   align-items: flex-start;
   gap: 0.625rem;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.8125rem;
   line-height: 1.45;
   color: var(--tdm-text-muted);
@@ -1162,7 +1162,7 @@
 }
 
 .tdm-footer__label {
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.75rem;
   font-weight: 400;
   color: var(--tdm-text-muted);
@@ -1186,7 +1186,7 @@
   border-radius: 100px;
   background: var(--tdm-gold);
   color: #fff;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.02em;

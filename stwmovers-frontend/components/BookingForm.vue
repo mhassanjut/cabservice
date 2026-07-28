@@ -99,11 +99,11 @@ const applyPickup = (p: { label: string; lat: number; lng: number; city?: string
   syncDistance()
 }
 
-onMounted(async () => {
-  // Returning via "Edit Journey" is the only case where the saved trip belongs in the form.
-  if (route.query.edit === EDIT_JOURNEY_FLAG) Object.assign(form, booking.draft)
-  if (!config.public.googleMapsApiKey) return
-  await maps.load()
+const mapsAttached = ref(false)
+let mapsInitPromise: Promise<void> | null = null
+
+const attachAutocomplete = () => {
+  if (mapsAttached.value || !maps.ready.value) return
   if (pickupRef.value) {
     maps.autocomplete(pickupRef.value, (p) => applyPickup(p))
   }
@@ -115,6 +115,41 @@ onMounted(async () => {
       syncDistance()
     })
   }
+  mapsAttached.value = true
+}
+
+/** Defer Maps off the critical path; still warm before most users type. */
+const ensureMapsReady = () => {
+  if (!config.public.googleMapsApiKey) return mapsInitPromise
+  if (mapsInitPromise) return mapsInitPromise
+  mapsInitPromise = (async () => {
+    await maps.load()
+    attachAutocomplete()
+  })()
+  return mapsInitPromise
+}
+
+onMounted(() => {
+  // Returning via "Edit Journey" is the only case where the saved trip belongs in the form.
+  if (route.query.edit === EDIT_JOURNEY_FLAG) Object.assign(form, booking.draft)
+  if (!config.public.googleMapsApiKey) return
+
+  const scheduleDeferredMaps = () => {
+    const w = window as Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number
+    }
+    if (typeof w.requestIdleCallback === 'function') {
+      w.requestIdleCallback(() => {
+        void ensureMapsReady()
+      }, { timeout: 2500 })
+    } else {
+      window.setTimeout(() => {
+        void ensureMapsReady()
+      }, 2000)
+    }
+  }
+
+  scheduleDeferredMaps()
 })
 
 const syncDistance = async () => {
@@ -250,6 +285,7 @@ const onSubmit = async () => {
             required
             autocomplete="off"
             @blur="touched.pickupLocation = true"
+            @focus="ensureMapsReady"
           />
         </div>
         <div class="booking-form__field">
@@ -263,6 +299,7 @@ const onSubmit = async () => {
             required
             autocomplete="off"
             @blur="touched.dropoffLocation = true"
+            @focus="ensureMapsReady"
           />
         </div>
         <div class="booking-form__field">
@@ -336,6 +373,7 @@ const onSubmit = async () => {
           required
           autocomplete="off"
           @blur="touched.pickupLocation = true"
+          @focus="ensureMapsReady"
         />
         <p v-if="touched.pickupLocation && errors.pickupLocation" class="err">{{ errors.pickupLocation }}</p>
       </div>
@@ -349,6 +387,7 @@ const onSubmit = async () => {
           required
           autocomplete="off"
           @blur="touched.dropoffLocation = true"
+          @focus="ensureMapsReady"
         />
         <p v-if="touched.dropoffLocation && errors.dropoffLocation" class="err">{{ errors.dropoffLocation }}</p>
       </div>
@@ -577,7 +616,7 @@ const onSubmit = async () => {
   border: 0;
   border-radius: 100px;
   background: #d8b24c;
-  color: #fff;
+  color: #171717;
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 14px;
   font-weight: 600;

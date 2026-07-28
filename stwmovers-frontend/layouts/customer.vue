@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import '~/assets/styles/css/booking.css'
+import '~/assets/styles/css/dashboard.css'
+
 useLocalBusinessSchema()
 </script>
 

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import '~/assets/styles/css/booking.css'
 import { routes } from '~/constants/routes'
 
 const route = useRoute()

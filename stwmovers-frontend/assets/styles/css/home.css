@@ -989,7 +989,7 @@
   border: 0;
   border-radius: var(--home-radius-pill);
   background: var(--home-gold);
-  color: var(--home-white);
+  color: #171717;
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.875rem;
   font-weight: 600;
@@ -1300,7 +1300,7 @@
 
 /* Fleet — Figma node 82:205 */
 .home-fleet {
-  --home-fleet-font: 'Manrope', 'Inter', system-ui, sans-serif;
+  --home-fleet-font: 'Inter', system-ui, sans-serif;
   --home-fleet-card-bg: #efefef;
   --home-fleet-card-radius: 21.573px;
   --home-fleet-tab-radius: 5.393px;
@@ -1440,6 +1440,9 @@
   display: flex;
   gap: 4rem;
   width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
@@ -1454,6 +1457,8 @@
   position: relative;
   flex: 0 0 min(100%, 44.25rem);
   min-height: 27.75rem;
+  margin: 0;
+  list-style: none;
   scroll-snap-align: start;
   border-radius: var(--home-fleet-card-radius);
   overflow: hidden;
@@ -1667,7 +1672,7 @@
 
 .home-testimonials__quote {
   margin: 0;
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Instrument Sans', 'Inter', system-ui, sans-serif;
   font-size: clamp(1.125rem, 1.75vw, 1.5rem);
   font-weight: 400;
   line-height: normal;
@@ -1884,7 +1889,7 @@
 .home-corporate__eyebrow {
   margin: 0;
   color: var(--home-gold);
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-weight: 600;
   font-size: clamp(1rem, 1.35vw, 1.125rem);
   line-height: 1.556;
@@ -1892,7 +1897,7 @@
 
 .home-corporate__content h2 {
   margin: 0;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: clamp(1.5rem, 3vw, 2.75rem);
   font-weight: 600;
   line-height: 1.265;
@@ -1902,7 +1907,7 @@
 .home-corporate__content p {
   margin: 0;
   max-width: 42.25rem;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: clamp(1rem, 1.1vw, 1.0625rem);
   font-weight: 600;
   line-height: 1.556;
@@ -2080,7 +2085,7 @@
 
 .home-cta__content h2 {
   margin: 0 0 4.5rem;
-  font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-weight: 700;
   font-size: clamp(1.75rem, 3vw, 2.75rem);
   line-height: 1.265;
@@ -2089,7 +2094,7 @@
 
 .home-cta__content p {
   margin: 0 0 4.5rem;
-  font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 1.125rem;
   line-height: 1.265;
   color: rgba(255, 255, 255, 0.75);
@@ -2101,7 +2106,7 @@
   border-radius: 2.625rem;
   background: #fff;
   color: #000;
-  font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 1.125rem;
   font-weight: 600;
   letter-spacing: 0;
@@ -2194,7 +2199,7 @@
 
 .home-testimonials__author-name {
   margin: 0;
-  font-family: 'Poppins', var(--home-font-display);
+  font-family: var(--home-font-display);
   font-size: 16px;
   font-weight: 700;
   line-height: normal;
@@ -2203,7 +2208,7 @@
 
 .home-testimonials__author-company {
   margin: 0;
-  font-family: 'Poppins', var(--home-font-display);
+  font-family: var(--home-font-display);
   font-size: 14px;
   font-weight: 400;
   line-height: normal;
