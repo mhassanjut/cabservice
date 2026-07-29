@@ -14,6 +14,7 @@ export const routes = {
   aboutUs: '/about-us',
   journey: '/journey',
   tours: '/tours',
+  blogs: '/blogs',
   faq: '/faq',
   driverLogin: '/driver/login',
   driverHome: '/driver',
@@ -69,6 +70,7 @@ export const PRIMARY_NAV_PATHS = [
   routes.aboutUs,
   routes.journey,
   routes.tours,
+  routes.blogs,
 ] as const
 
 /** In-page home anchors — use plain `<a>` so Nuxt does not prefetch invalid hash routes. */

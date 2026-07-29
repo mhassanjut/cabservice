@@ -68,18 +68,18 @@
   gap: 5px;
 }
 
-/* Small laptops: 48px gaps + 5 links + login + CTA overflow, so tighten. */
+/* Small laptops: tighten gaps when primary nav has many links. */
 @media (min-width: 860px) and (max-width: 1199px) {
   .site-root--home .app-nav__cluster {
-    gap: 24px;
+    gap: 16px;
   }
 
   .site-root--home .app-nav__links {
-    gap: 24px;
+    gap: 8px;
   }
 
   .site-root--home .app-nav__link {
-    padding: 12px 16px;
+    padding: 12px 12px;
     font-size: 13px;
   }
 }

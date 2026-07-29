@@ -36,6 +36,7 @@ import { homeAnchors, routes } from '~/constants/routes'
             <li><NuxtLink :to="homeAnchors.contact" :prefetch="false">Contact</NuxtLink></li>
             <li><NuxtLink :to="routes.confirm">Confirmation</NuxtLink></li>
             <li><NuxtLink :to="routes.tours">Private Barcelona tours</NuxtLink></li>
+            <li><NuxtLink :to="routes.blogs">Blogs</NuxtLink></li>
             <li><NuxtLink :to="routes.faq">FAQ</NuxtLink></li>
           </ul>
         </div>

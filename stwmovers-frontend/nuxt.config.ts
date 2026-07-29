@@ -24,6 +24,13 @@ export default defineNuxtConfig({
       })(),
       'stwmovers.com',
       'www.stwmovers.com',
+      ...(() => {
+        try {
+          return [new URL(siteConfig.wordpressUrl).hostname]
+        } catch {
+          return ['cms.stwmovers.com']
+        }
+      })(),
     ],
     // Breakpoints used to generate srcset. Must be screen-prefixed in `sizes`.
     screens: {
@@ -63,6 +70,7 @@ export default defineNuxtConfig({
     public: {
       siteUrl: siteConfig.siteUrl,
       apiBaseUrl: siteConfig.apiBaseUrl,
+      wordpressUrl: siteConfig.wordpressUrl,
       externalTourUrl: siteConfig.externalTourUrl,
       cookieAuth: false,
       googleMapsApiKey: '',
