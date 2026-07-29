@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import '~/assets/styles/css/home.css'
 import '~/assets/styles/css/booking.css'
 import '~/assets/styles/css/dashboard.css'
 
@@ -7,7 +8,7 @@ useLocalBusinessSchema()
 
 <template>
   <div class="site-root site-root--home site-root--booking site-root--customer-dashboard">
-    <AppNavbar />
+    <BookingNavbar />
     <DashboardTabsBar />
 
     <main id="main-content" class="layout-main layout-main--booking" role="main">

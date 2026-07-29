@@ -5,8 +5,8 @@ export default defineNuxtConfig({
   ssr: true,
   modules: ['@pinia/nuxt', '@nuxt/image'],
   css: [
+    '~/assets/styles/css/fonts.css',
     '~/assets/styles/css/main.css',
-    '~/assets/styles/css/home.css',
   ],
 
   image: {
@@ -93,11 +93,21 @@ export default defineNuxtConfig({
         { name: 'theme-color', content: seoDefaults.themeColor },
       ],
       link: [
-        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+        // Self-hosted fonts (see assets/styles/css/fonts.css). Preload critical
+        // latin weights so optional font-display usually wins before first paint.
         {
-          rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Inter:wght@200;400;500;600;700&display=swap',
+          rel: 'preload',
+          href: '/fonts/inter-latin-400.woff2',
+          as: 'font',
+          type: 'font/woff2',
+          crossorigin: '',
+        },
+        {
+          rel: 'preload',
+          href: '/fonts/instrument-sans-latin-600.woff2',
+          as: 'font',
+          type: 'font/woff2',
+          crossorigin: '',
         },
         // Font Awesome: loaded async via plugins/fontawesome.client.ts (non-blocking).
         // Noscript fallback below for users without JS.
@@ -130,6 +140,11 @@ export default defineNuxtConfig({
     '/img/**': {
       headers: {
         'cache-control': 'public, max-age=2592000',
+      },
+    },
+    '/fonts/**': {
+      headers: {
+        'cache-control': 'public, max-age=31536000, immutable',
       },
     },
   },

@@ -22,9 +22,9 @@
   --color-gold-bright: #e4c76b;
   --color-gold-dim: #8a7020;
   --color-danger: #e85d5d;
-  --font-serif: "Instrument Sans", "Inter", system-ui, sans-serif;
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  --font-eyebrow: "Instrument Sans", var(--font-sans);
+  --font-serif: "Instrument Sans", "Instrument Sans Fallback", "Inter", "Inter Fallback", system-ui, sans-serif;
+  --font-sans: "Inter", "Inter Fallback", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  --font-eyebrow: "Instrument Sans", "Instrument Sans Fallback", var(--font-sans);
   --shadow-sm: 0 4px 24px rgba(0, 0, 0, 0.35);
   --shadow-md: 0 12px 48px rgba(0, 0, 0, 0.45);
   --shadow-lg: 0 24px 80px rgba(0, 0, 0, 0.55);
@@ -1364,6 +1364,24 @@ select.input {
     transform 0.35s var(--ease-out-expo),
     border-color 0.25s ease,
     box-shadow 0.35s ease;
+}
+
+.wa-float__icon {
+  display: block;
+  width: 1.45rem;
+  height: 1.45rem;
+  flex-shrink: 0;
+}
+
+/* In-field Maps pending hint (BookingForm + ContactBooking) */
+.booking-form__maps-hint {
+  margin-left: 0.4rem;
+  font-weight: 400;
+  font-size: 0.7em;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--color-muted, rgba(0, 0, 0, 0.45));
+  white-space: nowrap;
 }
 
 @media (max-width: 859px) {

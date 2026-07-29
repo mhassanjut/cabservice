@@ -33,19 +33,19 @@ export const homeExperienceTiles = [
     title: 'Airport Meet & Greet',
     subtitle: 'A professional welcome, flight tracking, and seamless airport transfers.',
     image: experienceAirportImage,
-    height: 520,
+    height: 400,
   },
   {
     title: 'Business Travel',
     subtitle: 'Executive transportation that keeps your schedule running smoothly.',
     image: experienceBusinessImage,
-    height: 360,
+    height: 400,
   },
   {
     title: 'Private Chauffeur',
     subtitle: 'A dedicated driver whenever your plans require flexibility.',
     image: experienceChauffeurImage,
-    height: 427,
+    height: 400,
   },
 ] as const
 
@@ -82,32 +82,32 @@ export const homeValueProps = [
   {
     icon: '/img/home/icons/user-check.svg',
     title: 'Driven By Hospitality',
-    text: 'More than a car and driver. A commitment to your peace of mind and time.',
+    text: 'Every chauffeur is selected for professionalism, local knowledge, and a genuine welcome — more host than driver.',
   },
   {
     icon: '/img/home/icons/sofa.svg',
     title: 'Exceptional Comfort',
-    text: 'More than a car and driver. A commitment to your peace of mind and time.',
+    text: 'Travel in a meticulously maintained premium fleet, with a quiet cabin designed for rest between airport, hotel, and meeting.',
   },
   {
     icon: '/img/home/icons/clock.svg',
     title: 'Fluid Scheduling',
-    text: 'More than a car and driver. A commitment to your peace of mind and time.',
+    text: 'Plans change. We adapt — seamless rescheduling, flexible pickup windows, and 24/7 support when your itinerary shifts.',
   },
   {
     icon: '/img/home/icons/layout.svg',
     title: 'Designed For You',
-    text: 'More than a car and driver. A commitment to your peace of mind and time.',
+    text: 'From vehicle class to route preference, each transfer is tailored around your schedule, luggage, and occasion.',
   },
   {
     icon: '/img/home/icons/shield.svg',
     title: 'Private By Nature',
-    text: 'More than a car and driver. A commitment to your peace of mind and time.',
+    text: 'Discreet, door-to-door chauffeuring with no shared rides — your journey stays confidential from start to finish.',
   },
   {
     icon: '/img/home/icons/globe.svg',
     title: 'Trusted Worldwide',
-    text: 'More than a car and driver. A commitment to your peace of mind and time.',
+    text: 'Consistent standards for international travellers and corporate guests across Barcelona and Spain.',
   },
 ] as const
 
@@ -136,8 +136,6 @@ export const homeFleetTabs = [
   { id: 'first-class', label: 'First Class' },
   { id: 'business-van', label: 'Business Van' },
   { id: 'mini-bus', label: 'Mini Bus' },
-  { id: 'bus', label: 'Bus' },
-  { id: 'aviation', label: 'Aviation' },
 ] as const
 
 export type HomeFleetTabId = (typeof homeFleetTabs)[number]['id']
@@ -171,7 +169,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     image: '/img/home/fleet-section/mercedes-s-class.webp',
     seats: 4,
     bags: 3,
-    categories: ['first-class', 'aviation'],
+    categories: ['first-class'],
   },
   {
     id: 'mercedes-v-class',
@@ -198,7 +196,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     image: '/img/home/fleet-section/mercedes-van.webp',
     seats: 8,
     bags: 7,
-    categories: ['mini-bus', 'bus'],
+    categories: ['mini-bus'],
   },
   {
     id: 'tesla-model-s',

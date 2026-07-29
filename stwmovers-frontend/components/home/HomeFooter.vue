@@ -14,15 +14,6 @@ import { homeAnchors, routes } from '~/constants/routes'
           </p>
         </div>
         <div>
-          <p class="home-footer__col-title">Navigation</p>
-          <ul class="home-footer__list">
-            <li><NuxtLink :to="homeAnchors.experience" :prefetch="false">Service</NuxtLink></li>
-            <li><NuxtLink :to="homeAnchors.values" :prefetch="false">Mission</NuxtLink></li>
-            <li><NuxtLink :to="homeAnchors.fleet" :prefetch="false">Fleet</NuxtLink></li>
-            <li><NuxtLink :to="homeAnchors.contact" :prefetch="false">Contact</NuxtLink></li>
-          </ul>
-        </div>
-        <div>
           <p class="home-footer__col-title">Services</p>
           <ul class="home-footer__list">
             <li><NuxtLink :to="routes.home">Airport transfers</NuxtLink></li>
@@ -34,7 +25,6 @@ import { homeAnchors, routes } from '~/constants/routes'
           <p class="home-footer__col-title">Company</p>
           <ul class="home-footer__list">
             <li><NuxtLink :to="homeAnchors.contact" :prefetch="false">Contact</NuxtLink></li>
-            <li><NuxtLink :to="routes.confirm">Confirmation</NuxtLink></li>
             <li><NuxtLink :to="routes.tours">Private Barcelona tours</NuxtLink></li>
             <li><NuxtLink :to="routes.blogs">Blogs</NuxtLink></li>
             <li><NuxtLink :to="routes.faq">FAQ</NuxtLink></li>
@@ -51,7 +41,7 @@ import { homeAnchors, routes } from '~/constants/routes'
       </div>
       <div class="home-footer__bar">
         <p style="margin: 0">Barcelona, Spain · VAT ES-B00000000</p>
-        <p style="margin: 0">2026 STW Movers. All rights reserved.</p>
+        <p style="margin: 0">© {{ new Date().getFullYear() }} STW Movers. All rights reserved.</p>
         <NuxtLink class="home-footer__back" :to="{ hash: '#main-content' }" :prefetch="false">
           Back to top
           <span class="home-icon-wrap">

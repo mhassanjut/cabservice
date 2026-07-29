@@ -100,7 +100,17 @@ const applyPickup = (p: { label: string; lat: number; lng: number; city?: string
 }
 
 const mapsAttached = ref(false)
+/** True while Places is warming after focus (in-field pending, never full-page). */
+const mapsWarming = ref(false)
 let mapsInitPromise: Promise<void> | null = null
+
+const placesPending = computed(
+  () =>
+    Boolean(config.public.googleMapsApiKey) &&
+    mapsWarming.value &&
+    !maps.ready.value &&
+    !maps.error.value,
+)
 
 const attachAutocomplete = () => {
   if (mapsAttached.value || !maps.ready.value) return
@@ -129,6 +139,22 @@ const ensureMapsReady = () => {
   return mapsInitPromise
 }
 
+/** Start Maps on first interaction; show field-level pending until Places is ready. */
+const onPlaceFocus = () => {
+  if (!config.public.googleMapsApiKey || maps.ready.value || maps.error.value) return
+  mapsWarming.value = true
+  void Promise.resolve(ensureMapsReady()).finally(() => {
+    mapsWarming.value = !maps.ready.value
+  })
+}
+
+watch(
+  () => maps.ready.value,
+  (ready: boolean) => {
+    if (ready) mapsWarming.value = false
+  },
+)
+
 onMounted(() => {
   // Returning via "Edit Journey" is the only case where the saved trip belongs in the form.
   if (route.query.edit === EDIT_JOURNEY_FLAG) Object.assign(form, booking.draft)
@@ -141,11 +167,11 @@ onMounted(() => {
     if (typeof w.requestIdleCallback === 'function') {
       w.requestIdleCallback(() => {
         void ensureMapsReady()
-      }, { timeout: 2500 })
+      }, { timeout: 800 })
     } else {
       window.setTimeout(() => {
         void ensureMapsReady()
-      }, 2000)
+      }, 800)
     }
   }
 
@@ -274,32 +300,40 @@ const onSubmit = async () => {
         Set NUXT_PUBLIC_GOOGLE_MAPS_API_KEY in .env to enable location autocomplete.
       </p>
       <div class="booking-form__bar-grid">
-        <div class="booking-form__field">
-          <label class="booking-form__bar-label" for="pickup">Pickup</label>
+        <div class="booking-form__field" :class="{ 'booking-form__field--maps-pending': placesPending }">
+          <label class="booking-form__bar-label" for="pickup">
+            Pickup
+            <span v-if="placesPending" class="booking-form__maps-hint">Loading places…</span>
+          </label>
           <input
             id="pickup"
             ref="pickupRef"
             v-model="form.pickupLocation"
             class="booking-form__bar-input"
-            placeholder="Select Pickup"
+            :placeholder="placesPending ? 'Loading places…' : 'Select Pickup'"
             required
             autocomplete="off"
+            :aria-busy="placesPending || undefined"
             @blur="touched.pickupLocation = true"
-            @focus="ensureMapsReady"
+            @focus="onPlaceFocus"
           />
         </div>
-        <div class="booking-form__field">
-          <label class="booking-form__bar-label" for="dropoff">Destination</label>
+        <div class="booking-form__field" :class="{ 'booking-form__field--maps-pending': placesPending }">
+          <label class="booking-form__bar-label" for="dropoff">
+            Destination
+            <span v-if="placesPending" class="booking-form__maps-hint">Loading places…</span>
+          </label>
           <input
             id="dropoff"
             ref="dropoffRef"
             v-model="form.dropoffLocation"
             class="booking-form__bar-input"
-            placeholder="Select Destination"
+            :placeholder="placesPending ? 'Loading places…' : 'Select Destination'"
             required
             autocomplete="off"
+            :aria-busy="placesPending || undefined"
             @blur="touched.dropoffLocation = true"
-            @focus="ensureMapsReady"
+            @focus="onPlaceFocus"
           />
         </div>
         <div class="booking-form__field">
@@ -363,31 +397,41 @@ const onSubmit = async () => {
     </p>
     <h3 class="font-serif">Get your transfer quote</h3>
     <div class="grid cols-2">
-      <div class="field">
-        <label class="label" for="pickup-card">Pickup</label>
+      <div class="field" :class="{ 'field--maps-pending': placesPending }">
+        <label class="label" for="pickup-card">
+          Pickup
+          <span v-if="placesPending" class="booking-form__maps-hint">Loading places…</span>
+        </label>
         <input
           id="pickup-card"
           ref="pickupRef"
           v-model="form.pickupLocation"
           class="input"
+          :placeholder="placesPending ? 'Loading places…' : undefined"
           required
           autocomplete="off"
+          :aria-busy="placesPending || undefined"
           @blur="touched.pickupLocation = true"
-          @focus="ensureMapsReady"
+          @focus="onPlaceFocus"
         />
         <p v-if="touched.pickupLocation && errors.pickupLocation" class="err">{{ errors.pickupLocation }}</p>
       </div>
-      <div class="field">
-        <label class="label" for="dropoff-card">Destination</label>
+      <div class="field" :class="{ 'field--maps-pending': placesPending }">
+        <label class="label" for="dropoff-card">
+          Destination
+          <span v-if="placesPending" class="booking-form__maps-hint">Loading places…</span>
+        </label>
         <input
           id="dropoff-card"
           ref="dropoffRef"
           v-model="form.dropoffLocation"
           class="input"
+          :placeholder="placesPending ? 'Loading places…' : undefined"
           required
           autocomplete="off"
+          :aria-busy="placesPending || undefined"
           @blur="touched.dropoffLocation = true"
-          @focus="ensureMapsReady"
+          @focus="onPlaceFocus"
         />
         <p v-if="touched.dropoffLocation && errors.dropoffLocation" class="err">{{ errors.dropoffLocation }}</p>
       </div>
@@ -440,6 +484,11 @@ const onSubmit = async () => {
 </template>
 
 <style>
+.booking-form__field--maps-pending .booking-form__bar-input,
+.field--maps-pending .input {
+  caret-color: var(--color-gold, #c9a227);
+}
+
 .booking-form--bar .booking-form__bar-notice {
   position: absolute;
   top: -1.25rem;

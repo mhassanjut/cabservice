@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import '~/assets/styles/css/home.css'
+
 useLocalBusinessSchema()
 </script>
 
