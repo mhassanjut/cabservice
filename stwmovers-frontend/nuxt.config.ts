@@ -60,6 +60,8 @@ export default defineNuxtConfig({
       googleMapsApiKey: '',
       googleClientId: '',
       stripePublicKey: '',
+      googleAnalyticsId: '',
+      microsoftClarityId: '',
     },
   },
 
