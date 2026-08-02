@@ -34,18 +34,21 @@ export const homeExperienceTiles = [
     subtitle: 'A professional welcome, flight tracking, and seamless airport transfers.',
     image: experienceAirportImage,
     height: 400,
+    href: '/airport-transfer',
   },
   {
     title: 'Business Travel',
     subtitle: 'Executive transportation that keeps your schedule running smoothly.',
     image: experienceBusinessImage,
     height: 400,
+    href: '/executive-business-travel',
   },
   {
     title: 'Private Chauffeur',
     subtitle: 'A dedicated driver whenever your plans require flexibility.',
     image: experienceChauffeurImage,
     height: 400,
+    href: '/chauffeur-service',
   },
 ] as const
 

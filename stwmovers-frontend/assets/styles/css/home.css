@@ -810,6 +810,23 @@
   }
 }
 
+.home-experience__tile--link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.home-experience__tile--link:hover .home-experience__tile-overlay,
+.home-experience__tile--link:focus-visible .home-experience__tile-overlay {
+  background: rgba(0, 0, 0, 0.32);
+}
+
+.home-experience__tile--link:focus-visible {
+  outline: 2px solid var(--home-gold);
+  outline-offset: 4px;
+}
+
 .home-experience__tile {
   position: relative;
   flex-shrink: 0;

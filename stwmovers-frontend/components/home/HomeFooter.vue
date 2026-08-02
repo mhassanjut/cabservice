@@ -16,7 +16,7 @@ import { homeAnchors, routes } from '~/constants/routes'
         <div>
           <p class="home-footer__col-title">Services</p>
           <ul class="home-footer__list">
-            <li><NuxtLink :to="routes.home">Airport transfers</NuxtLink></li>
+            <li><NuxtLink :to="routes.airportTransfer">Airport transfers</NuxtLink></li>
             <li><NuxtLink :to="routes.home">City transfers</NuxtLink></li>
             <li><NuxtLink :to="homeAnchors.booking" :prefetch="false">Book a transfer</NuxtLink></li>
           </ul>

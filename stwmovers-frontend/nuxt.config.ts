@@ -154,7 +154,15 @@ export default defineNuxtConfig({
   nitro: {
     preset: 'node-server',
     prerender: {
-      routes: ['/', '/cars', '/tours', '/faq'],
+      routes: [
+        '/',
+        '/cars',
+        '/tours',
+        '/faq',
+        '/airport-transfer',
+        '/executive-business-travel',
+        '/chauffeur-service',
+      ],
     },
   },
 

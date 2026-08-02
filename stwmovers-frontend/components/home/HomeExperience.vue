@@ -95,35 +95,52 @@ onUnmounted(() => {
           @pointerleave="easeMarquee(1)"
         >
           <div ref="trackRef" class="home-experience__marquee-track">
-            <div
-              v-for="(tile, index) in marqueeTiles"
-              :key="`${tile.title}-${index}`"
-              class="home-experience__tile"
-              :style="{ '--tile-height': `${tile.height}px` }"
-              :aria-hidden="index >= homeExperienceTiles.length ? true : undefined"
-              :role="index < homeExperienceTiles.length ? 'group' : undefined"
-              :aria-label="
-                index < homeExperienceTiles.length
-                  ? `${index + 1} of ${homeExperienceTiles.length}: ${tile.title}`
-                  : undefined
-              "
-            >
-              <!-- Bundled (?url) asset — keep as <img>; @nuxt/image IPX can't process build-asset URLs -->
-              <img
-                :src="tile.image"
-                :alt="`${tile.title} — STW Movers Barcelona chauffeur service`"
-                loading="lazy"
-                decoding="async"
-                draggable="false"
-                width="628"
-                :height="tile.height"
-              />
-              <div class="home-experience__tile-overlay" aria-hidden="true" />
-              <div class="home-experience__tile-copy">
-                <h3>{{ tile.title }}</h3>
-                <p>{{ tile.subtitle }}</p>
+            <template v-for="(tile, index) in marqueeTiles" :key="`${tile.title}-${index}`">
+              <NuxtLink
+                v-if="index < homeExperienceTiles.length"
+                :to="tile.href"
+                class="home-experience__tile home-experience__tile--link"
+                :style="{ '--tile-height': `${tile.height}px` }"
+                :aria-label="`${index + 1} of ${homeExperienceTiles.length}: ${tile.title}`"
+              >
+                <!-- Bundled (?url) asset — keep as <img>; @nuxt/image IPX can't process build-asset URLs -->
+                <img
+                  :src="tile.image"
+                  :alt="`${tile.title} — STW Movers Barcelona chauffeur service`"
+                  loading="lazy"
+                  decoding="async"
+                  draggable="false"
+                  width="628"
+                  :height="tile.height"
+                />
+                <div class="home-experience__tile-overlay" aria-hidden="true" />
+                <div class="home-experience__tile-copy">
+                  <h3>{{ tile.title }}</h3>
+                  <p>{{ tile.subtitle }}</p>
+                </div>
+              </NuxtLink>
+              <div
+                v-else
+                class="home-experience__tile"
+                :style="{ '--tile-height': `${tile.height}px` }"
+                aria-hidden="true"
+              >
+                <img
+                  :src="tile.image"
+                  :alt="`${tile.title} — STW Movers Barcelona chauffeur service`"
+                  loading="lazy"
+                  decoding="async"
+                  draggable="false"
+                  width="628"
+                  :height="tile.height"
+                />
+                <div class="home-experience__tile-overlay" aria-hidden="true" />
+                <div class="home-experience__tile-copy">
+                  <h3>{{ tile.title }}</h3>
+                  <p>{{ tile.subtitle }}</p>
+                </div>
               </div>
-            </div>
+            </template>
           </div>
         </div>
       </div>
