@@ -107,9 +107,11 @@ onUnmounted(() => {
         <TourImage
           :src="tour.imageUrl"
           :alt="tour.title"
+          :width="1200"
+          :height="675"
+          sizes="xs:100vw sm:100vw md:90vw lg:900px xl:900px"
           loading="eager"
           fetchpriority="high"
-          decoding="async"
         />
         <div class="tdm-hero__overlay" aria-hidden="true" />
 

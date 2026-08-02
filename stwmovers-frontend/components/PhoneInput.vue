@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { VueTelInput } from 'vue-tel-input'
 import type { CountryObject, PhoneObject } from 'vue-tel-input'
+import 'vue-tel-input/vue-tel-input.css'
 import type { CountryCode } from 'libphonenumber-js'
 import {
   DEFAULT_PHONE_COUNTRY,

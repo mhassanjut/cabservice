@@ -33,19 +33,19 @@ export const homeExperienceTiles = [
     title: 'Airport Meet & Greet',
     subtitle: 'A professional welcome, flight tracking, and seamless airport transfers.',
     image: experienceAirportImage,
-    height: 520,
+    height: 400,
   },
   {
     title: 'Business Travel',
     subtitle: 'Executive transportation that keeps your schedule running smoothly.',
     image: experienceBusinessImage,
-    height: 360,
+    height: 400,
   },
   {
     title: 'Private Chauffeur',
     subtitle: 'A dedicated driver whenever your plans require flexibility.',
     image: experienceChauffeurImage,
-    height: 427,
+    height: 400,
   },
 ] as const
 
@@ -82,32 +82,32 @@ export const homeValueProps = [
   {
     icon: '/img/home/icons/user-check.svg',
     title: 'Driven By Hospitality',
-    text: 'More than a car and driver. A commitment to your peace of mind and time.',
+    text: 'Every chauffeur is selected for professionalism, local knowledge, and a genuine welcome — more host than driver.',
   },
   {
     icon: '/img/home/icons/sofa.svg',
     title: 'Exceptional Comfort',
-    text: 'More than a car and driver. A commitment to your peace of mind and time.',
+    text: 'Travel in a meticulously maintained premium fleet, with a quiet cabin designed for rest between airport, hotel, and meeting.',
   },
   {
     icon: '/img/home/icons/clock.svg',
     title: 'Fluid Scheduling',
-    text: 'More than a car and driver. A commitment to your peace of mind and time.',
+    text: 'Plans change. We adapt — seamless rescheduling, flexible pickup windows, and 24/7 support when your itinerary shifts.',
   },
   {
     icon: '/img/home/icons/layout.svg',
     title: 'Designed For You',
-    text: 'More than a car and driver. A commitment to your peace of mind and time.',
+    text: 'From vehicle class to route preference, each transfer is tailored around your schedule, luggage, and occasion.',
   },
   {
     icon: '/img/home/icons/shield.svg',
     title: 'Private By Nature',
-    text: 'More than a car and driver. A commitment to your peace of mind and time.',
+    text: 'Discreet, door-to-door chauffeuring with no shared rides — your journey stays confidential from start to finish.',
   },
   {
     icon: '/img/home/icons/globe.svg',
     title: 'Trusted Worldwide',
-    text: 'More than a car and driver. A commitment to your peace of mind and time.',
+    text: 'Consistent standards for international travellers and corporate guests across Barcelona and Spain.',
   },
 ] as const
 
@@ -136,8 +136,6 @@ export const homeFleetTabs = [
   { id: 'first-class', label: 'First Class' },
   { id: 'business-van', label: 'Business Van' },
   { id: 'mini-bus', label: 'Mini Bus' },
-  { id: 'bus', label: 'Bus' },
-  { id: 'aviation', label: 'Aviation' },
 ] as const
 
 export type HomeFleetTabId = (typeof homeFleetTabs)[number]['id']
@@ -153,13 +151,13 @@ export type HomeFleetVehicle = {
   categories: HomeFleetCategory[]
 }
 
-/** Homepage fleet cards — original SVGs from homepage-fleet-section */
+/** Homepage fleet cards — WebP from SVG masters in fleet-section/_original/ */
 export const homeFleetVehicles: HomeFleetVehicle[] = [
   {
     id: 'mercedes-e-class',
     backendId: 'c0000001-0000-0000-0000-000000000004',
     name: 'Mercedes E Class',
-    image: '/img/home/fleet-section/_original/Mercedes E Class 2.svg',
+    image: '/img/home/fleet-section/mercedes-e-class.webp',
     seats: 4,
     bags: 3,
     categories: ['business-class', 'first-class'],
@@ -168,16 +166,16 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'mercedes-s-class',
     backendId: 'c0000001-0000-0000-0000-000000000005',
     name: 'Mercedes S Class',
-    image: '/img/home/fleet-section/_original/Mercedes S Class 2.svg',
+    image: '/img/home/fleet-section/mercedes-s-class.webp',
     seats: 4,
     bags: 3,
-    categories: ['first-class', 'aviation'],
+    categories: ['first-class'],
   },
   {
     id: 'mercedes-v-class',
     backendId: 'c0000001-0000-0000-0000-000000000002',
     name: 'Mercedes V Class',
-    image: '/img/home/fleet-section/_original/Mercedes V Class 2.svg',
+    image: '/img/home/fleet-section/mercedes-v-class.webp',
     seats: 7,
     bags: 6,
     categories: ['business-van', 'first-class'],
@@ -186,7 +184,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'mercedes-vito-van',
     backendId: 'c0000001-0000-0000-0000-000000000001',
     name: 'Mercedes Vito Van',
-    image: '/img/home/fleet-section/_original/Mercedes Vito Van 2.svg',
+    image: '/img/home/fleet-section/mercedes-vito-van.webp',
     seats: 7,
     bags: 6,
     categories: ['business-van'],
@@ -195,16 +193,16 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'mercedes-van',
     backendId: 'c0000001-0000-0000-0000-000000000003',
     name: 'Mercedes Van',
-    image: '/img/home/fleet-section/_original/Mercedes Van 2.svg',
+    image: '/img/home/fleet-section/mercedes-van.webp',
     seats: 8,
     bags: 7,
-    categories: ['mini-bus', 'bus'],
+    categories: ['mini-bus'],
   },
   {
     id: 'tesla-model-s',
     backendId: 'c0000001-0000-0000-0000-000000000006',
     name: 'Tesla Model S',
-    image: '/img/home/fleet-section/_original/Tesla Model S 2.svg',
+    image: '/img/home/fleet-section/tesla-model-s.webp',
     seats: 4,
     bags: 3,
     categories: ['business-class'],
@@ -213,7 +211,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'hyundai-ioniq',
     backendId: 'c0000001-0000-0000-0000-000000000007',
     name: 'Hyundai Ioniq',
-    image: '/img/home/fleet-section/_original/Hyundai Ioniq 2.svg',
+    image: '/img/home/fleet-section/hyundai-ioniq.webp',
     seats: 4,
     bags: 3,
     categories: ['business-class'],
@@ -222,7 +220,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'toyota-corolla',
     backendId: 'c0000001-0000-0000-0000-000000000008',
     name: 'Toyota Corolla Familiar',
-    image: '/img/home/fleet-section/_original/Toyota Corolla Familiar 2.svg',
+    image: '/img/home/fleet-section/toyota-corolla-familiar.webp',
     seats: 4,
     bags: 3,
     categories: ['business-class'],
@@ -230,7 +228,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
   {
     id: 'byd-seal',
     name: 'BYD Seal',
-    image: '/img/home/fleet-section/_original/BYD SEAL 2.svg',
+    image: '/img/home/fleet-section/byd-seal.webp',
     seats: 4,
     bags: 3,
     categories: ['business-class'],

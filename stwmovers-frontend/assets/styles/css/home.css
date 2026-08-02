@@ -14,13 +14,17 @@
   --home-radius-lg: 24px;
   --home-radius-xl: 28px;
   --home-radius-pill: 100px;
-  --home-font-display: 'Instrument Sans', 'Inter', system-ui, sans-serif;
-  --home-section-y: clamp(3rem, 6vw, 7rem);
+  --home-font-display: 'Instrument Sans', 'Instrument Sans Fallback', 'Inter', 'Inter Fallback', system-ui, sans-serif;
+  --home-section-y: clamp(2rem, 4vw, 4rem);
   --home-gutter: var(--gutter);
+  /* Shared marketing hero metrics — keep /, about, services, journey, tours in sync */
+  --marketing-hero-height: clamp(30rem, 54vw, 48.75rem);
+  --marketing-hero-title: clamp(2.5rem, 5.5vw, 5rem);
+  --marketing-hero-body: clamp(1rem, 1.2vw, 1.125rem);
 
   background: var(--home-bg);
   color: var(--home-text);
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Inter', 'Inter Fallback', system-ui, sans-serif;
   overflow-x: clip;
 }
 
@@ -30,7 +34,7 @@
 }
 
 .site-root--home .app-nav {
-  --nav-font: 'Inter', system-ui, sans-serif;
+  --nav-font: 'Inter', 'Inter Fallback', system-ui, sans-serif;
 
   box-sizing: border-box;
   height: 72px;
@@ -68,18 +72,18 @@
   gap: 5px;
 }
 
-/* Small laptops: 48px gaps + 5 links + login + CTA overflow, so tighten. */
+/* Small laptops: tighten gaps when primary nav has many links. */
 @media (min-width: 860px) and (max-width: 1199px) {
   .site-root--home .app-nav__cluster {
-    gap: 24px;
+    gap: 16px;
   }
 
   .site-root--home .app-nav__links {
-    gap: 24px;
+    gap: 8px;
   }
 
   .site-root--home .app-nav__link {
-    padding: 12px 16px;
+    padding: 12px 12px;
     font-size: 13px;
   }
 }
@@ -537,7 +541,7 @@
 /* Hero */
 .home-hero {
   position: relative;
-  --home-hero-height: clamp(28rem, 55vw, 49.625rem);
+  --home-hero-height: var(--marketing-hero-height);
   height: var(--home-hero-height);
   margin: 0 0 clamp(1.5rem, 3vw, 3.1875rem);
   color: #fff;
@@ -624,7 +628,7 @@
   margin: 0;
   font-family: 'Instrument Sans', 'Inter', system-ui, sans-serif;
   font-weight: 500;
-  font-size: clamp(2.25rem, 3.5vw, 4rem);
+  font-size: var(--marketing-hero-title);
   line-height: 1.05;
   letter-spacing: 0;
   color: #fff;
@@ -635,7 +639,7 @@
   max-width: 42rem;
   font-family: 'Instrument Sans', 'Inter', system-ui, sans-serif;
   font-weight: 400;
-  font-size: clamp(1rem, 1.35vw, 1.25rem);
+  font-size: var(--marketing-hero-body);
   line-height: normal;
   color: #fff;
   opacity: 0.9;
@@ -657,7 +661,7 @@
 @media (max-width: 1099px) {
   .home-hero {
     height: auto;
-    min-height: clamp(24rem, 68vh, 34rem);
+    min-height: var(--marketing-hero-height);
     display: flex;
     flex-direction: column;
     margin-bottom: clamp(1.5rem, 4vw, 3rem);
@@ -698,7 +702,7 @@
 
 /* Experience — Figma node 82:68 */
 .home-experience.home-section {
-  padding-block: clamp(3.5rem, 7vw, 7rem);
+  padding-block: clamp(2rem, 4vw, 4rem);
 }
 
 .home-experience__inner {
@@ -778,7 +782,7 @@
   display: flex;
   width: max-content;
   align-items: flex-start;
-  animation: home-experience-marquee 13s linear infinite;
+  animation: home-experience-marquee 25s linear infinite;
   will-change: transform;
 }
 
@@ -801,7 +805,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .home-experience__marquee-track {
-    animation-duration: 13s !important;
+    animation-duration: 25s !important;
     animation-iteration-count: infinite !important;
   }
 }
@@ -899,7 +903,7 @@
 
 @media (min-width: 90rem) {
   .home-experience.home-section {
-    padding-block: 7rem;
+    padding-block: 4rem;
   }
 
   .home-experience__inner {
@@ -931,7 +935,7 @@
 
 /* Journeys — Figma node 82:88 */
 .home-journeys.home-section {
-  padding-block: clamp(3.5rem, 7vw, 7rem);
+  padding-block: clamp(2rem, 4vw, 4rem);
 }
 
 .home-journeys__inner {
@@ -989,7 +993,7 @@
   border: 0;
   border-radius: var(--home-radius-pill);
   background: var(--home-gold);
-  color: var(--home-white);
+  color: #171717;
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.875rem;
   font-weight: 600;
@@ -1300,7 +1304,7 @@
 
 /* Fleet — Figma node 82:205 */
 .home-fleet {
-  --home-fleet-font: 'Manrope', 'Inter', system-ui, sans-serif;
+  --home-fleet-font: 'Inter', system-ui, sans-serif;
   --home-fleet-card-bg: #efefef;
   --home-fleet-card-radius: 21.573px;
   --home-fleet-tab-radius: 5.393px;
@@ -1440,6 +1444,9 @@
   display: flex;
   gap: 4rem;
   width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
@@ -1454,6 +1461,8 @@
   position: relative;
   flex: 0 0 min(100%, 44.25rem);
   min-height: 27.75rem;
+  margin: 0;
+  list-style: none;
   scroll-snap-align: start;
   border-radius: var(--home-fleet-card-radius);
   overflow: hidden;
@@ -1667,7 +1676,7 @@
 
 .home-testimonials__quote {
   margin: 0;
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Instrument Sans', 'Inter', system-ui, sans-serif;
   font-size: clamp(1.125rem, 1.75vw, 1.5rem);
   font-weight: 400;
   line-height: normal;
@@ -1698,7 +1707,7 @@
 
 /* Locations bento grid — 4 equal columns on desktop (Figma) */
 .home-locations__header {
-  margin-bottom: clamp(2rem, 5vw, 4rem);
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
 }
 
 .home-locations__grid {
@@ -1871,20 +1880,20 @@
 .home-corporate__content {
   display: flex;
   flex-direction: column;
-  gap: clamp(2rem, 4vw, 3.75rem);
+  gap: 0.75rem;
   max-width: 42.25rem;
 }
 
 .home-corporate__copy {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.25rem;
 }
 
 .home-corporate__eyebrow {
   margin: 0;
   color: var(--home-gold);
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-weight: 600;
   font-size: clamp(1rem, 1.35vw, 1.125rem);
   line-height: 1.556;
@@ -1892,7 +1901,7 @@
 
 .home-corporate__content h2 {
   margin: 0;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: clamp(1.5rem, 3vw, 2.75rem);
   font-weight: 600;
   line-height: 1.265;
@@ -1902,7 +1911,7 @@
 .home-corporate__content p {
   margin: 0;
   max-width: 42.25rem;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: clamp(1rem, 1.1vw, 1.0625rem);
   font-weight: 600;
   line-height: 1.556;
@@ -2074,13 +2083,13 @@
   flex-shrink: 0;
   width: 100%;
   max-width: 57.25rem;
-  padding: 3.75rem 3.125rem 0;
+  padding: 2rem 2rem 0;
   color: #fff;
 }
 
 .home-cta__content h2 {
-  margin: 0 0 4.5rem;
-  font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  margin: 0 0 1.25rem;
+  font-family: 'Inter', system-ui, sans-serif;
   font-weight: 700;
   font-size: clamp(1.75rem, 3vw, 2.75rem);
   line-height: 1.265;
@@ -2088,8 +2097,8 @@
 }
 
 .home-cta__content p {
-  margin: 0 0 4.5rem;
-  font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  margin: 0 0 2rem;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 1.125rem;
   line-height: 1.265;
   color: rgba(255, 255, 255, 0.75);
@@ -2101,7 +2110,7 @@
   border-radius: 2.625rem;
   background: #fff;
   color: #000;
-  font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 1.125rem;
   font-weight: 600;
   letter-spacing: 0;
@@ -2194,7 +2203,7 @@
 
 .home-testimonials__author-name {
   margin: 0;
-  font-family: 'Poppins', var(--home-font-display);
+  font-family: var(--home-font-display);
   font-size: 16px;
   font-weight: 700;
   line-height: normal;
@@ -2203,7 +2212,7 @@
 
 .home-testimonials__author-company {
   margin: 0;
-  font-family: 'Poppins', var(--home-font-display);
+  font-family: var(--home-font-display);
   font-size: 14px;
   font-weight: 400;
   line-height: normal;
@@ -2320,7 +2329,7 @@
 
 @media (min-width: 900px) {
   .home-footer__grid {
-    grid-template-columns: minmax(12rem, 1.4fr) repeat(4, minmax(0, 1fr));
+    grid-template-columns: minmax(12rem, 1.6fr) repeat(3, minmax(0, 1fr));
     gap: clamp(1.5rem, 2.5vw, 3.5rem);
   }
 }

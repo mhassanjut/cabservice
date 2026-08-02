@@ -11,13 +11,20 @@ export function resolveMediaUrl(src: string | null | undefined, placeholder: str
     || trimmed.startsWith('data:')
     || trimmed.startsWith('blob:')
   ) {
-    return trimmed
+    return preferLocalVehicleWebp(trimmed)
   }
   if (trimmed.startsWith('/api/')) {
     const config = useRuntimeConfig()
     return `${config.public.apiBaseUrl}${trimmed}`
   }
-  return trimmed
+  return preferLocalVehicleWebp(trimmed)
+}
+
+/** Local fleet PNGs have prebuilt WebP siblings — prefer those when referenced by path. */
+function preferLocalVehicleWebp(url: string): string {
+  const match = url.match(/(\/img\/vehicles\/[^/?#]+)\.png(\?.*)?$/i)
+  if (!match) return url
+  return `${match[1]}.webp${match[2] ?? ''}`
 }
 
 export function isSvgMediaUrl(src?: string | null): boolean {

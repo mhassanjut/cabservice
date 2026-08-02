@@ -30,7 +30,10 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<UserProfileResponse>> me(@AuthenticationPrincipal UserPrincipal principal) {
-        requirePrincipal(principal);
+        if (principal == null) {
+            // 200 (not 401) so browsers / Lighthouse do not log a console network error for guests.
+            return ResponseEntity.ok(ApiResponse.ok(null));
+        }
         return ResponseEntity.ok(ApiResponse.ok(userService.getProfile(principal)));
     }
 

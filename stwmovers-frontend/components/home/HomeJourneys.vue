@@ -44,7 +44,6 @@ function cardStyle(card: HomeJourneyCard, group: { width: number; height: number
             :prefetch="false"
             class="home-journey-card"
             :style="cardStyle(card, homeJourneyGroupTop)"
-            :aria-label="`Plan a journey to ${card.title}`"
           >
             <NuxtImg
               class="home-journey-card__photo"
@@ -80,7 +79,6 @@ function cardStyle(card: HomeJourneyCard, group: { width: number; height: number
             :prefetch="false"
             class="home-journey-card"
             :style="cardStyle(card, homeJourneyGroupBottom)"
-            :aria-label="`Plan a journey to ${card.title}`"
           >
             <NuxtImg
               class="home-journey-card__photo"

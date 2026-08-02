@@ -59,6 +59,7 @@ onMounted(async () => {
   try {
 
     profile.value = await userService.profile()
+    if (!profile.value) return
 
     fullName.value = profile.value.fullName
 

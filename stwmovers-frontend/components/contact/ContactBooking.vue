@@ -40,9 +40,69 @@ const pickupAutocomplete = ref<AutocompleteHandle | null>(null)
 const destinationAutocomplete = ref<AutocompleteHandle | null>(null)
 const dateRef = ref<HTMLInputElement | null>(null)
 const timeRef = ref<HTMLInputElement | null>(null)
+const mapsWarming = ref(false)
+let mapsInitPromise: Promise<void> | null = null
+
+const placesPending = computed(
+  () =>
+    Boolean(config.public.googleMapsApiKey) &&
+    mapsWarming.value &&
+    !maps.ready.value &&
+    !maps.error.value,
+)
 
 const minPickupDate = computed(() => minPickupDateValue())
 const minPickupTime = computed(() => minPickupTimeValue(form.date))
+
+const attachAutocomplete = () => {
+  if (pickupRef.value && !pickupAutocomplete.value) {
+    pickupAutocomplete.value = maps.autocomplete(pickupRef.value, applyPickup)
+  }
+  if (destinationRef.value && !destinationAutocomplete.value) {
+    destinationAutocomplete.value = maps.autocomplete(destinationRef.value, (place) => {
+      form.destination = place.label
+      destinationPlace.value = routeEndpoint(
+        { lat: place.lat, lng: place.lng },
+        place.label,
+        place.placeId,
+      )
+      destinationCity.value = place.city ?? undefined
+    })
+  }
+}
+
+const ensureMapsReady = () => {
+  if (!config.public.googleMapsApiKey) return mapsInitPromise
+  if (mapsInitPromise) return mapsInitPromise
+  mapsInitPromise = (async () => {
+    await maps.load()
+    attachAutocomplete()
+  })()
+  return mapsInitPromise
+}
+
+const onPlaceFocus = (field: 'pickup' | 'destination' = 'pickup') => {
+  const trigger = () => {
+    if (field === 'pickup') pickupAutocomplete.value?.triggerSuggestions()
+    else destinationAutocomplete.value?.triggerSuggestions()
+  }
+  if (!config.public.googleMapsApiKey || maps.ready.value || maps.error.value) {
+    trigger()
+    return
+  }
+  mapsWarming.value = true
+  void Promise.resolve(ensureMapsReady()).finally(() => {
+    mapsWarming.value = !maps.ready.value
+    if (maps.ready.value) trigger()
+  })
+}
+
+watch(
+  () => maps.ready.value,
+  (ready: boolean) => {
+    if (ready) mapsWarming.value = false
+  },
+)
 
 const openPicker = (input: HTMLInputElement | null) => {
   if (!input) return
@@ -150,29 +210,23 @@ function scrollToBookingForm() {
   }
 }
 
-onMounted(async () => {
+onMounted(() => {
   applyRouteFromQuery()
   scrollToBookingForm()
   if (!config.public.googleMapsApiKey) return
-  await maps.load()
 
-  if (pickupRef.value) {
-    pickupAutocomplete.value = maps.autocomplete(pickupRef.value, applyPickup)
+  const warm = () => {
+    void Promise.resolve(ensureMapsReady()).then(() => promptNextPendingField())
   }
 
-  if (destinationRef.value) {
-    destinationAutocomplete.value = maps.autocomplete(destinationRef.value, (place) => {
-      form.destination = place.label
-      destinationPlace.value = routeEndpoint(
-        { lat: place.lat, lng: place.lng },
-        place.label,
-        place.placeId,
-      )
-      destinationCity.value = place.city ?? undefined
-    })
+  const w = window as Window & {
+    requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number
   }
-
-  promptNextPendingField()
+  if (typeof w.requestIdleCallback === 'function') {
+    w.requestIdleCallback(warm, { timeout: 800 })
+  } else {
+    window.setTimeout(warm, 800)
+  }
 })
 
 watch(
@@ -291,8 +345,11 @@ const onSubmit = async () => {
         </p>
 
         <div class="contact-form__grid">
-          <div class="contact-field">
-            <label class="contact-label" for="contact-pickup">Pickup Location</label>
+          <div class="contact-field" :class="{ 'contact-field--maps-pending': placesPending }">
+            <label class="contact-label" for="contact-pickup">
+              Pickup Location
+              <span v-if="placesPending" class="booking-form__maps-hint">Loading places…</span>
+            </label>
             <span id="contact-pickup-hint" class="sr-only">
               Choose a pickup location from the suggestions that appear as you type.
             </span>
@@ -303,18 +360,22 @@ const onSubmit = async () => {
               class="contact-input"
               type="text"
               autocomplete="off"
-              placeholder="e.g. Mandarin Oriental, Barcelona"
+              :placeholder="placesPending ? 'Loading places…' : 'e.g. Mandarin Oriental, Barcelona'"
               required
               aria-describedby="contact-pickup-hint"
+              :aria-busy="placesPending || undefined"
               :aria-invalid="pickupError ? 'true' : undefined"
               @input="pickupPlace = null; pickupCity = undefined"
               @blur="pickupTouched = true"
-              @focus="pickupAutocomplete?.triggerSuggestions()"
+              @focus="onPlaceFocus('pickup')"
             />
             <p v-if="pickupError" class="err">{{ pickupError }}</p>
           </div>
-          <div class="contact-field">
-            <label class="contact-label" for="contact-destination">Destination</label>
+          <div class="contact-field" :class="{ 'contact-field--maps-pending': placesPending }">
+            <label class="contact-label" for="contact-destination">
+              Destination
+              <span v-if="placesPending" class="booking-form__maps-hint">Loading places…</span>
+            </label>
             <span id="contact-destination-hint" class="sr-only">
               Choose a destination from the suggestions that appear as you type.
             </span>
@@ -325,13 +386,14 @@ const onSubmit = async () => {
               class="contact-input"
               type="text"
               autocomplete="off"
-              placeholder="e.g. Barcelona-El Prat Airport"
+              :placeholder="placesPending ? 'Loading places…' : 'e.g. Barcelona-El Prat Airport'"
               required
               aria-describedby="contact-destination-hint"
+              :aria-busy="placesPending || undefined"
               :aria-invalid="destinationError ? 'true' : undefined"
               @input="destinationPlace = null; destinationCity = undefined"
               @blur="destinationTouched = true"
-              @focus="destinationAutocomplete?.triggerSuggestions()"
+              @focus="onPlaceFocus('destination')"
             />
             <p v-if="destinationError" class="err">{{ destinationError }}</p>
           </div>

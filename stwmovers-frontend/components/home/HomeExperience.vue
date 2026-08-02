@@ -3,10 +3,15 @@ import { homeExperienceTiles } from '~/data/homeContent'
 
 const line1Ref = ref<HTMLElement | null>(null)
 const line2Ref = ref<HTMLElement | null>(null)
+const trackRef = ref<HTMLElement | null>(null)
 
 const marqueeTiles = computed(() => [...homeExperienceTiles, ...homeExperienceTiles])
 
 let headingResizeObserver: ResizeObserver | null = null
+let marqueeAnim: Animation | null = null
+let rateRaf = 0
+
+const RATE_EASE_MS = 650
 
 function syncHeadingLine2Width() {
   const line1 = line1Ref.value
@@ -21,6 +26,32 @@ function syncHeadingLine2Width() {
   line2.style.width = `${line1.getBoundingClientRect().width}px`
 }
 
+function easeMarquee(targetRate: number) {
+  if (!marqueeAnim) return
+  cancelAnimationFrame(rateRaf)
+
+  const start = performance.now()
+  const from = marqueeAnim.playbackRate
+
+  const tick = (now: number) => {
+    if (!marqueeAnim) return
+    const t = Math.min(1, (now - start) / RATE_EASE_MS)
+    const eased = targetRate < from ? 1 - (1 - t) * (1 - t) : t * t
+    marqueeAnim.playbackRate = from + (targetRate - from) * eased
+    if (t < 1) rateRaf = requestAnimationFrame(tick)
+  }
+
+  rateRaf = requestAnimationFrame(tick)
+}
+
+function bindMarqueeAnimation() {
+  const el = trackRef.value
+  if (!el) return
+  marqueeAnim =
+    el.getAnimations().find((a: Animation) => (a as CSSAnimation).animationName === 'home-experience-marquee') ??
+    null
+}
+
 onMounted(() => {
   nextTick(() => {
     syncHeadingLine2Width()
@@ -28,10 +59,13 @@ onMounted(() => {
     if (line1Ref.value) headingResizeObserver.observe(line1Ref.value)
     window.addEventListener('resize', syncHeadingLine2Width, { passive: true })
     document.fonts?.ready.then(syncHeadingLine2Width)
+    bindMarqueeAnimation()
   })
 })
 
 onUnmounted(() => {
+  cancelAnimationFrame(rateRaf)
+  marqueeAnim = null
   headingResizeObserver?.disconnect()
   window.removeEventListener('resize', syncHeadingLine2Width)
 })
@@ -53,8 +87,14 @@ onUnmounted(() => {
             </p>
           </div>
         </div>
-        <div class="home-experience__carousel-viewport" role="region" aria-label="Experience services">
-          <div class="home-experience__marquee-track">
+        <div
+          class="home-experience__carousel-viewport"
+          role="region"
+          aria-label="Experience services"
+          @pointerenter="easeMarquee(0)"
+          @pointerleave="easeMarquee(1)"
+        >
+          <div ref="trackRef" class="home-experience__marquee-track">
             <div
               v-for="(tile, index) in marqueeTiles"
               :key="`${tile.title}-${index}`"
