@@ -25,6 +25,7 @@ public class AppProperties {
     private Admin admin = new Admin();
     private RateLimit rateLimit = new RateLimit();
     private Uploads uploads = new Uploads();
+    private Wordpress wordpress = new Wordpress();
 
     @Getter
     @Setter
@@ -114,5 +115,20 @@ public class AppProperties {
     public static class Admin {
         private String email = "admin@stwmovers.com";
         private String password = "Admin@12345";
+    }
+
+    @Getter
+    @Setter
+    public static class Wordpress {
+        /** Headless WordPress base URL (no trailing slash). */
+        private String baseUrl = "https://cms.stwmovers.com";
+        /** Public marketing site URL for canonical / Open Graph rewrites. */
+        private String publicSiteUrl = "https://stwmovers.com";
+        /** Path prefix on the Nuxt site for blog articles. */
+        private String blogPathPrefix = "/blogs";
+        /** Cache TTL for blog list and detail responses. */
+        private java.time.Duration cacheTtl = java.time.Duration.ofMinutes(15);
+        private int connectTimeoutMs = 3000;
+        private int readTimeoutMs = 15000;
     }
 }

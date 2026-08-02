@@ -11,7 +11,7 @@ usePageSeo({
   path: routes.blogs,
 })
 
-const { data: posts, pending, error } = await useWpPosts({ perPage: 12 })
+const { data: posts, pending, error } = await useBlogPosts({ perPage: 12 })
 </script>
 
 <template>

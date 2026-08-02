@@ -88,6 +88,13 @@ app:
   uploads:
     cars-dir: ${CAR_UPLOADS_DIR:uploads/cars}
     tours-dir: ${TOUR_UPLOADS_DIR:uploads/tours}
+  wordpress:
+    base-url: ${WORDPRESS_BASE_URL:https://cms.stwmovers.com}
+    public-site-url: ${PUBLIC_SITE_URL:https://stwmovers.com}
+    blog-path-prefix: ${BLOG_PATH_PREFIX:/blogs}
+    cache-ttl: ${BLOG_CACHE_TTL:PT15M}
+    connect-timeout-ms: ${WORDPRESS_CONNECT_TIMEOUT_MS:3000}
+    read-timeout-ms: ${WORDPRESS_READ_TIMEOUT_MS:15000}
 
 management:
   endpoints:
