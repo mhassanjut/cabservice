@@ -51,8 +51,8 @@ public class SmtpEmailSender implements EmailSender {
             List<EmailInlineImage> inlineImages) {
         MimeMessage message = mailSender.createMimeMessage();
         try {
-            boolean multipart = hasContent(attachments) || hasContent(inlineImages);
-            MimeMessageHelper helper = new MimeMessageHelper(message, multipart, "UTF-8");
+            // Multipart is required for plain+HTML alternatives, and for inline/attached content.
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             if (!fromAddress.isBlank()) {
                 helper.setFrom(fromAddress);
             }
@@ -79,9 +79,5 @@ public class SmtpEmailSender implements EmailSender {
         } catch (Exception e) {
             throw new IllegalStateException("Failed to send email to " + to, e);
         }
-    }
-
-    private static boolean hasContent(List<?> items) {
-        return items != null && !items.isEmpty();
     }
 }

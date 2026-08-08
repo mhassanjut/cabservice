@@ -34,6 +34,7 @@ public class AppProperties {
         private String publicUrl = "https://stwmovers.com";
         private String contactPhoneDisplay = "+34 627 408 522";
         private String contactEmail = "fleetvtc2025@gmail.com";
+        private String fleetAlertEmail = "fleetvtc2025@gmail.com";
         private String contactAddress = "Carrer de Rocafort, 20, Eixample, 08015 Barcelona, Spain";
         private String whatsappNumber = "34627408522";
     }

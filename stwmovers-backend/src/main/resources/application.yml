@@ -99,6 +99,7 @@ app:
     public-url: ${PUBLIC_SITE_URL:https://stwmovers.com}
     contact-phone-display: ${CONTACT_PHONE_DISPLAY:+34 627 408 522}
     contact-email: ${CONTACT_EMAIL:fleetvtc2025@gmail.com}
+    fleet-alert-email: ${FLEET_ALERT_EMAIL:fleetvtc2025@gmail.com}
     contact-address: ${CONTACT_ADDRESS:Carrer de Rocafort, 20, Eixample, 08015 Barcelona, Spain}
     whatsapp-number: ${WHATSAPP_NUMBER:34627408522}
 

@@ -12,6 +12,7 @@ import com.stwmovers.taxi.domain.entity.Booking;
 import com.stwmovers.taxi.domain.entity.Car;
 import com.stwmovers.taxi.domain.entity.Tour;
 import com.stwmovers.taxi.domain.entity.User;
+import com.stwmovers.taxi.domain.enums.BookingStatus;
 import com.stwmovers.taxi.domain.enums.RideType;
 
 public final class BookingEmailSupport {
@@ -135,5 +136,45 @@ public final class BookingEmailSupport {
 
     public static String whatsappUrl(String whatsappNumber) {
         return "https://wa.me/" + whatsappNumber;
+    }
+
+    public static String displayValue(String value) {
+        return value == null || value.isBlank() ? "—" : value.trim();
+    }
+
+    public static String formatPassengerCount(Integer passengerCount) {
+        if (passengerCount == null) {
+            return "—";
+        }
+        return String.valueOf(passengerCount);
+    }
+
+    public static String formatCoordinates(Double lat, Double lng) {
+        if (lat == null || lng == null) {
+            return "—";
+        }
+        return String.format(Locale.UK, "%.6f, %.6f", lat, lng);
+    }
+
+    public static String formatYesNo(boolean value) {
+        return value ? "Yes" : "No";
+    }
+
+    public static String bookingStatusLabel(BookingStatus status) {
+        if (status == null) {
+            return "—";
+        }
+        return switch (status) {
+            case CREATED -> "Created";
+            case OTP_PENDING -> "OTP pending";
+            case PAYMENT_PENDING -> "Payment pending";
+            case CONFIRMED -> "Confirmed";
+            case DRIVER_ASSIGNED -> "Driver assigned";
+            case DRIVER_ACCEPTED -> "Driver accepted";
+            case IN_PROGRESS -> "In progress";
+            case COMPLETED -> "Completed";
+            case CANCELLED -> "Cancelled";
+            case REFUNDED -> "Refunded";
+        };
     }
 }

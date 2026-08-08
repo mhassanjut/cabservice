@@ -59,5 +59,6 @@ app:
     public-url: http://localhost:3000
     contact-phone-display: +34 627 408 522
     contact-email: fleetvtc2025@gmail.com
+    fleet-alert-email: fleetvtc2025@gmail.com
     contact-address: Carrer de Rocafort, 20, Eixample, 08015 Barcelona, Spain
     whatsapp-number: 34627408522
