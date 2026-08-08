@@ -23,6 +23,8 @@
     "@imgly/background-removal-node": "^1.4.5",
     "@nuxt/image": "^2.0.0",
     "@pinia/nuxt": "^0.6.1",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.2.1",
     "libphonenumber-js": "^1.13.9",
     "nuxt": "^3.13.0",
     "ofetch": "^1.4.1",

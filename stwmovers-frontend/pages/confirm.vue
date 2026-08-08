@@ -16,6 +16,9 @@ const route = useRoute()
 const booking = useBookingStore()
 const auth = useAuthStore()
 const toast = useToastStore()
+const { downloading: receiptDownloading, download: downloadReceipt } = useBookingReceipt()
+
+const receiptEl = ref<HTMLElement | null>(null)
 
 const data = ref<BookingDto | null>(null)
 const googleLoading = ref(false)
@@ -143,6 +146,15 @@ const newRide = () => {
   booking.clear()
   navigateTo(routes.home, { replace: true })
 }
+
+const onDownloadReceipt = async () => {
+  if (!data.value) return
+  try {
+    await downloadReceipt(receiptEl.value, data.value)
+  } catch {
+    toast.show('Could not generate your receipt. Please try again.', 'error')
+  }
+}
 </script>
 
 <template>
@@ -203,6 +215,16 @@ const newRide = () => {
               <i class="fa-solid fa-list" aria-hidden="true" />
               My bookings
             </NuxtLink>
+            <button
+              v-if="data"
+              class="confirm-hero__btn confirm-hero__btn--outline"
+              type="button"
+              :disabled="receiptDownloading"
+              @click="onDownloadReceipt"
+            >
+              <i class="fa-solid fa-file-arrow-down" aria-hidden="true" />
+              {{ receiptDownloading ? 'Preparing…' : 'Download receipt' }}
+            </button>
             <button class="confirm-hero__btn confirm-hero__btn--gold" type="button" @click="newRide">
               Book another ride
               <i class="fa-solid fa-arrow-right" aria-hidden="true" />
@@ -309,5 +331,9 @@ const newRide = () => {
     </div>
 
     <LoadingOverlay :show="googleLoading" label="Signing in with Google…" />
+
+    <div v-if="data" ref="receiptEl" class="confirm-receipt-render" aria-hidden="true">
+      <BookingReceiptDocument :booking="data" />
+    </div>
   </div>
 </template>

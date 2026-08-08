@@ -2100,6 +2100,11 @@
   transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
+.confirm-hero__btn:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
 .confirm-hero__btn--gold {
   background: var(--bk-gold);
   color: #fff;
@@ -2115,6 +2120,14 @@
   border: 1px solid var(--bk-border);
   background: var(--bk-surface);
   color: var(--bk-text);
+}
+
+.confirm-receipt-render {
+  position: fixed;
+  left: -9999px;
+  top: 0;
+  z-index: -1;
+  pointer-events: none;
 }
 
 @media (hover: hover) and (pointer: fine) {
