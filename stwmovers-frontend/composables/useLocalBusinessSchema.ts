@@ -1,3 +1,5 @@
+import { siteConfig } from '~/config/site'
+
 export function useLocalBusinessSchema() {
   const json = {
     '@context': 'https://schema.org',
@@ -13,14 +15,11 @@ export function useLocalBusinessSchema() {
         description:
           'STW Movers is a premium airport transfer and chauffeur service company providing reliable private transportation, executive travel, and airport transfers across Barcelona, Girona, and Tarragona.',
         email: 'info@stwmovers.com',
-        telephone: '+34627408522',
+        telephone: siteConfig.contactPhone,
         priceRange: '€€ - €€€',
         address: {
           '@type': 'PostalAddress',
-          streetAddress: 'Carrer Rocafort #20 bj 2',
-          addressLocality: 'Barcelona',
-          postalCode: '08015',
-          addressCountry: 'ES',
+          ...siteConfig.contactAddressPostal,
         },
         geo: {
           '@type': 'GeoCoordinates',
@@ -60,7 +59,7 @@ export function useLocalBusinessSchema() {
         availableLanguage: ['English', 'Spanish'],
         contactPoint: {
           '@type': 'ContactPoint',
-          telephone: '+34627408522',
+          telephone: siteConfig.contactPhone,
           contactType: 'Customer Service',
           availableLanguage: ['English', 'Spanish'],
         },
@@ -80,15 +79,12 @@ export function useLocalBusinessSchema() {
         '@id': 'https://stwmovers.com/#localbusiness',
         name: 'STW Movers',
         url: 'https://stwmovers.com/',
-        telephone: '+34627408522',
+        telephone: siteConfig.contactPhone,
         email: 'info@stwmovers.com',
         priceRange: '€€ - €€€',
         address: {
           '@type': 'PostalAddress',
-          streetAddress: 'Carrer Rocafort #20 bj 2',
-          addressLocality: 'Barcelona',
-          postalCode: '08015',
-          addressCountry: 'ES',
+          ...siteConfig.contactAddressPostal,
         },
         geo: {
           '@type': 'GeoCoordinates',

@@ -1,3 +1,5 @@
+import { siteConfig } from './site'
+
 export const seoDefaults = {
   brandName: 'STW Movers',
   defaultTitle: 'Barcelona Airport Transfer & Executive Chauffeur Service',
@@ -257,7 +259,7 @@ export const seoSections = {
           },
           {
             q: 'Where can I get help if I cannot find my driver?',
-            a: 'Use the driver contact shared before pickup, message us on WhatsApp, or call the concierge desk at +34 632 047 888. For arrivals, your chauffeur waits in the agreed meeting point with a name board.',
+            a: `Use the driver contact shared before pickup, message us on WhatsApp, or call the concierge desk at ${siteConfig.contactPhoneDisplay}. For arrivals, your chauffeur waits in the agreed meeting point with a name board.`,
           },
         ],
       },

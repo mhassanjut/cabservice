@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { siteConfig } from '~/config/site'
 import { homeAnchors, routes } from '~/constants/routes'
+import { buildWhatsappUrl } from '~/utils/whatsapp'
+
+const whatsappHref = buildWhatsappUrl({
+  phone: siteConfig.whatsappNumber,
+  text: siteConfig.whatsappDefaultMessage,
+})
 </script>
 
 <template>
@@ -13,7 +19,7 @@ import { homeAnchors, routes } from '~/constants/routes'
           across Barcelona and Spain.
         </p>
         <div class="site-footer__social">
-          <a href="https://wa.me/34632047888" rel="noopener noreferrer" target="_blank" aria-label="WhatsApp">
+          <a :href="whatsappHref" rel="noopener noreferrer" target="_blank" aria-label="WhatsApp">
             <i class="fa-brands fa-whatsapp" aria-hidden="true" />
           </a>
           <a :href="`mailto:${siteConfig.contactEmail}`" aria-label="Email">
@@ -52,7 +58,7 @@ import { homeAnchors, routes } from '~/constants/routes'
     <div class="site-footer__rule" aria-hidden="true" />
     <div class="site-footer__legal">
       <span>© {{ new Date().getFullYear() }} STW Movers. All rights reserved.</span>
-      <span>Barcelona, Spain · VAT ES-B00000000</span>
+      <span>{{ siteConfig.contactAddressDisplay }} · VAT ES-B00000000</span>
     </div>
   </footer>
 </template>

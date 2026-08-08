@@ -8,6 +8,9 @@ import { siteConfig } from '~/config/site'
 
 const contactEmail = siteConfig.contactEmail
 const contactMailto = `mailto:${contactEmail}`
+const contactPhoneDisplay = siteConfig.contactPhoneDisplay
+const contactTelHref = `tel:${siteConfig.contactPhone}`
+const contactWhatsappHref = `https://wa.me/${siteConfig.whatsappNumber}`
 
 export type ContactChannel = {
   /** Font Awesome icon class. */
@@ -56,8 +59,8 @@ export const contactChannels: ContactChannel[] = [
   {
     icon: 'fa-solid fa-phone',
     label: 'Call Chauffeur Dispatch',
-    value: '+34 632 047 888',
-    href: 'tel:+34632047888',
+    value: contactPhoneDisplay,
+    href: contactTelHref,
   },
   {
     icon: 'fa-solid fa-envelope',
@@ -68,8 +71,8 @@ export const contactChannels: ContactChannel[] = [
   {
     icon: 'fa-brands fa-whatsapp',
     label: 'Instant WhatsApp Support',
-    value: '+34 632 047 888',
-    href: 'https://wa.me/34632047888',
+    value: contactPhoneDisplay,
+    href: contactWhatsappHref,
     external: true,
   },
 ]
@@ -84,8 +87,8 @@ export const contactCards: ContactCard[] = [
   {
     icon: 'fa-solid fa-phone',
     title: 'Phone Support',
-    value: '+34 632 047 888',
-    href: 'tel:+34632047888',
+    value: contactPhoneDisplay,
+    href: contactTelHref,
     description:
       'Available 24/7 for immediate assistance, flight delay changes, or urgent itinerary modifications.',
   },
@@ -100,8 +103,8 @@ export const contactCards: ContactCard[] = [
   {
     icon: 'fa-brands fa-whatsapp',
     title: 'WhatsApp Booking',
-    value: '+34 632 047 888',
-    href: 'https://wa.me/34632047888',
+    value: contactPhoneDisplay,
+    href: contactWhatsappHref,
     external: true,
     description:
       'Quick, seamless messaging for immediate quote checks, driver tracking links, and real-time support on the go.',

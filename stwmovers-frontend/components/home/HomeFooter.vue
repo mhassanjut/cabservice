@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { siteConfig } from '~/config/site'
 import { homeAnchors, routes } from '~/constants/routes'
 </script>
 
@@ -40,7 +41,7 @@ import { homeAnchors, routes } from '~/constants/routes'
         </div>
       </div>
       <div class="home-footer__bar">
-        <p style="margin: 0">Barcelona, Spain · VAT ES-B00000000</p>
+        <p style="margin: 0">{{ siteConfig.contactAddressDisplay }} · VAT ES-B00000000</p>
         <p style="margin: 0">© {{ new Date().getFullYear() }} STW Movers. All rights reserved.</p>
         <NuxtLink class="home-footer__back" :to="{ hash: '#main-content' }" :prefetch="false">
           Back to top
