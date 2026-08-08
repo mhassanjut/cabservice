@@ -68,5 +68,5 @@ export function getReceiptVehicleLabel(booking: BookingDto) {
 }
 
 export function getReceiptFilename(reference: string) {
-  return `STW-Movers-Receipt-${reference}.pdf`
+  return `${reference}-Receipt.pdf`
 }

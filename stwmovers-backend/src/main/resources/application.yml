@@ -95,6 +95,12 @@ app:
     cache-ttl: ${BLOG_CACHE_TTL:PT15M}
     connect-timeout-ms: ${WORDPRESS_CONNECT_TIMEOUT_MS:3000}
     read-timeout-ms: ${WORDPRESS_READ_TIMEOUT_MS:15000}
+  site:
+    public-url: ${PUBLIC_SITE_URL:https://stwmovers.com}
+    contact-phone-display: ${CONTACT_PHONE_DISPLAY:+34 627 408 522}
+    contact-email: ${CONTACT_EMAIL:fleetvtc2025@gmail.com}
+    contact-address: ${CONTACT_ADDRESS:Carrer de Rocafort, 20, Eixample, 08015 Barcelona, Spain}
+    whatsapp-number: ${WHATSAPP_NUMBER:34627408522}
 
 management:
   endpoints:

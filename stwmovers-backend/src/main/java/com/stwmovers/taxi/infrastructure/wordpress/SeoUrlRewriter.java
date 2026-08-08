@@ -95,10 +95,11 @@ public class SeoUrlRewriter {
         if (value == null || value.isBlank()) {
             return value;
         }
-        if (value.equals(wp) || value.equals(stripTrailingSlash(wp))) {
+        if (normalizeUrl(value).equals(wp)) {
             return pub;
         }
-        return value.replace(wp, pub).replace(stripTrailingSlash(wp), pub);
+        String wpWithSlash = wp.endsWith("/") ? wp : wp + "/";
+        return value.replace(wpWithSlash, pub).replace(wp, pub);
     }
 
     static String normalizeUrl(String url) {

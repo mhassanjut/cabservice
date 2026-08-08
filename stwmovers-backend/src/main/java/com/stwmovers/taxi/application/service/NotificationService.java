@@ -1,21 +1,38 @@
 package com.stwmovers.taxi.application.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
+import com.stwmovers.taxi.application.port.EmailAttachment;
 import com.stwmovers.taxi.application.port.EmailSender;
 import com.stwmovers.taxi.domain.entity.Booking;
+import com.stwmovers.taxi.infrastructure.email.BookingConfirmationEmailBuilder;
+import com.stwmovers.taxi.infrastructure.email.BookingReceiptPdfGenerator;
+import com.stwmovers.taxi.infrastructure.email.BrandLogoProvider;
+import com.stwmovers.taxi.util.BookingEmailSupport;
 
 @Service
 public class NotificationService {
 
     private final EmailSender emailSender;
+    private final BookingConfirmationEmailBuilder confirmationEmailBuilder;
+    private final BookingReceiptPdfGenerator receiptPdfGenerator;
+    private final BrandLogoProvider brandLogoProvider;
 
-    public NotificationService(EmailSender emailSender) {
+    public NotificationService(
+            EmailSender emailSender,
+            BookingConfirmationEmailBuilder confirmationEmailBuilder,
+            BookingReceiptPdfGenerator receiptPdfGenerator,
+            BrandLogoProvider brandLogoProvider) {
         this.emailSender = emailSender;
+        this.confirmationEmailBuilder = confirmationEmailBuilder;
+        this.receiptPdfGenerator = receiptPdfGenerator;
+        this.brandLogoProvider = brandLogoProvider;
     }
 
     public void sendOtpEmail(String email, String otp, String bookingReference) {
-        String subject = "STW Movers - Verify your booking";
+        String subject = "STW Movers — Verify your booking";
         String body = """
                 Hello,
 
@@ -30,29 +47,24 @@ public class NotificationService {
     }
 
     public void sendBookingConfirmation(Booking booking) {
-        String email = booking.getGuestEmail() != null
-                ? booking.getGuestEmail()
-                : (booking.getUser() != null ? booking.getUser().getEmail() : null);
+        String email = BookingEmailSupport.resolveGuestEmail(booking);
         if (email == null) {
             return;
         }
-        String subject = "STW Movers - Booking confirmed " + booking.getBookingReference();
-        String body = """
-                Your booking %s has been confirmed.
 
-                Pickup: %s
-                Dropoff: %s
-                Scheduled: %s
-                Fare: %s EUR
+        byte[] receiptPdf = receiptPdfGenerator.generate(booking);
+        EmailAttachment attachment = new EmailAttachment(
+                BookingEmailSupport.receiptFilename(booking.getBookingReference()),
+                receiptPdf,
+                "application/pdf");
 
-                Thank you for choosing STW Movers.
-                """.formatted(
-                booking.getBookingReference(),
-                booking.getPickupAddress(),
-                booking.getDropoffAddress(),
-                booking.getScheduledAt(),
-                booking.getCalculatedFare() != null ? booking.getCalculatedFare() : "Custom request");
-        emailSender.send(email, subject, body);
+        emailSender.sendHtml(
+                email,
+                confirmationEmailBuilder.subject(booking),
+                confirmationEmailBuilder.buildHtml(booking),
+                confirmationEmailBuilder.buildText(booking),
+                List.of(attachment),
+                List.of(brandLogoProvider.emailInlineImage()));
     }
 
     public void sendPaymentSuccess(Booking booking) {

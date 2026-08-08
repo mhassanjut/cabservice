@@ -41,9 +41,6 @@ class FareCalculationServiceTest {
 
     @BeforeEach
     void setUp() {
-        when(fareSettingsService.getInCityBaseKm()).thenReturn(27);
-        when(fareSettingsService.getInCityExtraEurPerKm()).thenReturn(new BigDecimal("1"));
-
         fareCalculationService = new FareCalculationService(cityRoutePricingRepository, fareSettingsService);
 
         sedanId = UUID.randomUUID();
@@ -58,8 +55,14 @@ class FareCalculationServiceTest {
                 .build();
     }
 
+    private void stubDistanceFareSettings() {
+        when(fareSettingsService.getInCityBaseKm()).thenReturn(27);
+        when(fareSettingsService.getInCityExtraEurPerKm()).thenReturn(new BigDecimal("1"));
+    }
+
     @Test
     void withinBaseDistance_returnsBaseFare() {
+        stubDistanceFareSettings();
         FareCalculationContext context = FareCalculationContext.builder()
                 .distanceKm(new BigDecimal("20"))
                 .pickupCity("Barcelona")
@@ -73,6 +76,7 @@ class FareCalculationServiceTest {
 
     @Test
     void beyondBaseDistance_addsPerKmCharge() {
+        stubDistanceFareSettings();
         FareCalculationContext context = FareCalculationContext.builder()
                 .distanceKm(new BigDecimal("33"))
                 .pickupCity("Barcelona")
