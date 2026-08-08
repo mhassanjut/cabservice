@@ -1,8 +1,0 @@
-sudo -u postgres psql
-CREATE USER stwmovers WITH PASSWORD 'Complex@@##456';
-CREATE DATABASE stwmovers_db OWNER stwmovers;
-\c stwmovers_db
-GRANT ALL ON SCHEMA public TO stwmovers;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO stwmovers;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO stwmovers;
-\q

@@ -1,2 +1,0 @@
-mkdir -p /opt/stwmovers/backend/uploads/cars
-chown -R stwmovers:stwmovers /opt/stwmovers/backend/uploads
