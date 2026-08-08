@@ -32,6 +32,7 @@ import com.stwmovers.taxi.application.dto.request.RoutePricingBatchRequest;
 import com.stwmovers.taxi.application.dto.request.SetCustomFareRequest;
 import com.stwmovers.taxi.application.dto.request.UpdateBookingStatusRequest;
 import com.stwmovers.taxi.application.dto.request.UpdateDriverRequest;
+import com.stwmovers.taxi.application.dto.request.UpdateFareSettingsRequest;
 import com.stwmovers.taxi.application.dto.request.TourPricingBatchRequest;
 import com.stwmovers.taxi.application.dto.response.AdminBookingDetailResponse;
 import com.stwmovers.taxi.application.dto.response.AdminSettingsResponse;
@@ -100,6 +101,12 @@ public class AdminController {
     @GetMapping("/settings")
     public ResponseEntity<ApiResponse<AdminSettingsResponse>> settings() {
         return ResponseEntity.ok(ApiResponse.ok(adminDashboardService.getSettings()));
+    }
+
+    @PutMapping("/settings/fare")
+    public ResponseEntity<ApiResponse<AdminSettingsResponse>> updateFareSettings(
+            @Valid @RequestBody UpdateFareSettingsRequest request) {
+        return ResponseEntity.ok(ApiResponse.ok(adminDashboardService.updateFareSettings(request)));
     }
 
     @GetMapping("/cars")

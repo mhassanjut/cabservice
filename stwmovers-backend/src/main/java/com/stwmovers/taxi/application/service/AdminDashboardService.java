@@ -24,6 +24,7 @@ import com.stwmovers.taxi.application.dto.request.CityRoutePricingRequest;
 import com.stwmovers.taxi.application.dto.request.CreateDriverUserRequest;
 import com.stwmovers.taxi.application.dto.request.RoutePricingBatchRequest;
 import com.stwmovers.taxi.application.dto.request.UpdateDriverRequest;
+import com.stwmovers.taxi.application.dto.request.UpdateFareSettingsRequest;
 import com.stwmovers.taxi.application.dto.response.AdminSettingsResponse;
 import com.stwmovers.taxi.application.dto.response.BookingResponse;
 import com.stwmovers.taxi.application.dto.response.CityListResponse;
@@ -87,6 +88,7 @@ public class AdminDashboardService {
     private final CarRepository carRepository;
     private final PasswordEncoder passwordEncoder;
     private final AppProperties appProperties;
+    private final FareSettingsService fareSettingsService;
 
     public AdminDashboardService(
             BookingRepository bookingRepository,
@@ -98,7 +100,8 @@ public class AdminDashboardService {
             PickupCityRepository pickupCityRepository,
             CarRepository carRepository,
             PasswordEncoder passwordEncoder,
-            AppProperties appProperties) {
+            AppProperties appProperties,
+            FareSettingsService fareSettingsService) {
         this.bookingRepository = bookingRepository;
         this.driverRepository = driverRepository;
         this.paymentRepository = paymentRepository;
@@ -109,6 +112,7 @@ public class AdminDashboardService {
         this.carRepository = carRepository;
         this.passwordEncoder = passwordEncoder;
         this.appProperties = appProperties;
+        this.fareSettingsService = fareSettingsService;
     }
 
     @Transactional(readOnly = true)
@@ -486,12 +490,17 @@ public class AdminDashboardService {
 
     @Transactional(readOnly = true)
     public AdminSettingsResponse getSettings() {
-        AppProperties.Fare fare = appProperties.getFare();
         return AdminSettingsResponse.builder()
-                .inCityBaseKm(fare.getInCityBaseKm())
-                .inCityExtraEurPerKm(fare.getInCityExtraEurPerKm())
+                .inCityBaseKm(fareSettingsService.getInCityBaseKm())
+                .inCityExtraEurPerKm(fareSettingsService.getInCityExtraEurPerKm())
                 .adminEmail(appProperties.getAdmin().getEmail())
                 .build();
+    }
+
+    @Transactional
+    public AdminSettingsResponse updateFareSettings(UpdateFareSettingsRequest request) {
+        fareSettingsService.updateSettings(request);
+        return getSettings();
     }
 
     public boolean isDriverBusy(UUID driverId) {

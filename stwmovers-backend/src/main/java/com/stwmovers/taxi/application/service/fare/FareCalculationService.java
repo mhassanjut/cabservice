@@ -6,7 +6,7 @@ import java.math.RoundingMode;
 import org.springframework.stereotype.Service;
 
 import com.stwmovers.taxi.application.port.FareCalculationContext;
-import com.stwmovers.taxi.config.AppProperties;
+import com.stwmovers.taxi.application.service.FareSettingsService;
 import com.stwmovers.taxi.domain.entity.Car;
 import com.stwmovers.taxi.domain.entity.CityRoutePricing;
 import com.stwmovers.taxi.domain.repository.CityRoutePricingRepository;
@@ -17,13 +17,13 @@ import com.stwmovers.taxi.util.CityNameUtils;
 public class FareCalculationService {
 
     private final CityRoutePricingRepository cityRoutePricingRepository;
-    private final AppProperties appProperties;
+    private final FareSettingsService fareSettingsService;
 
     public FareCalculationService(
             CityRoutePricingRepository cityRoutePricingRepository,
-            AppProperties appProperties) {
+            FareSettingsService fareSettingsService) {
         this.cityRoutePricingRepository = cityRoutePricingRepository;
-        this.appProperties = appProperties;
+        this.fareSettingsService = fareSettingsService;
     }
 
     public BigDecimal calculateFare(Car car, FareCalculationContext context) {
@@ -45,8 +45,8 @@ public class FareCalculationService {
 
     private BigDecimal calculateDistanceFare(Car car, BigDecimal distanceKm) {
         BigDecimal baseFare = car.getBaseFare();
-        int baseKm = appProperties.getFare().getInCityBaseKm();
-        BigDecimal extraEurPerKm = appProperties.getFare().getInCityExtraEurPerKm();
+        int baseKm = fareSettingsService.getInCityBaseKm();
+        BigDecimal extraEurPerKm = fareSettingsService.getInCityExtraEurPerKm();
 
         if (distanceKm.compareTo(BigDecimal.valueOf(baseKm)) <= 0) {
             return baseFare.setScale(2, RoundingMode.HALF_UP);

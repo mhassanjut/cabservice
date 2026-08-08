@@ -27,7 +27,7 @@ onMounted(async () => {
       <h3 class="font-serif" style="margin: 24px 0 16px">Admin account</h3>
       <p>Primary admin email: <strong>{{ settings.adminEmail }}</strong></p>
       <p class="help" style="margin-top: 12px">
-        Fare rules are configured server-side via environment variables. Contact engineering to change pricing logic.
+        Distance fare rules can be updated on the Routes &amp; pricing page. Application defaults still apply if no saved settings exist.
       </p>
     </section>
   </AdminShell>

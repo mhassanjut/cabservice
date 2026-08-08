@@ -17,7 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.stwmovers.taxi.application.port.FareCalculationContext;
-import com.stwmovers.taxi.config.AppProperties;
+import com.stwmovers.taxi.application.service.FareSettingsService;
 import com.stwmovers.taxi.domain.entity.Car;
 import com.stwmovers.taxi.domain.entity.CityRoutePricing;
 import com.stwmovers.taxi.domain.enums.BodyType;
@@ -32,19 +32,19 @@ class FareCalculationServiceTest {
     @Mock
     private CityRoutePricingRepository cityRoutePricingRepository;
 
+    @Mock
+    private FareSettingsService fareSettingsService;
+
     private FareCalculationService fareCalculationService;
     private Car sedan;
     private UUID sedanId;
 
     @BeforeEach
     void setUp() {
-        AppProperties appProperties = new AppProperties();
-        AppProperties.Fare fare = new AppProperties.Fare();
-        fare.setInCityBaseKm(27);
-        fare.setInCityExtraEurPerKm(new BigDecimal("1"));
-        appProperties.setFare(fare);
+        when(fareSettingsService.getInCityBaseKm()).thenReturn(27);
+        when(fareSettingsService.getInCityExtraEurPerKm()).thenReturn(new BigDecimal("1"));
 
-        fareCalculationService = new FareCalculationService(cityRoutePricingRepository, appProperties);
+        fareCalculationService = new FareCalculationService(cityRoutePricingRepository, fareSettingsService);
 
         sedanId = UUID.randomUUID();
         sedan = Car.builder()

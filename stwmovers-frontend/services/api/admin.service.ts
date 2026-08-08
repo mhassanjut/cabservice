@@ -9,6 +9,7 @@ import type {
   AdminDriverDto,
 
   AdminSettingsDto,
+  UpdateFareSettingsDto,
 
   AdminTourDto,
 
@@ -67,6 +68,9 @@ export const adminService = {
 
 
   settings: () => api<AdminSettingsDto>('/api/v1/admin/settings', { auth: true }),
+
+  updateFareSettings: (body: UpdateFareSettingsDto) =>
+    api<AdminSettingsDto>('/api/v1/admin/settings/fare', { method: 'PUT', body, auth: true }),
 
 
 

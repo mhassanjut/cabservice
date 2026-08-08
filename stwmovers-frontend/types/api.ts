@@ -284,6 +284,11 @@ export type AdminSettingsDto = {
   adminEmail: string
 }
 
+export type UpdateFareSettingsDto = {
+  inCityBaseKm: number
+  inCityExtraEurPerKm: number
+}
+
 export type CityListDto = { cities: string[] }
 
 export type AdminBookingQuery = {

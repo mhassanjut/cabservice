@@ -14,7 +14,9 @@ const destinationCities = ref<DestinationCityDto[]>([])
 const cars = ref<AdminCarDto[]>([])
 const loading = ref(true)
 const saving = ref(false)
+const savingFareSettings = ref(false)
 const formError = ref('')
+const fareSettingsError = ref('')
 const newDestination = ref('')
 const newPickupCity = ref('')
 
@@ -25,6 +27,17 @@ const form = reactive({
 })
 
 const carPrices = ref<Record<string, string>>({})
+
+const fareSettings = reactive({
+  inCityBaseKm: '27',
+  inCityExtraEurPerKm: '1',
+})
+
+const fareSettingsSummary = computed(() => {
+  const baseKm = Number.parseInt(fareSettings.inCityBaseKm, 10) || 0
+  const extraRate = Number.parseFloat(fareSettings.inCityExtraEurPerKm) || 0
+  return { baseKm, extraRate }
+})
 
 const roundPrice = (value: number) => Math.round(value * 100) / 100
 
@@ -78,14 +91,21 @@ const loadRoutePrices = async () => {
 
 const load = async () => {
   loading.value = true
-  const [pricing, pickups, destinations, fleet] = await Promise.allSettled([
+  const [pricing, pickups, destinations, fleet, settings] = await Promise.allSettled([
     adminService.routePricing(),
     adminService.allPickupCities(),
     adminService.destinationCities(),
     adminService.cars(),
+    adminService.settings(),
   ])
 
   if (pricing.status === 'fulfilled') routes.value = pricing.value
+  if (settings.status === 'fulfilled') {
+    fareSettings.inCityBaseKm = String(settings.value.inCityBaseKm)
+    fareSettings.inCityExtraEurPerKm = String(settings.value.inCityExtraEurPerKm)
+  } else {
+    toast.show('Could not load distance fare settings.', 'error')
+  }
   if (pickups.status === 'fulfilled') {
     pickupCities.value = pickups.value
   } else {
@@ -135,6 +155,33 @@ watch(activePickupCities, (list: PickupCityDto[]) => {
     form.fromCity = list[0].name
   }
 })
+
+const saveFareSettings = async () => {
+  fareSettingsError.value = ''
+  const inCityBaseKm = Number.parseInt(fareSettings.inCityBaseKm, 10)
+  const inCityExtraEurPerKm = roundPrice(Number.parseFloat(fareSettings.inCityExtraEurPerKm))
+
+  if (!Number.isFinite(inCityBaseKm) || inCityBaseKm < 1 || inCityBaseKm > 1000) {
+    fareSettingsError.value = 'Base distance must be between 1 and 1000 km.'
+    return
+  }
+  if (!Number.isFinite(inCityExtraEurPerKm) || inCityExtraEurPerKm < 0.01 || inCityExtraEurPerKm > 100) {
+    fareSettingsError.value = 'Extra rate must be between €0.01 and €100 per km.'
+    return
+  }
+
+  savingFareSettings.value = true
+  try {
+    const updated = await adminService.updateFareSettings({ inCityBaseKm, inCityExtraEurPerKm })
+    fareSettings.inCityBaseKm = String(updated.inCityBaseKm)
+    fareSettings.inCityExtraEurPerKm = String(updated.inCityExtraEurPerKm)
+    toast.show('Distance fare settings saved.', 'success')
+  } catch {
+    toast.show('Could not save distance fare settings.', 'error')
+  } finally {
+    savingFareSettings.value = false
+  }
+}
 
 const saveRoute = async () => {
   formError.value = ''
@@ -269,14 +316,58 @@ const removePickupCity = async (city: PickupCityDto) => {
     <div class="admin-stack">
       <AdminSectionHead
         title="Routes & pricing"
-        description="Set fixed route prices per vehicle. When no route price matches, fares use base price + €1 per km beyond 27 km."
+        :description="`Set fixed route prices per vehicle. When no route price matches, fares use base price + €${fareSettingsSummary.extraRate} per km beyond ${fareSettingsSummary.baseKm} km.`"
       />
+
+      <form class="card card--elevated admin-pricing-form" style="padding: 24px; margin-bottom: 24px" @submit.prevent="saveFareSettings">
+        <h3 class="font-serif" style="margin: 0 0 8px">Distance-based fare formula</h3>
+        <p class="help" style="margin: 0 0 16px">
+          Used when no fixed route price matches. Vehicle base fare applies up to the base distance; each additional km is charged at the extra rate.
+        </p>
+        <div class="admin-pricing-form__route">
+          <label class="admin-field">
+            <span class="admin-field__label">Base distance (km)</span>
+            <input
+              v-model="fareSettings.inCityBaseKm"
+              class="input"
+              type="number"
+              min="1"
+              max="1000"
+              step="1"
+              inputmode="numeric"
+              required
+            />
+          </label>
+          <label class="admin-field">
+            <span class="admin-field__label">Extra rate (€ / km)</span>
+            <input
+              v-model="fareSettings.inCityExtraEurPerKm"
+              class="input"
+              type="number"
+              min="0.01"
+              max="100"
+              step="0.01"
+              inputmode="decimal"
+              required
+            />
+          </label>
+        </div>
+        <p class="help" style="margin: 0 0 16px">
+          Example: base fare €70, {{ fareSettingsSummary.baseKm }} km included, trip is 33 km → €70 + (6 × €{{ fareSettingsSummary.extraRate }}) = €{{ (70 + 6 * fareSettingsSummary.extraRate).toFixed(2) }}.
+        </p>
+        <p v-if="fareSettingsError" class="err" role="alert">{{ fareSettingsError }}</p>
+        <div class="admin-pricing-form__actions">
+          <button type="submit" class="btn btn--solid-gold" :disabled="savingFareSettings">
+            {{ savingFareSettings ? 'Saving…' : 'Save distance formula' }}
+          </button>
+        </div>
+      </form>
 
       <article class="card card--elevated admin-pricing-form" style="padding: 24px; margin-bottom: 24px">
         <h3 class="font-serif" style="margin: 0 0 8px">Pricing priority</h3>
         <p class="help" style="margin: 0 0 16px">
           <strong>Route price</strong> (pickup city, destination city, and vehicle) →
-          <strong>Distance formula</strong> (base fare up to 27 km, then +€1/km).
+          <strong>Distance formula</strong> (base fare up to {{ fareSettingsSummary.baseKm }} km, then +€{{ fareSettingsSummary.extraRate }}/km).
         </p>
 
         <h3 class="font-serif" style="margin: 0 0 12px">Pickup cities</h3>
