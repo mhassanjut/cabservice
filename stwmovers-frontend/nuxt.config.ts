@@ -114,7 +114,20 @@ export default defineNuxtConfig({
         // Font Awesome: loaded async via plugins/fontawesome.client.ts (non-blocking).
         // Noscript fallback below for users without JS.
         { rel: 'preconnect', href: 'https://cdnjs.cloudflare.com', crossorigin: '' },
+        {
+          rel: 'icon',
+          type: 'image/svg+xml',
+          href: '/favicon-light.svg',
+          media: '(prefers-color-scheme: light)',
+        },
+        {
+          rel: 'icon',
+          type: 'image/svg+xml',
+          href: '/favicon-dark.svg',
+          media: '(prefers-color-scheme: dark)',
+        },
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.svg' },
       ],
       noscript: [
         {
