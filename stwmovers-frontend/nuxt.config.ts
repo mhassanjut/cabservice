@@ -68,7 +68,8 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || siteConfig.siteUrl,
+      // Override at build time with NUXT_PUBLIC_SITE_URL (e.g. staging vs production).
+      siteUrl: siteConfig.siteUrl,
       apiBaseUrl: siteConfig.apiBaseUrl,
       wordpressUrl: siteConfig.wordpressUrl,
       externalTourUrl: siteConfig.externalTourUrl,
