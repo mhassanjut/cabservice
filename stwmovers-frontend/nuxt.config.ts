@@ -1,3 +1,5 @@
+// Staging CI/CD test trigger — safe to remove after verification
+
 import { siteConfig } from './config/site'
 import { seoDefaults } from './config/seo'
 
