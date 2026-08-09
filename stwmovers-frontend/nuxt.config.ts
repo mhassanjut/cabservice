@@ -68,7 +68,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      siteUrl: siteConfig.siteUrl,
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || siteConfig.siteUrl,
       apiBaseUrl: siteConfig.apiBaseUrl,
       wordpressUrl: siteConfig.wordpressUrl,
       externalTourUrl: siteConfig.externalTourUrl,

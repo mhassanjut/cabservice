@@ -49,6 +49,7 @@ jobs:
           npm ci
           npm run build
         env:
+          NUXT_PUBLIC_SITE_URL: ${{ secrets.NUXT_PUBLIC_SITE_URL }}
           NUXT_PUBLIC_API_BASE_URL: ${{ secrets.NUXT_PUBLIC_API_BASE_URL }}
           NUXT_PUBLIC_GOOGLE_MAPS_API_KEY: ${{ secrets.NUXT_PUBLIC_GOOGLE_MAPS_API_KEY }}
           NUXT_PUBLIC_GOOGLE_CLIENT_ID: ${{ secrets.NUXT_PUBLIC_GOOGLE_CLIENT_ID }}

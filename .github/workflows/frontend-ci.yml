@@ -2,12 +2,12 @@ name: Frontend CI
 
 on:
   push:
-    branches: [main, staging]
+    branches: [main]
     paths:
       - 'stwmovers-frontend/**'
       - '.github/workflows/frontend-*.yml'
   pull_request:
-    branches: [main, staging]
+    branches: [main]
     paths:
       - 'stwmovers-frontend/**'
       - '.github/workflows/frontend-*.yml'
@@ -45,6 +45,7 @@ jobs:
         if: github.event_name != 'push' || github.ref != 'refs/heads/main'
         run: npm run build
         env:
+          NUXT_PUBLIC_SITE_URL: https://stwmovers.com
           NUXT_PUBLIC_API_BASE_URL: https://api.stwmovers.com
           NUXT_PUBLIC_GOOGLE_MAPS_API_KEY: ci-placeholder
           NUXT_PUBLIC_GOOGLE_CLIENT_ID: ci-placeholder
@@ -70,6 +71,7 @@ jobs:
       - name: Build for production deploy
         run: npm run build
         env:
+          NUXT_PUBLIC_SITE_URL: ${{ secrets.NUXT_PUBLIC_SITE_URL }}
           NUXT_PUBLIC_API_BASE_URL: ${{ secrets.NUXT_PUBLIC_API_BASE_URL }}
           NUXT_PUBLIC_GOOGLE_MAPS_API_KEY: ${{ secrets.NUXT_PUBLIC_GOOGLE_MAPS_API_KEY }}
           NUXT_PUBLIC_GOOGLE_CLIENT_ID: ${{ secrets.NUXT_PUBLIC_GOOGLE_CLIENT_ID }}

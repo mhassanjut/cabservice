@@ -15,6 +15,8 @@ defineProps<{
   booking: BookingDto
 }>()
 
+const config = useRuntimeConfig()
+const siteUrl = (config.public.siteUrl as string) || siteConfig.siteUrl
 const issuedAt = formatReceiptShortDate(new Date().toISOString())
 </script>
 
@@ -118,7 +120,7 @@ const issuedAt = formatReceiptShortDate(new Date().toISOString())
       <div class="booking-receipt-doc__footer-contact">
         <p>{{ siteConfig.contactPhoneDisplay }}</p>
         <p>{{ siteConfig.contactEmail }}</p>
-        <p>{{ siteConfig.siteUrl.replace('https://', '') }}</p>
+        <p>{{ siteUrl.replace('https://', '') }}</p>
       </div>
     </footer>
   </article>
