@@ -2,12 +2,12 @@ name: Backend CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, staging]
     paths:
       - 'stwmovers-backend/**'
       - '.github/workflows/backend-*.yml'
   pull_request:
-    branches: [main]
+    branches: [main, staging]
     paths:
       - 'stwmovers-backend/**'
       - '.github/workflows/backend-*.yml'
@@ -31,7 +31,7 @@ jobs:
       - name: Build JAR
         run: mvn -B -DskipTests package
       - name: Upload JAR artifact
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging')
         uses: actions/upload-artifact@v4
         with:
           name: backend-jar
