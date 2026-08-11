@@ -117,6 +117,10 @@ export default defineNuxtConfig({
         // Font Awesome: loaded async via plugins/fontawesome.client.ts (non-blocking).
         // Noscript fallback below for users without JS.
         { rel: 'preconnect', href: 'https://cdnjs.cloudflare.com', crossorigin: '' },
+        // Crawlers (Google Search) prefer /favicon.ico and ≥48px PNG; SVG kept for modern browsers.
+        { rel: 'icon', href: '/favicon.ico', sizes: 'any' },
+        { rel: 'icon', type: 'image/png', sizes: '48x48', href: '/favicon-48.png' },
+        { rel: 'icon', type: 'image/png', sizes: '192x192', href: '/favicon-192.png' },
         {
           rel: 'icon',
           type: 'image/svg+xml',
@@ -130,7 +134,7 @@ export default defineNuxtConfig({
           media: '(prefers-color-scheme: dark)',
         },
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
-        { rel: 'apple-touch-icon', href: '/apple-touch-icon.svg' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
       ],
       noscript: [
         {

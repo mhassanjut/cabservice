@@ -9,9 +9,9 @@ export function useLocalBusinessSchema() {
         '@id': 'https://stwmovers.com/#organization',
         name: 'STW Movers',
         legalName: 'STW Movers',
-        url: 'https://stwmovers.com/',
-        logo: 'https://stwmovers.com/_nuxt/Logo.CAzUtKks.svg',
-        image: 'https://stwmovers.com/_nuxt/Logo.CAzUtKks.svg',
+        url: `${siteConfig.siteUrl}/`,
+        logo: `${siteConfig.siteUrl}/favicon-192.png`,
+        image: `${siteConfig.siteUrl}/favicon-192.png`,
         description:
           'STW Movers is a premium airport transfer and chauffeur service company providing reliable private transportation, executive travel, and airport transfers across Barcelona, Girona, and Tarragona.',
         email: 'info@stwmovers.com',
