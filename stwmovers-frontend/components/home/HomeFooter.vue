@@ -25,7 +25,7 @@ import { homeAnchors, routes } from '~/constants/routes'
         <div>
           <p class="home-footer__col-title">Company</p>
           <ul class="home-footer__list">
-            <li><NuxtLink :to="homeAnchors.contact" :prefetch="false">Contact</NuxtLink></li>
+            <li><NuxtLink :to="routes.contact">Contact</NuxtLink></li>
             <li><NuxtLink :to="routes.tours">Private Barcelona tours</NuxtLink></li>
             <li><NuxtLink :to="routes.blogs">Blogs</NuxtLink></li>
             <li><NuxtLink :to="routes.faq">FAQ</NuxtLink></li>

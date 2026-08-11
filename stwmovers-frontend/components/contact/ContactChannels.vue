@@ -3,7 +3,7 @@ import { contactCards, contactChannelsSection } from '~/data/contactContent'
 </script>
 
 <template>
-  <section class="contact-section contact-channels-section" aria-labelledby="contact-channels-heading">
+  <section id="contact-channels" class="contact-section contact-channels-section" aria-labelledby="contact-channels-heading">
     <div class="contact-container">
       <div class="contact-channels-section__header">
         <p class="contact-eyebrow">{{ contactChannelsSection.eyebrow }}</p>

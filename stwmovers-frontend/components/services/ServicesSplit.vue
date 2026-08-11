@@ -6,7 +6,7 @@ const props = defineProps<{ section: ServiceSplitSection }>()
 const headingId = `services-${props.section.id}-heading`
 const isReverse = props.section.imageSide === 'right'
 const outlineClass =
-  props.section.cta.variant === 'outline' ? 'services-btn--outline' : 'services-btn--gold'
+  props.section.cta?.variant === 'outline' ? 'services-btn--outline' : 'services-btn--gold'
 </script>
 
 <template>
@@ -32,7 +32,7 @@ const outlineClass =
         <ul v-if="section.highlights?.length" class="services-tags">
           <li v-for="tag in section.highlights" :key="tag" class="services-tag">{{ tag }}</li>
         </ul>
-        <div class="services-split__actions">
+        <div v-if="section.cta" class="services-split__actions">
           <NuxtLink
             :to="section.cta.href"
             :prefetch="false"

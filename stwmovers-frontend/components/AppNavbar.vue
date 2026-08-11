@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { homeAnchors, routes, PRIMARY_NAV_PATHS } from '~/constants/routes'
+import { routes, PRIMARY_NAV_PATHS } from '~/constants/routes'
 import logoUrl from '~/assets/icons/Logo.svg?url'
 
 const auth = useAuthStore()
@@ -80,15 +80,16 @@ const closeMenu = () => {
           <NuxtLink class="app-nav__link" to="/">Home</NuxtLink>
           <NuxtLink class="app-nav__link" to="/services">Services</NuxtLink>
           <NuxtLink class="app-nav__link" to="/about-us">About Us</NuxtLink>
+          <NuxtLink class="app-nav__link" to="/contact">Contact</NuxtLink>
           <NuxtLink class="app-nav__link" to="/journey">Journey</NuxtLink>
           <NuxtLink class="app-nav__link" to="/tours">Tours</NuxtLink>
         </nav>
 
         <div class="app-nav__actions">
           <AppUserMenu :mobile-sheet="isMobile" login-variant="outline" />
-          <a class="app-nav__journey-cta app-nav__action-btn" :href="homeAnchors.booking">
+          <NuxtLink class="app-nav__journey-cta app-nav__action-btn" :to="routes.journey">
             Book Your Journey
-          </a>
+          </NuxtLink>
           <button
             type="button"
             class="app-nav__burger"
@@ -128,6 +129,7 @@ const closeMenu = () => {
             <NuxtLink class="app-nav__drawer-link" :to="routes.home" @click="closeMenu">Home</NuxtLink>
             <NuxtLink class="app-nav__drawer-link" :to="routes.services" @click="closeMenu">Services</NuxtLink>
             <NuxtLink class="app-nav__drawer-link" :to="routes.aboutUs" @click="closeMenu">About Us</NuxtLink>
+            <NuxtLink class="app-nav__drawer-link" :to="routes.contact" @click="closeMenu">Contact</NuxtLink>
             <NuxtLink class="app-nav__drawer-link" :to="routes.journey" @click="closeMenu">Journey</NuxtLink>
             <NuxtLink class="app-nav__drawer-link" :to="routes.tours" @click="closeMenu">Tours</NuxtLink>
           </div>
@@ -154,13 +156,13 @@ const closeMenu = () => {
           >
             Your booking
           </NuxtLink>
-          <a
+          <NuxtLink
             class="app-nav__drawer-cta app-nav__drawer-cta--gold"
-            :href="homeAnchors.booking"
+            :to="routes.journey"
             @click="closeMenu"
           >
             Book Your Journey
-          </a>
+          </NuxtLink>
         </div>
       </nav>
     </div>

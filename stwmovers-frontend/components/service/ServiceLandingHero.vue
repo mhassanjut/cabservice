@@ -28,6 +28,7 @@ defineProps<{ page: ServiceLandingPage }>()
       <div class="services-hero__footer">
         <p class="services-hero__body">{{ page.hero.body }}</p>
         <NuxtLink
+          v-if="page.section.cta"
           :to="page.section.cta.href"
           :prefetch="false"
           class="services-btn services-btn--gold"

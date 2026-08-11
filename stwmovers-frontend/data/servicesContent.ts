@@ -17,7 +17,7 @@ export type ServiceSplitSection = {
   heading: string
   body: string
   highlights?: ServiceHighlight[]
-  cta: {
+  cta?: {
     label: string
     href: string
     variant: 'gold' | 'outline'
@@ -41,7 +41,7 @@ export const servicesHero = {
   title: 'Every Journey, Thoughtfully Planned.',
   body:
     "Whether you're arriving for business, catching a flight, or celebrating a special occasion, every journey is carefully planned to deliver comfort, reliability, and complete peace of mind.",
-  cta: { label: 'Book Your Journey', href: '/#booking-section' },
+  cta: { label: 'Book Your Journey', href: '/journey' },
   image: '/img/services/hero.png',
 } as const
 
@@ -66,7 +66,7 @@ export const servicesSplitSections: ServiceSplitSection[] = [
     body:
       'Enjoy a seamless arrival with professional meet & greet, real-time flight tracking, fixed pricing, and comfortable transfers to your destination.',
     highlights: ['Flight Monitoring', 'Meet & Greet', 'Fixed Pricing', '24/7 Availability'],
-    cta: { label: 'Book Airport Transfer', href: '/#booking-section', variant: 'gold' },
+    cta: { label: 'Book Airport Transfer', href: '/journey', variant: 'gold' },
   },
   {
     id: 'executive-business',
@@ -79,7 +79,7 @@ export const servicesSplitSections: ServiceSplitSection[] = [
     body:
       'Reliable chauffeur services for executives, meetings, conferences, and corporate travel, allowing you to focus on business while we handle the journey.',
     highlights: ['Executive Meetings', 'Conferences', 'Roadshows', 'Corporate Accounts'],
-    cta: { label: 'Open Corporate Account', href: '/#contact', variant: 'outline' },
+    cta: { label: 'Open Corporate Account', href: '/contact', variant: 'outline' },
   },
   {
     id: 'special-events',
@@ -91,7 +91,6 @@ export const servicesSplitSections: ServiceSplitSection[] = [
     heading: 'Special Events',
     body:
       "Whether it's a wedding, gala dinner, sporting event, or private celebration, arrive with elegance and complete confidence. Our premium fleet and pristine preparation ensure your event transport is spectacular.",
-    cta: { label: 'Plan Your Event', href: '/#contact', variant: 'gold' },
   },
 ]
 
@@ -180,6 +179,6 @@ export const servicesFinalCta = {
   heading: 'Ready To Plan Your Next Journey?',
   body: 'From airport arrivals to private experiences, every journey begins with a conversation.',
   image: '/img/services/cta.png',
-  primary: { label: 'Book Your Journey', href: '/#booking-section' },
-  secondary: { label: 'Contact Our Team', href: '/#contact' },
+  primary: { label: 'Book Your Journey', href: '/journey' },
+  secondary: { label: 'Contact Our Team', href: '/contact' },
 } as const

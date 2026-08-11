@@ -41,7 +41,7 @@ const whatsappHref = buildWhatsappUrl({
       <div>
         <p class="site-footer__col-title">Company</p>
         <ul class="site-footer__list">
-          <li><a :href="homeAnchors.contact">Contact</a></li>
+          <li><NuxtLink :to="routes.contact">Contact</NuxtLink></li>
           <li><NuxtLink :to="routes.confirm">Confirmation</NuxtLink></li>
           <li><NuxtLink :to="routes.tours">Private Barcelona tours</NuxtLink></li>
         </ul>

@@ -42,7 +42,7 @@ export const contactHero = {
   title: "We're Here To Plan Every Detail.",
   body:
     "Whether you're booking an airport transfer, executive travel, or a special occasion, our team is here to help you plan every detail with care.",
-  cta: { label: 'Request Quote Below', href: '#book-journey' },
+  cta: { label: 'Contact Our Team', href: '#contact-channels' },
   image: '/img/contact/hero.png',
 } as const
 
@@ -166,6 +166,6 @@ export const contactPromise = {
   heading: 'Every Journey Starts With A Conversation.',
   body:
     "Tell us where you're going, and we'll take care of every detail before you even arrive.",
-  cta: { label: 'Book Your Journey Now', href: '/#booking-section' },
+  cta: { label: 'Book Your Journey Now', href: '/journey' },
   image: '/img/contact/promise-bg.png',
 } as const

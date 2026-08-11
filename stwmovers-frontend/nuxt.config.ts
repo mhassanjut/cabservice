@@ -178,6 +178,7 @@ export default defineNuxtConfig({
         '/airport-transfer',
         '/executive-business-travel',
         '/chauffeur-service',
+        '/contact',
       ],
     },
   },
