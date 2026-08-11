@@ -7,9 +7,13 @@ import 'swiper/css/effect-fade'
 const HERO_SIZES = 'xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw'
 
 const HERO_SLIDES = [
-  { src: '/img/home/hero-1.webp', width: 1440, height: 780 },
-  { src: '/img/home/hero-2.webp', width: 1440, height: 820 },
-  { src: '/img/home/hero-3.webp', width: 1440, height: 760 },
+  { src: '/img/home/hero-1.webp', width: 1440, height: 810 },
+  { src: '/img/home/hero-2.webp', width: 1440, height: 810 },
+  { src: '/img/home/hero-3.webp', width: 1440, height: 810 },
+  { src: '/img/home/hero-4.webp', width: 1440, height: 810 },
+  { src: '/img/home/hero-5.webp', width: 1440, height: 810 },
+  { src: '/img/home/hero-6.webp', width: 1440, height: 810 },
+  { src: '/img/home/hero-7.webp', width: 1440, height: 810 },
 ] as const
 
 const swiperModules = [Autoplay, EffectFade]

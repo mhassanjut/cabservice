@@ -9,22 +9,49 @@ import sharp from 'sharp'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 
-/** @type {Array<{ input: string; output: string; maxWidth?: number }>} */
+/** @type {Array<{ input: string; output: string; maxWidth?: number; aspectRatio?: string }>} */
 const jobs = [
   {
-    input: 'public/img/home/_original/hero-1.png',
+    input: 'public/img/home/_original/hero-1.jpg',
     output: 'public/img/home/hero-1.webp',
     maxWidth: 1440,
+    aspectRatio: '16:9',
   },
   {
-    input: 'public/img/home/_original/hero-2.png',
+    input: 'public/img/home/_original/hero-2.jpg',
     output: 'public/img/home/hero-2.webp',
     maxWidth: 1440,
+    aspectRatio: '16:9',
   },
   {
-    input: 'public/img/home/_original/hero-3.png',
+    input: 'public/img/home/_original/hero-3.jpg',
     output: 'public/img/home/hero-3.webp',
     maxWidth: 1440,
+    aspectRatio: '16:9',
+  },
+  {
+    input: 'public/img/home/_original/hero-4.jpg',
+    output: 'public/img/home/hero-4.webp',
+    maxWidth: 1440,
+    aspectRatio: '16:9',
+  },
+  {
+    input: 'public/img/home/_original/hero-5.jpg',
+    output: 'public/img/home/hero-5.webp',
+    maxWidth: 1440,
+    aspectRatio: '16:9',
+  },
+  {
+    input: 'public/img/home/_original/hero-6.jpg',
+    output: 'public/img/home/hero-6.webp',
+    maxWidth: 1440,
+    aspectRatio: '16:9',
+  },
+  {
+    input: 'public/img/home/_original/hero-7.jpg',
+    output: 'public/img/home/hero-7.webp',
+    maxWidth: 1440,
+    aspectRatio: '16:9',
   },
   {
     input: 'public/img/home/_original/corporate-banner.jpg',
@@ -78,7 +105,7 @@ for (const [svgName, webpName] of fleetSectionSvgs) {
   })
 }
 
-async function convert({ input, output, maxWidth }) {
+async function convert({ input, output, maxWidth, aspectRatio }) {
   const inputPath = path.join(root, input)
   const outputPath = path.join(root, output)
 
@@ -91,10 +118,19 @@ async function convert({ input, output, maxWidth }) {
 
   const isSvg = path.extname(inputPath).toLowerCase() === '.svg'
   let pipeline = sharp(inputPath, isSvg ? { density: 144 } : undefined)
-  const meta = await pipeline.metadata()
 
-  if (maxWidth && meta.width && meta.width > maxWidth) {
-    pipeline = pipeline.resize({ width: maxWidth, withoutEnlargement: true })
+  if (aspectRatio === '16:9') {
+    pipeline = pipeline.resize({
+      width: maxWidth ?? 1440,
+      height: Math.round((maxWidth ?? 1440) * (9 / 16)),
+      fit: 'cover',
+      position: 'centre',
+    })
+  } else {
+    const meta = await pipeline.metadata()
+    if (maxWidth && meta.width && meta.width > maxWidth) {
+      pipeline = pipeline.resize({ width: maxWidth, withoutEnlargement: true })
+    }
   }
 
   await pipeline
