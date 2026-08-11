@@ -79,6 +79,7 @@ export const PRIMARY_NAV_PATHS = [
   routes.journey,
   routes.tours,
   routes.blogs,
+  routes.faq,
 ] as const
 
 /** In-page home anchors — use plain `<a>` so Nuxt does not prefetch invalid hash routes. */
