@@ -10,20 +10,6 @@ function shouldTrackPath(path: string): boolean {
   return !path.startsWith('/admin')
 }
 
-function loadGoogleAnalytics(measurementId: string) {
-  window.dataLayer = window.dataLayer || []
-  window.gtag = function gtag(...args: unknown[]) {
-    window.dataLayer!.push(args)
-  }
-  window.gtag('js', new Date())
-  window.gtag('config', measurementId)
-
-  const script = document.createElement('script')
-  script.async = true
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(measurementId)}`
-  document.head.appendChild(script)
-}
-
 function loadMicrosoftClarity(projectId: string) {
   const w = window as Window & { clarity?: ((...args: unknown[]) => void) & { q?: unknown[] } }
   w.clarity =
@@ -49,29 +35,22 @@ export default defineNuxtPlugin({
     if (!gaId && !clarityId) return
 
     const router = useRouter()
-    let gaLoaded = false
     let clarityLoaded = false
 
-    const ensureAnalytics = (path: string) => {
+    const ensureClarity = (path: string) => {
       if (!shouldTrackPath(path)) return
-
-      if (gaId && !gaLoaded) {
-        loadGoogleAnalytics(gaId)
-        gaLoaded = true
-      }
-
       if (clarityId && !clarityLoaded) {
         loadMicrosoftClarity(clarityId)
         clarityLoaded = true
       }
     }
 
-    ensureAnalytics(router.currentRoute.value.path)
+    ensureClarity(router.currentRoute.value.path)
 
     router.afterEach((to) => {
-      ensureAnalytics(to.path)
+      ensureClarity(to.path)
 
-      if (gaId && gaLoaded && shouldTrackPath(to.path)) {
+      if (gaId && shouldTrackPath(to.path)) {
         window.gtag?.('config', gaId, { page_path: to.fullPath })
       }
     })
