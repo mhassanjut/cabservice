@@ -227,7 +227,7 @@ onBeforeUnmount(() => {
             />
           </div>
 
-          <NuxtLink class="home-fleet__card-cta" :to="routes.cars">
+          <NuxtLink class="home-fleet__card-cta" :to="routes.journey">
             Book Now
             <span class="home-fleet__card-cta-icon">
               <NuxtImg class="home-icon" src="/img/home/icons/arrow-outward-light.svg" alt="" width="17" height="17" />

@@ -58,7 +58,7 @@ const whatsappHref = buildWhatsappUrl({
     <div class="site-footer__rule" aria-hidden="true" />
     <div class="site-footer__legal">
       <span>© {{ new Date().getFullYear() }} STW Movers. All rights reserved.</span>
-      <span>{{ siteConfig.contactAddressDisplay }} · VAT ES-B00000000</span>
+      <span>{{ siteConfig.contactAddressDisplay }}</span>
     </div>
   </footer>
 </template>
