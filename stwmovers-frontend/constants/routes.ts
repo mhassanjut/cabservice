@@ -84,7 +84,7 @@ export const PRIMARY_NAV_PATHS = [
 /** In-page home anchors — use plain `<a>` so Nuxt does not prefetch invalid hash routes. */
 export const homeAnchors = {
   booking: '/#booking-section',
-  contact: '/#contact',
+  contact: '/contact',
   experience: '/#experience',
   journeys: '/#journeys',
   fleet: '/#fleet',

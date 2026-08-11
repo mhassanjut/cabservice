@@ -391,7 +391,7 @@
 }
 
 .booking-stepper--confirm .booking-stepper__line.is-done {
-  background: var(--bk-gold);
+  background: #10B981;
 }
 
 /* ─── Vehicle selection page ─── */
@@ -2187,6 +2187,10 @@
   font-size: 1.25rem;
   font-weight: 600;
   color: var(--bk-text);
+}
+
+.confirm-details .booking-journey__icon {
+  color: #10B981;
 }
 
 .confirm-details__list {

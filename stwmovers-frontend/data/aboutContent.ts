@@ -151,5 +151,5 @@ export const aboutFinalCta = {
   body: "Tell us where you're going, and we'll take care of everything in between.",
   image: '/img/about/cta.png',
   primary: { label: 'Book Your Journey', href: '/#booking-section' },
-  secondary: { label: 'Contact Our Team', href: '/#contact' },
+  secondary: { label: 'Contact Our Team', href: '/contact' },
 } as const

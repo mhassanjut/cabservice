@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { homeAnchors } from '~/constants/routes'
+import { routes } from '~/constants/routes'
 import { buildWhatsappUrl } from '~/utils/whatsapp'
 
 const appConfig = useAppConfig()
@@ -34,7 +34,7 @@ const whatsappHref = computed(() =>
       </a>
       <NuxtLink
         class="booking-help__btn booking-help__btn--gold"
-        :to="homeAnchors.contact"
+        :to="routes.contact"
         :prefetch="false"
       >
         <i class="fa-regular fa-user" aria-hidden="true" />

@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { routes } from '~/constants/routes'
-import { journeyIcons } from '~/constants/journeyIcons'
+
+const confirmJourneyIcons = {
+  pickup: '/MapPinLogo-green.svg',
+  dropoff: '/MapPinLogo-green.svg',
+  travelDate: '/TravelDateLogo-green.svg',
+} as const
 import { bookingService } from '~/services/api/booking.service'
 import { paymentService } from '~/services/api/payment.service'
 import { authService } from '~/services/api/auth.service'
@@ -244,7 +249,7 @@ const onDownloadReceipt = async () => {
             <ul class="booking-journey__list confirm-details__list">
               <li class="booking-journey__item">
                 <span class="booking-journey__icon" aria-hidden="true">
-                  <img :src="journeyIcons.pickup" alt="" width="20" height="20" />
+                  <img :src="confirmJourneyIcons.pickup" alt="" width="20" height="20" />
                 </span>
                 <div class="booking-journey__text">
                   <span class="booking-journey__label">Pickup</span>
@@ -253,7 +258,7 @@ const onDownloadReceipt = async () => {
               </li>
               <li class="booking-journey__item">
                 <span class="booking-journey__icon" aria-hidden="true">
-                  <img :src="journeyIcons.dropoff" alt="" width="20" height="20" />
+                  <img :src="confirmJourneyIcons.dropoff" alt="" width="20" height="20" />
                 </span>
                 <div class="booking-journey__text">
                   <span class="booking-journey__label">Drop-off</span>
@@ -262,7 +267,7 @@ const onDownloadReceipt = async () => {
               </li>
               <li class="booking-journey__item">
                 <span class="booking-journey__icon" aria-hidden="true">
-                  <img :src="journeyIcons.travelDate" alt="" width="20" height="20" />
+                  <img :src="confirmJourneyIcons.travelDate" alt="" width="20" height="20" />
                 </span>
                 <div class="booking-journey__text">
                   <span class="booking-journey__label">Date &amp; Time</span>

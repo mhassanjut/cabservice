@@ -222,7 +222,7 @@ export const serviceLandingPages = {
       heading: 'Corporate Chauffeur Service You Can Rely On',
       body: 'Reliable chauffeur services for executives, meetings, conferences, and corporate travel, allowing you to focus on business while we handle the journey.',
       highlights: ['Executive Meetings', 'Conferences', 'Roadshows', 'Corporate Accounts'],
-      cta: { label: 'Open Corporate Account', href: '/#contact', variant: 'outline' },
+      cta: { label: 'Open Corporate Account', href: '/contact', variant: 'outline' },
     },
     schema: executiveBusinessTravelSchema,
   },

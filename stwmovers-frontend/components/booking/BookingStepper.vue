@@ -37,7 +37,7 @@ const stateOf = (index: number) => {
             <span class="booking-stepper__badge">
               <template v-if="confirmedStyle">
                 <img
-                  src="/step-badge.svg"
+                  src="/step-badge-green.svg"
                   alt=""
                   width="24"
                   height="24"
