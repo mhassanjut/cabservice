@@ -54,13 +54,10 @@ const closeMenu = () => {
     :class="{ 'is-scrolled': scrolled }"
     role="banner"
   >
-    <img
+    <div
       v-if="hasHeroBackdrop && !scrolled"
-      class="app-nav__figma-bg"
-      src="/img/home/navbar-bg.jpg"
-      alt=""
+      class="app-nav__scrim"
       aria-hidden="true"
-      decoding="async"
     />
 
     <div class="app-nav__inner">

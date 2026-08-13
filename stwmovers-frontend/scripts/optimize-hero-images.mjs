@@ -36,12 +36,6 @@ const jobs = [
     aspectRatio: '16:9',
   },
   {
-    input: 'public/img/home/_original/hero-5.jpg',
-    output: 'public/img/home/hero-5.webp',
-    maxWidth: 1440,
-    aspectRatio: '16:9',
-  },
-  {
     input: 'public/img/home/_original/hero-6.jpg',
     output: 'public/img/home/hero-6.webp',
     maxWidth: 1440,

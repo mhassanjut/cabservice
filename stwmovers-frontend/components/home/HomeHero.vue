@@ -11,7 +11,6 @@ const HERO_SLIDES = [
   { src: '/img/home/hero-2.webp', width: 1440, height: 810 },
   { src: '/img/home/hero-3.webp', width: 1440, height: 810 },
   { src: '/img/home/hero-4.webp', width: 1440, height: 810 },
-  { src: '/img/home/hero-5.webp', width: 1440, height: 810 },
   { src: '/img/home/hero-6.webp', width: 1440, height: 810 },
   { src: '/img/home/hero-7.webp', width: 1440, height: 810 },
 ] as const
@@ -85,7 +84,8 @@ const autoplayOptions = {
           </template>
         </ClientOnly>
       </div>
-      <div class="home-hero__overlay" />
+      <div class="home-hero__overlay" aria-hidden="true" />
+      <div class="home-hero__copy-scrim" aria-hidden="true" />
     </div>
     <div class="home-hero__content">
       <div class="container container--wide home-hero__content-inner">
