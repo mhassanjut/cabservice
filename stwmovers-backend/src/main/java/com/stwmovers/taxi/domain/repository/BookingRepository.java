@@ -54,4 +54,44 @@ public interface BookingRepository extends JpaRepository<Booking, UUID>, JpaSpec
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("UPDATE Booking b SET b.tour = null WHERE b.tour.id = :tourId")
     void clearTourReference(@Param("tourId") UUID tourId);
+
+    @Query("SELECT b.user.id, COUNT(b) FROM Booking b WHERE b.user.id IN :userIds GROUP BY b.user.id")
+    List<Object[]> countBookingsGroupedByUserId(@Param("userIds") List<UUID> userIds);
+
+    @Query(
+            value = """
+                    SELECT LOWER(TRIM(b.guest_email)),
+                           MAX(b.guest_name),
+                           MAX(b.guest_phone),
+                           COUNT(*),
+                           MAX(b.created_at)
+                    FROM bookings b
+                    WHERE b.user_id IS NULL
+                      AND b.guest_email IS NOT NULL
+                      AND TRIM(b.guest_email) <> ''
+                      AND (
+                        COALESCE(:search, '') = ''
+                        OR LOWER(b.guest_email) LIKE LOWER(CONCAT('%', :search, '%'))
+                        OR LOWER(COALESCE(b.guest_name, '')) LIKE LOWER(CONCAT('%', :search, '%'))
+                      )
+                    GROUP BY LOWER(TRIM(b.guest_email))
+                    ORDER BY MAX(b.created_at) DESC
+                    """,
+            countQuery = """
+                    SELECT COUNT(*) FROM (
+                        SELECT 1
+                        FROM bookings b
+                        WHERE b.user_id IS NULL
+                          AND b.guest_email IS NOT NULL
+                          AND TRIM(b.guest_email) <> ''
+                          AND (
+                            COALESCE(:search, '') = ''
+                            OR LOWER(b.guest_email) LIKE LOWER(CONCAT('%', :search, '%'))
+                            OR LOWER(COALESCE(b.guest_name, '')) LIKE LOWER(CONCAT('%', :search, '%'))
+                          )
+                        GROUP BY LOWER(TRIM(b.guest_email))
+                    ) grouped
+                    """,
+            nativeQuery = true)
+    Page<Object[]> findDistinctGuestContacts(@Param("search") String search, Pageable pageable);
 }

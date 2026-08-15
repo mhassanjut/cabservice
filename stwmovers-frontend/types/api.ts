@@ -125,6 +125,23 @@ export type DashboardStats = {
   recentBookings: BookingDto[]
 }
 
+export type RegisteredCustomerAdminDto = {
+  userId: string
+  email: string
+  fullName: string
+  profilePictureUrl?: string
+  createdAt: string
+  bookingCount: number
+}
+
+export type GuestContactAdminDto = {
+  email: string
+  guestName?: string
+  guestPhone?: string
+  bookingCount: number
+  lastBookingAt?: string
+}
+
 export type AdminCarDto = {
   id: string
   name: string

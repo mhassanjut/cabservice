@@ -12,6 +12,8 @@ const props = defineProps<{
   hideRideTypeFilter?: boolean
 }>()
 
+const route = useRoute()
+
 const bookings = ref<BookingDto[]>([])
 const loading = ref(true)
 const error = ref(false)
@@ -60,7 +62,13 @@ const load = async () => {
   }
 }
 
-onMounted(load)
+onMounted(() => {
+  const initialSearch = route.query.search
+  if (typeof initialSearch === 'string' && initialSearch.trim()) {
+    filters.search = initialSearch.trim()
+  }
+  load()
+})
 
 const openDetail = (id: string) => {
   selectedId.value = id

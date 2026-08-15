@@ -5,7 +5,7 @@ export type AdminNavItem = {
   description: string
   to: string
   icon: string
-  group: 'main' | 'operations' | 'system'
+  group: 'main' | 'customers' | 'operations' | 'system'
 }
 
 export function useAdminNav() {
@@ -39,6 +39,13 @@ export function useAdminNav() {
       to: routes.adminCustomRequests,
       icon: 'fa-car-side',
       group: 'main',
+    },
+    {
+      label: 'Customers',
+      description: 'Google sign-ins and guest bookers',
+      to: routes.adminCustomers,
+      icon: 'fa-users',
+      group: 'customers',
     },
     {
       label: 'Drivers',
@@ -100,6 +107,7 @@ export function useAdminNav() {
 
   const groups = [
     { id: 'main' as const, title: 'Dashboard' },
+    { id: 'customers' as const, title: 'Customers' },
     { id: 'operations' as const, title: 'Fleet & routes' },
     { id: 'system' as const, title: 'System' },
   ]

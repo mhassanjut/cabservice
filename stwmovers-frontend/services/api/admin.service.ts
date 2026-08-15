@@ -25,6 +25,8 @@ import type {
 
   DestinationCityDto,
 
+  GuestContactAdminDto,
+
   Paged,
 
   PaymentDto,
@@ -32,6 +34,8 @@ import type {
   PaymentStatus,
 
   PickupCityDto,
+
+  RegisteredCustomerAdminDto,
 
   RoutePricingBatchRequest,
 
@@ -249,6 +253,18 @@ export const adminService = {
   bookings: (query: AdminBookingQuery = {}) =>
 
     api<Paged<BookingDto>>(`/api/v1/admin/bookings${qs(query)}`, { auth: true, silent: true }),
+
+  googleCustomers: (page = 0, size = 20, search?: string) =>
+    api<Paged<RegisteredCustomerAdminDto>>(
+      `/api/v1/admin/customers/google${qs({ page, size, search })}`,
+      { auth: true, silent: true },
+    ),
+
+  guestContacts: (page = 0, size = 20, search?: string) =>
+    api<Paged<GuestContactAdminDto>>(
+      `/api/v1/admin/customers/guests${qs({ page, size, search })}`,
+      { auth: true, silent: true },
+    ),
 
   booking: (id: string) => api<AdminBookingDetailDto>(`/api/v1/admin/bookings/${id}`, { auth: true }),
 

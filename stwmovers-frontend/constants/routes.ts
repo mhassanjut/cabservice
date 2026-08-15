@@ -31,6 +31,7 @@ export const routes = {
   adminTours: '/admin/tours',
   adminPricing: '/admin/pricing',
   adminCustomRequests: '/admin/custom-requests',
+  adminCustomers: '/admin/customers',
   adminPayments: '/admin/payments',
   adminNotifications: '/admin/notifications',
   adminSettings: '/admin/settings',
