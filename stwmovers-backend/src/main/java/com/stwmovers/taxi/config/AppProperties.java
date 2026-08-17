@@ -31,7 +31,7 @@ public class AppProperties {
     @Getter
     @Setter
     public static class Site {
-        private String publicUrl = "https://stwmovers.com";
+        private String publicUrl = "https://www.stwmovers.com";
         private String contactPhoneDisplay = "+34 627 408 522";
         private String contactEmail = "fleetvtc2025@gmail.com";
         private String fleetAlertEmail = "fleetvtc2025@gmail.com";
@@ -135,7 +135,7 @@ public class AppProperties {
         /** Headless WordPress base URL (no trailing slash). */
         private String baseUrl = "https://cms.stwmovers.com";
         /** Public marketing site URL for canonical / Open Graph rewrites. */
-        private String publicSiteUrl = "https://stwmovers.com";
+        private String publicSiteUrl = "https://www.stwmovers.com";
         /** Path prefix on the Nuxt site for blog articles. */
         private String blogPathPrefix = "/blogs";
         /** Cache TTL for blog list and detail responses. */

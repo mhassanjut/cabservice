@@ -20,7 +20,7 @@ export type ServiceLandingPage = {
 export const airportTransferSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  '@id': 'https://stwmovers.com/airport-transfer#service',
+  '@id': 'https://www.stwmovers.com/airport-transfer#service',
   name: 'Barcelona Airport Transfer',
   alternateName: 'Private Airport Transfer Barcelona',
   description:
@@ -28,12 +28,12 @@ export const airportTransferSchema = {
   serviceType: 'Airport Transfer',
   provider: {
     '@type': 'TravelAgency',
-    '@id': 'https://stwmovers.com/#organization',
+    '@id': 'https://www.stwmovers.com/#organization',
     name: 'STW Movers',
-    url: 'https://stwmovers.com/',
+    url: 'https://www.stwmovers.com/',
   },
-  url: 'https://stwmovers.com/airport-transfer',
-  image: 'https://stwmovers.com/_nuxt/Logo.CAzUtKks.svg',
+  url: 'https://www.stwmovers.com/airport-transfer',
+  image: 'https://www.stwmovers.com/_nuxt/Logo.CAzUtKks.svg',
   areaServed: [
     { '@type': 'City', name: 'Barcelona' },
     { '@type': 'City', name: 'Girona' },
@@ -69,7 +69,7 @@ export const airportTransferSchema = {
 export const executiveBusinessTravelSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  '@id': 'https://stwmovers.com/executive-business-travel#service',
+  '@id': 'https://www.stwmovers.com/executive-business-travel#service',
   name: 'Executive Business Travel',
   alternateName: 'Corporate Chauffeur Service Barcelona',
   description:
@@ -77,12 +77,12 @@ export const executiveBusinessTravelSchema = {
   serviceType: 'Executive Business Travel',
   provider: {
     '@type': 'TravelAgency',
-    '@id': 'https://stwmovers.com/#organization',
+    '@id': 'https://www.stwmovers.com/#organization',
     name: 'STW Movers',
-    url: 'https://stwmovers.com/',
+    url: 'https://www.stwmovers.com/',
   },
-  url: 'https://stwmovers.com/executive-business-travel',
-  image: 'https://stwmovers.com/_nuxt/Logo.CAzUtKks.svg',
+  url: 'https://www.stwmovers.com/executive-business-travel',
+  image: 'https://www.stwmovers.com/_nuxt/Logo.CAzUtKks.svg',
   areaServed: [
     { '@type': 'City', name: 'Barcelona' },
     { '@type': 'City', name: 'Girona' },
@@ -121,7 +121,7 @@ export const executiveBusinessTravelSchema = {
 export const chauffeurServiceSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  '@id': 'https://stwmovers.com/chauffeur-service#service',
+  '@id': 'https://www.stwmovers.com/chauffeur-service#service',
   name: 'Chauffeur Service Barcelona',
   alternateName: 'Private Chauffeur Service',
   description:
@@ -129,12 +129,12 @@ export const chauffeurServiceSchema = {
   serviceType: 'Chauffeur Service',
   provider: {
     '@type': 'TravelAgency',
-    '@id': 'https://stwmovers.com/#organization',
+    '@id': 'https://www.stwmovers.com/#organization',
     name: 'STW Movers',
-    url: 'https://stwmovers.com/',
+    url: 'https://www.stwmovers.com/',
   },
-  url: 'https://stwmovers.com/chauffeur-service',
-  image: 'https://stwmovers.com/_nuxt/Logo.CAzUtKks.svg',
+  url: 'https://www.stwmovers.com/chauffeur-service',
+  image: 'https://www.stwmovers.com/_nuxt/Logo.CAzUtKks.svg',
   areaServed: [
     { '@type': 'City', name: 'Barcelona' },
     { '@type': 'City', name: 'Girona' },

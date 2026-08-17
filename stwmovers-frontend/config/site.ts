@@ -1,5 +1,5 @@
 export const siteConfig = {
-  siteUrl: 'https://stwmovers.com',
+  siteUrl: 'https://www.stwmovers.com',
   apiBaseUrl: 'http://localhost:8080',
   /** Headless WordPress CMS (admin + REST API only; public blogs live on Nuxt /blogs). */
   wordpressUrl: 'https://cms.stwmovers.com',

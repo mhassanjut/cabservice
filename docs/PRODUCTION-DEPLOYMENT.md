@@ -58,14 +58,15 @@ Create `/opt/stwmovers/backend/.env` (or systemd `EnvironmentFile`):
 | `CORS_ORIGINS` | `https://stwmovers.com,https://www.stwmovers.com` |
 | `STRIPE_API_KEY` | `sk_live_...` from Stripe Dashboard (Live mode) |
 | `STRIPE_WEBHOOK_SECRET` | `whsec_...` from Live webhook endpoint |
-| `STRIPE_SUCCESS_URL` | `https://stwmovers.com/confirm` |
-| `STRIPE_CANCEL_URL` | `https://stwmovers.com/payment?cancelled=1` |
+| `STRIPE_SUCCESS_URL` | `https://www.stwmovers.com/confirm` |
+| `STRIPE_CANCEL_URL` | `https://www.stwmovers.com/payment?cancelled=1` |
 | `GOOGLE_CLIENT_ID` | Production OAuth Web client ID |
 | `MAIL_HOST` / `MAIL_USERNAME` / `MAIL_PASSWORD` | Brevo (or provider) production SMTP |
 | `MAIL_FROM` | Verified sender address in Brevo |
 | `ADMIN_EMAIL` / `ADMIN_PASSWORD` | Change from defaults; use strong admin password |
 | `SERVER_PORT` | `8080` (internal; Nginx proxies to this) |
 | `CAR_UPLOADS_DIR` | `/opt/stwmovers/backend/uploads/cars` |
+| `PUBLIC_SITE_URL` | `https://www.stwmovers.com` (booking emails, blog SEO rewrites) |
 
 Load in systemd unit (see section 7).
 
@@ -81,8 +82,9 @@ Set on VPS build or in GitHub Actions secrets for deploy:
 | `NUXT_PUBLIC_GOOGLE_MAPS_API_KEY` | Maps JavaScript API key (HTTP referrer restricted) |
 | `NUXT_PUBLIC_GOOGLE_CLIENT_ID` | Same as backend `GOOGLE_CLIENT_ID` |
 | `NUXT_PUBLIC_STRIPE_PUBLIC_KEY` | `pk_live_...` |
+| `NUXT_PUBLIC_SITE_URL` | `https://www.stwmovers.com` |
 
-Update `stwmovers-frontend/config/site.ts` → `siteUrl: 'https://stwmovers.com'` before production build.
+`stwmovers-frontend/config/site.ts` defaults to `https://www.stwmovers.com`; set `NUXT_PUBLIC_SITE_URL` at build time so CI and VPS builds stay in sync.
 
 ---
 
@@ -146,12 +148,79 @@ sudo systemctl enable --now stwmovers-backend stwmovers-frontend
 
 ---
 
-## 8. Nginx reverse proxy (sketch)
+## 8. Nginx reverse proxy
 
-- `stwmovers.com` / `www` → `proxy_pass http://127.0.0.1:3000` (Nuxt)
-- `api.stwmovers.com` → `proxy_pass http://127.0.0.1:8080` (Spring Boot)
-- Serve uploaded car images: `location /api/v1/media/` → backend
-- Client body size for uploads: `client_max_body_size 10M;`
+Primary domain is **`https://www.stwmovers.com`**. Redirect bare `stwmovers.com` (and HTTP) to www so Google sees one canonical host.
+
+Example `/etc/nginx/sites-available/stwmovers`:
+
+```nginx
+# HTTP → HTTPS + www (Certbot may add similar blocks; keep one canonical redirect chain)
+server {
+    listen 80;
+    server_name stwmovers.com www.stwmovers.com;
+    return 301 https://www.stwmovers.com$request_uri;
+}
+
+# non-www HTTPS → www
+server {
+    listen 443 ssl;
+    server_name stwmovers.com;
+
+    ssl_certificate     /etc/letsencrypt/live/stwmovers.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/stwmovers.com/privkey.pem;
+
+    return 301 https://www.stwmovers.com$request_uri;
+}
+
+# Primary site (www)
+server {
+    listen 443 ssl;
+    server_name www.stwmovers.com;
+
+    ssl_certificate     /etc/letsencrypt/live/stwmovers.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/stwmovers.com/privkey.pem;
+
+    client_max_body_size 10M;
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+# API subdomain
+server {
+    listen 443 ssl;
+    server_name api.stwmovers.com;
+
+    ssl_certificate     /etc/letsencrypt/live/stwmovers.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/stwmovers.com/privkey.pem;
+
+    client_max_body_size 10M;
+
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+After editing:
+
+```bash
+sudo nginx -t && sudo systemctl reload nginx
+curl -I https://stwmovers.com/   # expect 301 → https://www.stwmovers.com/
+curl -I https://www.stwmovers.com/  # expect 200
+```
 
 ---
 
@@ -174,7 +243,7 @@ sudo systemctl enable --now stwmovers-backend stwmovers-frontend
 - [ ] Generate production-only `JWT_SECRET` (long, random).
 - [ ] Store only on server + GitHub encrypted secrets (if CI injects); never in git.
 - [ ] Rotating JWT secret logs out all users — plan maintenance window if rotating later.
-- [ ] Google OAuth: in Google Cloud Console add authorized origins `https://stwmovers.com` and redirect URIs if required by your flow.
+- [ ] Google OAuth: in Google Cloud Console add authorized origins `https://www.stwmovers.com` (keep `https://stwmovers.com` until 301 redirect is live) and redirect URIs if required by your flow.
 - [ ] Restrict Maps API key by HTTP referrer: `https://stwmovers.com/*`, `https://www.stwmovers.com/*`.
 
 ---
@@ -200,6 +269,7 @@ sudo systemctl enable --now stwmovers-backend stwmovers-frontend
 | `NUXT_PUBLIC_GOOGLE_MAPS_API_KEY` | Production Maps key |
 | `NUXT_PUBLIC_GOOGLE_CLIENT_ID` | Production OAuth client |
 | `NUXT_PUBLIC_STRIPE_PUBLIC_KEY` | `pk_live_...` |
+| `NUXT_PUBLIC_SITE_URL` | `https://www.stwmovers.com` |
 
 CI is free on public repos; private repos have a monthly Actions minutes allowance.
 
@@ -207,7 +277,7 @@ CI is free on public repos; private repos have a monthly Actions minutes allowan
 
 ## 13. Google / legal / SEO verification
 
-- [ ] Google Search Console — verify `stwmovers.com` (DNS TXT or HTML file).
+- [ ] Google Search Console — verify **`www.stwmovers.com`** as the primary property (DNS TXT or HTML file). Set preferred domain to www; submit sitemap `https://www.stwmovers.com/sitemap.xml`.
 - [ ] Google Business Profile (if applicable for local Barcelona transfers).
 - [ ] Privacy policy + cookie notice (GDPR if EU customers).
 - [ ] Terms of service for bookings and payments.
@@ -229,7 +299,7 @@ CI is free on public repos; private repos have a monthly Actions minutes allowan
 ## 15. Post-deploy smoke test
 
 - [ ] Home → book trip → cars list → checkout → Stripe test/live payment → confirm page.
-- [ ] Admin login at `https://stwmovers.com/admin/login`.
+- [ ] Admin login at `https://www.stwmovers.com/admin/login`.
 - [ ] Upload car image in admin; verify on `/cars`.
 - [ ] Pickup validation (Barcelona / Tarragona / Girona).
 - [ ] Route pricing admin + fare on booking.
@@ -250,7 +320,7 @@ CI is free on public repos; private repos have a monthly Actions minutes allowan
 
 | Component | Port (internal) | Public URL |
 |-----------|-----------------|------------|
-| Nuxt SSR | 3000 | `https://stwmovers.com` |
+| Nuxt SSR | 3000 | `https://www.stwmovers.com` |
 | Spring Boot API | 8080 | `https://api.stwmovers.com` |
 | PostgreSQL | 5432 | localhost only |
 | Uploaded car images | via API | `https://api.stwmovers.com/api/v1/media/cars/...` |

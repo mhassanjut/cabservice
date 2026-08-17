@@ -45,7 +45,7 @@ jobs:
         if: github.event_name != 'push' || (github.ref != 'refs/heads/main' && github.ref != 'refs/heads/staging')
         run: npm run build
         env:
-          NUXT_PUBLIC_SITE_URL: https://stwmovers.com
+          NUXT_PUBLIC_SITE_URL: https://www.stwmovers.com
           NUXT_PUBLIC_API_BASE_URL: https://api.stwmovers.com
           NUXT_PUBLIC_GOOGLE_MAPS_API_KEY: ci-placeholder
           NUXT_PUBLIC_GOOGLE_CLIENT_ID: ci-placeholder

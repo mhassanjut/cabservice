@@ -90,13 +90,13 @@ app:
     tours-dir: ${TOUR_UPLOADS_DIR:uploads/tours}
   wordpress:
     base-url: ${WORDPRESS_BASE_URL:https://cms.stwmovers.com}
-    public-site-url: ${PUBLIC_SITE_URL:https://stwmovers.com}
+    public-site-url: ${PUBLIC_SITE_URL:https://www.stwmovers.com}
     blog-path-prefix: ${BLOG_PATH_PREFIX:/blogs}
     cache-ttl: ${BLOG_CACHE_TTL:PT15M}
     connect-timeout-ms: ${WORDPRESS_CONNECT_TIMEOUT_MS:3000}
     read-timeout-ms: ${WORDPRESS_READ_TIMEOUT_MS:15000}
   site:
-    public-url: ${PUBLIC_SITE_URL:https://stwmovers.com}
+    public-url: ${PUBLIC_SITE_URL:https://www.stwmovers.com}
     contact-phone-display: ${CONTACT_PHONE_DISPLAY:+34 627 408 522}
     contact-email: ${CONTACT_EMAIL:fleetvtc2025@gmail.com}
     fleet-alert-email: ${FLEET_ALERT_EMAIL:fleetvtc2025@gmail.com}

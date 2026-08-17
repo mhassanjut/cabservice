@@ -21,8 +21,8 @@ class BookingEmailSupportTest {
     @Test
     void confirmUrlBuildsFromPublicSiteUrl() {
         assertEquals(
-                "https://stwmovers.com/confirm?ref=STW-20260808-R28F",
-                BookingEmailSupport.confirmUrl("https://stwmovers.com", "STW-20260808-R28F"));
+                "https://www.stwmovers.com/confirm?ref=STW-20260808-R28F",
+                BookingEmailSupport.confirmUrl("https://www.stwmovers.com", "STW-20260808-R28F"));
         assertEquals(
                 "http://localhost:3000/confirm?ref=STW-20260808-R28F",
                 BookingEmailSupport.confirmUrl("http://localhost:3000/", "STW-20260808-R28F"));

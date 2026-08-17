@@ -10,7 +10,7 @@ type PageSeoInput = {
 
 export function usePageSeo(input: PageSeoInput) {
   const config = useRuntimeConfig()
-  const siteUrl = config.public.siteUrl || 'https://stwmovers.com'
+  const siteUrl = config.public.siteUrl || 'https://www.stwmovers.com'
   const canonical = input.path ? absoluteUrl(input.path, siteUrl) : siteUrl
   const ogImage = absoluteUrl(input.ogImagePath || seoDefaults.defaultOgImagePath, siteUrl)
 

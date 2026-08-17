@@ -1,17 +1,22 @@
 import { siteConfig } from '~/config/site'
 
 export function useLocalBusinessSchema() {
+  const siteRoot = siteConfig.siteUrl.replace(/\/$/, '')
+  const orgId = `${siteRoot}/#organization`
+  const websiteId = `${siteRoot}/#website`
+  const localBusinessId = `${siteRoot}/#localbusiness`
+
   const json = {
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': 'TravelAgency',
-        '@id': 'https://stwmovers.com/#organization',
+        '@id': orgId,
         name: 'STW Movers',
         legalName: 'STW Movers',
-        url: `${siteConfig.siteUrl}/`,
-        logo: `${siteConfig.siteUrl}/favicon-192.png`,
-        image: `${siteConfig.siteUrl}/favicon-192.png`,
+        url: `${siteRoot}/`,
+        logo: `${siteRoot}/favicon-192.png`,
+        image: `${siteRoot}/favicon-192.png`,
         description:
           'STW Movers is a premium airport transfer and chauffeur service company providing reliable private transportation, executive travel, and airport transfers across Barcelona, Girona, and Tarragona.',
         email: 'info@stwmovers.com',
@@ -66,19 +71,19 @@ export function useLocalBusinessSchema() {
       },
       {
         '@type': 'WebSite',
-        '@id': 'https://stwmovers.com/#website',
-        url: 'https://stwmovers.com/',
+        '@id': websiteId,
+        url: `${siteRoot}/`,
         name: 'STW Movers',
         publisher: {
-          '@id': 'https://stwmovers.com/#organization',
+          '@id': orgId,
         },
         inLanguage: ['en', 'es'],
       },
       {
         '@type': 'LocalBusiness',
-        '@id': 'https://stwmovers.com/#localbusiness',
+        '@id': localBusinessId,
         name: 'STW Movers',
-        url: 'https://stwmovers.com/',
+        url: `${siteRoot}/`,
         telephone: siteConfig.contactPhone,
         email: 'info@stwmovers.com',
         priceRange: '€€ - €€€',
