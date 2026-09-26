@@ -24,7 +24,7 @@ withDefaults(
       </div>
     </header>
 
-    <hr class="dashboard-booking-card__divider" />
+    <hr class="dashboard-booking-card__divider" >
 
     <template v-if="variant === 'list'">
       <div class="dashboard-skeleton-booking__list-route">
@@ -37,7 +37,7 @@ withDefaults(
         </div>
       </div>
 
-      <hr class="dashboard-booking-card__divider" />
+      <hr class="dashboard-booking-card__divider" >
 
       <footer class="dashboard-skeleton-booking__footer">
         <div class="dashboard-skeleton-booking__meta-row">
@@ -59,7 +59,7 @@ withDefaults(
         </div>
       </div>
 
-      <hr class="dashboard-booking-card__divider" />
+      <hr class="dashboard-booking-card__divider" >
 
       <footer class="dashboard-skeleton-booking__footer">
         <div class="dashboard-skeleton-booking__meta-row">

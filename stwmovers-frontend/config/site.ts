@@ -1,5 +1,5 @@
 export const siteConfig = {
-  siteUrl: 'https://stwmovers.com',
+  siteUrl: 'https://www.stwmovers.com',
   apiBaseUrl: 'http://localhost:8080',
   /** Headless WordPress CMS (admin + REST API only; public blogs live on Nuxt /blogs). */
   wordpressUrl: 'https://cms.stwmovers.com',
@@ -23,4 +23,9 @@ export const siteConfig = {
   toursWhatsappMessage:
     'Hello STW Movers, I would like to build a custom private tour itinerary. Could you help me plan one?',
   externalTourUrl: '/tours',
+  digitalPartner: {
+    name: 'Crea8iv Media',
+    url: 'https://crea8ivmedia.com',
+    creditLine: 'Digital strategy & website experience by Crea8iv Media',
+  },
 } as const

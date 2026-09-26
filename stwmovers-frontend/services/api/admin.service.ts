@@ -88,7 +88,7 @@ export const adminService = {
 
     api<AdminCarDto>(`/api/v1/admin/cars/${id}`, { method: 'PUT', body, auth: true }),
 
-  deleteCar: (id: string) => api<void>(`/api/v1/admin/cars/${id}`, { method: 'DELETE', auth: true }),
+  deleteCar: (id: string) => api<undefined>(`/api/v1/admin/cars/${id}`, { method: 'DELETE', auth: true }),
 
   uploadCarImage: async (carId: string, file: File) => {
     const config = useRuntimeConfig()
@@ -156,7 +156,7 @@ export const adminService = {
 
     api<AdminTourDto>(`/api/v1/admin/tours/${id}`, { method: 'PUT', body, auth: true }),
 
-  deleteTour: (id: string) => api<void>(`/api/v1/admin/tours/${id}`, { method: 'DELETE', auth: true }),
+  deleteTour: (id: string) => api<undefined>(`/api/v1/admin/tours/${id}`, { method: 'DELETE', auth: true }),
 
   tourPricing: (tourId: string) =>
     api<TourCarPricingDto[]>(`/api/v1/admin/tours/${tourId}/pricing`, { auth: true }),
@@ -320,7 +320,7 @@ export const adminService = {
 
   deletePickupCity: (id: string) =>
 
-    api<void>(`/api/v1/admin/cities/pickup/${id}`, { method: 'DELETE', auth: true }),
+    api<undefined>(`/api/v1/admin/cities/pickup/${id}`, { method: 'DELETE', auth: true }),
 
   destinationCities: () => api<DestinationCityDto[]>('/api/v1/admin/cities/destinations', { auth: true }),
 
@@ -330,7 +330,7 @@ export const adminService = {
 
   deleteDestinationCity: (id: string) =>
 
-    api<void>(`/api/v1/admin/cities/destinations/${id}`, { method: 'DELETE', auth: true }),
+    api<undefined>(`/api/v1/admin/cities/destinations/${id}`, { method: 'DELETE', auth: true }),
 
 
 
@@ -374,7 +374,6 @@ export const adminService = {
 
   deleteRoutePricing: (id: string) =>
 
-    api<void>(`/api/v1/admin/pricing/routes/${id}`, { method: 'DELETE', auth: true }),
+    api<undefined>(`/api/v1/admin/pricing/routes/${id}`, { method: 'DELETE', auth: true }),
 
 }
-

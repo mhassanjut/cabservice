@@ -1,21 +1,26 @@
 <script setup lang="ts">
 import { Swiper, SwiperSlide } from 'swiper/vue'
-import { Autoplay, EffectFade } from 'swiper/modules'
+import { Autoplay, EffectFade, Pagination } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/effect-fade'
+import 'swiper/css/pagination'
+import { siteConfig } from '~/config/site'
+import { buildWhatsappUrl } from '~/utils/whatsapp'
 
 const HERO_SIZES = 'xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw'
 
 const HERO_SLIDES = [
-  { src: '/img/home/hero-1.webp', width: 1440, height: 810 },
-  { src: '/img/home/hero-2.webp', width: 1440, height: 810 },
-  { src: '/img/home/hero-3.webp', width: 1440, height: 810 },
-  { src: '/img/home/hero-4.webp', width: 1440, height: 810 },
-  { src: '/img/home/hero-6.webp', width: 1440, height: 810 },
-  { src: '/img/home/hero-7.webp', width: 1440, height: 810 },
+  {
+    src: '/img/home/generated/hero-desktop-airport-arrival-v4.webp',
+    mobileSrc: '/img/home/generated/hero-mobile-user-airport-v1.webp',
+    width: 1672,
+    height: 941,
+    mobileWidth: 941,
+    mobileHeight: 1672,
+  },
 ] as const
 
-const swiperModules = [Autoplay, EffectFade]
+const swiperModules = [Autoplay, EffectFade, Pagination]
 
 const autoplayOptions = {
   delay: 3500,
@@ -25,6 +30,18 @@ const autoplayOptions = {
   // which is what stalls the loop after the first cycle.
   waitForTransition: false,
 }
+
+const whatsappHref = buildWhatsappUrl({
+  phone: siteConfig.whatsappNumber,
+  text: 'Hello STW Movers, I want a private taxi, cab, or chauffeur quote in Barcelona.',
+})
+
+const heroIntents = [
+  { icon: 'fa-solid fa-plane', label: 'Airport transfer', href: '/airport-transfer-barcelona' },
+  { icon: 'fa-regular fa-building', label: 'Taxi alternative', href: '/barcelona-taxi-alternative' },
+  { icon: 'fa-solid fa-crown', label: 'Cab service', href: '/cab-service-barcelona' },
+  { icon: 'fa-solid fa-shield-halved', label: 'Private driver', href: '/private-driver-barcelona' },
+] as const
 </script>
 
 <template>
@@ -36,11 +53,12 @@ const autoplayOptions = {
             class="home-hero__swiper"
             :modules="swiperModules"
             :slides-per-view="1"
-            :loop="true"
+            :loop="HERO_SLIDES.length > 1"
             effect="fade"
             :fade-effect="{ crossFade: true }"
             :speed="850"
-            :autoplay="autoplayOptions"
+            :autoplay="HERO_SLIDES.length > 1 ? autoplayOptions : false"
+            :pagination="HERO_SLIDES.length > 1 ? { clickable: true } : false"
             :allow-touch-move="true"
           >
             <SwiperSlide
@@ -59,6 +77,21 @@ const autoplayOptions = {
                 :fetchpriority="index === 0 ? 'high' : 'low'"
                 decoding="async"
                 draggable="false"
+                class="home-hero__image home-hero__image--desktop"
+              />
+              <NuxtImg
+                v-if="'mobileSrc' in slide"
+                :src="slide.mobileSrc"
+                alt=""
+                preset="hero"
+                :width="slide.mobileWidth"
+                :height="slide.mobileHeight"
+                sizes="xs:100vw sm:100vw"
+                :loading="index === 0 ? 'eager' : 'lazy'"
+                :fetchpriority="index === 0 ? 'high' : 'low'"
+                decoding="async"
+                draggable="false"
+                class="home-hero__image home-hero__image--mobile"
               />
             </SwiperSlide>
           </Swiper>
@@ -79,6 +112,21 @@ const autoplayOptions = {
                 preload
                 decoding="async"
                 draggable="false"
+                class="home-hero__image home-hero__image--desktop"
+              />
+              <NuxtImg
+                :src="HERO_SLIDES[0].mobileSrc"
+                alt=""
+                preset="hero"
+                :width="HERO_SLIDES[0].mobileWidth"
+                :height="HERO_SLIDES[0].mobileHeight"
+                sizes="xs:100vw sm:100vw"
+                loading="eager"
+                fetchpriority="high"
+                preload
+                decoding="async"
+                draggable="false"
+                class="home-hero__image home-hero__image--mobile"
               />
             </div>
           </template>
@@ -89,12 +137,40 @@ const autoplayOptions = {
     </div>
     <div class="home-hero__content">
       <div class="container container--wide home-hero__content-inner">
-        <h1 class="home-hero__title">Travel Begins Before You Arrive.</h1>
+        <p class="home-hero__eyebrow">Barcelona chauffeur, taxi & cab alternative</p>
+        <h1 class="home-hero__title">
+          Barcelona Airport Transfers.
+          <span>Private Chauffeur.</span>
+        </h1>
         <p class="home-hero__lead">
-          From airport arrivals to executive meetings and private occasions, enjoy chauffeur services designed around comfort, reliability, and every detail that matters.
+          Pre-book a polished private driver for BCN arrivals, hotels, cruise port pickups, and business trips.
         </p>
+        <div class="home-hero__actions">
+          <a class="home-hero__cta home-hero__cta--gold" href="#booking-section">
+            Get Private Quote
+          </a>
+          <a class="home-hero__cta home-hero__cta--glass" :href="whatsappHref" target="_blank" rel="noopener noreferrer">
+            WhatsApp Trip Details
+          </a>
+        </div>
+        <ul class="home-hero__intent" aria-label="Popular transfer searches">
+          <li v-for="intent in heroIntents" :key="intent.label">
+            <NuxtLink :to="intent.href">
+              <i :class="intent.icon" aria-hidden="true" />
+              <span>{{ intent.label }}</span>
+            </NuxtLink>
+          </li>
+        </ul>
+        <a class="home-hero__scroll" href="#booking-section" aria-label="Scroll to quote form">
+          <i class="fa-solid fa-arrow-down" aria-hidden="true" />
+        </a>
       </div>
     </div>
+    <aside class="home-hero__note" aria-hidden="true">
+      <span>More than</span>
+      <strong>A transfer.</strong>
+      <strong>A better journey.</strong>
+    </aside>
     <div class="home-hero__booking">
       <div class="container container--wide">
         <BookingForm variant="bar" />

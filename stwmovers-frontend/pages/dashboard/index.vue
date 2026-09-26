@@ -1,12 +1,12 @@
 <script setup lang="ts">
+import { routes } from '~/constants/routes'
+import { userService } from '~/services/api/user.service'
+
 definePageMeta({
   layout: 'customer',
   middleware: ['customer', 'no-guest-dashboard'],
   ssr: false,
 })
-
-import { routes } from '~/constants/routes'
-import { userService } from '~/services/api/user.service'
 
 usePageSeo({ title: 'Dashboard', path: '/dashboard' })
 
@@ -69,7 +69,7 @@ onUnmounted(() => {
       </div>
       <NuxtLink class="dashboard-btn dashboard-btn--cta" :to="routes.cars">
         Book a Ride
-        <img src="/img/home/icons/arrow-outward-light.svg" alt="" width="14" height="14" />
+        <img src="/img/home/icons/arrow-outward-light.svg" alt="" width="14" height="14" >
       </NuxtLink>
     </header>
 

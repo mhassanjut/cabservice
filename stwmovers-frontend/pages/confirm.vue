@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import { routes } from '~/constants/routes'
+import { bookingService } from '~/services/api/booking.service'
+import { paymentService } from '~/services/api/payment.service'
+import type { BookingDto } from '~/types/api'
 
 const confirmJourneyIcons = {
   pickup: '/MapPinLogo-green.svg',
   dropoff: '/MapPinLogo-green.svg',
   travelDate: '/TravelDateLogo-green.svg',
 } as const
-import { bookingService } from '~/services/api/booking.service'
-import { paymentService } from '~/services/api/payment.service'
-import { authService } from '~/services/api/auth.service'
-import type { BookingDto } from '~/types/api'
 
 definePageMeta({ layout: 'booking' })
 
@@ -26,7 +25,6 @@ const { downloading: receiptDownloading, download: downloadReceipt } = useBookin
 const receiptEl = ref<HTMLElement | null>(null)
 
 const data = ref<BookingDto | null>(null)
-const googleLoading = ref(false)
 const confirming = ref(false)
 let timer: ReturnType<typeof setInterval> | null = null
 
@@ -134,19 +132,6 @@ onUnmounted(() => {
   if (timer) clearInterval(timer)
 })
 
-const onGoogleSuccess = async (idToken: string) => {
-  googleLoading.value = true
-  try {
-    const session = await authService.googleLogin(idToken)
-    auth.setSession(session)
-    await navigateTo(routes.dashboard)
-  } catch {
-    toast.show('Google sign-in failed. Please try again.', 'error')
-  } finally {
-    googleLoading.value = false
-  }
-}
-
 const newRide = () => {
   booking.clear()
   navigateTo(routes.home, { replace: true })
@@ -203,7 +188,7 @@ const onDownloadReceipt = async () => {
           <p v-if="data" class="confirm-hero__ref-label">Booking reference</p>
           <p v-if="data" class="confirm-hero__ref">{{ data.bookingReference }}</p>
 
-          <hr class="booking-card__divider confirm-hero__divider" />
+          <hr class="booking-card__divider confirm-hero__divider" >
 
           <ul class="confirm-hero__trust">
             <li><i class="fa-regular fa-envelope" aria-hidden="true" /> Confirmation email sent</li>
@@ -244,12 +229,12 @@ const onDownloadReceipt = async () => {
               <h2 class="confirm-details__title">Your transfer</h2>
             </header>
 
-            <hr class="booking-card__divider confirm-details__divider" />
+            <hr class="booking-card__divider confirm-details__divider" >
 
             <ul class="booking-journey__list confirm-details__list">
               <li class="booking-journey__item">
                 <span class="booking-journey__icon" aria-hidden="true">
-                  <img :src="confirmJourneyIcons.pickup" alt="" width="20" height="20" />
+                  <img :src="confirmJourneyIcons.pickup" alt="" width="20" height="20" >
                 </span>
                 <div class="booking-journey__text">
                   <span class="booking-journey__label">Pickup</span>
@@ -258,7 +243,7 @@ const onDownloadReceipt = async () => {
               </li>
               <li class="booking-journey__item">
                 <span class="booking-journey__icon" aria-hidden="true">
-                  <img :src="confirmJourneyIcons.dropoff" alt="" width="20" height="20" />
+                  <img :src="confirmJourneyIcons.dropoff" alt="" width="20" height="20" >
                 </span>
                 <div class="booking-journey__text">
                   <span class="booking-journey__label">Drop-off</span>
@@ -267,7 +252,7 @@ const onDownloadReceipt = async () => {
               </li>
               <li class="booking-journey__item">
                 <span class="booking-journey__icon" aria-hidden="true">
-                  <img :src="confirmJourneyIcons.travelDate" alt="" width="20" height="20" />
+                  <img :src="confirmJourneyIcons.travelDate" alt="" width="20" height="20" >
                 </span>
                 <div class="booking-journey__text">
                   <span class="booking-journey__label">Date &amp; Time</span>
@@ -290,7 +275,7 @@ const onDownloadReceipt = async () => {
               </li>
             </ul>
 
-            <hr class="booking-card__divider confirm-details__divider" />
+            <hr class="booking-card__divider confirm-details__divider" >
 
             <footer class="confirm-details__fare-row">
               <span class="confirm-details__fare-label">Total fare (paid)</span>
@@ -304,7 +289,7 @@ const onDownloadReceipt = async () => {
                 <h2 class="confirm-status__title">Live status</h2>
                 <p class="confirm-status__lead">Track progress from confirmation to drop-off.</p>
               </header>
-              <hr class="booking-card__divider confirm-status__divider" />
+              <hr class="booking-card__divider confirm-status__divider" >
               <BookingLiveStatus :status="data.status" />
             </article>
 
@@ -334,9 +319,6 @@ const onDownloadReceipt = async () => {
         </div>
       </div>
     </div>
-
-    <LoadingOverlay :show="googleLoading" label="Signing in with Google…" />
-
     <div v-if="data" ref="receiptEl" class="confirm-receipt-render" aria-hidden="true">
       <BookingReceiptDocument :booking="data" />
     </div>

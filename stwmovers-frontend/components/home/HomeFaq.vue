@@ -1,12 +1,6 @@
 <script setup lang="ts">
-import { routes } from '~/constants/routes'
-import { seoSections } from '~/config/seo'
+import { homeFaqItems } from '~/data/homeFaq'
 
-type FaqItem = { q: string; a: string }
-
-const faqItems: FaqItem[] = seoSections.faq.categories
-  .flatMap((category) => category.items.map((item) => ({ q: item.q, a: item.a })))
-  .slice(0, 6)
 const openIndex = ref<number | null>(null)
 
 const toggle = (index: number) => {
@@ -22,8 +16,8 @@ const toggle = (index: number) => {
       </h2>
       <div class="home-faq__list">
       <div
-        v-for="(item, index) in faqItems"
-        :key="item.q"
+        v-for="(item, index) in homeFaqItems"
+        :key="item.question"
         class="home-faq__item"
         :class="{ 'is-open': openIndex === index }"
       >
@@ -33,13 +27,13 @@ const toggle = (index: number) => {
           :aria-expanded="openIndex === index"
           @click="toggle(index)"
         >
-          {{ item.q }}
+          {{ item.question }}
           <span class="home-icon-wrap home-faq__icon">
             <NuxtImg class="home-icon" src="/img/home/icons/plus.svg" alt="" width="20" height="20" />
           </span>
         </button>
         <div v-show="openIndex === index" class="home-faq__panel">
-          {{ item.a }}
+          {{ item.answer }}
         </div>
       </div>
     </div>

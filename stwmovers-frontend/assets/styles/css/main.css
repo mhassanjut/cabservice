@@ -1138,6 +1138,31 @@ select.input {
   color: var(--color-faint);
 }
 
+.site-footer__credit {
+  max-width: var(--container);
+  margin: 0.8rem auto 0;
+  color: rgba(245, 239, 224, 0.36);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-align: right;
+}
+
+.site-footer__credit a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.site-footer__credit a:hover {
+  color: var(--color-gold-bright);
+}
+
+@media (max-width: 767px) {
+  .site-footer__credit {
+    text-align: left;
+  }
+}
+
 /* ─── Mobile bottom bar ─── */
 .mobile-bar {
   display: flex;

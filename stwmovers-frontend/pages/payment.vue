@@ -137,7 +137,7 @@ const savePhoneAndPay = async (phone: string) => {
           <article class="checkout-panel__card booking-card">
             <div class="checkout-panel__head checkout-panel__head--icon">
               <span class="checkout-panel__icon checkout-panel__icon--gold checkout-panel__icon--compact" aria-hidden="true">
-                <img class="checkout-panel__icon-img checkout-panel__icon-img--inset" src="/LockLogo.svg" alt="" />
+                <img class="checkout-panel__icon-img checkout-panel__icon-img--inset" src="/LockLogo.svg" alt="" >
               </span>
               <div>
                 <h2 class="checkout-panel__title">Pay for your ride</h2>
@@ -169,12 +169,12 @@ const savePhoneAndPay = async (phone: string) => {
 
             <ul class="payment-trust">
               <li>
-                <img class="payment-trust__icon" src="/EncryptLogo.svg" alt="" aria-hidden="true" />
+                <img class="payment-trust__icon" src="/EncryptLogo.svg" alt="" aria-hidden="true" >
                 Encrypted checkout
               </li>
               <li class="payment-trust__divider" role="presentation" aria-hidden="true" />
               <li>
-                <img class="payment-trust__icon" src="/ThunderLogo.svg" alt="" aria-hidden="true" />
+                <img class="payment-trust__icon" src="/ThunderLogo.svg" alt="" aria-hidden="true" >
                 Powered by Stripe
               </li>
             </ul>

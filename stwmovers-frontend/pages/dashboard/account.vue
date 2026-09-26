@@ -1,5 +1,11 @@
 <script setup lang="ts">
 
+import { userService } from '~/services/api/user.service'
+import { isValidPhone, normalizePhone } from '~/utils/phone'
+import googleGUrl from '~/assets/icons/google-g.svg?url'
+
+
+
 definePageMeta({
 
   layout: 'customer',
@@ -9,12 +15,6 @@ definePageMeta({
   ssr: false,
 
 })
-
-
-
-import { userService } from '~/services/api/user.service'
-import { isValidPhone, normalizePhone } from '~/utils/phone'
-import googleGUrl from '~/assets/icons/google-g.svg?url'
 
 
 
@@ -203,7 +203,7 @@ const logout = async () => {
 
             <p v-if="profile?.googleId" class="dashboard-account-card__google">
 
-              <img :src="googleGUrl" alt="" width="14" height="14" />
+              <img :src="googleGUrl" alt="" width="14" height="14" >
 
               Connected with Google
 
@@ -221,7 +221,7 @@ const logout = async () => {
 
             <label class="dashboard-account-card__label" for="full-name">Full name</label>
 
-            <input id="full-name" v-model="fullName" class="dashboard-account-card__input" required />
+            <input id="full-name" v-model="fullName" class="dashboard-account-card__input" required >
 
           </div>
 

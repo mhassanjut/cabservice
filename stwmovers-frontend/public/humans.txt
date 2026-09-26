@@ -1,0 +1,16 @@
+/* TEAM */
+
+Website design, SEO, AI visibility strategy, and website experience:
+Crea8iv Media
+https://crea8ivmedia.com
+
+Client:
+STW Movers
+https://www.stwmovers.com
+
+/* SITE */
+
+Primary language: English
+Primary market: Barcelona, Catalonia, Spain
+Stack: Nuxt, Vue, structured data, local SEO content architecture
+Last updated: 2026-09-25

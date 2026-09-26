@@ -15,8 +15,8 @@ const displayName = computed(
 const initials = computed(() => {
   const parts = displayName.value.trim().split(/\s+/).filter(Boolean)
   if (!parts.length) return 'G'
-  const first = parts[0].charAt(0)
-  const last = parts.length > 1 ? parts[parts.length - 1].charAt(0) : ''
+  const first = parts[0]?.charAt(0) ?? ''
+  const last = parts.length > 1 ? parts.at(-1)?.charAt(0) ?? '' : ''
   return (first + last).toUpperCase()
 })
 
@@ -100,7 +100,7 @@ watch(
       >
         {{ item.label }}
       </button>
-      <hr class="booking-user-menu__divider" />
+      <hr class="booking-user-menu__divider" >
       <button
         type="button"
         class="booking-user-menu__item booking-user-menu__item--danger"

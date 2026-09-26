@@ -24,10 +24,10 @@ class SeoUrlRewriterTest {
         rewriter.rewriteToPublicSite(
                 seo,
                 "https://cms.example.com/post/",
-                "https://stwmovers.com/blogs/post");
+                "https://www.stwmovers.com/blogs/post");
 
-        assertThat(seo.getCanonical()).isEqualTo("https://stwmovers.com/blogs/post");
-        assertThat(seo.getOg().get("url")).isEqualTo("https://stwmovers.com/blogs/post");
-        assertThat(seo.getSchema().get(0).get("url").asText()).isEqualTo("https://stwmovers.com/blogs/post");
+        assertThat(seo.getCanonical()).isEqualTo("https://www.stwmovers.com/blogs/post");
+        assertThat(seo.getOg().get("url")).isEqualTo("https://www.stwmovers.com/blogs/post");
+        assertThat(seo.getSchema().get(0).get("url").asText()).isEqualTo("https://www.stwmovers.com/blogs/post");
     }
 }

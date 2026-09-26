@@ -60,7 +60,7 @@ const submit = async () => {
             type="text"
             autocomplete="username"
             required
-          />
+          >
         </div>
         <div class="field auth-panel__field">
           <label class="label" for="admin-password">Password</label>
@@ -72,7 +72,7 @@ const submit = async () => {
               :type="showPassword ? 'text' : 'password'"
               autocomplete="current-password"
               required
-            />
+            >
             <button
               type="button"
               class="auth-panel__password-toggle"

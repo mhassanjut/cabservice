@@ -112,7 +112,7 @@ onUnmounted(() => {
                   draggable="false"
                   width="628"
                   :height="tile.height"
-                />
+                >
                 <div class="home-experience__tile-overlay" aria-hidden="true" />
                 <div class="home-experience__tile-copy">
                   <h3>{{ tile.title }}</h3>
@@ -133,7 +133,7 @@ onUnmounted(() => {
                   draggable="false"
                   width="628"
                   :height="tile.height"
-                />
+                >
                 <div class="home-experience__tile-overlay" aria-hidden="true" />
                 <div class="home-experience__tile-copy">
                   <h3>{{ tile.title }}</h3>

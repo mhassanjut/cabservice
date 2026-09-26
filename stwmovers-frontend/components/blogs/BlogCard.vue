@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { WpPost } from '~/types/wordpress'
+import { blogTopic, readingMinutes as calculateReadingMinutes } from '~/utils/blogListing'
 import { blogPath, formatWpDate, wpExcerpt, wpFeaturedImage, wpTitle } from '~/utils/wordpress'
 
 const props = defineProps<{
@@ -11,6 +12,8 @@ const excerpt = computed(() => wpExcerpt(props.post))
 const image = computed(() => wpFeaturedImage(props.post))
 const dateLabel = computed(() => formatWpDate(props.post.date))
 const to = computed(() => blogPath(props.post.slug))
+const topicLabel = computed(() => blogTopic(props.post))
+const readingMinutes = computed(() => calculateReadingMinutes(props.post.content.rendered))
 </script>
 
 <template>
@@ -30,13 +33,17 @@ const to = computed(() => blogPath(props.post.slug))
       <div v-else class="blog-card__placeholder" aria-hidden="true" />
     </NuxtLink>
     <div class="blog-card__body">
+      <div class="blog-card__meta-row">
+        <span>{{ topicLabel }}</span>
+        <span>{{ readingMinutes }} min read</span>
+      </div>
       <p v-if="dateLabel" class="blog-card__date">{{ dateLabel }}</p>
       <h2 class="blog-card__title">
         <NuxtLink :to="to">{{ title }}</NuxtLink>
       </h2>
       <p v-if="excerpt" class="blog-card__excerpt">{{ excerpt }}</p>
       <NuxtLink :to="to" class="blog-card__link">
-        Read article
+        Read insight
         <span aria-hidden="true">→</span>
       </NuxtLink>
     </div>

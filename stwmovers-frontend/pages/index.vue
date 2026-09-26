@@ -1,5 +1,15 @@
 <script setup lang="ts">
-import { seoDefaults, seoSections } from '~/config/seo'
+import { seoDefaults } from '~/config/seo'
+import { homeFaqItems } from '~/data/homeFaq'
+import {
+  breadcrumbSchema,
+  chauffeurServiceSchema,
+  faqPageSchema,
+  primaryServiceItems,
+  schemaGraph,
+  serviceItemListSchema,
+  webPageSchema,
+} from '~/utils/schema'
 
 definePageMeta({ layout: 'home' })
 
@@ -8,51 +18,65 @@ usePageSeo({
   description: seoDefaults.defaultDescription,
   path: '/',
 })
+
+useJsonLdSchema(
+  'home-page-ai-entity',
+  schemaGraph([
+    webPageSchema({
+      id: 'webpage',
+      path: '/',
+      name: seoDefaults.defaultTitle,
+      description: seoDefaults.defaultDescription,
+      about: [
+        'Barcelona taxi alternative',
+        'Barcelona cab alternative',
+        'Barcelona airport transfer',
+        'Private driver Barcelona',
+        'Executive chauffeur Barcelona',
+      ],
+    }),
+    chauffeurServiceSchema({
+      id: 'primary-service',
+      path: '/',
+      name: 'Barcelona Private Chauffeur, Taxi Alternative, and Airport Transfer Service',
+      description:
+        'STW Movers provides pre-booked Barcelona chauffeur service, BCN airport transfers, private driver hire, cruise port transfers, and premium taxi or cab alternatives.',
+    }),
+    serviceItemListSchema([...primaryServiceItems]),
+    faqPageSchema('STW Movers Barcelona chauffeur FAQ', homeFaqItems),
+    breadcrumbSchema([{ name: 'Home', path: '/' }]),
+  ]),
+)
 </script>
 
 <template>
   <div class="home-page">
     <HomeHero />
 
-    <HomeExperience />
+    <HomeConversionProof />
 
-    <HomeJourneys />
-
-    <HomeValues />
+    <HomeIntentPaths />
 
     <HomeFleet />
 
-    <HomeLocations />
+    <HomeTestimonials />
 
-    <HomeCorporateBanner />
+    <HomeLocations />
 
     <HomeBookingSteps />
 
-    <HomeCtaBanner />
+    <HomeExperience />
 
-    <HomeTestimonials />
+    <HomeValues />
+
+    <HomeServiceClarity />
+
+    <HomeCorporateBanner />
+
+    <HomeInsights />
 
     <HomeFaq />
 
-
-    <!-- Crawlable SEO keywords — visually hidden -->
-    <p class="visually-hidden">
-      {{ seoSections.home.keywords.join(', ') }}.
-      {{ seoSections.home.serviceGroups.join('. ') }}.
-    </p>
+    <HomeCtaBanner />
   </div>
 </template>
-
-<style scoped>
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-</style>

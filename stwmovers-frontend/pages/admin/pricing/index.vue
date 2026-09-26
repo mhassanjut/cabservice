@@ -152,7 +152,7 @@ watch([() => form.fromCity, () => form.toCity], () => {
 
 watch(activePickupCities, (list: PickupCityDto[]) => {
   if (!form.fromCity && list.length) {
-    form.fromCity = list[0].name
+    form.fromCity = list[0]?.name ?? ''
   }
 })
 
@@ -336,7 +336,7 @@ const removePickupCity = async (city: PickupCityDto) => {
               step="1"
               inputmode="numeric"
               required
-            />
+            >
           </label>
           <label class="admin-field">
             <span class="admin-field__label">Extra rate (€ / km)</span>
@@ -349,7 +349,7 @@ const removePickupCity = async (city: PickupCityDto) => {
               step="0.01"
               inputmode="decimal"
               required
-            />
+            >
           </label>
         </div>
         <p class="help" style="margin: 0 0 16px">
@@ -381,7 +381,7 @@ const removePickupCity = async (city: PickupCityDto) => {
             class="input"
             placeholder="Search city to add (Google Maps)"
             required
-          />
+          >
           <button type="submit" class="btn btn--solid-gold">Add pickup city</button>
         </form>
         <div class="admin-toolbar" style="margin-bottom: 24px">
@@ -405,7 +405,7 @@ const removePickupCity = async (city: PickupCityDto) => {
             class="input"
             placeholder="Search destination city (Google Maps)"
             required
-          />
+          >
           <button type="submit" class="btn btn--solid-gold">Add city</button>
         </form>
         <div class="admin-toolbar">
@@ -443,7 +443,7 @@ const removePickupCity = async (city: PickupCityDto) => {
               class="input"
               placeholder="Add destination cities first"
               disabled
-            />
+            >
           </label>
         </div>
 
@@ -464,7 +464,7 @@ const removePickupCity = async (city: PickupCityDto) => {
                 inputmode="decimal"
                 :placeholder="`Price for ${car.name}`"
                 required
-              />
+              >
             </label>
           </div>
         </div>
@@ -474,7 +474,7 @@ const removePickupCity = async (city: PickupCityDto) => {
 
         <div class="admin-pricing-form__actions">
           <label class="admin-panel__checkbox">
-            <input v-model="form.active" type="checkbox" />
+            <input v-model="form.active" type="checkbox" >
             <span>Active route</span>
           </label>
           <button

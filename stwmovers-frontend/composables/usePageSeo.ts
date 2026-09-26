@@ -1,4 +1,4 @@
-import { absoluteUrl, pageDescription, pageTitle } from '~/utils/seo'
+import { absoluteUrl, pageDescription, pageTitle, robotsForPath } from '~/utils/seo'
 import { seoDefaults } from '~/config/seo'
 
 type PageSeoInput = {
@@ -6,13 +6,15 @@ type PageSeoInput = {
   description?: string
   path?: string
   ogImagePath?: string
+  robots?: string
 }
 
 export function usePageSeo(input: PageSeoInput) {
   const config = useRuntimeConfig()
-  const siteUrl = config.public.siteUrl || 'https://stwmovers.com'
+  const siteUrl = config.public.siteUrl || 'https://www.stwmovers.com'
   const canonical = input.path ? absoluteUrl(input.path, siteUrl) : siteUrl
   const ogImage = absoluteUrl(input.ogImagePath || seoDefaults.defaultOgImagePath, siteUrl)
+  const robots = input.robots || robotsForPath(input.path)
 
   // SEO-critical: centralized meta composition for consistent scaling across future pages/sections.
   useSeoMeta({
@@ -27,10 +29,10 @@ export function usePageSeo(input: PageSeoInput) {
     twitterTitle: pageTitle(input.title),
     twitterDescription: pageDescription(input.description),
     twitterImage: ogImage,
+    robots,
   })
 
   useHead({
     link: [{ rel: 'canonical', href: canonical }],
   })
 }
-

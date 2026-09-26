@@ -114,7 +114,7 @@ onMounted(load)
         type="search"
         :placeholder="activeTab === 'google' ? 'Search name or email' : 'Search guest name or email'"
         @keydown.enter.prevent="applySearch"
-      />
+      >
       <button type="button" class="btn secondary" @click="applySearch">Search</button>
       <button type="button" class="btn secondary" @click="clearSearch">Clear</button>
     </div>

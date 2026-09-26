@@ -425,7 +425,7 @@ const removeTour = async (tour: AdminTourDto) => {
           <form class="admin-form-grid" @submit.prevent="submit">
             <div class="field">
               <label class="label" for="tour-title">Title</label>
-              <input id="tour-title" v-model="form.title" class="input" required />
+              <input id="tour-title" v-model="form.title" class="input" required >
             </div>
             <div class="field">
               <label class="label" for="tour-category">Category tag</label>
@@ -434,11 +434,11 @@ const removeTour = async (tour: AdminTourDto) => {
                 v-model="form.category"
                 class="input"
                 placeholder="e.g. Private Experience"
-              />
+              >
             </div>
             <div class="field">
               <label class="label" for="tour-location">Location</label>
-              <input id="tour-location" v-model="form.location" class="input" placeholder="e.g. Barcelona" />
+              <input id="tour-location" v-model="form.location" class="input" placeholder="e.g. Barcelona" >
             </div>
             <div class="field">
               <label class="label" for="tour-duration">Duration type</label>
@@ -447,7 +447,7 @@ const removeTour = async (tour: AdminTourDto) => {
                 v-model="form.durationLabel"
                 class="input"
                 placeholder="e.g. Full Day"
-              />
+              >
               <p class="help">Shown next to the location (e.g. Barcelona · Full Day).</p>
             </div>
             <div class="field">
@@ -460,7 +460,7 @@ const removeTour = async (tour: AdminTourDto) => {
                 min="1"
                 step="1"
                 placeholder="8"
-              />
+              >
               <p class="help">Frontend displays this as “8 Hours”.</p>
             </div>
             <div class="admin-tour-guests">
@@ -474,7 +474,7 @@ const removeTour = async (tour: AdminTourDto) => {
                   min="1"
                   step="1"
                   placeholder="1"
-                />
+                >
               </div>
               <div class="field">
                 <label class="label" for="tour-guest-max">Maximum guests</label>
@@ -486,13 +486,13 @@ const removeTour = async (tour: AdminTourDto) => {
                   min="1"
                   step="1"
                   placeholder="6"
-                />
+                >
               </div>
             </div>
             <p class="help admin-tour-guests__hint">Frontend displays the range as “1–6 Guests”.</p>
             <div class="field">
               <label class="label" for="tour-priority">Display priority</label>
-              <input id="tour-priority" v-model.number="form.displayPriority" class="input" type="number" min="0" />
+              <input id="tour-priority" v-model.number="form.displayPriority" class="input" type="number" min="0" >
             </div>
 
             <div v-if="activeCars.length" class="admin-list-section">

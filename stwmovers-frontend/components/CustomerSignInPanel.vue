@@ -55,7 +55,7 @@ const onGoogleError = (message: string) => {
 <template>
   <article class="sign-in-panel">
     <div class="sign-in-panel__icon" aria-hidden="true">
-      <img :src="googleGUrl" alt="" width="28" height="28" />
+      <img :src="googleGUrl" alt="" width="28" height="28" >
     </div>
 
     <h2 id="sign-in-modal-title" class="sign-in-panel__title">Sign in with Google</h2>

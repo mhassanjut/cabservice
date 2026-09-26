@@ -76,7 +76,7 @@ function bindDropdownFix() {
 
   dropdown.setAttribute('data-dropdown-fix-bound', 'true')
 
-  dropdown.addEventListener('mousedown', (event: MouseEvent) => {
+  const onDropdownMouseDown = (event: Event) => {
     const target = event.target
     if (!(target instanceof Element)) return
 
@@ -87,9 +87,9 @@ function bindDropdownFix() {
 
     // Prevent focus churn on the tel field from swallowing the first toggle click.
     event.preventDefault()
-  })
+  }
 
-  dropdown.addEventListener('click', (event: MouseEvent) => {
+  const onDropdownClick = (event: Event) => {
     const target = event.target
     if (!(target instanceof Element)) return
 
@@ -100,10 +100,11 @@ function bindDropdownFix() {
 
     // Keep the opening click from reaching vue-tel-input's body click-outside handler.
     event.stopPropagation()
-  })
+  }
 
   // vue-tel-input attaches type-to-find on the dropdown wrapper; route typing to search instead.
-  dropdown.addEventListener('keydown', (event: KeyboardEvent) => {
+  const onDropdownKeydown = (event: Event) => {
+    if (!(event instanceof KeyboardEvent)) return
     if (!dropdown.classList.contains('open')) return
 
     const searchBox = dropdown.querySelector<HTMLInputElement>('.vti__search_box')
@@ -124,7 +125,11 @@ function bindDropdownFix() {
     searchBox.focus({ preventScroll: true })
     searchBox.value = `${searchBox.value}${event.key}`
     searchBox.dispatchEvent(new Event('input', { bubbles: true }))
-  }, true)
+  }
+
+  dropdown.addEventListener('mousedown', onDropdownMouseDown)
+  dropdown.addEventListener('click', onDropdownClick)
+  dropdown.addEventListener('keydown', onDropdownKeydown, true)
 }
 
 function setupSearchInteraction() {

@@ -68,5 +68,5 @@ const onError = () => {
     class="fleet-vehicle-image--svg"
     v-bind="attrs"
     @error="onError"
-  />
+  >
 </template>

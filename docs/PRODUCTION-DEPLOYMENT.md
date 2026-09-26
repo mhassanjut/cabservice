@@ -58,12 +58,12 @@ Create `/opt/stwmovers/backend/.env` (or systemd `EnvironmentFile`):
 | `CORS_ORIGINS` | `https://stwmovers.com,https://www.stwmovers.com` |
 | `STRIPE_API_KEY` | `sk_live_...` from Stripe Dashboard (Live mode) |
 | `STRIPE_WEBHOOK_SECRET` | `whsec_...` from Live webhook endpoint |
-| `STRIPE_SUCCESS_URL` | `https://stwmovers.com/confirm` |
-| `STRIPE_CANCEL_URL` | `https://stwmovers.com/payment?cancelled=1` |
+| `STRIPE_SUCCESS_URL` | `https://www.stwmovers.com/confirm` |
+| `STRIPE_CANCEL_URL` | `https://www.stwmovers.com/payment?cancelled=1` |
 | `GOOGLE_CLIENT_ID` | Production OAuth Web client ID |
 | `MAIL_HOST` / `MAIL_USERNAME` / `MAIL_PASSWORD` | Brevo (or provider) production SMTP |
 | `MAIL_FROM` | Verified sender address in Brevo |
-| `ADMIN_EMAIL` / `ADMIN_PASSWORD` | Change from defaults; use strong admin password |
+| `ADMIN_EMAIL` / `ADMIN_PASSWORD` | Set explicitly; use a strong admin password |
 | `SERVER_PORT` | `8080` (internal; Nginx proxies to this) |
 | `CAR_UPLOADS_DIR` | `/opt/stwmovers/backend/uploads/cars` |
 
@@ -82,7 +82,7 @@ Set on VPS build or in GitHub Actions secrets for deploy:
 | `NUXT_PUBLIC_GOOGLE_CLIENT_ID` | Same as backend `GOOGLE_CLIENT_ID` |
 | `NUXT_PUBLIC_STRIPE_PUBLIC_KEY` | `pk_live_...` |
 
-Update `stwmovers-frontend/config/site.ts` → `siteUrl: 'https://stwmovers.com'` before production build.
+Update `stwmovers-frontend/config/site.ts` → `siteUrl: 'https://www.stwmovers.com'` before production build.
 
 ---
 
@@ -174,7 +174,7 @@ sudo systemctl enable --now stwmovers-backend stwmovers-frontend
 - [ ] Generate production-only `JWT_SECRET` (long, random).
 - [ ] Store only on server + GitHub encrypted secrets (if CI injects); never in git.
 - [ ] Rotating JWT secret logs out all users — plan maintenance window if rotating later.
-- [ ] Google OAuth: in Google Cloud Console add authorized origins `https://stwmovers.com` and redirect URIs if required by your flow.
+- [ ] Google OAuth: in Google Cloud Console add authorized origins `https://www.stwmovers.com` and redirect URIs if required by your flow.
 - [ ] Restrict Maps API key by HTTP referrer: `https://stwmovers.com/*`, `https://www.stwmovers.com/*`.
 
 ---
@@ -229,7 +229,7 @@ CI is free on public repos; private repos have a monthly Actions minutes allowan
 ## 15. Post-deploy smoke test
 
 - [ ] Home → book trip → cars list → checkout → Stripe test/live payment → confirm page.
-- [ ] Admin login at `https://stwmovers.com/admin/login`.
+- [ ] Admin login at `https://www.stwmovers.com/admin/login`.
 - [ ] Upload car image in admin; verify on `/cars`.
 - [ ] Pickup validation (Barcelona / Tarragona / Girona).
 - [ ] Route pricing admin + fare on booking.
@@ -250,7 +250,7 @@ CI is free on public repos; private repos have a monthly Actions minutes allowan
 
 | Component | Port (internal) | Public URL |
 |-----------|-----------------|------------|
-| Nuxt SSR | 3000 | `https://stwmovers.com` |
+| Nuxt SSR | 3000 | `https://www.stwmovers.com` |
 | Spring Boot API | 8080 | `https://api.stwmovers.com` |
 | PostgreSQL | 5432 | localhost only |
 | Uploaded car images | via API | `https://api.stwmovers.com/api/v1/media/cars/...` |

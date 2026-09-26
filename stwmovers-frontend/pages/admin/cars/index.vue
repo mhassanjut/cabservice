@@ -246,7 +246,7 @@ const toggleField = async (car: AdminCarDto, field: 'available' | 'active') => {
           <form class="admin-form-grid" @submit.prevent="submit">
             <div class="field">
               <label class="label" for="car-name">Name</label>
-              <input id="car-name" v-model="form.name" class="input" required />
+              <input id="car-name" v-model="form.name" class="input" required >
             </div>
             <div class="field">
               <label class="label" for="car-type">Car type</label>
@@ -265,15 +265,15 @@ const toggleField = async (car: AdminCarDto, field: 'available' | 'active') => {
             </div>
             <div class="field">
               <label class="label" for="car-fare">Base fare (EUR)</label>
-              <input id="car-fare" v-model.number="form.baseFare" class="input" type="number" min="0" step="0.01" required />
+              <input id="car-fare" v-model.number="form.baseFare" class="input" type="number" min="0" step="0.01" required >
             </div>
             <div class="field">
               <label class="label" for="car-capacity">Passenger capacity</label>
-              <input id="car-capacity" v-model.number="form.passengerCapacity" class="input" type="number" min="1" required />
+              <input id="car-capacity" v-model.number="form.passengerCapacity" class="input" type="number" min="1" required >
             </div>
             <div class="field">
               <label class="label" for="car-priority">Display priority</label>
-              <input id="car-priority" v-model.number="form.displayPriority" class="input" type="number" min="0" />
+              <input id="car-priority" v-model.number="form.displayPriority" class="input" type="number" min="0" >
             </div>
             <div class="field admin-car-image-field">
               <span class="label">Vehicle image</span>
@@ -293,7 +293,7 @@ const toggleField = async (car: AdminCarDto, field: 'available' | 'active') => {
                     class="admin-car-image__input"
                     accept="image/*,.svg,image/svg+xml"
                     @change="onImageSelected"
-                  />
+                  >
                   <button
                     type="button"
                     class="btn secondary"
@@ -321,23 +321,23 @@ const toggleField = async (car: AdminCarDto, field: 'available' | 'active') => {
 
             <div class="admin-panel__checkbox-grid">
               <label class="admin-panel__checkbox">
-                <input v-model="form.available" type="checkbox" />
+                <input v-model="form.available" type="checkbox" >
                 <span>Available to book</span>
               </label>
               <label class="admin-panel__checkbox">
-                <input v-model="form.active" type="checkbox" />
+                <input v-model="form.active" type="checkbox" >
                 <span>Active in catalog</span>
               </label>
               <label class="admin-panel__checkbox">
-                <input v-model="form.electric" type="checkbox" />
+                <input v-model="form.electric" type="checkbox" >
                 <span>Electric</span>
               </label>
               <label class="admin-panel__checkbox">
-                <input v-model="form.supportsInCity" type="checkbox" />
+                <input v-model="form.supportsInCity" type="checkbox" >
                 <span>In-city routes</span>
               </label>
               <label class="admin-panel__checkbox">
-                <input v-model="form.supportsCityToCity" type="checkbox" />
+                <input v-model="form.supportsCityToCity" type="checkbox" >
                 <span>City-to-city routes</span>
               </label>
             </div>

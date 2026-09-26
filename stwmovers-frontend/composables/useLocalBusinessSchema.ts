@@ -1,47 +1,37 @@
 import { siteConfig } from '~/config/site'
+import { contactPointSchema, primaryServiceItems, quoteActionSchema, siteAbsoluteUrl } from '~/utils/schema'
 
 export function useLocalBusinessSchema() {
+  const siteUrl = siteConfig.siteUrl
+  const organizationId = `${siteUrl}/#organization`
+  const websiteId = `${siteUrl}/#website`
+  const localBusinessId = `${siteUrl}/#localbusiness`
+  const digitalPartnerId = `${siteConfig.digitalPartner.url}/#organization`
+
   const json = {
     '@context': 'https://schema.org',
     '@graph': [
       {
-        '@type': 'TravelAgency',
-        '@id': 'https://stwmovers.com/#organization',
+        '@type': 'Organization',
+        '@id': organizationId,
         name: 'STW Movers',
         legalName: 'STW Movers',
-        url: `${siteConfig.siteUrl}/`,
-        logo: `${siteConfig.siteUrl}/favicon-192.png`,
-        image: `${siteConfig.siteUrl}/favicon-192.png`,
+        url: `${siteUrl}/`,
+        logo: `${siteUrl}/favicon-192.png`,
+        image: `${siteUrl}/favicon-192.png`,
         description:
-          'STW Movers is a premium airport transfer and chauffeur service company providing reliable private transportation, executive travel, and airport transfers across Barcelona, Girona, and Tarragona.',
-        email: 'info@stwmovers.com',
+          'STW Movers is a Barcelona chauffeur, airport-transfer, and executive transportation service for private and corporate journeys.',
+        slogan: 'Private Barcelona chauffeur transfers planned before pickup.',
+        foundingLocation: {
+          '@type': 'Place',
+          name: 'Barcelona',
+        },
+        email: siteConfig.contactEmail,
         telephone: siteConfig.contactPhone,
-        priceRange: '€€ - €€€',
         address: {
           '@type': 'PostalAddress',
           ...siteConfig.contactAddressPostal,
         },
-        geo: {
-          '@type': 'GeoCoordinates',
-          latitude: 41.37600189339869,
-          longitude: 2.1581348619791694,
-        },
-        openingHoursSpecification: [
-          {
-            '@type': 'OpeningHoursSpecification',
-            dayOfWeek: [
-              'Monday',
-              'Tuesday',
-              'Wednesday',
-              'Thursday',
-              'Friday',
-              'Saturday',
-              'Sunday',
-            ],
-            opens: '00:00',
-            closes: '23:59',
-          },
-        ],
         areaServed: [
           {
             '@type': 'City',
@@ -57,41 +47,95 @@ export function useLocalBusinessSchema() {
           },
         ],
         availableLanguage: ['English', 'Spanish'],
-        contactPoint: {
-          '@type': 'ContactPoint',
-          telephone: siteConfig.contactPhone,
-          contactType: 'Customer Service',
-          availableLanguage: ['English', 'Spanish'],
-        },
+        contactPoint: [contactPointSchema('customer service'), contactPointSchema('booking desk')],
+        knowsAbout: [
+          'Barcelona airport transfer',
+          'Barcelona taxi alternative',
+          'Barcelona cab alternative',
+          'Private driver Barcelona',
+          'Executive chauffeur Barcelona',
+          'Barcelona cruise port transfer',
+          'Hourly chauffeur service',
+        ],
+      },
+      {
+        '@type': 'Organization',
+        '@id': digitalPartnerId,
+        name: siteConfig.digitalPartner.name,
+        url: siteConfig.digitalPartner.url,
       },
       {
         '@type': 'WebSite',
-        '@id': 'https://stwmovers.com/#website',
-        url: 'https://stwmovers.com/',
+        '@id': websiteId,
+        url: `${siteUrl}/`,
         name: 'STW Movers',
         publisher: {
-          '@id': 'https://stwmovers.com/#organization',
+          '@id': organizationId,
         },
-        inLanguage: ['en', 'es'],
+        inLanguage: 'en',
+        about: {
+          '@id': localBusinessId,
+        },
+        creator: {
+          '@id': digitalPartnerId,
+        },
+        creditText: siteConfig.digitalPartner.creditLine,
       },
       {
         '@type': 'LocalBusiness',
-        '@id': 'https://stwmovers.com/#localbusiness',
+        '@id': localBusinessId,
         name: 'STW Movers',
-        url: 'https://stwmovers.com/',
+        alternateName: ['STW Movers Barcelona', 'STW Movers Chauffeur Service'],
+        url: `${siteUrl}/`,
         telephone: siteConfig.contactPhone,
-        email: 'info@stwmovers.com',
+        email: siteConfig.contactEmail,
+        description:
+          'Barcelona chauffeur service for airport transfers, private driver hire, and executive transport.',
         priceRange: '€€ - €€€',
+        paymentAccepted: ['Credit Card', 'Debit Card'],
+        currenciesAccepted: 'EUR',
         address: {
           '@type': 'PostalAddress',
           ...siteConfig.contactAddressPostal,
         },
-        geo: {
-          '@type': 'GeoCoordinates',
-          latitude: 41.37600189339869,
-          longitude: 2.1581348619791694,
+        openingHoursSpecification: [
+          {
+            '@type': 'OpeningHoursSpecification',
+            dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+            opens: '00:00',
+            closes: '23:59',
+          },
+        ],
+        parentOrganization: {
+          '@id': organizationId,
         },
-        openingHours: 'Mo-Su 00:00-23:59',
+        areaServed: [
+          {
+            '@type': 'City',
+            name: 'Barcelona',
+          },
+          {
+            '@type': 'AdministrativeArea',
+            name: 'Catalonia',
+          },
+        ],
+        hasOfferCatalog: {
+          '@type': 'OfferCatalog',
+          name: 'Barcelona chauffeur and transfer services',
+          itemListElement: primaryServiceItems.map((item) => ({
+            '@type': 'Offer',
+            url: siteAbsoluteUrl(item.path),
+            itemOffered: {
+              '@type': 'Service',
+              name: item.name,
+              description: item.description,
+              provider: {
+                '@id': localBusinessId,
+              },
+            },
+          })),
+        },
+        potentialAction: quoteActionSchema(),
       },
     ],
   }

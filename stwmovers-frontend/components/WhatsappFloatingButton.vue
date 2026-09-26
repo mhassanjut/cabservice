@@ -35,3 +35,11 @@ const href = computed(() =>
     </svg>
   </a>
 </template>
+
+<style>
+body:has(.app-nav__drawer.is-open) .wa-float,
+body:has(.app-nav__drawer.is-open) .mobile-bar {
+  visibility: hidden;
+  pointer-events: none;
+}
+</style>

@@ -1,13 +1,13 @@
 <script setup lang="ts">
+import type { BookingDto, BookingStatus } from '~/types/api'
+import { bookingService } from '~/services/api/booking.service'
+import { routes } from '~/constants/routes'
+
 definePageMeta({
   layout: 'customer',
   middleware: ['customer', 'no-guest-dashboard'],
   ssr: false,
 })
-
-import type { BookingDto, BookingStatus } from '~/types/api'
-import { bookingService } from '~/services/api/booking.service'
-import { routes } from '~/constants/routes'
 
 usePageSeo({ title: 'My bookings', path: '/dashboard/bookings' })
 

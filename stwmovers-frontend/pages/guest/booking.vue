@@ -155,12 +155,12 @@ const onGoogleSuccess = async (idToken: string) => {
               <h2 class="confirm-details__title">Your transfer</h2>
             </header>
 
-            <hr class="booking-card__divider confirm-details__divider" />
+            <hr class="booking-card__divider confirm-details__divider" >
 
             <ul class="booking-journey__list confirm-details__list">
               <li class="booking-journey__item">
                 <span class="booking-journey__icon" aria-hidden="true">
-                  <img :src="journeyIcons.pickup" alt="" width="20" height="20" />
+                  <img :src="journeyIcons.pickup" alt="" width="20" height="20" >
                 </span>
                 <div class="booking-journey__text">
                   <span class="booking-journey__label">Pickup</span>
@@ -169,7 +169,7 @@ const onGoogleSuccess = async (idToken: string) => {
               </li>
               <li class="booking-journey__item">
                 <span class="booking-journey__icon" aria-hidden="true">
-                  <img :src="journeyIcons.dropoff" alt="" width="20" height="20" />
+                  <img :src="journeyIcons.dropoff" alt="" width="20" height="20" >
                 </span>
                 <div class="booking-journey__text">
                   <span class="booking-journey__label">Drop-off</span>
@@ -178,7 +178,7 @@ const onGoogleSuccess = async (idToken: string) => {
               </li>
               <li class="booking-journey__item">
                 <span class="booking-journey__icon" aria-hidden="true">
-                  <img :src="journeyIcons.travelDate" alt="" width="20" height="20" />
+                  <img :src="journeyIcons.travelDate" alt="" width="20" height="20" >
                 </span>
                 <div class="booking-journey__text">
                   <span class="booking-journey__label">Date &amp; Time</span>
@@ -201,7 +201,7 @@ const onGoogleSuccess = async (idToken: string) => {
               </li>
             </ul>
 
-            <hr class="booking-card__divider confirm-details__divider" />
+            <hr class="booking-card__divider confirm-details__divider" >
 
             <footer class="confirm-details__fare-row">
               <span class="confirm-details__fare-label">{{ fareLabel }}</span>
@@ -215,7 +215,7 @@ const onGoogleSuccess = async (idToken: string) => {
                 <h2 class="confirm-status__title">Live status</h2>
                 <p class="confirm-status__lead">Track progress from confirmation to drop-off.</p>
               </header>
-              <hr class="booking-card__divider confirm-status__divider" />
+              <hr class="booking-card__divider confirm-status__divider" >
               <BookingLiveStatus :status="booking.status" />
             </article>
 

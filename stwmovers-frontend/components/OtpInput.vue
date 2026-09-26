@@ -33,6 +33,6 @@ const onKey = (i: number, e: KeyboardEvent) => {
       :value="digits[i]"
       @input="onInput(i, $event)"
       @keydown="onKey(i, $event)"
-    />
+    >
   </div>
 </template>

@@ -345,6 +345,72 @@
   }
 }
 
+/* ─── Trust links ─── */
+.about-page .about-trust {
+  background: #171613;
+  color: #fff;
+}
+
+.about-page .about-trust__head {
+  display: grid;
+  gap: 0.9rem;
+  max-width: 54rem;
+  margin-bottom: clamp(1.5rem, 4vw, 2.6rem);
+}
+
+.about-page .about-trust__head .about-heading {
+  color: #fff;
+}
+
+.about-page .about-trust__grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.about-page .about-trust__card {
+  display: grid;
+  gap: 0.45rem;
+  min-height: 100%;
+  padding: clamp(1rem, 3vw, 1.25rem);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.025));
+  color: #fff;
+  text-decoration: none;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.about-page .about-trust__card:hover {
+  border-color: rgba(216, 178, 76, 0.5);
+  transform: translateY(-2px);
+}
+
+.about-page .about-trust__card span {
+  font-family: var(--home-font-display);
+  font-size: clamp(1.12rem, 2vw, 1.35rem);
+  font-weight: 500;
+  line-height: 1.18;
+}
+
+.about-page .about-trust__card small {
+  color: rgba(255, 255, 255, 0.68);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+@media (min-width: 760px) {
+  .about-page .about-trust__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1080px) {
+  .about-page .about-trust__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 /* ─── Gallery (82:770) ─── */
 .about-page .about-gallery__header {
   display: flex;

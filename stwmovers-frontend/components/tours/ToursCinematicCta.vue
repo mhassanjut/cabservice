@@ -18,7 +18,7 @@ const planTourLink = computed(() =>
         decoding="async"
         width="1440"
         height="520"
-      />
+      >
       <div class="tp-cta__overlay" />
     </div>
     <div class="tp-cta__content">
