@@ -38,7 +38,7 @@ jobs:
       - uses: actions/setup-node@v4
         if: github.event_name == 'workflow_dispatch' || steps.download.outcome != 'success'
         with:
-          node-version: '20'
+          node-version: '24.11.0'
           cache: npm
           cache-dependency-path: stwmovers-frontend/package-lock.json
 
