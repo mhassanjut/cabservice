@@ -60,9 +60,14 @@ jobs:
 
       - name: Verify build output
         run: |
-          if [ ! -f stwmovers-frontend/.output/server/index.mjs ]; then
-            echo "Missing stwmovers-frontend/.output/server/index.mjs"
-            ls -la stwmovers-frontend/.output 2>/dev/null || ls -la stwmovers-frontend/ || true
+          if [ ! -f stwmovers-frontend/.output/server/index.mjs ] && [ ! -f stwmovers-frontend/.output/public/index.html ]; then
+            echo "Missing Nuxt build output. Expected server/index.mjs or public/index.html."
+            find stwmovers-frontend/.output -maxdepth 3 -type f -print 2>/dev/null | sort | sed -n '1,80p' || ls -la stwmovers-frontend/ || true
+            exit 1
+          fi
+          if [ ! -f stwmovers-frontend/.output/nitro.json ]; then
+            echo "Missing stwmovers-frontend/.output/nitro.json"
+            find stwmovers-frontend/.output -maxdepth 2 -print 2>/dev/null | sort || ls -la stwmovers-frontend/ || true
             exit 1
           fi
 
