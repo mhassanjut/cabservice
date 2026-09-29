@@ -1,0 +1,20 @@
+/* Shared public-site interactions; dashboard and checkout styles stay independent. */
+.site-root--home :is(a, button, input, select, summary):focus-visible {
+  outline: 2px solid #c8a644;
+  outline-offset: 4px;
+}
+.site-root--home :is(.blog-card, .service-directory__card, .growth-list-card, .home-intent__card) {
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+.site-root--home :is(.blog-card__media, .service-directory__card) { overflow: hidden; }
+.site-root--home :is(.blog-card__media img, .service-directory__card img) { transition: transform 220ms ease; }
+@media(hover:hover) and (pointer:fine) {
+  .site-root--home :is(.blog-card, .service-directory__card, .growth-list-card, .home-intent__card):hover {
+    transform: none; border-color: #b79d60; box-shadow: 0 6px 24px #0002;
+  }
+  .site-root--home :is(.blog-card:hover .blog-card__media img, .service-directory__card:hover img) { transform: scale(1.025); }
+  .site-root--home :is(.services-btn, .blogs-btn, .growth-btn, .home-hero__cta):hover { transform: translateY(-1px); }
+}
+@media(prefers-reduced-motion:reduce) {
+  .site-root--home *, .site-root--home *::before, .site-root--home *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

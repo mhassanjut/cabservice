@@ -63,10 +63,9 @@ Create `/opt/stwmovers/backend/.env` (or systemd `EnvironmentFile`):
 | `GOOGLE_CLIENT_ID` | Production OAuth Web client ID |
 | `MAIL_HOST` / `MAIL_USERNAME` / `MAIL_PASSWORD` | Brevo (or provider) production SMTP |
 | `MAIL_FROM` | Verified sender address in Brevo |
-| `ADMIN_EMAIL` / `ADMIN_PASSWORD` | Change from defaults; use strong admin password |
+| `ADMIN_EMAIL` / `ADMIN_PASSWORD` | Set explicitly; use a strong admin password |
 | `SERVER_PORT` | `8080` (internal; Nginx proxies to this) |
 | `CAR_UPLOADS_DIR` | `/opt/stwmovers/backend/uploads/cars` |
-| `PUBLIC_SITE_URL` | `https://www.stwmovers.com` (booking emails, blog SEO rewrites) |
 
 Load in systemd unit (see section 7).
 
@@ -82,9 +81,8 @@ Set on VPS build or in GitHub Actions secrets for deploy:
 | `NUXT_PUBLIC_GOOGLE_MAPS_API_KEY` | Maps JavaScript API key (HTTP referrer restricted) |
 | `NUXT_PUBLIC_GOOGLE_CLIENT_ID` | Same as backend `GOOGLE_CLIENT_ID` |
 | `NUXT_PUBLIC_STRIPE_PUBLIC_KEY` | `pk_live_...` |
-| `NUXT_PUBLIC_SITE_URL` | `https://www.stwmovers.com` |
 
-`stwmovers-frontend/config/site.ts` defaults to `https://www.stwmovers.com`; set `NUXT_PUBLIC_SITE_URL` at build time so CI and VPS builds stay in sync.
+Update `stwmovers-frontend/config/site.ts` → `siteUrl: 'https://www.stwmovers.com'` before production build.
 
 ---
 
@@ -148,79 +146,12 @@ sudo systemctl enable --now stwmovers-backend stwmovers-frontend
 
 ---
 
-## 8. Nginx reverse proxy
+## 8. Nginx reverse proxy (sketch)
 
-Primary domain is **`https://www.stwmovers.com`**. Redirect bare `stwmovers.com` (and HTTP) to www so Google sees one canonical host.
-
-Example `/etc/nginx/sites-available/stwmovers`:
-
-```nginx
-# HTTP → HTTPS + www (Certbot may add similar blocks; keep one canonical redirect chain)
-server {
-    listen 80;
-    server_name stwmovers.com www.stwmovers.com;
-    return 301 https://www.stwmovers.com$request_uri;
-}
-
-# non-www HTTPS → www
-server {
-    listen 443 ssl;
-    server_name stwmovers.com;
-
-    ssl_certificate     /etc/letsencrypt/live/stwmovers.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/stwmovers.com/privkey.pem;
-
-    return 301 https://www.stwmovers.com$request_uri;
-}
-
-# Primary site (www)
-server {
-    listen 443 ssl;
-    server_name www.stwmovers.com;
-
-    ssl_certificate     /etc/letsencrypt/live/stwmovers.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/stwmovers.com/privkey.pem;
-
-    client_max_body_size 10M;
-
-    location / {
-        proxy_pass http://127.0.0.1:3000;
-        proxy_http_version 1.1;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
-
-# API subdomain
-server {
-    listen 443 ssl;
-    server_name api.stwmovers.com;
-
-    ssl_certificate     /etc/letsencrypt/live/stwmovers.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/stwmovers.com/privkey.pem;
-
-    client_max_body_size 10M;
-
-    location / {
-        proxy_pass http://127.0.0.1:8080;
-        proxy_http_version 1.1;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
-```
-
-After editing:
-
-```bash
-sudo nginx -t && sudo systemctl reload nginx
-curl -I https://stwmovers.com/   # expect 301 → https://www.stwmovers.com/
-curl -I https://www.stwmovers.com/  # expect 200
-```
+- `stwmovers.com` / `www` → `proxy_pass http://127.0.0.1:3000` (Nuxt)
+- `api.stwmovers.com` → `proxy_pass http://127.0.0.1:8080` (Spring Boot)
+- Serve uploaded car images: `location /api/v1/media/` → backend
+- Client body size for uploads: `client_max_body_size 10M;`
 
 ---
 
@@ -243,7 +174,7 @@ curl -I https://www.stwmovers.com/  # expect 200
 - [ ] Generate production-only `JWT_SECRET` (long, random).
 - [ ] Store only on server + GitHub encrypted secrets (if CI injects); never in git.
 - [ ] Rotating JWT secret logs out all users — plan maintenance window if rotating later.
-- [ ] Google OAuth: in Google Cloud Console add authorized origins `https://www.stwmovers.com` (keep `https://stwmovers.com` until 301 redirect is live) and redirect URIs if required by your flow.
+- [ ] Google OAuth: in Google Cloud Console add authorized origins `https://www.stwmovers.com` and redirect URIs if required by your flow.
 - [ ] Restrict Maps API key by HTTP referrer: `https://stwmovers.com/*`, `https://www.stwmovers.com/*`.
 
 ---
@@ -269,7 +200,6 @@ curl -I https://www.stwmovers.com/  # expect 200
 | `NUXT_PUBLIC_GOOGLE_MAPS_API_KEY` | Production Maps key |
 | `NUXT_PUBLIC_GOOGLE_CLIENT_ID` | Production OAuth client |
 | `NUXT_PUBLIC_STRIPE_PUBLIC_KEY` | `pk_live_...` |
-| `NUXT_PUBLIC_SITE_URL` | `https://www.stwmovers.com` |
 
 CI is free on public repos; private repos have a monthly Actions minutes allowance.
 
@@ -277,7 +207,7 @@ CI is free on public repos; private repos have a monthly Actions minutes allowan
 
 ## 13. Google / legal / SEO verification
 
-- [ ] Google Search Console — verify **`www.stwmovers.com`** as the primary property (DNS TXT or HTML file). Set preferred domain to www; submit sitemap `https://www.stwmovers.com/sitemap.xml`.
+- [ ] Google Search Console — verify `stwmovers.com` (DNS TXT or HTML file).
 - [ ] Google Business Profile (if applicable for local Barcelona transfers).
 - [ ] Privacy policy + cookie notice (GDPR if EU customers).
 - [ ] Terms of service for bookings and payments.

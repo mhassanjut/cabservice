@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import { EDIT_JOURNEY_FLAG, routes } from '~/constants/routes'
 import { PASSENGER_CAPACITY_CHOICES, passengerCapacityLabel } from '~/constants/passengers'
+import { formatDistanceKm } from '~/utils/geo'
+import { routeEndpoint } from '~/utils/routeEndpoint'
+import { resolvePickupCity } from '~/utils/cities'
+import { normalizeCarFilters } from '~/utils/carFilters'
+import { areSameBookingPlaces, isPastPickupDate, isPastPickupTimeToday, minPickupDateValue, minPickupTimeValue } from '~/utils/bookingValidation'
+import { trackMarketingEvent } from '~/utils/marketingEvents'
+import { ridesService } from '~/services/api/rides.service'
+import type { BookingDraft } from '~/types/booking'
 
 const props = withDefaults(
   defineProps<{
@@ -8,13 +16,6 @@ const props = withDefaults(
   }>(),
   { variant: 'card' },
 )
-import { formatDistanceKm } from '~/utils/geo'
-import { routeEndpoint } from '~/utils/routeEndpoint'
-import { resolvePickupCity } from '~/utils/cities'
-import { normalizeCarFilters } from '~/utils/carFilters'
-import { areSameBookingPlaces, isPastPickupDate, isPastPickupTimeToday, minPickupDateValue, minPickupTimeValue } from '~/utils/bookingValidation'
-import { ridesService } from '~/services/api/rides.service'
-import type { BookingDraft } from '~/types/booking'
 
 const booking = useBookingStore()
 const toast = useToastStore()
@@ -208,6 +209,7 @@ const barDateLabel = computed(() => {
 const barTimeLabel = computed(() => {
   if (!form.pickupTime) return 'Select Time'
   const [hours, minutes] = form.pickupTime.split(':')
+  if (!hours || !minutes) return form.pickupTime
   const hour = Number.parseInt(hours, 10)
   const suffix = hour >= 12 ? 'PM' : 'AM'
   const hour12 = hour % 12 || 12
@@ -273,6 +275,15 @@ const onSubmit = async () => {
     })
     booking.setCars(res.content)
     booking.persistToStorage()
+    trackMarketingEvent('quote_funnel_started', {
+      form_variant: props.variant,
+      source_path: route.fullPath,
+      pickup_city: resolvedPickup,
+      destination_city: form.destinationCity,
+      distance_km: form.distanceKm,
+      passenger_count: form.passengerCount,
+      vehicle_results: res.content.length,
+    })
     await router.push(routes.cars)
   } catch {
     toast.show('Could not load vehicles. Please retry.', 'error')
@@ -301,92 +312,110 @@ const onSubmit = async () => {
       </p>
       <div class="booking-form__bar-grid">
         <div class="booking-form__field" :class="{ 'booking-form__field--maps-pending': placesPending }">
-          <label class="booking-form__bar-label" for="pickup">
-            Pickup
-            <span v-if="placesPending" class="booking-form__maps-hint">Loading places…</span>
-          </label>
-          <input
-            id="pickup"
-            ref="pickupRef"
-            v-model="form.pickupLocation"
-            class="booking-form__bar-input"
-            :placeholder="placesPending ? 'Loading places…' : 'Select Pickup'"
-            required
-            autocomplete="off"
-            :aria-busy="placesPending || undefined"
-            @blur="touched.pickupLocation = true"
-            @focus="onPlaceFocus"
-          />
+          <span class="booking-form__bar-icon" aria-hidden="true"><i class="fa-solid fa-location-dot" /></span>
+          <span class="booking-form__bar-copy">
+            <label class="booking-form__bar-label" for="pickup">
+              Pickup
+              <span v-if="placesPending" class="booking-form__maps-hint">Loading places…</span>
+            </label>
+            <input
+              id="pickup"
+              ref="pickupRef"
+              v-model="form.pickupLocation"
+              class="booking-form__bar-input"
+              :placeholder="placesPending ? 'Loading places…' : 'Select Pickup'"
+              required
+              autocomplete="off"
+              :aria-busy="placesPending || undefined"
+              @blur="touched.pickupLocation = true"
+              @focus="onPlaceFocus"
+            >
+          </span>
         </div>
         <div class="booking-form__field" :class="{ 'booking-form__field--maps-pending': placesPending }">
-          <label class="booking-form__bar-label" for="dropoff">
-            Destination
-            <span v-if="placesPending" class="booking-form__maps-hint">Loading places…</span>
-          </label>
-          <input
-            id="dropoff"
-            ref="dropoffRef"
-            v-model="form.dropoffLocation"
-            class="booking-form__bar-input"
-            :placeholder="placesPending ? 'Loading places…' : 'Select Destination'"
-            required
-            autocomplete="off"
-            :aria-busy="placesPending || undefined"
-            @blur="touched.dropoffLocation = true"
-            @focus="onPlaceFocus"
-          />
+          <span class="booking-form__bar-icon" aria-hidden="true"><i class="fa-solid fa-flag-checkered" /></span>
+          <span class="booking-form__bar-copy">
+            <label class="booking-form__bar-label" for="dropoff">
+              Destination
+              <span v-if="placesPending" class="booking-form__maps-hint">Loading places…</span>
+            </label>
+            <input
+              id="dropoff"
+              ref="dropoffRef"
+              v-model="form.dropoffLocation"
+              class="booking-form__bar-input"
+              :placeholder="placesPending ? 'Loading places…' : 'Select Destination'"
+              required
+              autocomplete="off"
+              :aria-busy="placesPending || undefined"
+              @blur="touched.dropoffLocation = true"
+              @focus="onPlaceFocus"
+            >
+          </span>
         </div>
         <div class="booking-form__field">
-          <span class="booking-form__bar-label" id="date-label">Date</span>
-          <div class="booking-form__bar-control">
-            <span class="booking-form__bar-value">{{ barDateLabel }}</span>
-            <input
-              id="date"
-              ref="dateRef"
-              v-model="form.pickupDate"
-              class="booking-form__bar-native"
-              type="date"
-              required
-              :min="minPickupDate"
-              aria-labelledby="date-label"
-              @blur="touched.pickupDate = true"
-              @click="openPicker(dateRef)"
-            />
-          </div>
+          <span class="booking-form__bar-icon" aria-hidden="true"><i class="fa-regular fa-calendar-days" /></span>
+          <span class="booking-form__bar-copy">
+            <span id="date-label" class="booking-form__bar-label">Date</span>
+            <div class="booking-form__bar-control">
+              <span class="booking-form__bar-value">{{ barDateLabel }}</span>
+              <input
+                id="date"
+                ref="dateRef"
+                v-model="form.pickupDate"
+                class="booking-form__bar-native"
+                type="date"
+                required
+                :min="minPickupDate"
+                aria-labelledby="date-label"
+                @blur="touched.pickupDate = true"
+                @click="openPicker(dateRef)"
+              >
+            </div>
+          </span>
         </div>
         <div class="booking-form__field">
-          <span class="booking-form__bar-label" id="time-label">Time</span>
-          <div class="booking-form__bar-control">
-            <span class="booking-form__bar-value">{{ barTimeLabel }}</span>
-            <input
-              id="time"
-              ref="timeRef"
-              v-model="form.pickupTime"
-              class="booking-form__bar-native"
-              type="time"
-              required
-              :min="minPickupTime"
-              aria-labelledby="time-label"
-              @blur="touched.pickupTime = true"
-              @click="openPicker(timeRef)"
-            />
-          </div>
+          <span class="booking-form__bar-icon" aria-hidden="true"><i class="fa-regular fa-clock" /></span>
+          <span class="booking-form__bar-copy">
+            <span id="time-label" class="booking-form__bar-label">Time</span>
+            <div class="booking-form__bar-control">
+              <span class="booking-form__bar-value">{{ barTimeLabel }}</span>
+              <input
+                id="time"
+                ref="timeRef"
+                v-model="form.pickupTime"
+                class="booking-form__bar-native"
+                type="time"
+                required
+                :min="minPickupTime"
+                aria-labelledby="time-label"
+                @blur="touched.pickupTime = true"
+                @click="openPicker(timeRef)"
+              >
+            </div>
+          </span>
         </div>
         <div class="booking-form__field booking-form__field--passengers">
-          <label class="booking-form__bar-label" for="passengers-bar">Passengers</label>
-          <select
-            id="passengers-bar"
-            v-model="passengerCount"
-            class="booking-form__bar-input booking-form__bar-select"
-          >
-            <option value="">Select passengers</option>
-            <option v-for="n in PASSENGER_CAPACITY_CHOICES" :key="n" :value="n">
-              {{ passengerCapacityLabel(n) }}
-            </option>
-          </select>
+          <span class="booking-form__bar-icon" aria-hidden="true"><i class="fa-regular fa-user" /></span>
+          <span class="booking-form__bar-copy">
+            <label class="booking-form__bar-label" for="passengers-bar">Passengers</label>
+            <select
+              id="passengers-bar"
+              v-model="passengerCount"
+              class="booking-form__bar-input booking-form__bar-select"
+            >
+              <option value="">Select passengers</option>
+              <option v-for="n in PASSENGER_CAPACITY_CHOICES" :key="n" :value="n">
+                {{ passengerCapacityLabel(n) }}
+              </option>
+            </select>
+          </span>
         </div>
         <div class="booking-form__submit-wrap">
-          <button class="booking-form__bar-submit" type="submit" :disabled="loading">Get a Quote</button>
+          <button class="booking-form__bar-submit" type="submit" :disabled="loading">
+            <span>Get a Quote</span>
+            <i class="fa-solid fa-arrow-right" aria-hidden="true" />
+          </button>
         </div>
       </div>
     </template>
@@ -413,7 +442,7 @@ const onSubmit = async () => {
           :aria-busy="placesPending || undefined"
           @blur="touched.pickupLocation = true"
           @focus="onPlaceFocus"
-        />
+        >
         <p v-if="touched.pickupLocation && errors.pickupLocation" class="err">{{ errors.pickupLocation }}</p>
       </div>
       <div class="field" :class="{ 'field--maps-pending': placesPending }">
@@ -432,11 +461,11 @@ const onSubmit = async () => {
           :aria-busy="placesPending || undefined"
           @blur="touched.dropoffLocation = true"
           @focus="onPlaceFocus"
-        />
+        >
         <p v-if="touched.dropoffLocation && errors.dropoffLocation" class="err">{{ errors.dropoffLocation }}</p>
       </div>
       <div class="field">
-        <span class="label" id="date-label-card">Date</span>
+        <span id="date-label-card" class="label">Date</span>
         <label class="input-picker" aria-labelledby="date-label-card" @click="openPicker(dateRef)">
           <input
             id="date-card"
@@ -449,13 +478,13 @@ const onSubmit = async () => {
             aria-labelledby="date-label-card"
             @blur="touched.pickupDate = true"
             @click="openPicker(dateRef)"
-          />
+          >
           <i class="fa-regular fa-calendar input-picker__icon" aria-hidden="true" />
         </label>
         <p v-if="touched.pickupDate && errors.pickupDate" class="err">{{ errors.pickupDate }}</p>
       </div>
       <div class="field">
-        <span class="label" id="time-label-card">Time</span>
+        <span id="time-label-card" class="label">Time</span>
         <label class="input-picker" aria-labelledby="time-label-card" @click="openPicker(timeRef)">
           <input
             id="time-card"
@@ -468,7 +497,7 @@ const onSubmit = async () => {
             aria-labelledby="time-label-card"
             @blur="touched.pickupTime = true"
             @click="openPicker(timeRef)"
-          />
+          >
           <i class="fa-regular fa-clock input-picker__icon" aria-hidden="true" />
         </label>
         <p v-if="touched.pickupTime && errors.pickupTime" class="err">{{ errors.pickupTime }}</p>
@@ -530,13 +559,31 @@ const onSubmit = async () => {
 .booking-form--bar .booking-form__field {
   box-sizing: border-box;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 12px;
   min-width: 0;
   min-height: 35px;
   padding: 12px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.booking-form--bar .booking-form__bar-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: 1.15rem;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0, 0, 0, 0.72);
+  font-size: 1rem;
+}
+
+.booking-form--bar .booking-form__bar-copy {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+  flex: 1 1 auto;
 }
 
 @media (min-width: 1100px) {
@@ -674,6 +721,17 @@ const onSubmit = async () => {
   text-transform: uppercase;
   white-space: nowrap;
   cursor: pointer;
+  gap: 0.65rem;
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.booking-form--bar .booking-form__bar-submit:not(:disabled):hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
 }
 
 .booking-form--bar .booking-form__bar-submit:disabled {

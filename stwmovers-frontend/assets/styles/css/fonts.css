@@ -27,6 +27,14 @@
 @font-face {
   font-family: 'Inter';
   font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('@fontsource/inter/files/inter-latin-300-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
   font-weight: 200;
   font-display: optional;
   src: url('/fonts/inter-latin-ext-200.woff2') format('woff2');

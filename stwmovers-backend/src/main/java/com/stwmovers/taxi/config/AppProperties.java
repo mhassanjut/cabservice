@@ -126,7 +126,7 @@ public class AppProperties {
     @Setter
     public static class Admin {
         private String email = "admin@stwmovers.com";
-        private String password = "Admin@12345";
+        private String password = "";
     }
 
     @Getter

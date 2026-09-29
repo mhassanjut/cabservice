@@ -295,7 +295,7 @@ const onGoogleError = (message: string) => {
           <!-- Guest auth -->
           <article v-else-if="step === 'auth' && !showOtpModal" class="checkout-panel__card booking-card">
             <div class="checkout-panel__head checkout-panel__head--icon">
-              <img class="checkout-panel__icon-img" :src="guestIconUrl" alt="" aria-hidden="true" />
+              <img class="checkout-panel__icon-img" :src="guestIconUrl" alt="" aria-hidden="true" >
               <div>
                 <h2 class="checkout-panel__title">Guest Checkout or create account</h2>
                 <p class="checkout-panel__lead">
@@ -324,7 +324,7 @@ const onGoogleError = (message: string) => {
                   type="text"
                   autocomplete="name"
                   required
-                />
+                >
               </div>
               <div class="checkout-panel__field">
                 <label class="checkout-panel__label" for="guest-email">Email</label>
@@ -335,7 +335,7 @@ const onGoogleError = (message: string) => {
                   type="email"
                   autocomplete="email"
                   required
-                />
+                >
               </div>
               <div class="checkout-panel__field">
                 <label class="checkout-panel__label" for="guest-phone">Phone</label>

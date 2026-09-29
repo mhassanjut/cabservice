@@ -4,9 +4,9 @@ import '~/assets/styles/css/contact.css'
 definePageMeta({ layout: 'home' })
 
 usePageSeo({
-  title: 'Journey',
+  title: 'Request a Chauffeur Quote in Barcelona',
   description:
-    'Plan your journey with STW Movers. Request a personalised chauffeur quote, reach our 24/7 dispatch teams by phone, email, or WhatsApp, and plan executive travel across Barcelona and Spain.',
+    'Request a personalised STW Movers chauffeur quote for Barcelona airport transfers, executive travel, hourly private driver hire, and city-to-city journeys across Catalonia.',
   path: '/journey',
 })
 </script>

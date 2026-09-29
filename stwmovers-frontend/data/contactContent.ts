@@ -38,21 +38,21 @@ export type ContactFaqItem = {
 
 /* ─── Hero (82:886) ─── */
 export const contactHero = {
-  eyebrow: 'CONTACT US',
-  title: "We're Here To Plan Every Detail.",
+  eyebrow: 'CONTACT STW MOVERS',
+  title: 'Send The Trip Details. We Will Plan The Private Transfer.',
   body:
-    "Whether you're booking an airport transfer, executive travel, or a special occasion, our team is here to help you plan every detail with care.",
-  cta: { label: 'Contact Our Team', href: '#contact-channels' },
+    'Contact the Barcelona chauffeur desk for airport transfers, private driver hire, hourly chauffeur service, cruise port pickups, executive travel, or a premium taxi and cab alternative.',
+  cta: { label: 'Contact Chauffeur Desk', href: '#contact-channels' },
   image: '/img/contact/hero.png',
 } as const
 
 /* ─── Book Your Journey (82:896) ─── */
 export const contactBooking = {
-  heading: 'Book Your Journey',
+  heading: 'Request a Private Barcelona Chauffeur Quote',
   lead:
-    'Share your travel details and our concierge team will prepare a personalised quote within the hour.',
-  formTitle: 'Request My Journey',
-  submitLabel: 'Request My Journey',
+    'Share pickup, destination, date, time, passengers, luggage, flight or cruise details, and any extra stops. The STW Movers desk will match the right private driver, airport transfer, or cab alternative.',
+  formTitle: 'Request Private Quote',
+  submitLabel: 'Request Private Quote',
 } as const
 
 export const contactChannels: ContactChannel[] = [
@@ -79,8 +79,8 @@ export const contactChannels: ContactChannel[] = [
 
 /* ─── Ways to Reach Us (82:948) ─── */
 export const contactChannelsSection = {
-  eyebrow: 'GLOBAL CONCIERGE',
-  heading: 'Direct Lines to our Dispatch Teams',
+  eyebrow: 'CHAUFFEUR DESK',
+  heading: 'Direct lines for quotes, airport changes, and private driver support',
 } as const
 
 export const contactCards: ContactCard[] = [
@@ -90,7 +90,7 @@ export const contactCards: ContactCard[] = [
     value: contactPhoneDisplay,
     href: contactTelHref,
     description:
-      'Available 24/7 for immediate assistance, flight delay changes, or urgent itinerary modifications.',
+      'Call for airport pickup questions, urgent itinerary changes, private driver requests, or same-day transfer availability.',
   },
   {
     icon: 'fa-solid fa-envelope',
@@ -98,7 +98,7 @@ export const contactCards: ContactCard[] = [
     value: contactEmail,
     href: contactMailto,
     description:
-      'Receive a personalised response from our luxury dispatch team regarding multi-car bookings or corporate contracts.',
+      'Best for corporate travel, multi-car bookings, city-to-city routes, event chauffeur plans, and detailed quote requests.',
   },
   {
     icon: 'fa-brands fa-whatsapp',
@@ -107,37 +107,37 @@ export const contactCards: ContactCard[] = [
     href: contactWhatsappHref,
     external: true,
     description:
-      'Quick, seamless messaging for immediate quote checks, driver tracking links, and real-time support on the go.',
+      'Fast messaging for airport transfer quotes, cab alternative searches, luggage notes, driver coordination, and live support.',
   },
 ]
 
 /* ─── Service Areas (82:977) ─── */
 export const contactAreas = {
-  eyebrow: 'OUR FOOTPRINT',
-  heading: 'Serving Major Cities Across Spain',
+  eyebrow: 'BARCELONA SERVICE AREA',
+  heading: 'Local support for Barcelona Airport, Eixample, cruise port, and city-to-city transfers',
   body:
-    'Providing executive chauffeur services across key business hubs, airports, and destinations with the same premium experience wherever you travel.',
+    'STW Movers serves Barcelona, BCN airport, Eixample 08015, Fira Barcelona, cruise terminals, hotels, homes, business venues, and private transfer routes across Catalonia.',
   image: '/img/contact/destination-sunset.png',
   imageAlt: 'Barcelona harbour and skyline at sunset',
-  cities: ['Barcelona', 'Tarragona', 'Girona'],
+  cities: ['Barcelona', 'BCN Airport', 'Eixample 08015', 'Cruise Port', 'Fira Barcelona', 'Sitges', 'Tarragona', 'Girona'],
 } as const
 
 /* ─── FAQ (82:999) ─── */
 export const contactFaq = {
-  eyebrow: 'TRAVELER FAQ',
-  heading: 'Frequently Asked Questions',
+  eyebrow: 'QUOTE FAQ',
+  heading: 'Questions before you send a trip request',
 } as const
 
 export const contactFaqItems: ContactFaqItem[] = [
   {
-    question: 'How far in advance should I book my journey?',
+    question: 'What details should I send for a Barcelona airport transfer quote?',
     answer:
-      'We recommend booking at least 24 hours ahead for guaranteed availability. Same-day executive dispatch is often possible — contact our concierge desk for urgent arrivals or departures.',
+      'Send flight number, date, pickup time, terminal if known, destination address, passengers, luggage, child-seat needs, and any extra stops.',
   },
   {
-    question: 'Can I make last-minute reservations with STW Movers?',
+    question: 'Can I contact STW Movers if I searched for taxi or cab service?',
     answer:
-      'Yes. Subject to fleet availability, we accommodate last-minute and same-day bookings. Message us on WhatsApp for the fastest confirmation.',
+      'Yes. Many travellers find STW Movers through taxi, cab, airport cab, or private cab searches. The service is a pre-booked private chauffeur alternative.',
   },
   {
     question: 'Do you monitor delayed flights for airport transfers?',
@@ -145,7 +145,7 @@ export const contactFaqItems: ContactFaqItem[] = [
       'Absolutely. We track your flight in real time and adjust the pickup automatically, so your chauffeur is always waiting when you land — at no extra cost for reasonable delays.',
   },
   {
-    question: 'Can I request multiple stops during an hourly chauffeur service?',
+    question: 'Can I request multiple stops during hourly chauffeur service?',
     answer:
       'Yes. Hourly chauffeur hire includes as many stops as you need within the booked time. Just share your itinerary and we will plan the route around it.',
   },
@@ -163,9 +163,9 @@ export const contactFaqItems: ContactFaqItem[] = [
 
 /* ─── Concierge Promise (82:1034) ─── */
 export const contactPromise = {
-  heading: 'Every Journey Starts With A Conversation.',
+  heading: 'Every Private Transfer Starts With Clear Details.',
   body:
-    "Tell us where you're going, and we'll take care of every detail before you even arrive.",
-  cta: { label: 'Book Your Journey Now', href: '/journey' },
+    'Tell us where you are going, when you need to move, who is travelling, and what luggage is coming. We will help turn the request into a calm Barcelona chauffeur plan.',
+  cta: { label: 'Request Quote', href: '/journey#book-journey' },
   image: '/img/contact/promise-bg.png',
 } as const

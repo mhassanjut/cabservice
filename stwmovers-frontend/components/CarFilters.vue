@@ -47,7 +47,7 @@ const applyPrice = () => emit('change', { ...model.value })
       <NuxtLink class="vehicle-filters__edit" :to="editJourneyLocation">Edit Journey</NuxtLink>
     </div>
 
-    <hr class="booking-card__divider" />
+    <hr class="booking-card__divider" >
 
     <div class="vehicle-filters__rows">
       <div class="vehicle-filters__row">
@@ -118,7 +118,7 @@ const applyPrice = () => emit('change', { ...model.value })
               min="0"
               placeholder="Min Range"
               @change="applyPrice"
-            />
+            >
           </label>
           <label class="vehicle-filters__field">
             <span class="sr-only">Maximum price</span>
@@ -129,7 +129,7 @@ const applyPrice = () => emit('change', { ...model.value })
               min="0"
               placeholder="Max Range"
               @change="applyPrice"
-            />
+            >
           </label>
         </div>
       </div>

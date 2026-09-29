@@ -25,33 +25,35 @@ const whatsappHref = buildWhatsappUrl({
           <a :href="`mailto:${siteConfig.contactEmail}`" aria-label="Email">
             <i class="fa-solid fa-envelope" aria-hidden="true" />
           </a>
-          <a href="https://instagram.com" rel="noopener noreferrer" target="_blank" aria-label="Instagram">
-            <i class="fa-brands fa-instagram" aria-hidden="true" />
-          </a>
         </div>
       </div>
       <div>
         <p class="site-footer__col-title">Services</p>
         <ul class="site-footer__list">
           <li><NuxtLink :to="routes.airportTransfer">Airport transfers</NuxtLink></li>
-          <li><NuxtLink :to="routes.home">City transfers</NuxtLink></li>
-          <li><a :href="homeAnchors.booking">Book a transfer</a></li>
+          <li><NuxtLink :to="routes.chauffeurService">Private chauffeur</NuxtLink></li>
+          <li><NuxtLink :to="routes.executiveBusinessTravel">Executive travel</NuxtLink></li>
+          <li><NuxtLink :to="routes.barcelonaAirportTransferService">BCN airport transfer</NuxtLink></li>
+          <li><NuxtLink :to="routes.chauffeurService08015">08015 chauffeur service</NuxtLink></li>
         </ul>
       </div>
       <div>
         <p class="site-footer__col-title">Company</p>
         <ul class="site-footer__list">
+          <li><NuxtLink :to="routes.aboutUs">About STW Movers</NuxtLink></li>
           <li><NuxtLink :to="routes.contact">Contact</NuxtLink></li>
-          <li><NuxtLink :to="routes.confirm">Confirmation</NuxtLink></li>
           <li><NuxtLink :to="routes.tours">Private Barcelona tours</NuxtLink></li>
+          <li><NuxtLink :to="routes.locations">Service areas</NuxtLink></li>
+          <li><NuxtLink :to="routes.websiteCredits">Website credits</NuxtLink></li>
         </ul>
       </div>
       <div>
-        <p class="site-footer__col-title">Legal</p>
+        <p class="site-footer__col-title">Book</p>
         <ul class="site-footer__list">
-          <li><a href="#">Privacy policy</a></li>
-          <li><a href="#">Terms of service</a></li>
-          <li><a href="#">Licensing</a></li>
+          <li><NuxtLink :to="routes.journey">Request a quote</NuxtLink></li>
+          <li><a :href="homeAnchors.booking">Quick booking form</a></li>
+          <li><NuxtLink :to="routes.answers">Transfer answers</NuxtLink></li>
+          <li><a :href="whatsappHref" rel="noopener noreferrer" target="_blank">WhatsApp support</a></li>
         </ul>
       </div>
     </div>
@@ -60,5 +62,10 @@ const whatsappHref = buildWhatsappUrl({
       <span>© {{ new Date().getFullYear() }} STW Movers. All rights reserved.</span>
       <span>{{ siteConfig.contactAddressDisplay }}</span>
     </div>
+    <p class="site-footer__credit">
+      <a :href="siteConfig.digitalPartner.url" target="_blank" rel="noopener noreferrer">
+        {{ siteConfig.digitalPartner.creditLine }}
+      </a>
+    </p>
   </footer>
 </template>

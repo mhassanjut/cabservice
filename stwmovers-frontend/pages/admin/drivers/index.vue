@@ -185,7 +185,7 @@ const submit = async () => {
 
             <div v-if="!editing" class="field">
               <label class="label" for="driver-email">Email</label>
-              <input id="driver-email" v-model="form.email" class="input" type="email" autocomplete="off" required />
+              <input id="driver-email" v-model="form.email" class="input" type="email" autocomplete="off" required >
             </div>
             <div v-if="!editing" class="field">
               <label class="label" for="driver-password">Password</label>
@@ -197,23 +197,23 @@ const submit = async () => {
                 autocomplete="new-password"
                 minlength="8"
                 required
-              />
+              >
               <p class="help">Minimum 8 characters.</p>
             </div>
             <div class="field">
               <label class="label" for="driver-name">Full name</label>
-              <input id="driver-name" v-model="form.fullName" class="input" autocomplete="name" required />
+              <input id="driver-name" v-model="form.fullName" class="input" autocomplete="name" required >
             </div>
             <div class="field">
               <label class="label" for="driver-phone">Phone</label>
-              <input id="driver-phone" v-model="form.phone" class="input" type="tel" autocomplete="tel" inputmode="tel" />
+              <input id="driver-phone" v-model="form.phone" class="input" type="tel" autocomplete="tel" inputmode="tel" >
             </div>
             <div class="field">
               <label class="label" for="driver-license">License number</label>
-              <input id="driver-license" v-model="form.licenseNumber" class="input" required />
+              <input id="driver-license" v-model="form.licenseNumber" class="input" required >
             </div>
             <label v-if="editing" class="admin-panel__checkbox">
-              <input v-model="form.active" type="checkbox" />
+              <input v-model="form.active" type="checkbox" >
               <span>Active chauffeur</span>
             </label>
 

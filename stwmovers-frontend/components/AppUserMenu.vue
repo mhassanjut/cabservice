@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { routes } from '~/constants/routes'
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     mobileSheet?: boolean
     loginVariant?: 'default' | 'outline'

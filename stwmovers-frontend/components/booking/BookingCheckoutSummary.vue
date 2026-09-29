@@ -42,7 +42,7 @@ const fareValue = computed(() => {
       </NuxtLink>
     </div>
 
-    <hr class="booking-card__divider" />
+    <hr class="booking-card__divider" >
 
     <div v-if="isCustomerLoggedIn" class="checkout-summary__guest">
       <UserAvatar size="sm" class="checkout-summary__guest-avatar" />
@@ -51,7 +51,7 @@ const fareValue = computed(() => {
       </span>
     </div>
     <div v-else-if="auth.isGuestSession" class="checkout-summary__guest">
-      <img class="checkout-summary__guest-icon" src="/UserCircleLogo.svg" alt="" aria-hidden="true" />
+      <img class="checkout-summary__guest-icon" src="/UserCircleLogo.svg" alt="" aria-hidden="true" >
       <span class="checkout-summary__guest-text">
         Guest: <strong>{{ auth.guestSession?.fullName }}</strong>
       </span>
@@ -61,7 +61,7 @@ const fareValue = computed(() => {
       <template v-if="isTour">
         <li class="booking-journey__item">
           <span class="booking-journey__icon" aria-hidden="true">
-            <img :src="journeyIcons.travelDate" alt="" width="20" height="20" />
+            <img :src="journeyIcons.travelDate" alt="" width="20" height="20" >
           </span>
           <div class="booking-journey__text">
             <span class="booking-journey__label">Tour</span>
@@ -70,7 +70,7 @@ const fareValue = computed(() => {
         </li>
         <li class="booking-journey__item">
           <span class="booking-journey__icon" aria-hidden="true">
-            <img :src="journeyIcons.notes" alt="" width="20" height="20" />
+            <img :src="journeyIcons.notes" alt="" width="20" height="20" >
           </span>
           <div class="booking-journey__text">
             <span class="booking-journey__label">Notes</span>
@@ -81,7 +81,7 @@ const fareValue = computed(() => {
       <template v-else>
       <li class="booking-journey__item">
         <span class="booking-journey__icon" aria-hidden="true">
-          <img :src="journeyIcons.pickup" alt="" width="20" height="20" />
+          <img :src="journeyIcons.pickup" alt="" width="20" height="20" >
         </span>
         <div class="booking-journey__text">
           <span class="booking-journey__label">Pickup</span>
@@ -90,7 +90,7 @@ const fareValue = computed(() => {
       </li>
       <li class="booking-journey__item">
         <span class="booking-journey__icon" aria-hidden="true">
-          <img :src="journeyIcons.dropoff" alt="" width="20" height="20" />
+          <img :src="journeyIcons.dropoff" alt="" width="20" height="20" >
         </span>
         <div class="booking-journey__text">
           <span class="booking-journey__label">Drop-off</span>
@@ -99,7 +99,7 @@ const fareValue = computed(() => {
       </li>
       <li class="booking-journey__item">
         <span class="booking-journey__icon" aria-hidden="true">
-          <img :src="journeyIcons.travelDate" alt="" width="20" height="20" />
+          <img :src="journeyIcons.travelDate" alt="" width="20" height="20" >
         </span>
         <div class="booking-journey__text">
           <span class="booking-journey__label">Date &amp; Time</span>
@@ -117,7 +117,7 @@ const fareValue = computed(() => {
       </li>
       <li class="booking-journey__item">
         <span class="booking-journey__icon" aria-hidden="true">
-          <img :src="journeyIcons.notes" alt="" width="20" height="20" />
+          <img :src="journeyIcons.notes" alt="" width="20" height="20" >
         </span>
         <div class="booking-journey__text">
           <span class="booking-journey__label">Notes</span>
@@ -127,7 +127,7 @@ const fareValue = computed(() => {
       </template>
     </ul>
 
-    <hr class="booking-card__divider" />
+    <hr class="booking-card__divider" >
 
     <div v-if="booking.vehicle" class="checkout-summary__vehicle-block">
       <span class="booking-journey__label">Selected Vehicle</span>
@@ -158,7 +158,7 @@ const fareValue = computed(() => {
       </div>
     </div>
 
-    <hr class="booking-card__divider" />
+    <hr class="booking-card__divider" >
 
     <footer class="checkout-summary__fare">
       <span class="checkout-summary__fare-label">Estimated Fare</span>

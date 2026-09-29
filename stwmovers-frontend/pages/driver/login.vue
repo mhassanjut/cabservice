@@ -17,8 +17,8 @@ const submit = async () => {
 <template>
   <section class="card card--elevated auth-box">
     <h1 class="font-serif">Driver login</h1>
-    <input v-model="email" class="input" type="email" />
-    <input v-model="password" class="input" type="password" />
+    <input v-model="email" class="input" type="email" >
+    <input v-model="password" class="input" type="password" >
     <button class="btn btn--solid-gold" @click="submit">Sign in</button>
   </section>
 </template>

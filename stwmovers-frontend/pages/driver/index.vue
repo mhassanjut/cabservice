@@ -1,8 +1,8 @@
 <script setup lang="ts">
-definePageMeta({ middleware: 'driver' })
-
 import { driverService } from '~/services/api/driver.service'
 import type { BookingDto } from '~/types/api'
+
+definePageMeta({ middleware: 'driver' })
 
 const rides = ref<BookingDto[]>([])
 

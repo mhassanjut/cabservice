@@ -1,11 +1,12 @@
 // Staging CI/CD test trigger — safe to remove after verification
 
+import { prerenderRoutes } from './config/prerenderRoutes'
 import { siteConfig } from './config/site'
 import { seoDefaults } from './config/seo'
 
 export default defineNuxtConfig({
   ssr: true,
-  modules: ['@pinia/nuxt', '@nuxt/image'],
+  modules: ['@pinia/nuxt', '@nuxt/image', '@nuxt/eslint'],
   css: [
     '~/assets/styles/css/fonts.css',
     '~/assets/styles/css/main.css',
@@ -135,6 +136,8 @@ export default defineNuxtConfig({
         },
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
         { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
+        { rel: 'alternate', type: 'text/plain', href: '/llms.txt', title: 'LLMs.txt' },
+        { rel: 'author', href: '/humans.txt' },
       ],
       noscript: [
         {
@@ -146,8 +149,19 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/admin': { ssr: false },
-    '/admin/**': { ssr: false },
+    '/admin': { ssr: false, headers: { 'x-robots-tag': 'noindex, follow' } },
+    '/admin/**': { ssr: false, headers: { 'x-robots-tag': 'noindex, follow' } },
+    '/booking': { headers: { 'x-robots-tag': 'noindex, follow' } },
+    '/bookings': { headers: { 'x-robots-tag': 'noindex, follow' } },
+    '/cars': { headers: { 'x-robots-tag': 'noindex, follow' } },
+    '/confirm': { headers: { 'x-robots-tag': 'noindex, follow' } },
+    '/dashboard': { headers: { 'x-robots-tag': 'noindex, follow' } },
+    '/dashboard/**': { headers: { 'x-robots-tag': 'noindex, follow' } },
+    '/driver': { headers: { 'x-robots-tag': 'noindex, follow' } },
+    '/driver/**': { headers: { 'x-robots-tag': 'noindex, follow' } },
+    '/guest/**': { ssr: false, headers: { 'x-robots-tag': 'noindex, follow' } },
+    '/login': { headers: { 'x-robots-tag': 'noindex, follow' } },
+    '/payment': { headers: { 'x-robots-tag': 'noindex, follow' } },
     // Long-lived cache for optimized/static assets (Lighthouse cache-insight).
     '/_ipx/**': {
       headers: {
@@ -171,27 +185,27 @@ export default defineNuxtConfig({
     },
   },
 
+  // Nuxt 4 hybrid: top-level prerender + node-server (not static `nitro-prerender` only).
+  // See https://nuxt.com/docs/getting-started/prerendering
+  prerender: {
+    routes: [...prerenderRoutes],
+  },
+
   nitro: {
     preset: 'node-server',
-    prerender: {
-      routes: [
-        '/',
-        '/cars',
-        '/tours',
-        '/faq',
-        '/airport-transfer',
-        '/executive-business-travel',
-        '/chauffeur-service',
-        '/contact',
-        '/faq',
-      ],
+  },
+
+  hooks: {
+    'nitro:config'(nitroConfig) {
+      nitroConfig.preset = 'node-server'
     },
   },
 
   typescript: {
     strict: true,
-    typeCheck: true,
+    // `npm run typecheck` is the explicit type gate. Keeping Nuxt's build-time
+    // checker enabled currently fails with TS5042 before Vite can bundle.
+    typeCheck: false,
   },
 
 })
-

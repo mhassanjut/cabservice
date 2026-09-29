@@ -2,18 +2,22 @@ import { siteConfig } from './site'
 
 export const seoDefaults = {
   brandName: 'STW Movers',
-  defaultTitle: 'Barcelona Airport Transfer & Executive Chauffeur Service',
+  defaultTitle: 'Barcelona Taxi, Cab & Chauffeur Transfers',
   defaultDescription:
-    'Private Barcelona airport transfers (BCN), executive chauffeur service, and city-to-city rides to Sitges, Girona and Tarragona. Fixed pricing, meet & greet, premium Mercedes fleet.',
+    'Private Barcelona taxi, cab and chauffeur transfers for BCN airport, cruise port, hotels, business travel and city-to-city rides. Premium vehicles and pre-booked quotes.',
   themeColor: '#0a0a0c',
   defaultOgImagePath: '/og-default.svg',
 } as const
 
 export const seoSections = {
   home: {
-    primaryTopic: 'Barcelona airport transfer and executive chauffeur service',
-    h1: 'Barcelona Airport Transfers & Executive Chauffeur Service',
+    primaryTopic: 'Barcelona taxi, cab, airport transfer and executive chauffeur service',
+    h1: 'Barcelona Taxi, Cab & Executive Chauffeur Transfers',
     keywords: [
+      'Barcelona taxi',
+      'Barcelona cab',
+      'Barcelona airport taxi',
+      'BCN airport cab',
       'Barcelona airport transfer',
       'BCN airport chauffeur',
       'executive car service Barcelona',

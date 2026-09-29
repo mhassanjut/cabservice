@@ -1,13 +1,13 @@
 <script setup lang="ts">
+import type { BookingDto } from '~/types/api'
+import { bookingService } from '~/services/api/booking.service'
+import { paymentService } from '~/services/api/payment.service'
+
 definePageMeta({
   layout: 'customer',
   middleware: ['customer', 'no-guest-dashboard'],
   ssr: false,
 })
-
-import type { BookingDto } from '~/types/api'
-import { bookingService } from '~/services/api/booking.service'
-import { paymentService } from '~/services/api/payment.service'
 
 const auth = useAuthStore()
 const route = useRoute()

@@ -23,4 +23,9 @@ export const siteConfig = {
   toursWhatsappMessage:
     'Hello STW Movers, I would like to build a custom private tour itinerary. Could you help me plan one?',
   externalTourUrl: '/tours',
+  digitalPartner: {
+    name: 'Crea8iv Media',
+    url: 'https://crea8ivmedia.com',
+    creditLine: 'Digital strategy & website experience by Crea8iv Media',
+  },
 } as const

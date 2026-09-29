@@ -22,6 +22,7 @@ const pickupTime = computed(() => {
   const raw = booking.draft.pickupTime
   if (!raw) return '—'
   const [hours, minutes] = raw.split(':').map(Number)
+  if (hours === undefined || minutes === undefined) return raw
   if (Number.isNaN(hours) || Number.isNaN(minutes)) return raw
   const suffix = hours < 12 ? 'AM' : 'PM'
   const display = hours % 12 || 12
@@ -74,13 +75,13 @@ const estimatedTime = computed(() => {
       <NuxtLink class="booking-journey__edit" :to="editLink">Edit Journey</NuxtLink>
     </div>
 
-    <hr class="booking-card__divider" />
+    <hr class="booking-card__divider" >
 
     <ul class="booking-journey__list">
       <template v-if="isTour">
         <li class="booking-journey__item">
           <span class="booking-journey__icon" aria-hidden="true">
-            <img :src="journeyIcons.travelDate" alt="" width="20" height="20" />
+            <img :src="journeyIcons.travelDate" alt="" width="20" height="20" >
           </span>
           <div class="booking-journey__text">
             <span class="booking-journey__label">Tour</span>
@@ -91,7 +92,7 @@ const estimatedTime = computed(() => {
       <template v-else>
       <li class="booking-journey__item">
         <span class="booking-journey__icon" aria-hidden="true">
-          <img :src="journeyIcons.pickup" alt="" width="20" height="20" />
+          <img :src="journeyIcons.pickup" alt="" width="20" height="20" >
         </span>
         <div class="booking-journey__text">
           <span class="booking-journey__label">Pickup</span>
@@ -100,7 +101,7 @@ const estimatedTime = computed(() => {
       </li>
       <li class="booking-journey__item">
         <span class="booking-journey__icon" aria-hidden="true">
-          <img :src="journeyIcons.dropoff" alt="" width="20" height="20" />
+          <img :src="journeyIcons.dropoff" alt="" width="20" height="20" >
         </span>
         <div class="booking-journey__text">
           <span class="booking-journey__label">Drop-off</span>
@@ -109,7 +110,7 @@ const estimatedTime = computed(() => {
       </li>
       <li class="booking-journey__item">
         <span class="booking-journey__icon" aria-hidden="true">
-          <img :src="journeyIcons.travelDate" alt="" width="20" height="20" />
+          <img :src="journeyIcons.travelDate" alt="" width="20" height="20" >
         </span>
         <div class="booking-journey__text">
           <span class="booking-journey__label">Travel Date</span>
@@ -118,7 +119,7 @@ const estimatedTime = computed(() => {
       </li>
       <li class="booking-journey__item">
         <span class="booking-journey__icon" aria-hidden="true">
-          <img :src="journeyIcons.pickupTime" alt="" width="20" height="20" />
+          <img :src="journeyIcons.pickupTime" alt="" width="20" height="20" >
         </span>
         <div class="booking-journey__text">
           <span class="booking-journey__label">Pickup Time</span>
@@ -128,7 +129,7 @@ const estimatedTime = computed(() => {
       </template>
       <li class="booking-journey__item">
         <span class="booking-journey__icon" aria-hidden="true">
-          <img :src="journeyIcons.passengers" alt="" width="20" height="20" />
+          <img :src="journeyIcons.passengers" alt="" width="20" height="20" >
         </span>
         <div class="booking-journey__text">
           <label class="booking-journey__label" for="journey-passengers">Passengers</label>
@@ -146,7 +147,7 @@ const estimatedTime = computed(() => {
       </li>
       <li class="booking-journey__item">
         <span class="booking-journey__icon" aria-hidden="true">
-          <img :src="journeyIcons.notes" alt="" width="20" height="20" />
+          <img :src="journeyIcons.notes" alt="" width="20" height="20" >
         </span>
         <div class="booking-journey__text">
           <label class="booking-journey__label" for="journey-notes">Notes</label>
@@ -165,7 +166,7 @@ const estimatedTime = computed(() => {
     </ul>
 
     <template v-if="!isTour">
-    <hr class="booking-card__divider" />
+    <hr class="booking-card__divider" >
 
     <div class="booking-journey__metrics">
       <div class="booking-journey__metric">

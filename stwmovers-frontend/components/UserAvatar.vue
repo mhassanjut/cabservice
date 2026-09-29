@@ -20,8 +20,8 @@ const initials = computed(() => {
   const label = (props.name ?? auth.fullName ?? auth.email ?? 'U').trim()
   const parts = label.split(/\s+/).filter(Boolean)
   if (!parts.length) return 'U'
-  const first = parts[0].charAt(0)
-  const last = parts.length > 1 ? parts[parts.length - 1].charAt(0) : ''
+  const first = parts[0]?.charAt(0) ?? ''
+  const last = parts.length > 1 ? parts.at(-1)?.charAt(0) ?? '' : ''
   return (first + last).toUpperCase() || 'U'
 })
 
@@ -52,7 +52,7 @@ const onError = () => {
       class="user-avatar__img"
       referrerpolicy="no-referrer"
       @error="onError"
-    />
+    >
     <span v-else class="user-avatar__initial">{{ initials }}</span>
   </span>
 </template>

@@ -15,7 +15,7 @@
             <div class="dashboard-skeleton__bone guest-booking-skeleton__card-title" />
           </header>
 
-          <hr class="booking-card__divider confirm-details__divider" />
+          <hr class="booking-card__divider confirm-details__divider" >
 
           <ul class="guest-booking-skeleton__rows">
             <li v-for="n in 5" :key="n" class="guest-booking-skeleton__row">
@@ -27,7 +27,7 @@
             </li>
           </ul>
 
-          <hr class="booking-card__divider confirm-details__divider" />
+          <hr class="booking-card__divider confirm-details__divider" >
 
           <footer class="confirm-details__fare-row">
             <div class="dashboard-skeleton__bone guest-booking-skeleton__fare-label" />
@@ -41,7 +41,7 @@
               <div class="dashboard-skeleton__bone guest-booking-skeleton__status-title" />
               <div class="dashboard-skeleton__bone guest-booking-skeleton__status-lead" />
             </header>
-            <hr class="booking-card__divider confirm-status__divider" />
+            <hr class="booking-card__divider confirm-status__divider" >
             <div class="guest-booking-skeleton__timeline">
               <div v-for="n in 4" :key="n" class="guest-booking-skeleton__timeline-item">
                 <div class="dashboard-skeleton__bone guest-booking-skeleton__timeline-dot" />

@@ -39,7 +39,7 @@ export const authService = {
     })
   },
   logout() {
-    return api<void>('/api/v1/auth/logout', { method: 'POST', auth: false })
+    return api<undefined>('/api/v1/auth/logout', { method: 'POST', auth: false })
   },
   sendOtp(email: string, bookingReference: string) {
     return api<{ email: string; bookingReference: string; ttlSeconds: number }>(

@@ -167,7 +167,7 @@ const onCustomFare = async () => {
             <h3 class="admin-panel__block-title font-serif">Custom fare</h3>
             <div class="field">
               <label class="label" for="custom-fare">Set fare (EUR)</label>
-              <input id="custom-fare" v-model="customFare" class="input" type="number" min="0" step="0.01" />
+              <input id="custom-fare" v-model="customFare" class="input" type="number" min="0" step="0.01" >
             </div>
             <button type="button" class="btn btn--solid-gold admin-panel__action" @click="onCustomFare">
               Save fare

@@ -16,7 +16,7 @@ let refreshing: Promise<boolean> | null = null
 function getCsrfToken(): string | undefined {
   if (!import.meta.client) return undefined
   const match = document.cookie.match(/(?:^|;\s*)XSRF-TOKEN=([^;]*)/)
-  return match ? decodeURIComponent(match[1]) : undefined
+  return match?.[1] ? decodeURIComponent(match[1]) : undefined
 }
 
 export async function api<T>(path: string, opts: ApiOptions = {}): Promise<T> {
@@ -40,7 +40,7 @@ export async function api<T>(path: string, opts: ApiOptions = {}): Promise<T> {
   slowTimer = setTimeout(() => toast.show('Still working…', 'info'), 8000)
   try {
     const res = await $fetch<ApiResponse<T>>(path, {
-      baseURL: config.public.apiBaseUrl as string,
+      baseURL: String(config.public.apiBaseUrl ?? ''),
       credentials: 'include',
       method: method as 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH',
       body: opts.body as Record<string, unknown> | undefined,

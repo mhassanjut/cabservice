@@ -18,7 +18,7 @@ withDefaults(
     <div class="app-loader__mark" aria-hidden="true">
       <span class="app-loader__ring" />
       <span class="app-loader__ring app-loader__ring--reverse" />
-      <img src="/Logo.svg" alt="" class="app-loader__logo" width="146" height="40" />
+      <img src="/Logo.svg" alt="" class="app-loader__logo" width="146" height="40" >
     </div>
 
     <p v-if="label && !compact" class="app-loader__label">{{ label }}</p>

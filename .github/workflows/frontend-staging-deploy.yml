@@ -33,7 +33,7 @@ jobs:
           name: frontend-staging-output
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
-          path: stwmovers-frontend
+          path: stwmovers-frontend/.output
 
       - uses: actions/setup-node@v4
         if: github.event_name == 'workflow_dispatch' || steps.download.outcome != 'success'
@@ -49,6 +49,7 @@ jobs:
           npm ci
           npm run build
         env:
+          NITRO_PRESET: node-server
           NUXT_PUBLIC_SITE_URL: ${{ secrets.NUXT_PUBLIC_SITE_URL }}
           NUXT_PUBLIC_API_BASE_URL: ${{ secrets.NUXT_PUBLIC_API_BASE_URL }}
           NUXT_PUBLIC_GOOGLE_MAPS_API_KEY: ${{ secrets.NUXT_PUBLIC_GOOGLE_MAPS_API_KEY }}
@@ -60,8 +61,8 @@ jobs:
 
       - name: Verify build output
         run: |
-          if [ ! -f stwmovers-frontend/.output/server/index.mjs ] && [ ! -f stwmovers-frontend/.output/public/index.html ]; then
-            echo "Missing Nuxt build output. Expected server/index.mjs or public/index.html."
+          if [ ! -f stwmovers-frontend/.output/server/index.mjs ]; then
+            echo "Missing stwmovers-frontend/.output/server/index.mjs (required for Nuxt SSR on the VPS)."
             find stwmovers-frontend/.output -maxdepth 3 -type f -print 2>/dev/null | sort | sed -n '1,80p' || ls -la stwmovers-frontend/ || true
             exit 1
           fi

@@ -28,30 +28,30 @@ export type AboutGalleryImage = {
 
 /* ─── Hero (82:696) ─── */
 export const aboutHero = {
-  eyebrow: 'ABOUT US',
-  title: 'More Than A Chauffeur Service.',
+  eyebrow: 'ABOUT STW MOVERS',
+  title: 'Barcelona Chauffeur Service Built Around Calm, Private Travel.',
   body:
-    'Exceptional journeys begin with trust. Every experience is shaped by thoughtful hospitality, attention to detail, and a genuine commitment to making travel effortless.',
-  primary: { label: 'Book Your Journey', href: '/#booking-section' },
+    'STW Movers provides private airport transfers, chauffeur service, private driver hire, and premium taxi or cab alternatives for travellers who want every Barcelona journey planned before it begins.',
+  primary: { label: 'Request Private Quote', href: '/journey#book-journey' },
   secondary: { label: 'Explore Our Services', href: '/services' },
   image: '/img/about/hero.png',
 } as const
 
 /* ─── Our Philosophy (82:709) ─── */
 export const aboutPhilosophy = {
-  eyebrow: 'OUR PHILOSOPHY',
-  heading: 'Luxury Is Found In The Details.',
+  eyebrow: 'OUR STANDARD',
+  heading: 'Luxury Means The Pickup, Route, Vehicle, And Timing Are Already Thought Through.',
   body:
-    "Luxury isn't defined by the vehicle you travel in. It's the feeling of arriving on time, being welcomed by name, and knowing every detail has already been taken care of before your journey begins.",
+    'A premium Barcelona transfer is not only a nicer vehicle. It is flight-aware airport pickup, luggage-aware vehicle choice, clear meeting instructions, discreet service, and a private driver who understands the city, the guest, and the schedule.',
   image: '/img/about/philosophy.png',
 } as const
 
 /* ─── The People (82:715) ─── */
 export const aboutPeople = {
   eyebrow: 'THE STW MOVERS CHAUFFEURS',
-  heading: 'Driven By Hospitality.',
+  heading: 'Professional Private Drivers For Airport, Business, Family, And VIP Travel.',
   subtitle:
-    'Every chauffeur is carefully selected for professionalism, discretion, local knowledge, and an unwavering commitment to exceptional service. More than drivers, they are ambassadors of every journey.',
+    'Every chauffeur is selected for punctuality, discretion, local knowledge, guest care, and the ability to handle real-world travel details: BCN terminals, cruise port pickups, Eixample hotels, business meetings, luggage, and schedule changes.',
 } as const
 
 export const aboutChauffeurs: AboutChauffeur[] = [
@@ -82,32 +82,32 @@ export const aboutChauffeurs: AboutChauffeur[] = [
 ]
 
 /* ─── Highlights (82:731) ─── */
-export const aboutHighlightsHeading = 'What Defines Our Service'
+export const aboutHighlightsHeading = 'What Defines The STW Movers Experience'
 
 export const aboutFeatures: AboutFeature[] = [
   {
-    title: 'Professional Chauffeurs',
-    text: 'Rigorous standards, exceptional local knowledge, and absolute discretion.',
+    title: 'Barcelona-Based Planning',
+    text: 'Local pickup guidance for BCN airport, cruise terminals, Eixample, Fira Barcelona, hotels, homes, and restaurants.',
   },
   {
-    title: 'Luxury Fleet',
-    text: 'Meticulously maintained premium sedans, SUVs, and spacious executive vans.',
+    title: 'Premium Private Vehicles',
+    text: 'Sedans and executive vans matched to passengers, luggage, comfort expectations, and the type of journey.',
   },
   {
-    title: 'Personalized Service',
-    text: 'Every detail from cabin temperature to route preference tailored to you.',
+    title: 'Taxi & Cab Alternative',
+    text: 'A more planned option for travellers searching Barcelona taxi, airport cab, private cab, or cab service.',
   },
   {
-    title: 'Worldwide Standards',
-    text: 'Flawless consistency and elite hospitality wherever you travel.',
+    title: 'Airport Transfer Detail',
+    text: 'Flight number, terminal, waiting time, luggage, and meeting instructions considered before the arrival.',
   },
   {
-    title: 'Reliable Every Time',
-    text: 'Seamless adjustments to your dynamic itinerary with 24/7 dedicated support.',
+    title: 'Business-Ready Discretion',
+    text: 'Quiet, punctual executive chauffeur support for meetings, events, Fira Barcelona, and hosted clients.',
   },
   {
-    title: 'Attention To Detail',
-    text: 'Every step is meticulously handled, from flight tracking to luggage transfers.',
+    title: 'Quote Support By WhatsApp',
+    text: 'Fast human guidance for airport transfer, private driver, hourly chauffeur, and city-to-city requests.',
   },
 ]
 
@@ -126,10 +126,10 @@ export const aboutGalleryImages: AboutGalleryImage[] = [
 
 /* ─── Promise (82:781) ─── */
 export const aboutPromise = {
-  heading: 'Every Journey Matters.',
+  heading: 'Every Barcelona Journey Should Feel Planned, Private, And Easy.',
   body:
-    "Whether it's an airport transfer, an important business meeting, or a once-in-a-lifetime celebration, we approach every journey with the same care, professionalism, and attention to detail.",
-  cta: { label: 'Book Your Journey', href: '/#booking-section' },
+    'Whether the search starts as airport transfer, private driver, taxi alternative, cab service, or executive chauffeur, STW Movers turns the request into a clear private transport plan.',
+  cta: { label: 'Request Private Quote', href: '/journey#book-journey' },
   image: '/img/about/promise-bg.png',
 } as const
 
@@ -137,19 +137,19 @@ export const aboutPromise = {
 export const aboutTestimonial = {
   eyebrow: 'GUEST STORY',
   quote:
-    '"STW Movers has redefined my expectations of global travel. From London to Tokyo, the service is flawlessly consistent."',
+    '"The airport pickup felt effortless. The vehicle fit our luggage, the driver knew the hotel access point, and the whole arrival was calm after a long flight."',
   body:
-    'The transition from international flight to road was completely seamless. The driver was waiting exactly where promised, with our preferred refreshments already prepared. It felt like coming home.',
-  authorName: 'Jane Doe',
-  authorCompany: 'SomeCompany LLC.',
+    'The transition from BCN arrivals to the city was completely seamless. The pickup instructions were clear, support was available on WhatsApp, and the journey felt more considered than a standard taxi queue.',
+  authorName: 'STW Movers Guest',
+  authorCompany: 'Barcelona airport transfer',
   image: '/img/about/testimonial.png',
 } as const
 
 /* ─── Final CTA (82:814) ─── */
 export const aboutFinalCta = {
-  heading: "Let's Make Your Next Journey Exceptional.",
-  body: "Tell us where you're going, and we'll take care of everything in between.",
+  heading: 'Plan A Private Barcelona Transfer Before The Journey Starts.',
+  body: 'Send pickup, destination, date, time, passengers, luggage, and flight or cruise details. The STW Movers desk will guide the best private chauffeur option.',
   image: '/img/about/cta.png',
-  primary: { label: 'Book Your Journey', href: '/#booking-section' },
+  primary: { label: 'Request Private Quote', href: '/journey#book-journey' },
   secondary: { label: 'Contact Our Team', href: '/contact' },
 } as const

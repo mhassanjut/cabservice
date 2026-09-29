@@ -116,7 +116,7 @@ onUnmounted(() => {
         <div class="tdm-hero__overlay" aria-hidden="true" />
 
         <button type="button" class="tdm-close" aria-label="Close" @click="close">
-          <img :src="closeBtnUrl" alt="" width="36" height="36" />
+          <img :src="closeBtnUrl" alt="" width="36" height="36" >
         </button>
 
         <div class="tdm-hero__caption">
@@ -128,11 +128,11 @@ onUnmounted(() => {
 
             <div v-if="durationTag || guestsTag" class="tdm-hero__tags">
               <span v-if="durationTag" class="tdm-pill">
-                <img :src="clockUrl" alt="" width="14" height="14" />
+                <img :src="clockUrl" alt="" width="14" height="14" >
                 {{ durationTag }}
               </span>
               <span v-if="guestsTag" class="tdm-pill">
-                <img :src="usersUrl" alt="" width="14" height="14" />
+                <img :src="usersUrl" alt="" width="14" height="14" >
                 {{ guestsTag }}
               </span>
             </div>
@@ -150,7 +150,7 @@ onUnmounted(() => {
           <h2 class="tdm-section__title">Tour Highlights</h2>
           <ul class="tdm-highlights">
             <li v-for="(highlight, index) in tour.highlights" :key="`highlight-${index}`">
-              <img :src="checkYellowUrl" alt="" width="20" height="20" />
+              <img :src="checkYellowUrl" alt="" width="20" height="20" >
               <span>{{ highlight }}</span>
             </li>
           </ul>
@@ -173,7 +173,7 @@ onUnmounted(() => {
                   alt=""
                   width="16"
                   height="16"
-                />
+                >
                 Day {{ String(group.dayNumber).padStart(2, '0') }}
               </button>
             </div>
@@ -183,7 +183,7 @@ onUnmounted(() => {
             <li v-for="(item, index) in activeDayItems" :key="`item-${activeDay}-${index}`">
               <div class="tdm-timeline__rail" aria-hidden="true">
                 <span class="tdm-timeline__node">
-                  <img :src="nodeUrl" alt="" width="20" height="20" />
+                  <img :src="nodeUrl" alt="" width="20" height="20" >
                 </span>
                 <span v-if="index < activeDayItems.length - 1" class="tdm-timeline__connector" />
               </div>
@@ -200,7 +200,7 @@ onUnmounted(() => {
             <h3 class="tdm-list-card__title">Included</h3>
             <ul>
               <li v-for="(entry, index) in tour.included" :key="`included-${index}`">
-                <img :src="checkGreenUrl" alt="" width="16" height="16" />
+                <img :src="checkGreenUrl" alt="" width="16" height="16" >
                 <span>{{ entry }}</span>
               </li>
             </ul>
@@ -209,7 +209,7 @@ onUnmounted(() => {
             <h3 class="tdm-list-card__title">Not Included</h3>
             <ul>
               <li v-for="(entry, index) in tour.excluded" :key="`excluded-${index}`">
-                <img :src="circleXUrl" alt="" width="16" height="16" />
+                <img :src="circleXUrl" alt="" width="16" height="16" >
                 <span>{{ entry }}</span>
               </li>
             </ul>

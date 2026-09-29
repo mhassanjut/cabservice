@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import type { TourDto } from '~/types/api'
-import { siteConfig } from '~/config/site'
 import { toursService } from '~/services/api/tours.service'
 import { formatTourDuration, formatTourGuests, formatTourPrice } from '~/utils/tourFormat'
-import { buildWhatsappUrl } from '~/utils/whatsapp'
 import TourCardSkeleton from '~/components/tours/TourCardSkeleton.vue'
 import TourDetailsModal from '~/components/tours/TourDetailsModal.vue'
 
@@ -49,9 +47,6 @@ const closeTour = () => {
   selectedTour.value = null
 }
 
-const customTourLink = computed(() =>
-  buildWhatsappUrl({ phone: siteConfig.whatsappNumber, text: siteConfig.toursWhatsappMessage }),
-)
 </script>
 
 <template>

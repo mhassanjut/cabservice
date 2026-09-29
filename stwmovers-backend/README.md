@@ -15,7 +15,7 @@ docker compose up -d --build
 ```
 API: `http://localhost:8080` (via Nginx: `http://localhost`)
 
-Admin: `admin@stwmovers.com` / `Admin@12345`
+Set `ADMIN_EMAIL` and `ADMIN_PASSWORD` in your local environment before starting the API if you want the admin bootstrapper to create or update a local admin account.
 
 ## Local dev
 ```bash

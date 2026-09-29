@@ -6,7 +6,7 @@ defineProps<{
   ctaLabel?: string
 }>()
 
-defineEmits<{ (e: 'continue'): void; (e: 'back'): void }>()
+defineEmits<{ (e: 'continue' | 'back'): void }>()
 </script>
 
 <template>

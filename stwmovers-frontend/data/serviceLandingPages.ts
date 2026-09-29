@@ -1,4 +1,8 @@
 import type { ServiceSplitSection } from '~/data/servicesContent'
+import { siteConfig } from '~/config/site'
+
+const siteUrl = siteConfig.siteUrl
+const organizationId = `${siteUrl}/#organization`
 
 export type ServiceLandingPage = {
   id: string
@@ -20,20 +24,20 @@ export type ServiceLandingPage = {
 export const airportTransferSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  '@id': 'https://www.stwmovers.com/airport-transfer#service',
+  '@id': `${siteUrl}/airport-transfer#service`,
   name: 'Barcelona Airport Transfer',
   alternateName: 'Private Airport Transfer Barcelona',
   description:
     'STW Movers provides reliable private airport transfers to and from Barcelona Airport (BCN). Our professional chauffeur service offers fixed pricing, flight monitoring, meet and greet, and 24/7 availability for individuals, families, and business travelers.',
   serviceType: 'Airport Transfer',
   provider: {
-    '@type': 'TravelAgency',
-    '@id': 'https://www.stwmovers.com/#organization',
+    '@type': 'Organization',
+    '@id': organizationId,
     name: 'STW Movers',
-    url: 'https://www.stwmovers.com/',
+    url: `${siteUrl}/`,
   },
-  url: 'https://www.stwmovers.com/airport-transfer',
-  image: 'https://www.stwmovers.com/_nuxt/Logo.CAzUtKks.svg',
+  url: `${siteUrl}/airport-transfer`,
+  image: `${siteUrl}/favicon-192.png`,
   areaServed: [
     { '@type': 'City', name: 'Barcelona' },
     { '@type': 'City', name: 'Girona' },
@@ -42,7 +46,7 @@ export const airportTransferSchema = {
   availableLanguage: ['English', 'Spanish'],
   offers: {
     '@type': 'Offer',
-    url: 'https://www.stwmovers.com/journey',
+    url: `${siteUrl}/journey`,
     priceCurrency: 'EUR',
     availability: 'https://schema.org/InStock',
   },
@@ -52,37 +56,34 @@ export const airportTransferSchema = {
     itemListElement: [
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Barcelona Airport Transfer' } },
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Private Airport Transfer' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Airport Shuttle' } },
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Meet and Greet Service' } },
     ],
   },
   keywords: [
     'Barcelona Airport Transfer',
-    'Barcelona Airport Taxi',
     'Private Airport Transfer Barcelona',
-    'Airport Shuttle Barcelona',
-    'Taxi from Barcelona Airport',
     'BCN Airport Transfer',
+    'BCN Airport Chauffeur',
   ],
 } as const
 
 export const executiveBusinessTravelSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  '@id': 'https://www.stwmovers.com/executive-business-travel#service',
+  '@id': `${siteUrl}/executive-business-travel#service`,
   name: 'Executive Business Travel',
   alternateName: 'Corporate Chauffeur Service Barcelona',
   description:
     'STW Movers provides premium executive business travel and corporate chauffeur services in Barcelona, Girona, and Tarragona. Our professional chauffeurs ensure punctual, comfortable, and reliable transportation for business meetings, conferences, corporate events, roadshows, and VIP clients.',
   serviceType: 'Executive Business Travel',
   provider: {
-    '@type': 'TravelAgency',
-    '@id': 'https://www.stwmovers.com/#organization',
+    '@type': 'Organization',
+    '@id': organizationId,
     name: 'STW Movers',
-    url: 'https://www.stwmovers.com/',
+    url: `${siteUrl}/`,
   },
-  url: 'https://www.stwmovers.com/executive-business-travel',
-  image: 'https://www.stwmovers.com/_nuxt/Logo.CAzUtKks.svg',
+  url: `${siteUrl}/executive-business-travel`,
+  image: `${siteUrl}/favicon-192.png`,
   areaServed: [
     { '@type': 'City', name: 'Barcelona' },
     { '@type': 'City', name: 'Girona' },
@@ -91,7 +92,7 @@ export const executiveBusinessTravelSchema = {
   availableLanguage: ['English', 'Spanish'],
   offers: {
     '@type': 'Offer',
-    url: 'https://www.stwmovers.com/journey',
+    url: `${siteUrl}/journey`,
     priceCurrency: 'EUR',
     availability: 'https://schema.org/InStock',
   },
@@ -121,20 +122,20 @@ export const executiveBusinessTravelSchema = {
 export const chauffeurServiceSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  '@id': 'https://www.stwmovers.com/chauffeur-service#service',
+  '@id': `${siteUrl}/chauffeur-service#service`,
   name: 'Chauffeur Service Barcelona',
   alternateName: 'Private Chauffeur Service',
   description:
     'STW Movers provides premium chauffeur services in Barcelona, Girona, and Tarragona. Travel in comfort with professional chauffeurs for airport transfers, business meetings, corporate travel, sightseeing tours, special events, and private transportation.',
   serviceType: 'Chauffeur Service',
   provider: {
-    '@type': 'TravelAgency',
-    '@id': 'https://www.stwmovers.com/#organization',
+    '@type': 'Organization',
+    '@id': organizationId,
     name: 'STW Movers',
-    url: 'https://www.stwmovers.com/',
+    url: `${siteUrl}/`,
   },
-  url: 'https://www.stwmovers.com/chauffeur-service',
-  image: 'https://www.stwmovers.com/_nuxt/Logo.CAzUtKks.svg',
+  url: `${siteUrl}/chauffeur-service`,
+  image: `${siteUrl}/favicon-192.png`,
   areaServed: [
     { '@type': 'City', name: 'Barcelona' },
     { '@type': 'City', name: 'Girona' },
@@ -143,7 +144,7 @@ export const chauffeurServiceSchema = {
   availableLanguage: ['English', 'Spanish'],
   offers: {
     '@type': 'Offer',
-    url: 'https://www.stwmovers.com/journey',
+    url: `${siteUrl}/journey`,
     priceCurrency: 'EUR',
     availability: 'https://schema.org/InStock',
   },

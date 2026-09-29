@@ -105,7 +105,7 @@ const onSortChange = (event: Event) => {
     <AdminSectionHead :title="title" :description="description" />
 
     <div class="admin-toolbar admin-toolbar--filters">
-      <input v-model="filters.search" class="input admin-toolbar__grow" type="search" placeholder="Search ref or customer" />
+      <input v-model="filters.search" class="input admin-toolbar__grow" type="search" placeholder="Search ref or customer" >
       <select v-model="filters.status" class="input input--select">
         <option value="">All statuses</option>
         <option value="PAYMENT_PENDING">Payment pending</option>

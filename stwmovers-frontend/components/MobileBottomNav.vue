@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { routes } from '~/constants/routes'
+import { siteConfig } from '~/config/site'
+import { buildWhatsappUrl } from '~/utils/whatsapp'
 
 const auth = useAuthStore()
 const booking = useBookingStore()
 const route = useRoute()
-const { isOpen: signInOpen, open: openSignIn } = useCustomerSignIn()
+const whatsappHref = buildWhatsappUrl({ phone: siteConfig.whatsappNumber, text: siteConfig.whatsappDefaultMessage })
 
 onMounted(() => {
   auth.hydrate()
@@ -49,18 +51,14 @@ const hideOnAdminDriver = computed(() => route.path.startsWith('/admin') || rout
     </template>
 
     <template v-else>
-      <NuxtLink :to="routes.home" :class="{ 'is-active': route.path === '/' && !route.hash }">
-        <i class="fa-solid fa-house" aria-hidden="true" />
-        <span>Home</span>
+      <NuxtLink :to="route.path === '/' ? '/#booking-section' : '/journey#book-journey'" class="is-active">
+        <i class="fa-solid fa-calendar-check" aria-hidden="true" />
+        <span>Get Quote</span>
       </NuxtLink>
-      <button
-        type="button"
-        :class="{ 'is-active': signInOpen }"
-        @click="openSignIn()"
-      >
-        <i class="fa-solid fa-right-to-bracket" aria-hidden="true" />
-        <span>Login</span>
-      </button>
+      <a :href="whatsappHref" target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands fa-whatsapp" aria-hidden="true" />
+        <span>WhatsApp</span>
+      </a>
     </template>
   </nav>
 </template>

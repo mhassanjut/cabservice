@@ -2,6 +2,9 @@
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
+  <ClientOnly>
+    <WhatsappLeadDialog />
+  </ClientOnly>
 </template>
 
 <script setup lang="ts">

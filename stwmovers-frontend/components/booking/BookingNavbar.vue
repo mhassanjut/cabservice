@@ -33,7 +33,7 @@ const guestInitial = computed(() => {
           width="146"
           height="40"
           decoding="async"
-        />
+        >
       </NuxtLink>
 
       <div class="booking-nav__right">

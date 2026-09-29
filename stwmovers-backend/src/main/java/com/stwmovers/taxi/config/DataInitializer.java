@@ -1,9 +1,12 @@
 package com.stwmovers.taxi.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import com.stwmovers.taxi.domain.entity.User;
 import com.stwmovers.taxi.domain.enums.Role;
@@ -11,6 +14,8 @@ import com.stwmovers.taxi.domain.repository.UserRepository;
 
 @Component
 public class DataInitializer implements ApplicationRunner {
+
+    private static final Logger log = LoggerFactory.getLogger(DataInitializer.class);
 
     private final UserRepository userRepository;
     private final AppProperties appProperties;
@@ -26,12 +31,19 @@ public class DataInitializer implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         String adminEmail = appProperties.getAdmin().getEmail().trim().toLowerCase();
-        String encodedPassword = passwordEncoder.encode(appProperties.getAdmin().getPassword());
+        String adminPassword = appProperties.getAdmin().getPassword();
+
+        if (!StringUtils.hasText(adminEmail) || !StringUtils.hasText(adminPassword)) {
+            log.warn("Admin bootstrap skipped because ADMIN_EMAIL or ADMIN_PASSWORD is not configured.");
+            return;
+        }
+
+        String encodedPassword = passwordEncoder.encode(adminPassword);
 
         userRepository.findByEmail(adminEmail).ifPresentOrElse(
                 user -> {
                     if (user.getPasswordHash() == null
-                            || !passwordEncoder.matches(appProperties.getAdmin().getPassword(), user.getPasswordHash())) {
+                            || !passwordEncoder.matches(adminPassword, user.getPasswordHash())) {
                         user.setPasswordHash(encodedPassword);
                         user.setRole(Role.ADMIN);
                         user.setActive(true);

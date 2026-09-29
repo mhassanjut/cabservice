@@ -103,7 +103,7 @@ export function useAdminNav() {
     return route.path === path || route.path.startsWith(`${path}/`)
   }
 
-  const current = computed(() => items.find((item) => isActive(item.to)) ?? items[0])
+  const current = computed(() => items.find((item) => isActive(item.to)) ?? items[0]!)
 
   const groups = [
     { id: 'main' as const, title: 'Dashboard' },

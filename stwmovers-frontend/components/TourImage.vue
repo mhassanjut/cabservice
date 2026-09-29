@@ -70,5 +70,5 @@ const onError = () => {
     class="tour-image--svg"
     v-bind="attrs"
     @error="onError"
-  />
+  >
 </template>

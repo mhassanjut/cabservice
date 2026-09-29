@@ -6,7 +6,7 @@ import { ridesService } from '~/services/api/rides.service'
 import { areSameBookingPlaces, isPastPickupDate, isPastPickupTimeToday, minPickupDateValue, minPickupTimeValue } from '~/utils/bookingValidation'
 import { normalizeCarFilters } from '~/utils/carFilters'
 import { resolvePickupCity, type SupportedPickupCity } from '~/utils/cities'
-import { routeEndpoint, routeEndpointFromDraft } from '~/utils/routeEndpoint'
+import { routeEndpoint } from '~/utils/routeEndpoint'
 
 const route = useRoute()
 const router = useRouter()
@@ -263,8 +263,10 @@ const onSubmit = async () => {
 
   loading.value = true
   try {
-    const origin = routeEndpoint(pickupPlace.value!, form.pickup, pickupPlace.value!.placeId)
-    const destination = routeEndpoint(destinationPlace.value!, form.destination, destinationPlace.value!.placeId)
+    const pickupPlaceId = (pickupPlace.value as { placeId?: string } | null)?.placeId
+    const destinationPlaceId = (destinationPlace.value as { placeId?: string } | null)?.placeId
+    const origin = routeEndpoint(pickupPlace.value!, form.pickup, pickupPlaceId)
+    const destination = routeEndpoint(destinationPlace.value!, form.destination, destinationPlaceId)
     const tripRoute = await maps.resolveDrivingRoute(origin, destination)
     if (!tripRoute.distanceKm) {
       toast.show('Pickup and destination cannot be the same.', 'error')
@@ -368,7 +370,7 @@ const onSubmit = async () => {
               @input="pickupPlace = null; pickupCity = undefined"
               @blur="pickupTouched = true"
               @focus="onPlaceFocus('pickup')"
-            />
+            >
             <p v-if="pickupError" class="err">{{ pickupError }}</p>
           </div>
           <div class="contact-field" :class="{ 'contact-field--maps-pending': placesPending }">
@@ -394,7 +396,7 @@ const onSubmit = async () => {
               @input="destinationPlace = null; destinationCity = undefined"
               @blur="destinationTouched = true"
               @focus="onPlaceFocus('destination')"
-            />
+            >
             <p v-if="destinationError" class="err">{{ destinationError }}</p>
           </div>
           <div class="contact-field">
@@ -411,7 +413,7 @@ const onSubmit = async () => {
                 :aria-invalid="dateError ? 'true' : undefined"
                 @blur="dateTouched = true"
                 @click="openPicker(dateRef)"
-              />
+              >
             </label>
             <p v-if="dateError" class="err">{{ dateError }}</p>
           </div>
@@ -429,7 +431,7 @@ const onSubmit = async () => {
                 :aria-invalid="timeError ? 'true' : undefined"
                 @blur="timeTouched = true"
                 @click="openPicker(timeRef)"
-              />
+              >
             </label>
             <p v-if="timeError" class="err">{{ timeError }}</p>
           </div>

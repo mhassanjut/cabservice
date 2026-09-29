@@ -52,7 +52,7 @@ app:
     cancel-url: http://localhost:3000/cars
   admin:
     email: admin@test.com
-    password: Admin@12345
+    password: test-only-admin-password
   cors:
     allowed-origins: http://localhost:3000
   site:

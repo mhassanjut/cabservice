@@ -172,7 +172,7 @@ const completePayment = async () => {
 
 
 
-    <hr class="dashboard-booking-card__divider" />
+    <hr class="dashboard-booking-card__divider" >
 
 
 
@@ -184,7 +184,7 @@ const completePayment = async () => {
 
           <span class="dashboard-booking-card__list-pin" aria-hidden="true">
 
-            <img :src="journeyIcons.pickup" alt="" width="16" height="16" />
+            <img :src="journeyIcons.pickup" alt="" width="16" height="16" >
 
           </span>
 
@@ -202,7 +202,7 @@ const completePayment = async () => {
 
           <span class="dashboard-booking-card__list-pin" aria-hidden="true">
 
-            <img :src="journeyIcons.dropoff" alt="" width="16" height="16" />
+            <img :src="journeyIcons.dropoff" alt="" width="16" height="16" >
 
           </span>
 
@@ -220,7 +220,7 @@ const completePayment = async () => {
 
 
 
-      <hr class="dashboard-booking-card__divider" />
+      <hr class="dashboard-booking-card__divider" >
 
 
 
@@ -230,7 +230,7 @@ const completePayment = async () => {
 
           <span class="dashboard-booking-card__meta-item">
 
-            <img :src="journeyIcons.travelDate" alt="" width="16" height="16" aria-hidden="true" />
+            <img :src="journeyIcons.travelDate" alt="" width="16" height="16" aria-hidden="true" >
 
             {{ dateLabel }}
 
@@ -238,7 +238,7 @@ const completePayment = async () => {
 
           <span class="dashboard-booking-card__meta-item">
 
-            <img :src="journeyIcons.pickupTime" alt="" width="16" height="16" aria-hidden="true" />
+            <img :src="journeyIcons.pickupTime" alt="" width="16" height="16" aria-hidden="true" >
 
             {{ timeLabel }}
 
@@ -278,7 +278,7 @@ const completePayment = async () => {
 
           <span class="dashboard-booking-card__pin">
 
-            <img :src="journeyIcons.pickup" alt="" width="18" height="18" />
+            <img :src="journeyIcons.pickup" alt="" width="18" height="18" >
 
           </span>
 
@@ -286,7 +286,7 @@ const completePayment = async () => {
 
           <span class="dashboard-booking-card__pin">
 
-            <img :src="journeyIcons.dropoff" alt="" width="18" height="18" />
+            <img :src="journeyIcons.dropoff" alt="" width="18" height="18" >
 
           </span>
 
@@ -316,7 +316,7 @@ const completePayment = async () => {
 
 
 
-      <hr class="dashboard-booking-card__divider" />
+      <hr class="dashboard-booking-card__divider" >
 
 
 
@@ -326,7 +326,7 @@ const completePayment = async () => {
 
           <span class="dashboard-booking-card__meta-item">
 
-            <img :src="journeyIcons.travelDate" alt="" width="16" height="16" aria-hidden="true" />
+            <img :src="journeyIcons.travelDate" alt="" width="16" height="16" aria-hidden="true" >
 
             {{ dateLabel }}
 
@@ -334,7 +334,7 @@ const completePayment = async () => {
 
           <span class="dashboard-booking-card__meta-item">
 
-            <img :src="journeyIcons.pickupTime" alt="" width="16" height="16" aria-hidden="true" />
+            <img :src="journeyIcons.pickupTime" alt="" width="16" height="16" aria-hidden="true" >
 
             {{ timeLabel }}
 

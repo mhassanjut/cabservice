@@ -1,5 +1,44 @@
 import type { ParsedSeo } from '~/types/blog'
 
+type RankMathMetaEntry =
+  | { name: string; content: string }
+  | { property: string; content: string }
+
+type OgType =
+  | 'article'
+  | 'website'
+  | 'book'
+  | 'profile'
+  | 'music.song'
+  | 'music.album'
+  | 'music.playlist'
+  | 'music.radio_station'
+  | 'video.movie'
+  | 'video.episode'
+  | 'video.tv_show'
+  | 'video.other'
+  | 'payment.link'
+
+type TwitterCard = 'summary' | 'summary_large_image' | 'app' | 'player'
+
+const OG_TYPES = new Set<OgType>([
+  'article',
+  'website',
+  'book',
+  'profile',
+  'music.song',
+  'music.album',
+  'music.playlist',
+  'music.radio_station',
+  'video.movie',
+  'video.episode',
+  'video.tv_show',
+  'video.other',
+  'payment.link',
+])
+
+const TWITTER_CARDS = new Set<TwitterCard>(['summary', 'summary_large_image', 'app', 'player'])
+
 function seoScalar(value: unknown): string | undefined {
   if (typeof value === 'string' && value.length > 0) return value
   if (Array.isArray(value)) {
@@ -16,9 +55,9 @@ function metaEntries(
   kind: 'name' | 'property',
   prefix?: string,
   skipKeys: string[] = [],
-): Array<{ name?: string; property?: string; content: string }> {
+): RankMathMetaEntry[] {
   if (!bucket) return []
-  const out: Array<{ name?: string; property?: string; content: string }> = []
+  const out: RankMathMetaEntry[] = []
   for (const [key, value] of Object.entries(bucket)) {
     if (skipKeys.includes(key)) continue
     const content = seoScalar(value)
@@ -27,6 +66,16 @@ function metaEntries(
     out.push(kind === 'name' ? { name: tagName, content } : { property: tagName, content })
   }
   return out
+}
+
+function ogTypeValue(value: unknown): OgType {
+  const raw = seoScalar(value)
+  return raw && OG_TYPES.has(raw as OgType) ? raw as OgType : 'article'
+}
+
+function twitterCardValue(value: unknown): TwitterCard {
+  const raw = seoScalar(value)
+  return raw && TWITTER_CARDS.has(raw as TwitterCard) ? raw as TwitterCard : 'summary_large_image'
 }
 
 /**
@@ -44,9 +93,9 @@ export function useRankMathSeo(seo: MaybeRefOrGetter<ParsedSeo | null | undefine
   const ogDescription = computed(() => seoScalar(seoRef.value?.og?.description) ?? description.value)
   const ogUrl = computed(() => seoScalar(seoRef.value?.og?.url) ?? canonical.value)
   const ogImage = computed(() => seoScalar(seoRef.value?.og?.image))
-  const ogType = computed(() => seoScalar(seoRef.value?.og?.type) ?? 'article')
+  const ogType = computed(() => ogTypeValue(seoRef.value?.og?.type))
 
-  const twitterCard = computed(() => seoScalar(seoRef.value?.twitter?.card) ?? 'summary_large_image')
+  const twitterCard = computed(() => twitterCardValue(seoRef.value?.twitter?.card))
   const twitterTitle = computed(() => seoScalar(seoRef.value?.twitter?.title) ?? ogTitle.value)
   const twitterDescription = computed(
     () => seoScalar(seoRef.value?.twitter?.description) ?? ogDescription.value,
@@ -92,7 +141,7 @@ export function useRankMathSeo(seo: MaybeRefOrGetter<ParsedSeo | null | undefine
         ...metaEntries(s.article, 'property', 'article:'),
         ...metaEntries(s.properties, 'property'),
       ]
-    }),
+    }) as unknown as RankMathMetaEntry[],
     script: computed(() => {
       const schemas = seoRef.value?.schema
       if (!schemas?.length) return []
