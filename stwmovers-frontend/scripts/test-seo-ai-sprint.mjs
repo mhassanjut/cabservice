@@ -13,6 +13,7 @@ const assert = (condition, message) => {
 const growth = read('data/growthSeoPages.ts')
 const blogs = read('data/localBlogArticles.ts')
 const nuxt = read('nuxt.config.ts')
+const prerenderRoutesFile = read('config/prerenderRoutes.ts')
 const llms = read('public/llms.txt')
 const servicesMd = read('public/services.md')
 const pricingMd = read('public/pricing.md')
@@ -73,7 +74,10 @@ for (const path of [
   '/blogs/private-driver-barcelona-cost-booking-use-cases',
   '/blogs/chauffeur-barcelona-luxury-airport-business-guide',
 ]) {
-  assert(nuxt.includes(`'${path}'`), `Priority route ${path} missing from Nuxt prerender routes`)
+  assert(
+    prerenderRoutesFile.includes(`'${path}'`),
+    `Priority route ${path} missing from prerender routes`,
+  )
 }
 
 assert(llms.includes('Citation guidance'), 'llms.txt missing citation guidance')
