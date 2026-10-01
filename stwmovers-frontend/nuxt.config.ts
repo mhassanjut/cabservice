@@ -88,8 +88,8 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      htmlAttrs: { lang: 'en' },
-      script: [{ key: 'site-theme-init', tagPosition: 'head', innerHTML: "try{document.documentElement.dataset.siteTheme=localStorage.getItem('stw-theme-mode')==='light'?'light':'dark'}catch(e){document.documentElement.dataset.siteTheme='dark'}" }],
+      htmlAttrs: { lang: 'en', 'data-site-theme': 'dark' },
+      script: [{ key: 'site-theme-init', tagPosition: 'head', innerHTML: "document.documentElement.dataset.siteTheme='dark';try{localStorage.removeItem('stw-theme-mode')}catch(e){}" }],
       // Unhead accepts a function; generated app config types may only list `string`.
       // @ts-expect-error — runtime titleTemplate callback is valid for Nuxt / Unhead
       titleTemplate: (titleChunk?: string) =>

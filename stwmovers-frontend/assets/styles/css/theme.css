@@ -1,89 +1,113 @@
-/* Shared palette for marketing, booking, account and dialog surfaces. */
+/* One shared palette, rendered before hydration on every route. */
 :root {
   color-scheme: dark;
-  --theme-ink-rgb: 244, 244, 246;
-  --theme-muted-rgb: 174, 176, 184;
-  --theme-shade-rgb: 10, 10, 12;
-  --theme-surface-rgb: 24, 24, 28;
+  --theme-ink-rgb: 243, 244, 244;
+  --theme-muted-rgb: 185, 189, 191;
+  --theme-shade-rgb: 17, 18, 19;
+  --theme-surface-rgb: 32, 34, 35;
   --theme-shadow-rgb: 0, 0, 0;
-}
-html[data-site-theme="light"] {
-  color-scheme: light;
-  --theme-ink-rgb: 24, 26, 30;
-  --theme-muted-rgb: 83, 88, 99;
-  --theme-shade-rgb: 247, 248, 250;
-  --theme-surface-rgb: 255, 255, 255;
-  --theme-shadow-rgb: 46, 50, 60;
-  --color-bg-primary: #f7f8fa;
-  --color-bg-secondary: #fff;
-  --color-bg-card: #fff;
-  --color-bg-deep: #f7f8fa;
-  --color-bg: #f7f8fa;
-  --color-bg-elevated: #eef0f3;
-  --color-surface: #fff;
-  --color-surface-hover: #eef0f3;
-  --color-border: rgba(24, 26, 30, .16);
-  --color-border-strong: rgba(130, 97, 22, .4);
-  --color-text: #181a1e;
-  --color-text-primary: #181a1e;
-  --color-text-secondary: #535863;
-  --color-muted: #535863;
-  --color-faint: #626773;
-  --color-gold: #826116;
-  --color-gold-bright: #795912;
-  --color-gold-light: #795912;
-  --color-danger: #b52435;
-  --color-success: #176b48;
-  --surface: rgba(24, 26, 30, .04);
-  --surface2: rgba(24, 26, 30, .07);
+  --color-bg-primary: #111213;
+  --color-bg-secondary: #181a1b;
+  --color-bg-card: #202223;
+  --color-bg-deep: #111213;
+  --color-bg: #111213;
+  --color-bg-elevated: #202223;
+  --color-surface: #202223;
+  --color-surface-hover: #292c2d;
+  --color-border: rgba(243, 244, 244, .12);
+  --color-text: #f3f4f4;
+  --color-text-primary: #f3f4f4;
+  --color-muted: #b9bdbf;
+  --color-text-secondary: #b9bdbf;
+  --color-faint: #9da3a6;
+  --color-gold: #d8b24c;
+  --color-gold-bright: #e4c76b;
 }
 html[data-site-theme] .home-page,
 html[data-site-theme] .site-root {
-  --home-bg: var(--color-bg-deep);
+  --home-bg: var(--color-bg);
   --home-text: var(--color-text);
   --home-text-muted: var(--color-muted);
-  --home-gold: var(--color-gold-bright);
+  --home-gold: var(--color-gold);
   --home-border: var(--color-border);
   --home-border-soft: var(--color-border);
-  --home-white: var(--color-surface);
+  --home-white: var(--color-bg-secondary);
   --growth-ink: var(--color-text);
-  --growth-cream: var(--color-surface);
+  --growth-cream: var(--color-bg-secondary);
   --home-corporate-overlay: linear-gradient(90deg, rgba(var(--theme-shade-rgb), .94), rgba(var(--theme-shade-rgb), .15));
-  background-color: var(--color-bg-deep);
+  background-color: var(--color-bg);
   color: var(--color-text);
 }
-html[data-site-theme] .home-section--white,
-html[data-site-theme] .services-page,
-html[data-site-theme] .blogs-page,
+/* A cool graphite tint on the homepage balances warm photography and gold. */
 html[data-site-theme] .site-root--home {
-  background: var(--color-bg-deep) !important;
+  --theme-shade-rgb: 23, 29, 33;
+  --theme-surface-rgb: 39, 48, 54;
+  --color-bg: #171d21;
+  --color-bg-deep: #171d21;
+  --color-bg-secondary: #20292f;
+  --color-bg-card: #273036;
+  --color-surface: #273036;
+  --color-surface-hover: #303c43;
+  --color-border: rgba(204, 221, 230, .16);
 }
-html[data-site-theme] :is(.app-nav, .app-nav.is-scrolled) {
-  background: rgba(var(--theme-shade-rgb), .92) !important;
-  color: var(--color-text);
+html[data-site-theme] .site-root--home :is(.home-intent__card, .home-proof__panel, .home-confidence__card) {
+  background: linear-gradient(145deg, rgba(211, 230, 239, .06), transparent 60%), var(--color-bg-card);
+  box-shadow: inset 0 1px 0 rgba(224, 238, 245, .08), 0 12px 32px rgba(0, 0, 0, .1);
+}
+html[data-site-theme] .site-root--home :is(.home-intent__card, .home-confidence__card):is(:hover, :focus-visible) {
+  background-color: var(--color-surface-hover);
+}
+/* Matching edges connect sections without flattening their centre surfaces. */
+html[data-site-theme] .home-section--white {
+  background: linear-gradient(180deg, var(--color-bg), var(--color-bg-secondary) 30%, var(--color-bg-secondary) 70%, var(--color-bg));
+}
+html[data-site-theme] .home-hero::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 112px;
+  z-index: 1;
+  background: linear-gradient(0deg, var(--color-bg), transparent);
+  pointer-events: none;
+}
+html[data-site-theme] .home-confidence {
+  background: linear-gradient(180deg, var(--color-bg), var(--color-bg-secondary) 30%, var(--color-bg-secondary) 70%, var(--color-bg));
+}
+html[data-site-theme] :is(.home-intent__card, .home-proof__panel, .home-confidence__card) {
+  background: var(--color-bg-card);
   border-color: var(--color-border);
 }
-html[data-site-theme] .app-nav__scrim { background: transparent !important; }
-html[data-site-theme="light"] :is(.app-nav__logo, .home-footer__logo, .footer-logo) img {
-  filter: brightness(0);
+html[data-site-theme] :is(.home-intent__card, .home-confidence__card):is(:hover, :focus-visible) {
+  background: var(--color-surface-hover);
+  border-color: rgba(216, 178, 76, .48);
 }
-html[data-site-theme="light"] :is(img.app-nav__logo, .app-nav__brand img, .home-footer__brand img, .refined-footer__logo) {
-  filter: brightness(0) !important;
-  opacity: .92;
+html[data-site-theme] .home-service-clarity::after {
+  background: linear-gradient(180deg, var(--color-bg), transparent 24%, transparent 76%, var(--color-bg));
 }
-html[data-site-theme="dark"] .refined-footer__logo {
-  filter: none !important;
-  opacity: 1;
+html[data-site-theme] :is(.home-corporate, .home-cta)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, var(--color-bg), transparent 24%, transparent 76%, var(--color-bg));
 }
-html[data-site-theme="light"] .home-hero__copy-scrim {
-  background: linear-gradient(90deg, rgba(247, 248, 250, .97), rgba(247, 248, 250, .9) 38%, rgba(247, 248, 250, .18) 78%) !important;
+html[data-site-theme] .home-page > :is(.home-section, .home-proof, .home-confidence) {
+  padding-block: 52px;
 }
-html[data-site-theme="light"] :is(.home-hero__intent i, .home-hero__booking i, .app-nav__theme-toggle) {
-  color: var(--color-gold-bright) !important;
+@media (max-width: 767px) {
+  html[data-site-theme] .home-page > :is(.home-section, .home-proof, .home-confidence) {
+    padding-block: 34px;
+  }
+}
+html[data-site-theme] .app-nav.is-scrolled {
+  background: rgba(var(--theme-shade-rgb), .88) !important;
+  border-bottom-color: var(--color-border);
+  backdrop-filter: blur(20px) saturate(120%);
+  -webkit-backdrop-filter: blur(20px) saturate(120%);
 }
 html[data-site-theme] :is(.home-btn--gold, .services-btn--gold, .about-btn--gold, .contact-btn--gold, .btn-gold, .app-nav__cta, .booking-form__bar-submit) {
-  background: linear-gradient(135deg, #f5dda0, #d8b24c) !important;
-  color: #17130d !important;
+  background: linear-gradient(135deg, #f5dda0, #d8b24c);
+  color: #17130d;
 }
 html[data-site-theme] :is(input, select, textarea) {
   color: var(--color-text);
@@ -101,20 +125,14 @@ html[data-site-theme] :is(button, a, input, select, textarea):focus-visible {
   outline: 2px solid var(--color-gold-bright);
   outline-offset: 3px;
 }
-html[data-site-theme="light"] :is(.home-hero__overlay, .services-hero__overlay, .about-hero__overlay, .contact-hero__overlay, .tours-hero__overlay, .growth-hero__overlay, .ads-hero__overlay, .blogs-hero__overlay) {
-  background: linear-gradient(90deg, rgba(247, 248, 250, .97), rgba(247, 248, 250, .82) 38%, rgba(247, 248, 250, .18)) !important;
+
+/* Added only after observers are active; server-rendered content stays readable. */
+.home-page [data-reveal-pending] {
+  opacity: 0;
 }
-html[data-site-theme="light"] .home-service-clarity {
-  background-image: linear-gradient(90deg, rgba(247, 248, 250, .97), rgba(247, 248, 250, .88)), url('/img/home/generated/luxury-service-background-v1.webp');
+.home-page [data-home-reveal]:focus-within {
+  opacity: 1;
 }
-html[data-site-theme="light"] :is(.home-service-clarity, .home-hero)::after {
-  background: linear-gradient(0deg, #f7f8fa, transparent) !important;
-}
-@media (max-width: 767px) {
-  html[data-site-theme="light"] .home-hero__copy-scrim {
-    background: linear-gradient(90deg, rgba(247, 248, 250, .97), rgba(247, 248, 250, .86) 65%, rgba(247, 248, 250, .55)) !important;
-  }
-  html[data-site-theme="light"] :is(.home-hero__overlay, .services-hero__overlay, .about-hero__overlay, .contact-hero__overlay, .tours-hero__overlay, .growth-hero__overlay, .ads-hero__overlay, .blogs-hero__overlay) {
-    background: linear-gradient(90deg, rgba(247, 248, 250, .97), rgba(247, 248, 250, .7) 70%, rgba(247, 248, 250, .4)) !important;
-  }
+@media (prefers-reduced-motion: reduce) {
+  .home-page [data-reveal-pending] { opacity: 1; }
 }

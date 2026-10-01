@@ -40,7 +40,6 @@ const articles = computed(() => mergePublishedPosts(localBlogPosts, remotePosts.
 <style scoped>
 .home-insights { background: rgba(var(--theme-shade-rgb), 1); color: rgba(var(--theme-ink-rgb), 1); }
 .home-insights .home-eyebrow { color: #d2a83d; }
-:global(html[data-site-theme="light"]) .home-insights .home-eyebrow { color: #76540a; }
 .home-insights__heading { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 28px; }
 .home-insights__heading h2 { margin: 0; }
 .home-insights__heading > a { flex-shrink: 0; color: #e5c36c; text-decoration: none; font-size: 14px; }

@@ -540,23 +540,3 @@
   gap: 1rem;
   margin-top: 0.5rem;
 }
-
-html[data-site-theme="light"] .services-page {
-  background: rgba(var(--theme-surface-rgb), 1) !important;
-  color: rgba(var(--theme-ink-rgb), 1);
-}
-
-html[data-site-theme="light"] .services-page .services-tag,
-html[data-site-theme="light"] .services-page .services-step,
-html[data-site-theme="light"] .services-page .service-directory__card {
-  background: rgba(var(--theme-surface-rgb), 0.78);
-  border-color: rgba(var(--theme-ink-rgb), 0.13);
-  color: rgba(var(--theme-ink-rgb), 1);
-}
-
-html[data-site-theme="light"] .services-page .service-directory p,
-html[data-site-theme="light"] .services-page .services-lead,
-html[data-site-theme="light"] .services-page .services-step__text,
-html[data-site-theme="light"] .services-page .services-feature__text {
-  color: rgba(var(--theme-ink-rgb), 0.68);
-}

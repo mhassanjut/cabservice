@@ -66,7 +66,6 @@ useHead(() => ({ script: [{ key: 'ld-json-insights-collection', type: 'applicati
 .journal-filters button[aria-pressed="true"] { background: #e5c36c; color: rgba(var(--theme-ink-rgb), 1); }
 .journal-count { color: var(--home-text-muted); font-size: 13px; margin: 20px 0; }
 .journal-more { margin-top: 24px; cursor: pointer; color: rgba(var(--theme-ink-rgb), 1); background: #e5c36c; border: 1px solid #8d7946; }
-html[data-site-theme="light"] .journal-filters button { border-color: rgba(var(--theme-ink-rgb), 0.18); background: rgba(var(--theme-surface-rgb), 0.7); color: rgba(var(--theme-ink-rgb), 1); }
 @media(max-width:767px) {
  .journal-page :deep(.blogs-hero__title) { font-size: 32px; }
  .journal-page :deep(.blogs-featured .blog-card) { display: block; }

@@ -1299,35 +1299,3 @@
 .blogs-page .blog-card__answer {
   border-color: rgba(var(--theme-ink-rgb), 0.11);
 }
-
-html[data-site-theme="light"] .blogs-page {
-  background: rgba(var(--theme-surface-rgb), 1);
-  color: rgba(var(--theme-ink-rgb), 1);
-}
-
-html[data-site-theme="light"] .blogs-page .blogs-aeo-standard,
-html[data-site-theme="light"] .blogs-page .blogs-featured,
-html[data-site-theme="light"] .blogs-page .blogs-quote-band,
-html[data-site-theme="light"] .blogs-page .blogs-local-note,
-html[data-site-theme="light"] .blogs-page .blog-article,
-html[data-site-theme="light"] .blogs-page .blog-article__related {
-  background: rgba(var(--theme-surface-rgb), 1);
-}
-
-html[data-site-theme="light"] .blogs-page .blogs-aeo-standard__card,
-html[data-site-theme="light"] .blogs-page .blogs-pillar-card,
-html[data-site-theme="light"] .blogs-page .blogs-empty,
-html[data-site-theme="light"] .blogs-page .blogs-error,
-html[data-site-theme="light"] .blogs-page .blogs-local-note,
-html[data-site-theme="light"] .blogs-page .blog-card,
-html[data-site-theme="light"] .blogs-page .blog-article__authority,
-html[data-site-theme="light"] .blogs-page .blog-article__toc,
-html[data-site-theme="light"] .blogs-page .blog-article__inline-cta,
-html[data-site-theme="light"] .blogs-page .blog-article__related,
-html[data-site-theme="light"] .blogs-page .article-booking-checklist,
-html[data-site-theme="light"] .blogs-page .article-evidence-panel {
-  border-color: rgba(var(--theme-ink-rgb), 0.12);
-  background: rgba(var(--theme-surface-rgb), 0.8);
-  color: rgba(var(--theme-ink-rgb), 1);
-  box-shadow: 0 18px 45px rgba(var(--theme-shadow-rgb), 0.08);
-}

@@ -32,27 +32,8 @@
   background: rgba(var(--theme-shade-rgb), 1);
 }
 
-html[data-site-theme="light"] .site-root--home,
-.site-root--home[data-site-theme="light"] {
-  background: rgba(var(--theme-surface-rgb), 1);
-}
 
-html[data-site-theme="light"] .site-root--home .home-page,
-.site-root--home[data-site-theme="light"] .home-page {
-  --home-bg: #f7f3ed;
-  --home-text: #17130d;
-  --home-text-muted: rgba(23, 19, 13, 0.68);
-  --home-border: rgba(23, 19, 13, 0.12);
-  --home-border-soft: rgba(23, 19, 13, 0.16);
-  --home-white: #fffaf0;
 
-  background: var(--home-bg);
-}
-
-html[data-site-theme="light"] .site-root--home .home-section--white,
-.site-root--home[data-site-theme="light"] .home-section--white {
-  background: linear-gradient(180deg, rgba(var(--theme-surface-rgb), 1) 0%, rgba(var(--theme-surface-rgb), 1) 100%);
-}
 
 .site-root--home .layout-main--home {
   padding: 0;
@@ -727,7 +708,7 @@ html[data-site-theme="light"] .site-root--home .home-section--white,
 
 .home-proof__btn--gold {
   background: var(--home-gold);
-  color: #fff;
+  color: #17130d;
 }
 
 .home-proof__btn--ghost {

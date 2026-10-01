@@ -10,7 +10,6 @@ const drawerPanel = ref<HTMLElement>()
 const scrolled = ref(false)
 const isMobile = useIsMobile()
 const { open: openSignIn } = useCustomerSignIn()
-const { themeMode, applyThemeMode, toggleThemeMode } = useSiteTheme()
 
 const hasHeroBackdrop = computed(() => {
   const heroPrefixes = ['/services/', '/locations', '/answers', '/blogs', '/landing']
@@ -150,8 +149,6 @@ const syncNavScroll = () => {
 
 onMounted(() => {
   auth.hydrate()
-  const savedTheme = document.documentElement.dataset.siteTheme
-  applyThemeMode(savedTheme === 'light' ? 'light' : 'dark')
   syncNavScroll()
   window.addEventListener('scroll', syncNavScroll, { passive: true })
   document.addEventListener('click', dismissOutsideMenu)
@@ -282,15 +279,6 @@ const closeMenu = () => {
         </nav>
 
         <div class="app-nav__actions">
-          <button
-            type="button"
-            class="app-nav__theme-toggle"
-            :aria-label="themeMode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
-            :title="themeMode === 'dark' ? 'Light mode' : 'Dark mode'"
-            @click="toggleThemeMode"
-          >
-            <i class="fa-solid" :class="themeMode === 'dark' ? 'fa-sun' : 'fa-moon'" aria-hidden="true" />
-          </button>
           <AppUserMenu :mobile-sheet="isMobile" login-variant="outline" />
           <NuxtLink class="app-nav__journey-cta app-nav__action-btn" :to="routes.journey">
             Book Your Journey
@@ -362,15 +350,6 @@ const closeMenu = () => {
         </div>
 
         <div class="app-nav__drawer-foot">
-          <button
-            type="button"
-            class="app-nav__theme-toggle app-nav__theme-toggle--drawer"
-            :aria-label="themeMode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
-            @click="toggleThemeMode"
-          >
-            <i class="fa-solid" :class="themeMode === 'dark' ? 'fa-sun' : 'fa-moon'" aria-hidden="true" />
-            <span>{{ themeMode === 'dark' ? 'Light mode' : 'Dark mode' }}</span>
-          </button>
           <div
             v-if="!(auth.isLoggedIn && auth.role === 'CUSTOMER') && !auth.isGuestSession"
             class="user-menu app-nav__drawer-login"
@@ -423,39 +402,8 @@ const closeMenu = () => {
   align-items: center;
 }
 
-.app-nav__theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 41px;
-  height: 41px;
-  border: 1px solid rgba(var(--theme-ink-rgb), 0.35);
-  border-radius: 999px;
-  background: rgba(var(--theme-surface-rgb), 0.08);
-  color: rgba(var(--theme-ink-rgb), 1);
-  cursor: pointer;
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease,
-    background-color 0.2s ease,
-    color 0.2s ease;
-}
 
-.app-nav__theme-toggle:hover {
-  border-color: #f0d587;
-  background: rgba(216, 178, 76, 0.14);
-  color: #f0d587;
-  transform: translateY(-1px);
-}
 
-.app-nav__theme-toggle--drawer {
-  width: 100%;
-  gap: 0.6rem;
-  margin-bottom: 0.75rem;
-  padding-inline: 1rem;
-  justify-content: center;
-  font-size: 0.9rem;
-}
 
 .app-nav__menu { position: relative; }
 .app-nav__menu::after { content: ''; position: absolute; top: 100%; left: 0; right: 0; height: 12px; }
