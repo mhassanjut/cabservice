@@ -10,6 +10,7 @@ export default defineNuxtConfig({
   css: [
     '~/assets/styles/css/fonts.css',
     '~/assets/styles/css/main.css',
+    '~/assets/styles/css/theme.css',
   ],
 
   image: {
@@ -44,7 +45,7 @@ export default defineNuxtConfig({
       xl: 1280,
       xxl: 1536,
     },
-    densities: [1, 2],
+    densities: [1],
     presets: {
       hero: {
         modifiers: {
@@ -88,6 +89,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
+      script: [{ key: 'site-theme-init', tagPosition: 'head', innerHTML: "try{document.documentElement.dataset.siteTheme=localStorage.getItem('stw-theme-mode')==='light'?'light':'dark'}catch(e){document.documentElement.dataset.siteTheme='dark'}" }],
       // Unhead accepts a function; generated app config types may only list `string`.
       // @ts-expect-error — runtime titleTemplate callback is valid for Nuxt / Unhead
       titleTemplate: (titleChunk?: string) =>
@@ -175,7 +177,7 @@ export default defineNuxtConfig({
     },
     '/img/**': {
       headers: {
-        'cache-control': 'public, max-age=2592000',
+        'cache-control': 'public, max-age=31536000, immutable',
       },
     },
     '/fonts/**': {

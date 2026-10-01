@@ -748,7 +748,7 @@ const removeTour = async (tour: AdminTourDto) => {
   min-height: 140px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(var(--theme-surface-rgb), 0.02);
   display: grid;
   place-items: center;
   overflow: hidden;

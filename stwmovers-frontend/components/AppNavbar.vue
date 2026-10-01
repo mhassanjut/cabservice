@@ -10,6 +10,7 @@ const drawerPanel = ref<HTMLElement>()
 const scrolled = ref(false)
 const isMobile = useIsMobile()
 const { open: openSignIn } = useCustomerSignIn()
+const { themeMode, applyThemeMode, toggleThemeMode } = useSiteTheme()
 
 const hasHeroBackdrop = computed(() => {
   const heroPrefixes = ['/services/', '/locations', '/answers', '/blogs', '/landing']
@@ -149,6 +150,8 @@ const syncNavScroll = () => {
 
 onMounted(() => {
   auth.hydrate()
+  const savedTheme = document.documentElement.dataset.siteTheme
+  applyThemeMode(savedTheme === 'light' ? 'light' : 'dark')
   syncNavScroll()
   window.addEventListener('scroll', syncNavScroll, { passive: true })
   document.addEventListener('click', dismissOutsideMenu)
@@ -279,6 +282,15 @@ const closeMenu = () => {
         </nav>
 
         <div class="app-nav__actions">
+          <button
+            type="button"
+            class="app-nav__theme-toggle"
+            :aria-label="themeMode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+            :title="themeMode === 'dark' ? 'Light mode' : 'Dark mode'"
+            @click="toggleThemeMode"
+          >
+            <i class="fa-solid" :class="themeMode === 'dark' ? 'fa-sun' : 'fa-moon'" aria-hidden="true" />
+          </button>
           <AppUserMenu :mobile-sheet="isMobile" login-variant="outline" />
           <NuxtLink class="app-nav__journey-cta app-nav__action-btn" :to="routes.journey">
             Book Your Journey
@@ -350,6 +362,15 @@ const closeMenu = () => {
         </div>
 
         <div class="app-nav__drawer-foot">
+          <button
+            type="button"
+            class="app-nav__theme-toggle app-nav__theme-toggle--drawer"
+            :aria-label="themeMode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+            @click="toggleThemeMode"
+          >
+            <i class="fa-solid" :class="themeMode === 'dark' ? 'fa-sun' : 'fa-moon'" aria-hidden="true" />
+            <span>{{ themeMode === 'dark' ? 'Light mode' : 'Dark mode' }}</span>
+          </button>
           <div
             v-if="!(auth.isLoggedIn && auth.role === 'CUSTOMER') && !auth.isGuestSession"
             class="user-menu app-nav__drawer-login"
@@ -402,6 +423,40 @@ const closeMenu = () => {
   align-items: center;
 }
 
+.app-nav__theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 41px;
+  height: 41px;
+  border: 1px solid rgba(var(--theme-ink-rgb), 0.35);
+  border-radius: 999px;
+  background: rgba(var(--theme-surface-rgb), 0.08);
+  color: rgba(var(--theme-ink-rgb), 1);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.app-nav__theme-toggle:hover {
+  border-color: #f0d587;
+  background: rgba(216, 178, 76, 0.14);
+  color: #f0d587;
+  transform: translateY(-1px);
+}
+
+.app-nav__theme-toggle--drawer {
+  width: 100%;
+  gap: 0.6rem;
+  margin-bottom: 0.75rem;
+  padding-inline: 1rem;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+
 .app-nav__menu { position: relative; }
 .app-nav__menu::after { content: ''; position: absolute; top: 100%; left: 0; right: 0; height: 12px; }
 .app-nav__link--menu { gap: 0.45rem; cursor: pointer; border-top: 0; border-left: 0; border-right: 0; }
@@ -416,21 +471,21 @@ const closeMenu = () => {
   max-height: calc(100dvh - 100px);
   overflow-y: auto;
   padding: 20px;
-  border: 1px solid #514835;
+  border: 1px solid rgba(var(--theme-ink-rgb), 1);
   border-radius: 8px;
-  background: #151515;
-  box-shadow: 0 18px 48px #0006;
+  background: rgba(var(--theme-shade-rgb), 1);
+  box-shadow: 0 18px 48px rgba(var(--theme-shadow-rgb), 0.4);
   animation: nav-reveal 0.18s ease;
 }
 .app-nav__mega--wide { width: 680px; }
-.app-nav__mega-heading { padding: 4px 12px 18px; margin-bottom: 10px; border-bottom: 1px solid #ffffff14; }
+.app-nav__mega-heading { padding: 4px 12px 18px; margin-bottom: 10px; border-bottom: 1px solid rgba(var(--theme-ink-rgb), 0.078); }
 .app-nav__mega-heading > span { color: #e5c36c; font-size: 11px; text-transform: uppercase; letter-spacing: 0; }
-.app-nav__mega-heading h2 { margin: 8px 0; color: #f5f5f5; font-size: 22px; font-weight: 300; line-height: 1.25; letter-spacing: 0; }
-.app-nav__mega-heading p { margin: 0; color: #b8b8b8; font-size: 12px; line-height: 1.5; }
+.app-nav__mega-heading h2 { margin: 8px 0; color: rgba(var(--theme-ink-rgb), 1); font-size: 22px; font-weight: 300; line-height: 1.25; letter-spacing: 0; }
+.app-nav__mega-heading p { margin: 0; color: rgba(var(--theme-ink-rgb), 1); font-size: 12px; line-height: 1.5; }
 .app-nav__mega-links { display: grid; gap: 4px; }
 .app-nav__mega-icon { flex: 0 0 22px; color: #d8b96a; font-size: 17px; text-align: center; }
 .app-nav__mega-copy { display: grid; gap: 5px; }
-.app-nav__mega-copy small { color: #b8b8b8; font-size: 12px; line-height: 1.45; font-weight: 300; }
+.app-nav__mega-copy small { color: rgba(var(--theme-ink-rgb), 1); font-size: 12px; line-height: 1.45; font-weight: 300; }
 .app-nav__mega--wide .app-nav__mega-links { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 12px; }
 .app-nav__mega-link {
   display: flex;
@@ -439,13 +494,13 @@ const closeMenu = () => {
   min-height: 66px;
   padding: 12px;
   border-radius: 4px;
-  color: #f5f5f5;
+  color: rgba(var(--theme-ink-rgb), 1);
   font-size: 14px;
   line-height: 1.4;
   text-decoration: none;
   transition: background 0.18s ease, color 0.18s ease;
 }
-.app-nav__mega-link:hover, .app-nav__mega-link:focus-visible { background: #ffffff0d; color: #f0d587; }
+.app-nav__mega-link:hover, .app-nav__mega-link:focus-visible { background: rgba(var(--theme-surface-rgb), 0.051); color: #f0d587; }
 .app-nav__mega-footer {
   display: flex;
   align-items: center;
@@ -453,7 +508,7 @@ const closeMenu = () => {
   min-height: 44px;
   margin-top: 8px;
   padding: 12px;
-  border-top: 1px solid #ffffff1f;
+  border-top: 1px solid rgba(var(--theme-ink-rgb), 0.122);
   color: #f0d587;
   font-size: 13px;
   text-decoration: none;
@@ -461,7 +516,7 @@ const closeMenu = () => {
 .app-nav__mega-footer i { transition: transform 0.18s ease; }
 .app-nav__mega-footer:hover i { transform: translateX(3px); }
 .app-nav__mega a:focus-visible, .app-nav__link--menu:focus-visible { outline: 2px solid #f0d587; outline-offset: -2px; }
-.app-nav.is-scrolled { background: rgba(16,16,18,0.88) !important; backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%); border-bottom: 1px solid #ffffff24; box-shadow: 0 4px 20px #0002; }
+.app-nav.is-scrolled { background: rgba(var(--theme-shade-rgb), 0.88) !important; backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%); border-bottom: 1px solid rgba(var(--theme-ink-rgb), 0.141); box-shadow: 0 4px 20px rgba(var(--theme-shadow-rgb), 0.133); }
 .app-nav.is-scrolled .app-nav__scrim { display: none; }
 .app-nav__drawer-group-title { color: #e5c36c; font-size: 13px; letter-spacing: 0; }
 @keyframes nav-reveal { from { transform: translateY(5px); } to { transform: translateY(0); } }
@@ -482,7 +537,7 @@ const closeMenu = () => {
 }
 
 .app-nav__drawer-group + .app-nav__drawer-group {
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(var(--theme-ink-rgb), 0.08);
   padding-top: 1rem;
 }
 
@@ -504,7 +559,7 @@ const closeMenu = () => {
 }
 
 .app-nav__drawer-group-toggle i {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(var(--theme-ink-rgb), 0.7);
   font-size: 0.72rem;
   transition: transform 0.2s ease;
 }
@@ -537,6 +592,6 @@ const closeMenu = () => {
     display: none;
   }
 }
-@supports not (backdrop-filter: blur(1px)) { .app-nav.is-scrolled { background: #151515 !important; } }
+@supports not (backdrop-filter: blur(1px)) { .app-nav.is-scrolled { background: rgba(var(--theme-shade-rgb), 1) !important; } }
 @media(max-width:767px) { .app-nav.is-scrolled { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); } }
 </style>

@@ -1,7 +1,7 @@
 /**
  * Content for the Services page (Figma: sovereign-services-page, node 82:491).
  * All copy, imagery, and section data live here so the section components stay
- * presentational. Images are served from `public/img/services/`.
+ * presentational. Images are served from `public/img/...`.
  */
 
 export type ServiceHighlight = string
@@ -42,7 +42,7 @@ export const servicesHero = {
   body:
     "Whether you're arriving for business, catching a flight, or celebrating a special occasion, every journey is carefully planned to deliver comfort, reliability, and complete peace of mind.",
   cta: { label: 'Book Your Journey', href: '/journey' },
-  image: '/img/services/hero.png',
+  image: '/img/home/generated/luxury-service-background-v1.webp',
 } as const
 
 /* ─── Introduction (82:514) ─── */
@@ -50,7 +50,7 @@ export const servicesIntro = {
   heading: 'Travel, Designed Around You.',
   body:
     'No two journeys are alike. That\u2019s why every service is tailored around your destination, schedule, and personal preferences\u2014so you can simply enjoy the experience.',
-  image: '/img/services/intro.png',
+  image: '/img/home/generated/chauffeur-arrival-detail-v1.webp',
 } as const
 
 /* ─── Split content sections (82:519, 82:536, 82:569) ─── */
@@ -58,7 +58,7 @@ export const servicesSplitSections: ServiceSplitSection[] = [
   {
     id: 'airport-transfers',
     imageSide: 'left',
-    image: '/img/services/airport.png',
+    image: '/img/home/generated/luxury-service-background-v1.webp',
     imageAlt: 'Chauffeur assisting a traveller with airport transfer luggage',
     imageWidth: 680,
     imageHeight: 560,
@@ -71,7 +71,7 @@ export const servicesSplitSections: ServiceSplitSection[] = [
   {
     id: 'executive-business',
     imageSide: 'right',
-    image: '/img/services/business.png',
+    image: '/img/home/generated/executive-corporate-transfer-v1.webp',
     imageAlt: 'Executive stepping into a chauffeured luxury vehicle',
     imageWidth: 680,
     imageHeight: 560,
@@ -83,7 +83,7 @@ export const servicesSplitSections: ServiceSplitSection[] = [
   {
     id: 'special-events',
     imageSide: 'left',
-    image: '/img/services/events.png',
+    image: '/img/home/generated/chauffeur-arrival-detail-v1.webp',
     imageAlt: 'Elegant arrival at a special event by chauffeured car',
     imageWidth: 640,
     imageHeight: 540,
@@ -98,7 +98,7 @@ export const servicesHourly = {
   heading: 'Hourly Chauffeur',
   body:
     'Keep a dedicated chauffeur by your side for shopping, dining, meetings, appointments, or a full day of travel. Benefit from maximum flexibility with a luxury vehicle ready whenever you are.',
-  image: '/img/services/hourly.png',
+  image: '/img/home/generated/chauffeur-arrival-detail-v1.webp',
 } as const
 
 /* ─── Private Experiences (82:558) ─── */
@@ -107,10 +107,10 @@ export const servicesExperiences = {
   body:
     "Discover iconic landmarks, coastal escapes, wine regions, and hidden gems through personalized journeys designed exclusively for you. Your chauffeur acts as a knowledgeable guide to the region's finest sights.",
   collage: [
-    { image: '/img/services/collage-1.png', alt: 'Coastal scenic drive experience', span: 'short' },
-    { image: '/img/services/collage-2.png', alt: 'Guided landmark tour experience', span: 'tall' },
-    { image: '/img/services/collage-3.png', alt: 'Wine region private journey', span: 'tall' },
-    { image: '/img/services/collage-4.png', alt: 'Hidden gem sightseeing experience', span: 'short' },
+    { image: '/img/home/generated/luxury-service-background-v1.webp', alt: 'Luxury Barcelona airport arrival with private chauffeur', span: 'short' },
+    { image: '/img/home/generated/chauffeur-arrival-detail-v1.webp', alt: 'Private chauffeur handling luggage at a luxury hotel', span: 'tall' },
+    { image: '/img/home/generated/executive-corporate-transfer-v1.webp', alt: 'Executive traveller entering a chauffeured vehicle', span: 'tall' },
+    { image: '/img/home/generated/chauffeur-arrival-detail-v1.webp', alt: 'Polished arrival-to-destination private transfer service', span: 'short' },
   ],
 } as const
 
@@ -149,7 +149,7 @@ export const servicesQuote = {
   quote: '\u201CEvery Journey Is Remembered By How It Made You Feel.\u201D',
   attribution:
     'A seamless transition from flight to road, a quiet cabin to gather your thoughts, and the reassurance of a professional waiting exactly where they promised.',
-  image: '/img/services/quote.png',
+  image: '/img/home/generated/executive-corporate-transfer-v1.webp',
 } as const
 
 /* ─── Booking Process (82:621) ─── */
@@ -177,7 +177,7 @@ export const servicesSteps: ServiceStep[] = [
 export const servicesFinalCta = {
   heading: 'Ready To Plan Your Next Journey?',
   body: 'From airport arrivals to private experiences, every journey begins with a conversation.',
-  image: '/img/services/cta.png',
+  image: '/img/home/generated/luxury-service-background-v1.webp',
   primary: { label: 'Book Your Journey', href: '/journey' },
   secondary: { label: 'Contact Our Team', href: '/contact' },
 } as const

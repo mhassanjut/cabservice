@@ -155,9 +155,9 @@ const faqs = [
   align-items: end;
   min-height: min(680px, 92vh);
   padding-block: clamp(8rem, 14vw, 11rem) clamp(3rem, 6vw, 5rem);
-  color: #fff;
+  color: rgba(var(--theme-ink-rgb), 1);
   background:
-    linear-gradient(90deg, rgba(10, 10, 12, 0.9), rgba(10, 10, 12, 0.5)),
+    linear-gradient(90deg, rgba(var(--theme-shade-rgb), 0.9), rgba(var(--theme-shade-rgb), 0.5)),
     url('/img/home/_original/journey-montjuic.jpg') center / cover;
 }
 
@@ -173,7 +173,7 @@ const faqs = [
 
 .local-service-hero .home-lead,
 .local-service-hero .home-eyebrow {
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(var(--theme-ink-rgb), 0.82);
 }
 
 .local-service-hero__actions {
@@ -185,7 +185,7 @@ const faqs = [
 }
 
 .local-service-hero__link {
-  color: #fff;
+  color: rgba(var(--theme-ink-rgb), 1);
   font-weight: 600;
   text-decoration: underline;
   text-underline-offset: 0.3em;
@@ -207,7 +207,7 @@ const faqs = [
 
 .local-service-copy p,
 .local-service-faq p {
-  color: rgba(0, 0, 0, 0.72);
+  color: rgba(var(--theme-ink-rgb), 0.72);
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 1rem;
   line-height: 1.7;
@@ -216,9 +216,9 @@ const faqs = [
 .local-service-panel {
   align-self: start;
   padding: clamp(1.5rem, 3vw, 2rem);
-  border: 1px solid rgba(26, 26, 26, 0.12);
+  border: 1px solid rgba(var(--theme-ink-rgb), 0.12);
   border-radius: 8px;
-  background: #f8f5ee;
+  background: rgba(var(--theme-surface-rgb), 1);
 }
 
 .local-service-panel h2 {
@@ -236,7 +236,7 @@ const faqs = [
 }
 
 .local-service-panel li {
-  color: rgba(0, 0, 0, 0.78);
+  color: rgba(var(--theme-ink-rgb), 0.78);
   font-family: 'Inter', system-ui, sans-serif;
   line-height: 1.5;
 }
@@ -249,7 +249,7 @@ const faqs = [
 }
 
 .local-service-answers {
-  background: #f8f5ee;
+  background: rgba(var(--theme-surface-rgb), 1);
 }
 
 .local-service-section-head {
@@ -269,7 +269,7 @@ const faqs = [
 
 .local-service-faq {
   padding-block: 1.25rem;
-  border-top: 1px solid rgba(26, 26, 26, 0.14);
+  border-top: 1px solid rgba(var(--theme-ink-rgb), 0.14);
 }
 
 .local-service-faq h3 {
@@ -296,8 +296,8 @@ const faqs = [
   display: flex;
   justify-content: space-between;
   padding-block: 0.875rem;
-  border-bottom: 1px solid rgba(26, 26, 26, 0.14);
-  color: #1a1a1a;
+  border-bottom: 1px solid rgba(var(--theme-ink-rgb), 0.14);
+  color: rgba(var(--theme-ink-rgb), 1);
   font-family: 'Inter', system-ui, sans-serif;
   font-weight: 600;
   text-decoration: none;

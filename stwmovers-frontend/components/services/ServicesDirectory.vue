@@ -1,18 +1,18 @@
 <script setup lang="ts">
 const groups = [
   { title: 'Transfers', description: 'A smooth arrival and a direct journey onward.', items: [
-    { title: 'Airport transfers', body: 'Private pickups and departures at Barcelona El Prat.', image: '/img/services/airport.png', href: '/services/barcelona-airport-transfer' },
+    { title: 'Airport transfers', body: 'Private pickups and departures at Barcelona El Prat.', image: '/img/home/generated/luxury-service-background-v1.webp', href: '/services/barcelona-airport-transfer' },
     { title: 'Cruise port transfers', body: 'Connect your cruise terminal, hotel and airport.', image: '/img/home/generated/hero-cruise-port-v2.webp', href: '/services/barcelona-cruise-port-transfer' },
-    { title: 'City-to-city transfers', body: 'Travel directly to Sitges, Girona and the Costa Brava.', image: '/img/contact/destination-sunset.png', href: '/services/city-to-city-transfers-barcelona' },
+    { title: 'City-to-city transfers', body: 'Travel directly to Sitges, Girona and the Costa Brava.', image: '/img/home/generated/chauffeur-arrival-detail-v1.webp', href: '/services/city-to-city-transfers-barcelona' },
   ] },
   { title: 'Chauffeur', description: 'A private driver, with the time and attention your day deserves.', items: [
-    { title: 'Private driver', body: 'Point-to-point journeys, dinners and city appointments.', image: '/img/services/hero.png', href: '/services/private-driver-barcelona' },
-    { title: 'Hourly chauffeur', body: 'One driver for multiple stops and flexible schedules.', image: '/img/services/hourly.png', href: '/services/hourly-chauffeur-barcelona' },
-    { title: 'Executive travel', body: 'Professional transport for meetings, events and guests.', image: '/img/services/business.png', href: '/services/executive-chauffeur-barcelona' },
+    { title: 'Private driver', body: 'Point-to-point journeys, dinners and city appointments.', image: '/img/home/generated/chauffeur-arrival-detail-v1.webp', href: '/services/private-driver-barcelona' },
+    { title: 'Hourly chauffeur', body: 'One driver for multiple stops and flexible schedules.', image: '/img/home/generated/chauffeur-arrival-detail-v1.webp', href: '/services/hourly-chauffeur-barcelona' },
+    { title: 'Executive travel', body: 'Professional transport for meetings, events and guests.', image: '/img/home/generated/executive-corporate-transfer-v1.webp', href: '/services/executive-chauffeur-barcelona' },
   ] },
   { title: 'Group travel', description: 'Space for the people and luggage travelling with you.', items: [
     { title: 'Van & group transfers', body: 'Share your passenger and luggage count for the right vehicle.', image: '/img/home/fleet-section/mercedes-v-class.webp', href: '/services/barcelona-van-transfer' },
-    { title: 'Family transfers', body: 'Plan airport travel around your family and luggage needs.', image: '/img/services/airport.png', href: '/services/family-airport-transfer-barcelona' },
+    { title: 'Family transfers', body: 'Plan airport travel around your family and luggage needs.', image: '/img/home/generated/luxury-service-background-v1.webp', href: '/services/family-airport-transfer-barcelona' },
     { title: 'Private tours', body: 'Explore Barcelona with an itinerary shaped around you.', image: '/img/tours/hero.webp', href: '/tours' },
   ] },
 ]
@@ -38,15 +38,15 @@ const groups = [
 .service-directory__group { margin-bottom: 40px; }
 .service-directory__heading { display: flex; align-items: baseline; gap: 24px; margin-bottom: 18px; }
 .service-directory h3 { font-size: 24px; font-weight: 300; margin: 0; letter-spacing: 0; }
-.service-directory p { color: #bcbcbc; font-size: 15px; line-height: 1.6; }
+.service-directory p { color: rgba(var(--theme-ink-rgb), 1); font-size: 15px; line-height: 1.6; }
 .service-directory__grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 22px; }
-.service-directory__card { border: 1px solid #ffffff20; border-radius: 8px; overflow: hidden; color: #fff; background: #191919; text-decoration: none; }
+.service-directory__card { border: 1px solid rgba(var(--theme-ink-rgb), 0.125); border-radius: 8px; overflow: hidden; color: rgba(var(--theme-ink-rgb), 1); background: rgba(var(--theme-shade-rgb), 1); text-decoration: none; }
 .service-directory__card img { display: block; width: 100%; height: auto; aspect-ratio: 8 / 5; object-fit: cover; }
 .service-directory__card > div { padding: 22px; }
 .service-directory h4 { font-size: 22px; font-weight: 300; margin: 0; letter-spacing: 0; }
 .service-directory__card span { color: #e5c36c; font-size: 13px; }
 .service-directory__card i { margin-left: 8px; }
-.service-directory__vehicle { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding-top: 28px; border-top: 1px solid #ffffff24; }
+.service-directory__vehicle { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding-top: 28px; border-top: 1px solid rgba(var(--theme-ink-rgb), 0.141); }
 @media(max-width:767px) {
  .service-directory h2 { font-size: 28px; }
  .service-directory__heading, .service-directory__vehicle { display: block; }

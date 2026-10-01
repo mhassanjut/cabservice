@@ -55,6 +55,8 @@ useJsonLdSchema(
 
     <HomeConversionProof />
 
+    <HomeBookingConfidence />
+
     <HomeIntentPaths />
 
     <HomeFleet />

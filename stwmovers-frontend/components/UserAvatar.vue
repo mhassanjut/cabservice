@@ -65,14 +65,14 @@ const onError = () => {
   display: grid;
   place-items: center;
   background: var(--color-gold-subtle);
-  color: var(--color-gold-bright);
+  color: #17130d;
   font-weight: 700;
 }
 
 .user-avatar--dashboard {
   border: 1px solid var(--bk-gold, #d8b24c);
-  background: var(--bk-gold-soft, #f7f1e5);
-  color: var(--bk-gold, #d8b24c);
+  background: var(--bk-gold-soft, rgba(var(--theme-surface-rgb), 1));
+  color: #17130d;
   font-family: var(--bk-font-display, inherit);
   font-weight: 600;
 }

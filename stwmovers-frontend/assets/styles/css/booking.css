@@ -217,7 +217,7 @@
   }
 
   .booking-user-menu__item--danger:hover {
-    background: #fef3f2;
+    background: rgba(var(--theme-surface-rgb), 1);
   }
 }
 
@@ -245,7 +245,7 @@
   font-family: inherit;
   font-size: 0.8125rem;
   font-weight: 700;
-  color: #fff;
+  color: #17130d;
   white-space: nowrap;
   cursor: pointer;
   transition: background 0.2s ease;
@@ -320,13 +320,13 @@
 .booking-stepper__item.is-current .booking-stepper__badge {
   border-color: var(--bk-gold);
   background: var(--bk-gold);
-  color: var(--bk-text);
+  color: #17130d;
 }
 
 .booking-stepper__item.is-done .booking-stepper__badge {
   border-color: #22a06b;
   background: #22a06b;
-  color: #fff;
+  color: rgba(var(--theme-ink-rgb), 1);
 }
 
 .booking-stepper__label {
@@ -730,7 +730,7 @@
 .vehicle-filters__chip.is-active {
   border-color: transparent;
   background: var(--bk-gold);
-  color: var(--bk-text-deep);
+  color: #17130d;
 }
 
 .vehicle-filters__prices {
@@ -802,9 +802,9 @@
 .vehicle-card-skeleton__cta {
   background: linear-gradient(
     90deg,
-    #ececea 0%,
-    #f8f8f6 45%,
-    #ececea 90%
+    rgba(var(--theme-surface-rgb), 1) 0%,
+    rgba(var(--theme-surface-rgb), 1) 45%,
+    rgba(var(--theme-surface-rgb), 1) 90%
   );
   background-size: 200% 100%;
   animation: vehicle-shimmer 1.35s ease-in-out infinite;
@@ -956,7 +956,7 @@
 @media (hover: hover) and (pointer: fine) {
   .vehicle-card:not(.is-dimmed):hover {
     border-color: var(--bk-gold);
-    box-shadow: 0 14px 26px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 14px 26px rgba(var(--theme-shadow-rgb), 0.08);
     transform: translateY(-2px);
   }
 }
@@ -982,7 +982,7 @@
   aspect-ratio: var(--vehicle-media-ratio, 16 / 10);
   overflow: hidden;
   border-radius: var(--bk-radius-md);
-  background: #f2f2ef;
+  background: rgba(var(--theme-surface-rgb), 1);
 }
 
 .vehicle-card__media img {
@@ -1009,12 +1009,12 @@
   z-index: 2;
   padding: 6px 14px;
   border-radius: var(--bk-radius-pill);
-  background: rgba(17, 24, 39, 0.85);
+  background: rgba(var(--theme-shade-rgb), 0.85);
   font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #fff;
+  color: rgba(var(--theme-ink-rgb), 1);
 }
 
 .vehicle-card__body {
@@ -1145,7 +1145,7 @@
   font-weight: 600;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: #fff;
+  color: #17130d;
   cursor: pointer;
   transition: background 0.2s ease;
 }
@@ -1157,8 +1157,8 @@
 }
 
 .vehicle-card__cta:disabled {
-  background: #d4d4d4;
-  color: #fff;
+  background: rgba(var(--theme-surface-rgb), 1);
+  color: rgba(var(--theme-ink-rgb), 1);
   cursor: not-allowed;
 }
 
@@ -1368,7 +1368,7 @@
   font-family: inherit;
   font-size: 0.9375rem;
   font-weight: 700;
-  color: var(--bk-text);
+  color: #17130d;
   white-space: nowrap;
   cursor: pointer;
   transition: background 0.2s ease;
@@ -1482,7 +1482,7 @@
   .checkout-summary__change:hover {
     border-color: var(--bk-gold);
     background: var(--bk-gold);
-    color: #fff;
+    color: #17130d;
   }
 }
 
@@ -1511,7 +1511,7 @@
   background: var(--bk-gold);
   font-size: 0.75rem;
   font-weight: 700;
-  color: #fff;
+  color: #17130d;
 }
 
 .checkout-summary__guest-text {
@@ -1555,7 +1555,7 @@
   height: 68px;
   flex-shrink: 0;
   border-radius: 10px;
-  background: #ebeae5;
+  background: rgba(var(--theme-surface-rgb), 1);
   color: var(--bk-muted);
 }
 
@@ -1779,7 +1779,7 @@
   font-weight: 700;
   letter-spacing: 0.03em;
   text-transform: uppercase;
-  color: #fff;
+  color: #17130d;
   cursor: pointer;
   transition: background 0.2s ease;
 }
@@ -1791,7 +1791,7 @@
 }
 
 .checkout-panel__submit:disabled {
-  background: #d4d4d4;
+  background: rgba(var(--theme-surface-rgb), 1);
   cursor: not-allowed;
 }
 
@@ -1803,7 +1803,7 @@
   padding: 1rem 1.25rem;
   border: 1px solid var(--bk-border);
   border-radius: var(--bk-radius-sm);
-  background: #f7f6f3;
+  background: rgba(var(--theme-surface-rgb), 1);
 }
 
 .payment-box__row {
@@ -1919,9 +1919,9 @@
   width: 24px;
   height: 24px;
   flex-shrink: 0;
-  border: 1px solid rgba(167, 167, 167, 0.45);
+  border: 1px solid rgba(var(--theme-ink-rgb), 0.45);
   border-radius: 50%;
-  background: rgba(167, 167, 167, 0.08);
+  background: rgba(var(--theme-surface-rgb), 0.08);
   font-size: 0.625rem;
   color: var(--bk-faint);
 }
@@ -2107,7 +2107,7 @@
 
 .confirm-hero__btn--gold {
   background: var(--bk-gold);
-  color: #fff;
+  color: #17130d;
 }
 
 @media (hover: hover) and (pointer: fine) {

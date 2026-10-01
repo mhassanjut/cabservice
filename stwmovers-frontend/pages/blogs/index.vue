@@ -62,10 +62,11 @@ useHead(() => ({ script: [{ key: 'ld-json-insights-collection', type: 'applicati
 .journal-page :deep(.blog-card) { border-radius: 8px; }
 .journal-page :deep(.blog-card__title) { font-size: 24px; line-height: 1.3; }
 .journal-filters { display: flex; flex-wrap: wrap; gap: 8px; }
-.journal-filters button { min-height: 44px; padding: 10px 18px; border: 1px solid #68604c; border-radius: 4px; background: transparent; color: #333; cursor: pointer; font: inherit; font-size: 14px; }
-.journal-filters button[aria-pressed="true"] { background: #e5c36c; color: #111; }
-.journal-count { color: #595959; font-size: 13px; margin: 20px 0; }
-.journal-more { margin-top: 24px; cursor: pointer; color: #333; background: #e5c36c; border: 1px solid #8d7946; }
+.journal-filters button { min-height: 44px; padding: 10px 18px; border: 1px solid rgba(var(--theme-ink-rgb), 0.18); border-radius: 4px; background: rgba(var(--theme-surface-rgb), 0.04); color: var(--home-text); cursor: pointer; font: inherit; font-size: 14px; }
+.journal-filters button[aria-pressed="true"] { background: #e5c36c; color: rgba(var(--theme-ink-rgb), 1); }
+.journal-count { color: var(--home-text-muted); font-size: 13px; margin: 20px 0; }
+.journal-more { margin-top: 24px; cursor: pointer; color: rgba(var(--theme-ink-rgb), 1); background: #e5c36c; border: 1px solid #8d7946; }
+html[data-site-theme="light"] .journal-filters button { border-color: rgba(var(--theme-ink-rgb), 0.18); background: rgba(var(--theme-surface-rgb), 0.7); color: rgba(var(--theme-ink-rgb), 1); }
 @media(max-width:767px) {
  .journal-page :deep(.blogs-hero__title) { font-size: 32px; }
  .journal-page :deep(.blogs-featured .blog-card) { display: block; }

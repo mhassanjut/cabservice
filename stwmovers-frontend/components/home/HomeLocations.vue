@@ -18,9 +18,9 @@ function cardJourneyLink(title: string) {
 // generated srcset serves an appropriately sized image per breakpoint.
 function cardSizes(columnSpan: number): string {
   // Note: @nuxt/image needs screen-prefixed sizes; a bare "100vw" breaks srcset generation.
-  if (columnSpan === 4) return 'xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw'
-  if (columnSpan === 2) return 'xs:100vw sm:100vw md:50vw lg:50vw xl:50vw xxl:50vw'
-  return 'xs:50vw sm:50vw md:25vw lg:25vw xl:25vw xxl:25vw'
+  if (columnSpan === 4) return 'xs:92vw sm:92vw md:92vw lg:1180px xl:1180px xxl:1180px'
+  if (columnSpan === 2) return 'xs:92vw sm:92vw md:46vw lg:590px xl:590px xxl:590px'
+  return 'xs:46vw sm:46vw md:23vw lg:295px xl:295px xxl:295px'
 }
 </script>
 

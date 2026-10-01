@@ -144,7 +144,7 @@ watch(() => route.fullPath, close)
   display: grid;
   place-items: center;
   background: var(--color-gold-subtle);
-  color: var(--color-gold-bright);
+  color: #17130d;
   font-size: 0.8125rem;
   font-weight: 600;
   overflow: hidden;
@@ -247,7 +247,7 @@ watch(() => route.fullPath, close)
 .user-menu__backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(10, 10, 10, 0.72);
+  background: rgba(var(--theme-shade-rgb), 0.72);
   z-index: 450;
 }
 
@@ -269,8 +269,8 @@ watch(() => route.fullPath, close)
 @media (hover: hover) and (pointer: fine) {
   .user-menu__login--outline:hover {
     color: var(--color-text);
-    border-color: rgba(255, 255, 255, 0.35);
-    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(var(--theme-ink-rgb), 0.35);
+    background: rgba(var(--theme-surface-rgb), 0.06);
   }
 }
 </style>

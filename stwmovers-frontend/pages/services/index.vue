@@ -94,7 +94,7 @@ useJsonLdSchema(
 </template>
 
 <style scoped>
-.services-page { background: #111; color: #f5f5f5; }
+.services-page { background: rgba(var(--theme-shade-rgb), 1); color: rgba(var(--theme-ink-rgb), 1); }
 .services-page :deep(.services-hero) { min-height: 0; height: auto; }
 .services-page :deep(.services-hero__inner) { min-height: 0; padding-block: 130px 56px; }
 .services-page :deep(.services-hero__title) { font-size: 48px; font-weight: 300; max-width: 780px; line-height: 1.15; }

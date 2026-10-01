@@ -26,6 +26,7 @@ export type LocalBlogArticle = {
 }
 
 const articleDate = '2026-09-21T00:00:00.000Z'
+const routeArticleDate = '2026-10-01T00:00:00.000Z'
 const officialAirportSource = {
   label: 'Aena Barcelona-El Prat airport taxi and transport information',
   href: 'https://www.aena.es/en/josep-tarradellas-barcelona-el-prat/getting-there/taxi.html',
@@ -41,6 +42,16 @@ const officialTaxiFareSource = {
   href: 'https://taxi.amb.cat/en/usuaris/tarifes-del-taxi',
   note: 'Official taxi-tariff reference for Barcelona taxi and airport-fare comparisons.',
 }
+const officialPortCruiseSource = {
+  label: 'Port de Barcelona cruise passenger information',
+  href: 'https://www.portdebarcelona.cat/en/passengers/cruises',
+  note: 'Official cruise-passenger context for Barcelona port and terminal transfer planning.',
+}
+const officialSitgesTourismSource = {
+  label: 'Sitges official visitor transport information',
+  href: 'https://www.sitgesanytime.com/en/how-to-get-here',
+  note: 'Local visitor travel context for Sitges route planning from Barcelona and the airport.',
+}
 const stwServiceCatalogSource = {
   label: 'STW Movers service catalog',
   href: `${siteConfig.siteUrl}/services.md`,
@@ -53,6 +64,30 @@ const stwPricingSource = {
 }
 
 function articleTakeaways(article: LocalBlogArticle) {
+  if (article.slug.includes('eixample')) {
+    return [
+      'Eixample is a high-intent hotel and apartment destination, so exact address and luggage planning matter more than the airport label alone.',
+      'Private transfer is strongest for late arrivals, families, premium hotels, apartment check-ins, and business guests going directly into central Barcelona.',
+      'A useful quote should include flight number, terminal if known, Eixample address, passengers, luggage, and any meet-and-greet preference.',
+    ]
+  }
+
+  if (article.slug.includes('cruise-port')) {
+    return [
+      'Airport-to-cruise-port transfers are time-sensitive because luggage, terminal access, boarding windows, and flight timing all affect the plan.',
+      'A private chauffeur is strongest when the traveller wants one accountable airport-to-port handoff instead of solving taxi, cab, and luggage questions after landing.',
+      'Send flight number, ship name, terminal or cruise line, boarding time, passengers, luggage, and child-seat needs before requesting a quote.',
+    ]
+  }
+
+  if (article.slug.includes('sitges')) {
+    return [
+      'Sitges transfer intent is usually premium leisure, villas, weddings, events, or hotel travel where door-to-door comfort matters.',
+      'Private transfer is strongest when travellers have luggage, late arrivals, children, multiple guests, or a villa/hotel address outside the simplest taxi path.',
+      'Send the exact Sitges address, pickup point, passengers, luggage, and whether the trip starts from BCN Airport, Barcelona city, or the cruise port.',
+    ]
+  }
+
   if (article.slug.includes('airport')) {
     return [
       'Private airport transfer is strongest when luggage, flight timing, family travel, or a premium arrival matters.',
@@ -85,6 +120,30 @@ function articleTakeaways(article: LocalBlogArticle) {
 }
 
 function articleDecisionRows(article: LocalBlogArticle) {
+  if (article.slug.includes('eixample')) {
+    return [
+      ['Best premium choice', 'Pre-booked BCN to Eixample transfer', 'Direct hotel or apartment handoff, luggage fit, flight-aware pickup, and clearer arrival planning.'],
+      ['Simple city choice', 'Airport taxi or cab', 'Works when the destination is simple, luggage is light, and queue/waiting variability is acceptable.'],
+      ['Quote detail to send', 'Full Eixample address', 'Eixample blocks and hotel/apartment entrances can change the best drop-off point.'],
+    ]
+  }
+
+  if (article.slug.includes('cruise-port')) {
+    return [
+      ['Best premium choice', 'Private airport-to-cruise transfer', 'Best for luggage, boarding windows, cruise terminal context, and direct handoff.'],
+      ['Simple queue choice', 'Airport taxi or cab', 'Can work when timing is flexible and the traveller is comfortable managing luggage and terminal instructions.'],
+      ['Quote detail to send', 'Ship, terminal, and boarding time', 'These details help plan the correct port-side route and timing buffer.'],
+    ]
+  }
+
+  if (article.slug.includes('sitges')) {
+    return [
+      ['Best premium choice', 'Private Barcelona to Sitges transfer', 'Best for villas, events, luggage, families, and calm coastal arrivals.'],
+      ['Flexible budget choice', 'Train, taxi, or cab', 'Useful when luggage is light and the traveller is comfortable managing station or pickup changes.'],
+      ['Quote detail to send', 'Exact Sitges destination', 'Hotel, villa, event venue, or beach-area address affects route and drop-off planning.'],
+    ]
+  }
+
   if (article.slug.includes('airport')) {
     return [
       ['Best premium choice', 'Pre-booked airport transfer', 'Planned pickup, luggage fit, flight details, and direct hotel or port route.'],
@@ -119,6 +178,18 @@ function articleDecisionRows(article: LocalBlogArticle) {
 function articleChecklist(article: LocalBlogArticle) {
   const base = ['Pickup address or terminal', 'Destination address', 'Travel date and pickup time', 'Passengers and luggage']
 
+  if (article.slug.includes('cruise-port')) {
+    return [...base, 'Flight number', 'Cruise ship or terminal', 'Boarding or disembarkation time', 'Bulky luggage notes']
+  }
+
+  if (article.slug.includes('eixample')) {
+    return [...base, 'Flight number', 'Full Eixample hotel or apartment address', 'Meet-and-greet preference', 'Child seats or extra stops']
+  }
+
+  if (article.slug.includes('sitges')) {
+    return [...base, 'Exact Sitges hotel, villa, or venue address', 'Airport, city, or port pickup point', 'Child seats or event timing', 'Return-trip needs']
+  }
+
   if (article.slug.includes('airport')) {
     return [...base, 'Flight number', 'Terminal if known', 'Child seats or meet-and-greet notes']
   }
@@ -135,6 +206,18 @@ function articleChecklist(article: LocalBlogArticle) {
 }
 
 function articleExpertNote(article: LocalBlogArticle) {
+  if (article.slug.includes('eixample')) {
+    return 'For Eixample arrivals, the quality of the transfer depends on the final address details. A chauffeur desk can plan the hotel, apartment, or block-level drop-off before the traveller reaches the curb.'
+  }
+
+  if (article.slug.includes('cruise-port')) {
+    return 'Cruise-port transfers are not just airport rides. They are luggage-heavy, schedule-sensitive handoffs where the flight, ship, terminal, and boarding window should all shape the pickup plan.'
+  }
+
+  if (article.slug.includes('sitges')) {
+    return 'Sitges journeys often carry leisure, wedding, villa, or event expectations. The better quote is built around the actual address and guest context, not only the distance from Barcelona.'
+  }
+
   if (article.slug.includes('airport')) {
     return 'Airport transfer decisions are usually won or lost before landing. Flight number, luggage count, and final address give the dispatch desk enough context to plan a calmer arrival than a queue-based taxi or cab pickup.'
   }
@@ -154,6 +237,14 @@ function articleSources(article: LocalBlogArticle) {
   const slug = article.slug.toLowerCase()
   const sources = [stwServiceCatalogSource, stwPricingSource]
 
+  if (slug.includes('cruise-port')) {
+    sources.unshift(officialPortCruiseSource)
+  }
+
+  if (slug.includes('sitges')) {
+    sources.unshift(officialSitgesTourismSource)
+  }
+
   if (slug.includes('airport') || slug.includes('taxi')) {
     sources.unshift(officialAirportSource, officialTaxiFareSource)
   }
@@ -166,6 +257,180 @@ function articleSources(article: LocalBlogArticle) {
 }
 
 export const localBlogArticles: LocalBlogArticle[] = [
+  {
+    slug: 'barcelona-airport-to-eixample-private-transfer-guide',
+    title: 'Barcelona Airport to Eixample Private Transfer: Taxi, Cab, or Chauffeur?',
+    excerpt:
+      'A local guide for travellers comparing Barcelona airport taxi, cab, and private chauffeur transfer options from BCN Airport to Eixample hotels, apartments, and business addresses.',
+    date: routeArticleDate,
+    image: '/img/blogs/barcelona-airport-eixample-transfer.webp',
+    imageAlt: 'Luxury private chauffeur transfer from Barcelona Airport to Eixample',
+    directAnswer:
+      'For Barcelona Airport to Eixample, choose a private transfer when you want flight-aware pickup, luggage fit, exact hotel or apartment drop-off, and a polished arrival planned before landing. A taxi or cab can work for simple rides when queue time, vehicle fit, and final-address instructions are less important.',
+    sections: [
+      {
+        heading: 'Why Eixample is a priority arrival zone',
+        body:
+          'Eixample is one of Barcelona’s strongest arrival zones for hotels, apartments, business stays, restaurants, and premium city addresses. The distance from BCN Airport is only part of the decision; the real value is whether the final handoff is clear when the traveller reaches Barcelona.',
+        bullets: ['Premium hotel and apartment arrivals', 'Business stays near central Barcelona', 'Families and travellers with luggage'],
+      },
+      {
+        heading: 'Private transfer vs airport taxi for Eixample',
+        body:
+          'An airport taxi or cab can be practical when the traveller wants a standard queue-based ride. A private transfer is the stronger choice when the arrival needs advance planning: flight timing, luggage capacity, child seats, exact drop-off point, or a more luxury first impression.',
+        bullets: ['Taxi or cab: simple airport-to-city movement', 'Private transfer: planned pickup and vehicle fit', 'Chauffeur: premium arrival and clearer handoff'],
+      },
+      {
+        heading: 'What STW Movers plans before pickup',
+        body:
+          'STW Movers treats the route as a pre-booked arrival, not just a car request. The quote should include flight number, terminal if known, Eixample address, passengers, luggage, and any timing notes so the dispatch desk can plan the right vehicle and pickup expectation.',
+      },
+      {
+        heading: 'Best-fit travellers for this route',
+        body:
+          'This route is especially valuable for guests who want the first hour in Barcelona to feel settled: families with suitcases, international business travellers, couples arriving for premium hotels, and hosts arranging transport for visitors.',
+        bullets: ['Late-night or early-morning arrivals', 'Apartment check-ins where the exact address matters', 'Guests who prefer a private taxi alternative'],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is a private transfer from Barcelona Airport to Eixample better than a taxi?',
+        answer:
+          'It is better when luggage, timing, address clarity, comfort, or arrival presentation matter. A taxi can be enough for a simple ride with light luggage and flexible timing.',
+      },
+      {
+        question: 'What details should I send for an Eixample airport transfer quote?',
+        answer:
+          'Send flight number, terminal if known, destination address, travel date, pickup time, passengers, luggage, and whether you need child seats or meet-and-greet support.',
+      },
+      {
+        question: 'Can STW Movers drop off at apartments as well as hotels?',
+        answer:
+          'Yes. Share the full apartment or building address so the best drop-off point can be planned before arrival.',
+      },
+    ],
+    related: [
+      { label: 'Barcelona airport to Eixample route page', href: '/locations/barcelona-airport-to-eixample-private-transfer' },
+      { label: 'Barcelona airport transfer service', href: '/services/barcelona-airport-transfer' },
+      { label: 'Airport taxi alternative', href: '/services/barcelona-airport-taxi-alternative' },
+    ],
+  },
+  {
+    slug: 'barcelona-airport-to-cruise-port-transfer-guide',
+    title: 'Barcelona Airport to Cruise Port Transfer: Luggage, Timing, and Private Chauffeur Guide',
+    excerpt:
+      'A route-specific guide for BCN Airport to Barcelona cruise port transfers, including taxi, cab, private transfer, luggage, terminal timing, and chauffeur planning.',
+    date: routeArticleDate,
+    image: '/img/blogs/barcelona-airport-cruise-port-transfer.webp',
+    imageAlt: 'Private chauffeur transfer from Barcelona Airport to cruise port',
+    directAnswer:
+      'For Barcelona Airport to the cruise port, a private transfer is best when luggage, boarding windows, flight timing, cruise terminal instructions, or a calm premium handoff matter. A taxi or cab can work when timing is flexible and travellers are comfortable managing luggage and port details after landing.',
+    sections: [
+      {
+        heading: 'Why airport-to-cruise-port transfers need more planning',
+        body:
+          'A cruise-port transfer is more time-sensitive than a normal airport ride. The traveller may be managing suitcases, boarding documents, a cruise line schedule, and a port-side terminal or ship detail. That makes pre-booking more valuable than deciding at the curb.',
+        bullets: ['BCN arrival plus cruise boarding window', 'Luggage-heavy travel', 'Terminal or ship-specific handoff'],
+      },
+      {
+        heading: 'Taxi, cab, or private transfer?',
+        body:
+          'Taxi and cab options can be useful for straightforward trips. A private chauffeur transfer is better when the traveller wants the airport pickup, luggage fit, route, timing buffer, and port arrival arranged before the aircraft lands.',
+        bullets: ['Taxi/cab: simple queue-based option', 'Private transfer: planned route and timing', 'Chauffeur: premium service for guests and families'],
+      },
+      {
+        heading: 'What to include in the quote request',
+        body:
+          'The most useful request includes flight number, arrival time, cruise ship or cruise line, terminal if known, boarding time, passengers, luggage, and whether children, seniors, or bulky items are travelling.',
+      },
+      {
+        heading: 'When to choose STW Movers',
+        body:
+          'Choose STW Movers when the journey should feel managed from airport arrival to port-side drop-off. The service is designed for travellers who want a private transfer or chauffeur-style alternative to a standard airport cab search.',
+        bullets: ['Families and groups with luggage', 'Premium cruise guests', 'Travel agents or hosts arranging visitor transport'],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can STW Movers plan a transfer from BCN Airport to the cruise port?',
+        answer:
+          'Yes. Share flight details, cruise ship or terminal information, passengers, luggage, and boarding timing so the correct transfer plan can be quoted.',
+      },
+      {
+        question: 'Is a cruise port transfer different from a normal airport taxi?',
+        answer:
+          'Yes. The route may involve more luggage, timing pressure, and terminal-specific instructions, which makes advance planning more useful.',
+      },
+      {
+        question: 'Should I send the ship name before booking?',
+        answer:
+          'Yes. Ship name, terminal, cruise line, and boarding time help the chauffeur desk plan the port-side handoff more accurately.',
+      },
+    ],
+    related: [
+      { label: 'Airport to cruise port route page', href: '/locations/barcelona-airport-to-cruise-port-private-transfer' },
+      { label: 'Barcelona cruise port transfer', href: '/services/barcelona-cruise-port-transfer' },
+      { label: 'Cruise port chauffeur service', href: '/locations/barcelona-cruise-port-chauffeur-service' },
+    ],
+  },
+  {
+    slug: 'barcelona-to-sitges-private-transfer-guide',
+    title: 'Barcelona to Sitges Private Transfer: Premium Taxi and Cab Alternative Guide',
+    excerpt:
+      'A local-market guide for Barcelona to Sitges private transfers, airport pickups, villas, hotels, events, luggage, and premium chauffeur travel.',
+    date: routeArticleDate,
+    image: '/img/blogs/barcelona-sitges-private-transfer.webp',
+    imageAlt: 'Barcelona to Sitges private transfer destination at sunset',
+    directAnswer:
+      'Choose a private transfer from Barcelona to Sitges when you want door-to-door comfort, luggage planning, a premium arrival, or transport for hotels, villas, weddings, events, and airport pickups. Taxi, cab, train, or public transport can work when luggage is light and timing is flexible.',
+    sections: [
+      {
+        heading: 'Why Sitges is a premium private-transfer route',
+        body:
+          'Sitges is not just a point on a map. Travellers often arrive for villas, weddings, coastal hotels, events, premium leisure stays, or group travel. That means luggage, exact address, timing, and guest expectations can matter more than the simple route distance.',
+        bullets: ['Barcelona city to Sitges hotels and villas', 'BCN Airport to Sitges arrivals', 'Wedding, event, and premium leisure travel'],
+      },
+      {
+        heading: 'Taxi, cab, train, or chauffeur?',
+        body:
+          'Train or standard taxi options may suit flexible travellers with light luggage. A chauffeur transfer is stronger when the guest wants a private vehicle, exact pickup, no station changes, and a smoother arrival at a hotel, villa, or event venue.',
+        bullets: ['Public transport: lower cost, less door-to-door control', 'Taxi or cab: useful for simple trips', 'Private chauffeur: best for comfort, luggage, and presentation'],
+      },
+      {
+        heading: 'What STW Movers needs for a Sitges quote',
+        body:
+          'Send the pickup point, exact Sitges destination, date, time, passenger count, luggage, and whether the journey starts from BCN Airport, Barcelona city, the cruise port, or another hotel. Event and return-trip timing should also be included.',
+      },
+      {
+        heading: 'Best-fit Sitges travel situations',
+        body:
+          'The private-transfer option is most valuable when the trip has a premium or practical reason to reduce friction: late arrivals, families, bulky luggage, villas, wedding guests, restaurant transfers, or hosted visitors.',
+        bullets: ['Airport-to-villa arrivals', 'Wedding and event guest transport', 'Families who want one planned vehicle'],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I book a private transfer from Barcelona Airport to Sitges?',
+        answer:
+          'Yes. Share flight number, passenger count, luggage, and the exact Sitges destination so STW Movers can quote the correct private transfer plan.',
+      },
+      {
+        question: 'Is Barcelona to Sitges better by taxi or private chauffeur?',
+        answer:
+          'A taxi can work for a simple trip. A private chauffeur is better when luggage, comfort, exact address, events, premium arrival, or return timing matters.',
+      },
+      {
+        question: 'Can STW Movers handle Sitges wedding or event transport?',
+        answer:
+          'Yes. Event transport can be quoted when timing, guest count, pickup points, luggage, and return needs are clear.',
+      },
+    ],
+    related: [
+      { label: 'Barcelona to Sitges private transfer route page', href: '/locations/sitges-private-transfer' },
+      { label: 'City-to-city transfers Barcelona', href: '/services/city-to-city-transfers-barcelona' },
+      { label: 'Private transfer landing page', href: '/landing/private-transfer-barcelona' },
+    ],
+  },
   {
     slug: 'barcelona-airport-transfer-vs-taxi',
     title: 'Barcelona Airport Transfer vs Taxi: What Should You Choose?',

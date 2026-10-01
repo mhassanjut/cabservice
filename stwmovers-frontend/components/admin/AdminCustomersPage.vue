@@ -259,7 +259,7 @@ onMounted(load)
 }
 
 .admin-tabs__btn {
-  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.12));
+  border: 1px solid var(--border-subtle, rgba(var(--theme-ink-rgb), 0.12));
   background: transparent;
   color: inherit;
   border-radius: 999px;
@@ -271,7 +271,7 @@ onMounted(load)
 .admin-tabs__btn.is-active {
   background: var(--gold, #d8b24c);
   border-color: var(--gold, #d8b24c);
-  color: #111;
+  color: #17130d;
 }
 
 .admin-customers__identity {

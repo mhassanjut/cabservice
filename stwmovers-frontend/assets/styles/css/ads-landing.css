@@ -2,7 +2,7 @@
   --ads-gutter: clamp(1.25rem, 5vw, 5rem);
   --ads-max: 1200px;
   color: var(--home-text);
-  background: #fff;
+  background: rgba(var(--theme-surface-rgb), 1);
 }
 
 .ads-container {
@@ -28,7 +28,7 @@
   align-items: flex-end;
   min-height: clamp(38rem, 88vh, 52rem);
   overflow: hidden;
-  color: #fff;
+  color: rgba(var(--theme-ink-rgb), 1);
 }
 
 .ads-hero__media,
@@ -46,8 +46,8 @@
 
 .ads-hero__overlay {
   background:
-    linear-gradient(90deg, rgba(10, 9, 7, 0.9), rgba(10, 9, 7, 0.7) 52%, rgba(10, 9, 7, 0.78)),
-    linear-gradient(0deg, rgba(10, 9, 7, 0.72), transparent 48%);
+    linear-gradient(90deg, rgba(var(--theme-shade-rgb), 0.9), rgba(var(--theme-shade-rgb), 0.7) 52%, rgba(var(--theme-shade-rgb), 0.78)),
+    linear-gradient(0deg, rgba(var(--theme-shade-rgb), 0.72), transparent 48%);
 }
 
 .ads-hero__inner {
@@ -79,7 +79,7 @@
 .ads-section p,
 .ads-final p {
   margin: 1rem 0 0;
-  color: rgba(255, 255, 255, 0.86);
+  color: rgba(var(--theme-ink-rgb), 0.86);
   font-family: 'Inter', system-ui, sans-serif;
   font-size: clamp(1rem, 1.4vw, 1.16rem);
   line-height: 1.68;
@@ -128,28 +128,28 @@
 
 .ads-btn--gold {
   background: linear-gradient(135deg, #f7dc8a, #c3913e);
-  color: #171613;
+  color: #17130d;
   box-shadow: 0 18px 38px rgba(195, 145, 62, 0.24);
 }
 
 .ads-btn--gold:hover {
   background: linear-gradient(135deg, #ffe8a3, #b98538);
-  color: #171613;
+  color: rgba(var(--theme-ink-rgb), 1);
 }
 
 .ads-btn--glass {
-  border-color: rgba(255, 255, 255, 0.72);
-  color: #fff;
+  border-color: rgba(var(--theme-ink-rgb), 0.72);
+  color: rgba(var(--theme-ink-rgb), 1);
 }
 
 .ads-btn--glass:hover {
-  background: #fff;
+  background: rgba(var(--theme-surface-rgb), 1);
   color: var(--home-text);
 }
 
 .ads-btn--dark {
-  background: #171613;
-  color: #fff;
+  background: rgba(var(--theme-shade-rgb), 1);
+  color: rgba(var(--theme-ink-rgb), 1);
 }
 
 .ads-btn--wide {
@@ -167,10 +167,10 @@
   align-items: center;
   min-height: 34px;
   padding: 0 0.82rem;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(var(--theme-ink-rgb), 0.18);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.9);
+  background: rgba(var(--theme-surface-rgb), 0.08);
+  color: rgba(var(--theme-ink-rgb), 0.9);
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.8rem;
   font-weight: 800;
@@ -180,11 +180,11 @@
   display: grid;
   gap: 0.75rem;
   padding: clamp(1.15rem, 3vw, 1.65rem);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(var(--theme-ink-rgb), 0.2);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.94);
+  background: rgba(var(--theme-surface-rgb), 0.94);
   color: var(--home-text);
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 24px 70px rgba(var(--theme-shadow-rgb), 0.24);
   backdrop-filter: blur(16px);
 }
 
@@ -192,7 +192,7 @@
   align-self: end;
   align-content: start;
   border-color: rgba(210, 169, 85, 0.38);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(249, 243, 232, 0.93));
+  background: linear-gradient(180deg, rgba(var(--theme-surface-rgb), 0.97), rgba(var(--theme-surface-rgb), 0.93));
 }
 
 .ads-quote-panel h2,
@@ -212,7 +212,7 @@
 
 .ads-quote-panel p {
   margin: 0;
-  color: rgba(23, 22, 19, 0.72);
+  color: rgba(var(--theme-ink-rgb), 0.72);
   font-size: 0.96rem;
 }
 
@@ -228,9 +228,9 @@
   align-items: center;
   min-height: 58px;
   padding: 0.75rem;
-  border: 1px solid rgba(37, 34, 29, 0.1);
+  border: 1px solid rgba(var(--theme-ink-rgb), 0.1);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(var(--theme-surface-rgb), 0.72);
 }
 
 .ads-mini-field i {
@@ -251,7 +251,7 @@
 }
 
 .ads-mini-field small {
-  color: rgba(23, 22, 19, 0.54);
+  color: rgba(var(--theme-ink-rgb), 0.54);
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.66rem;
   font-weight: 850;
@@ -275,7 +275,7 @@
 }
 
 .ads-quote-panel .ads-quote-panel__note {
-  color: rgba(23, 22, 19, 0.56);
+  color: rgba(var(--theme-ink-rgb), 0.56);
   font-size: 0.82rem;
   line-height: 1.45;
 }
@@ -288,15 +288,15 @@
 }
 
 .ads-trust-strip {
-  border-block: 1px solid rgba(37, 34, 29, 0.1);
-  background: #fff;
+  border-block: 1px solid rgba(var(--theme-ink-rgb), 0.1);
+  background: rgba(var(--theme-surface-rgb), 1);
 }
 
 .ads-trust-strip__inner {
   display: grid;
   gap: 0.75rem;
   padding-block: 0.95rem;
-  color: rgba(23, 22, 19, 0.72);
+  color: rgba(var(--theme-ink-rgb), 0.72);
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.78rem;
   font-weight: 850;
@@ -305,8 +305,8 @@
 }
 
 .ads-search-band {
-  background: #171613;
-  color: #fff;
+  background: rgba(var(--theme-shade-rgb), 1);
+  color: rgba(var(--theme-ink-rgb), 1);
 }
 
 .ads-search-band__inner {
@@ -323,7 +323,7 @@
 
 .ads-search-band p {
   margin: 0;
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(var(--theme-ink-rgb), 0.72);
 }
 
 .ads-message-chips {
@@ -340,7 +340,7 @@
   padding: 0 0.75rem;
   border: 1px solid rgba(210, 169, 85, 0.38);
   border-radius: 999px;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(var(--theme-ink-rgb), 0.88);
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.75rem;
   font-weight: 800;
@@ -351,7 +351,7 @@
 }
 
 .ads-section--muted {
-  background: #f7f3ed;
+  background: rgba(var(--theme-surface-rgb), 1);
 }
 
 .ads-section--compact {
@@ -385,10 +385,10 @@
   display: grid;
   gap: 0.75rem;
   padding: clamp(1.1rem, 3vw, 1.5rem);
-  border: 1px solid rgba(37, 34, 29, 0.12);
+  border: 1px solid rgba(var(--theme-ink-rgb), 0.12);
   border-radius: 8px;
-  background: #fff;
-  box-shadow: 0 16px 42px rgba(23, 22, 19, 0.06);
+  background: rgba(var(--theme-surface-rgb), 1);
+  box-shadow: 0 16px 42px rgba(var(--theme-shadow-rgb), 0.06);
 }
 
 .ads-card h3 {
@@ -415,10 +415,10 @@
 
 .ads-table {
   overflow-x: auto;
-  border: 1px solid rgba(37, 34, 29, 0.12);
+  border: 1px solid rgba(var(--theme-ink-rgb), 0.12);
   border-radius: 8px;
-  background: #fff;
-  box-shadow: 0 18px 44px rgba(23, 22, 19, 0.07);
+  background: rgba(var(--theme-surface-rgb), 1);
+  box-shadow: 0 18px 44px rgba(var(--theme-shadow-rgb), 0.07);
 }
 
 .ads-table table {
@@ -433,14 +433,14 @@
 .ads-table th,
 .ads-table td {
   padding: 1rem;
-  border-bottom: 1px solid rgba(37, 34, 29, 0.1);
+  border-bottom: 1px solid rgba(var(--theme-ink-rgb), 0.1);
   text-align: left;
   vertical-align: top;
 }
 
 .ads-table thead th {
-  background: #171613;
-  color: #fff;
+  background: rgba(var(--theme-shade-rgb), 1);
+  color: rgba(var(--theme-ink-rgb), 1);
   font-size: 0.78rem;
   font-weight: 850;
   letter-spacing: 0.08em;
@@ -460,14 +460,14 @@
 
 .ads-final {
   padding-block: clamp(3rem, 7vw, 5.5rem);
-  color: #fff;
+  color: rgba(var(--theme-ink-rgb), 1);
   background:
-    linear-gradient(90deg, rgba(17, 16, 13, 0.92), rgba(17, 16, 13, 0.76)),
+    linear-gradient(90deg, rgba(var(--theme-shade-rgb), 0.92), rgba(var(--theme-shade-rgb), 0.76)),
     url('/img/services/cta.png') center / cover;
 }
 
 .ads-final p {
-  color: rgba(255, 255, 255, 0.78);
+  color: rgba(var(--theme-ink-rgb), 0.78);
 }
 
 .ads-final__actions {
@@ -484,7 +484,7 @@
   align-items: center;
   min-height: 42px;
   padding: 0 1rem;
-  border: 1px solid rgba(37, 34, 29, 0.16);
+  border: 1px solid rgba(var(--theme-ink-rgb), 0.16);
   border-radius: 999px;
   color: var(--home-text);
   font-family: 'Inter', system-ui, sans-serif;
@@ -595,10 +595,10 @@
     grid-template-columns: 1.2fr 0.8fr 1fr;
     gap: 0.45rem;
     padding: 0.45rem;
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(var(--theme-ink-rgb), 0.14);
     border-radius: 999px;
-    background: rgba(17, 16, 13, 0.88);
-    box-shadow: 0 18px 46px rgba(0, 0, 0, 0.32);
+    background: rgba(var(--theme-shade-rgb), 0.88);
+    box-shadow: 0 18px 46px rgba(var(--theme-shadow-rgb), 0.32);
     backdrop-filter: blur(18px);
   }
 
@@ -608,7 +608,7 @@
     justify-content: center;
     min-height: 42px;
     border-radius: 999px;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(var(--theme-ink-rgb), 0.9);
     font-family: 'Inter', system-ui, sans-serif;
     font-size: 0.78rem;
     font-weight: 850;
@@ -617,6 +617,6 @@
 
   .ads-mobile-cta a:first-child {
     background: linear-gradient(135deg, #f7dc8a, #c3913e);
-    color: #171613;
+    color: #17130d;
   }
 }

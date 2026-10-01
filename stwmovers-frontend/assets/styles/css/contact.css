@@ -80,7 +80,7 @@
 
 .contact-page .contact-btn--gold {
   background: var(--home-gold);
-  color: #fff;
+  color: #17130d;
 }
 
 .contact-page .contact-btn--gold:hover {
@@ -107,7 +107,7 @@
   min-height: var(--marketing-hero-height);
   display: flex;
   align-items: flex-end;
-  color: #fff;
+  color: rgba(var(--theme-ink-rgb), 1);
   overflow: hidden;
 }
 
@@ -121,7 +121,7 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(180deg, rgba(20, 14, 2, 0.55) 0%, rgba(0, 0, 0, 0.15) 55%, rgba(0, 0, 0, 0.65) 100%);
+  background: linear-gradient(180deg, rgba(var(--theme-shade-rgb), 0.55) 0%, rgba(var(--theme-shade-rgb), 0.15) 55%, rgba(var(--theme-shade-rgb), 0.65) 100%);
 }
 
 .contact-page .contact-hero__inner {
@@ -161,7 +161,7 @@
   font-family: 'Inter', system-ui, sans-serif;
   font-size: var(--marketing-hero-body);
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(var(--theme-ink-rgb), 0.88);
 }
 
 @media (min-width: 900px) {
@@ -293,7 +293,7 @@
 
 .contact-page .contact-input::placeholder,
 .contact-page .contact-textarea::placeholder {
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(var(--theme-ink-rgb), 0.4);
 }
 
 .contact-page .contact-input:focus,
@@ -540,7 +540,7 @@
   min-height: clamp(18rem, 36vw, 32.5rem);
   padding: clamp(3rem, 7vw, 7.5rem) clamp(1.25rem, 5vw, 5rem);
   text-align: center;
-  color: #fff;
+  color: rgba(var(--theme-ink-rgb), 1);
   overflow: hidden;
 }
 
@@ -548,14 +548,14 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: #14140f;
+  background: rgba(var(--theme-shade-rgb), 1);
 }
 
 .contact-page .contact-promise__overlay {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.65) 100%);
+  background: linear-gradient(180deg, rgba(var(--theme-shade-rgb), 0.45) 0%, rgba(var(--theme-shade-rgb), 0.65) 100%);
 }
 
 .contact-page .contact-promise__content {
@@ -574,7 +574,7 @@
   font-family: 'Inter', system-ui, sans-serif;
   font-weight: 700;
   line-height: 1.2;
-  color: #fff;
+  color: rgba(var(--theme-ink-rgb), 1);
   font-size: clamp(2rem, 4vw, 3.5rem);
 }
 
@@ -584,5 +584,5 @@
   font-family: 'Inter', system-ui, sans-serif;
   font-size: clamp(1rem, 1.2vw, 1.125rem);
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(var(--theme-ink-rgb), 0.82);
 }

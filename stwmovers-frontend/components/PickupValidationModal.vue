@@ -127,7 +127,7 @@ onBeforeUnmount(() => {
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(0, 0, 0, 0.55);
+  color: rgba(var(--theme-ink-rgb), 0.55);
 }
 
 .pickup-validation-panel__title {
@@ -155,9 +155,9 @@ onBeforeUnmount(() => {
   align-items: flex-start;
   gap: 12px;
   padding: clamp(12px, 3vw, 14px) clamp(14px, 3vw, 16px);
-  border: 1px solid #e5e5e5;
+  border: 1px solid rgba(var(--theme-ink-rgb), 1);
   border-radius: 12px;
-  background: #fafaf8;
+  background: rgba(var(--theme-surface-rgb), 1);
 }
 
 .pickup-validation-panel__city-icon {
@@ -181,14 +181,14 @@ onBeforeUnmount(() => {
 .pickup-validation-panel__city-copy strong {
   font-size: clamp(0.9rem, 2.5vw, 0.95rem);
   font-weight: 600;
-  color: #1a1a1a;
+  color: rgba(var(--theme-ink-rgb), 1);
   line-height: 1.35;
 }
 
 .pickup-validation-panel__city-hint {
   font-size: clamp(0.8125rem, 2.2vw, 0.875rem);
   line-height: 1.45;
-  color: #6b7280;
+  color: rgba(var(--theme-muted-rgb), 1);
 }
 
 .pickup-validation-panel__actions {
@@ -216,7 +216,7 @@ onBeforeUnmount(() => {
 .pickup-validation-panel__btn--primary {
   border: 0;
   background: #d8b24c;
-  color: #1a1a1a;
+  color: #17130d;
 }
 
 .pickup-validation-panel__btn--primary:hover {
@@ -224,14 +224,14 @@ onBeforeUnmount(() => {
 }
 
 .pickup-validation-panel__btn--secondary {
-  border: 1px solid #e5e5e5;
-  background: #fff;
-  color: #374151;
+  border: 1px solid rgba(var(--theme-ink-rgb), 1);
+  background: rgba(var(--theme-surface-rgb), 1);
+  color: rgba(var(--theme-muted-rgb), 1);
 }
 
 .pickup-validation-panel__btn--secondary:hover {
-  border-color: #cdcdcd;
-  background: #fafaf8;
+  border-color: rgba(var(--theme-ink-rgb), 1);
+  background: rgba(var(--theme-surface-rgb), 1);
 }
 
 @media (max-width: 399px) {

@@ -159,24 +159,6 @@ watch(
 onMounted(() => {
   // Returning via "Edit Journey" is the only case where the saved trip belongs in the form.
   if (route.query.edit === EDIT_JOURNEY_FLAG) Object.assign(form, booking.draft)
-  if (!config.public.googleMapsApiKey) return
-
-  const scheduleDeferredMaps = () => {
-    const w = window as Window & {
-      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number
-    }
-    if (typeof w.requestIdleCallback === 'function') {
-      w.requestIdleCallback(() => {
-        void ensureMapsReady()
-      }, { timeout: 800 })
-    } else {
-      window.setTimeout(() => {
-        void ensureMapsReady()
-      }, 800)
-    }
-  }
-
-  scheduleDeferredMaps()
 })
 
 const syncDistance = async () => {
@@ -533,8 +515,8 @@ const onSubmit = async () => {
   height: 113px;
   min-height: 113px;
   max-height: 113px;
-  background: #fff;
-  box-shadow: 0 20px 20px rgba(0, 0, 0, 0.1);
+  background: rgba(var(--theme-surface-rgb), 1);
+  box-shadow: 0 20px 20px rgba(var(--theme-shadow-rgb), 0.1);
   border-radius: 0;
   padding: 32px;
   border: 0;
@@ -566,7 +548,7 @@ const onSubmit = async () => {
   min-width: 0;
   min-height: 35px;
   padding: 12px 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(var(--theme-ink-rgb), 0.1);
 }
 
 .booking-form--bar .booking-form__bar-icon {
@@ -575,7 +557,7 @@ const onSubmit = async () => {
   width: 1.15rem;
   align-items: center;
   justify-content: center;
-  color: rgba(0, 0, 0, 0.72);
+  color: rgba(var(--theme-ink-rgb), 0.72);
   font-size: 1rem;
 }
 
@@ -591,7 +573,7 @@ const onSubmit = async () => {
     flex: 1 0 0;
     padding: 0 24px 0 0;
     border-bottom: 0;
-    border-right: 1px solid rgba(0, 0, 0, 0.1);
+    border-right: 1px solid rgba(var(--theme-ink-rgb), 0.1);
   }
 
   .booking-form--bar .booking-form__field:first-child {
@@ -613,7 +595,7 @@ const onSubmit = async () => {
   line-height: normal;
   letter-spacing: 0;
   text-transform: uppercase;
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(var(--theme-ink-rgb), 0.6);
 }
 
 .booking-form--bar .booking-form__bar-input,
@@ -631,12 +613,12 @@ const onSubmit = async () => {
   font-size: 16px;
   font-weight: 500;
   line-height: normal;
-  color: #1a1a1a;
+  color: rgba(var(--theme-ink-rgb), 1);
   min-height: 19px;
 }
 
 .booking-form--bar .booking-form__bar-input::placeholder {
-  color: #1a1a1a;
+  color: rgba(var(--theme-ink-rgb), 1);
   opacity: 1;
 }
 
@@ -665,7 +647,7 @@ const onSubmit = async () => {
   font-size: 16px;
   font-weight: 500;
   line-height: normal;
-  color: #1a1a1a;
+  color: rgba(var(--theme-ink-rgb), 1);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -712,7 +694,7 @@ const onSubmit = async () => {
   border: 0;
   border-radius: 100px;
   background: #d8b24c;
-  color: #171717;
+  color: #17130d;
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 14px;
   font-weight: 600;
@@ -731,7 +713,7 @@ const onSubmit = async () => {
 .booking-form--bar .booking-form__bar-submit:not(:disabled):hover {
   filter: brightness(1.06);
   transform: translateY(-1px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 12px 24px rgba(var(--theme-shadow-rgb), 0.18);
 }
 
 .booking-form--bar .booking-form__bar-submit:disabled {
@@ -753,12 +735,12 @@ const onSubmit = async () => {
   .booking-form--bar .booking-form__field {
     padding: 12px 0;
     border-right: 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(var(--theme-ink-rgb), 0.1);
   }
 
   .booking-form--bar .booking-form__field:nth-child(odd) {
     padding-right: 1.5rem;
-    border-right: 1px solid rgba(0, 0, 0, 0.1);
+    border-right: 1px solid rgba(var(--theme-ink-rgb), 0.1);
   }
 
   .booking-form--bar .booking-form__submit-wrap {

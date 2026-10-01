@@ -10,6 +10,15 @@ function shouldTrackPath(path: string): boolean {
   return !path.startsWith('/admin')
 }
 
+function injectAsyncScript(src: string) {
+  if (document.querySelector(`script[src="${src}"]`)) return
+  const script = document.createElement('script')
+  script.async = true
+  script.src = src
+  const firstScript = document.getElementsByTagName('script')[0]
+  firstScript?.parentNode?.insertBefore(script, firstScript)
+}
+
 function loadMicrosoftClarity(projectId: string) {
   const w = window as Window & { clarity?: ((...args: unknown[]) => void) & { q?: unknown[] } }
   w.clarity =
@@ -18,11 +27,53 @@ function loadMicrosoftClarity(projectId: string) {
       ;(w.clarity!.q = w.clarity!.q || []).push(args)
     }
 
-  const script = document.createElement('script')
-  script.async = true
-  script.src = `https://www.clarity.ms/tag/${encodeURIComponent(projectId)}`
-  const firstScript = document.getElementsByTagName('script')[0]
-  firstScript?.parentNode?.insertBefore(script, firstScript)
+  injectAsyncScript(`https://www.clarity.ms/tag/${encodeURIComponent(projectId)}`)
+}
+
+function loadGoogleAnalytics(gaId: string, pagePath: string) {
+  if (!/^G-[A-Z0-9]+$/.test(gaId)) return
+
+  window.dataLayer = window.dataLayer || []
+  window.gtag =
+    window.gtag ||
+    function gtagQueue(...args: unknown[]) {
+      window.dataLayer!.push(args)
+    }
+  window.gtag('js', new Date())
+  window.gtag('config', gaId, { page_path: pagePath, send_page_view: true })
+
+  injectAsyncScript(`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`)
+}
+
+function onIdleOrIntent(callback: () => void) {
+  let called = false
+  let timeoutId: number | undefined
+
+  const run = () => {
+    if (called) return
+    called = true
+    if (timeoutId) window.clearTimeout(timeoutId)
+    window.removeEventListener('pointerdown', run)
+    window.removeEventListener('keydown', run)
+    window.removeEventListener('scroll', run)
+    window.removeEventListener('touchstart', run)
+    callback()
+  }
+
+  const w = window as Window & {
+    requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number
+  }
+
+  if (typeof w.requestIdleCallback === 'function') {
+    w.requestIdleCallback(run, { timeout: 4500 })
+  } else {
+    timeoutId = window.setTimeout(run, 4500)
+  }
+
+  window.addEventListener('pointerdown', run, { once: true, passive: true })
+  window.addEventListener('keydown', run, { once: true })
+  window.addEventListener('scroll', run, { once: true, passive: true })
+  window.addEventListener('touchstart', run, { once: true, passive: true })
 }
 
 export default defineNuxtPlugin({
@@ -35,22 +86,30 @@ export default defineNuxtPlugin({
     if (!gaId && !clarityId) return
 
     const router = useRouter()
+    let gaLoaded = false
     let clarityLoaded = false
 
-    const ensureClarity = (path: string) => {
+    const ensureAnalytics = (path: string, fullPath = path) => {
       if (!shouldTrackPath(path)) return
+      if (gaId && !gaLoaded) {
+        loadGoogleAnalytics(gaId, fullPath)
+        gaLoaded = true
+      }
       if (clarityId && !clarityLoaded) {
         loadMicrosoftClarity(clarityId)
         clarityLoaded = true
       }
     }
 
-    ensureClarity(router.currentRoute.value.path)
+    onIdleOrIntent(() => {
+      const current = router.currentRoute.value
+      ensureAnalytics(current.path, current.fullPath)
+    })
 
     router.afterEach((to) => {
-      ensureClarity(to.path)
-
-      if (gaId && shouldTrackPath(to.path)) {
+      const wasGaLoaded = gaLoaded
+      ensureAnalytics(to.path, to.fullPath)
+      if (gaId && wasGaLoaded && shouldTrackPath(to.path)) {
         window.gtag?.('config', gaId, { page_path: to.fullPath })
       }
     })

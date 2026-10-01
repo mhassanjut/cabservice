@@ -1,7 +1,3 @@
-import experienceAirportImage from '~/assets/images/homepage-experience-section/image 1.svg?url'
-import experienceBusinessImage from '~/assets/images/homepage-experience-section/image 3.svg?url'
-import experienceChauffeurImage from '~/assets/images/homepage-experience-section/image 4.svg?url'
-
 export type HomeLocationCard = {
   id: string
   title: string
@@ -14,39 +10,39 @@ export type HomeLocationCard = {
 
 /** Transfer routes only — tour cards from Figma are filtered out at render time */
 export const homeLocationCards: HomeLocationCard[] = [
-  { id: 'santa-susanna', title: 'Barcelona to Santa Susanna', image: '/img/home/_original/location-santa-susanna.jpg', tall: true, type: 'transfer' },
-  { id: 'empuriabrava', title: 'Barcelona to Empuriabrava', image: '/img/home/_original/location-empuriabrava.jpg', type: 'transfer' },
-  { id: 'costa-brava', title: 'Barcelona to Costa Brava', image: '/img/home/_original/location-costa-brava.jpg', wide: true, tall: true, type: 'transfer' },
-  { id: 'palamos', title: 'Barcelona to Palamós', image: '/img/home/_original/location-palamos.jpg', type: 'transfer' },
-  { id: 'begur', title: 'Barcelona to Begur', image: '/img/home/_original/location-begur.jpg', wide: true, tall: true, type: 'transfer' },
-  { id: 'calella', title: 'Barcelona to Calella', image: '/img/home/_original/location-calella.jpg', type: 'transfer' },
-  { id: 'vilanova', title: 'Barcelona to Vilanova i la Geltrú', image: '/img/home/_original/location-vilanova.jpg', type: 'transfer' },
-  { id: 'calafell', title: 'Barcelona to Calafell', image: '/img/home/_original/location-calafell.jpg', type: 'transfer' },
-  { id: 'segur-calafell', title: 'Barcelona to Segur de Calafell', image: '/img/home/_original/location-segur-calafell.jpg', type: 'transfer' },
-  { id: 'salou', title: 'Barcelona to Salou', image: '/img/home/_original/location-salou.jpg', type: 'transfer' },
-  { id: 'portaventura', title: 'Barcelona to PortAventura', image: '/img/home/_original/location-portaventura.jpg', type: 'transfer' },
-  { id: 'blanes', title: 'Barcelona to Blanes', image: '/img/home/_original/location-blanes.jpg', type: 'transfer' },
+  { id: 'santa-susanna', title: 'Barcelona to Santa Susanna', image: '/img/home/optimized/location-santa-susanna.webp', tall: true, type: 'transfer' },
+  { id: 'empuriabrava', title: 'Barcelona to Empuriabrava', image: '/img/home/optimized/location-empuriabrava.webp', type: 'transfer' },
+  { id: 'costa-brava', title: 'Barcelona to Costa Brava', image: '/img/home/optimized/location-costa-brava.webp', wide: true, tall: true, type: 'transfer' },
+  { id: 'palamos', title: 'Barcelona to Palamós', image: '/img/home/optimized/location-palamos.webp', type: 'transfer' },
+  { id: 'begur', title: 'Barcelona to Begur', image: '/img/home/optimized/location-begur.webp', wide: true, tall: true, type: 'transfer' },
+  { id: 'calella', title: 'Barcelona to Calella', image: '/img/home/optimized/location-calella.webp', type: 'transfer' },
+  { id: 'vilanova', title: 'Barcelona to Vilanova i la Geltrú', image: '/img/home/optimized/location-vilanova.webp', type: 'transfer' },
+  { id: 'calafell', title: 'Barcelona to Calafell', image: '/img/home/optimized/location-calafell.webp', type: 'transfer' },
+  { id: 'segur-calafell', title: 'Barcelona to Segur de Calafell', image: '/img/home/optimized/location-segur-calafell.webp', type: 'transfer' },
+  { id: 'salou', title: 'Barcelona to Salou', image: '/img/home/optimized/location-salou.webp', type: 'transfer' },
+  { id: 'portaventura', title: 'Barcelona to PortAventura', image: '/img/home/optimized/location-portaventura.webp', type: 'transfer' },
+  { id: 'blanes', title: 'Barcelona to Blanes', image: '/img/home/optimized/location-blanes.webp', type: 'transfer' },
 ]
 
 export const homeExperienceTiles = [
   {
     title: 'Airport Meet & Greet',
     subtitle: 'A professional welcome, flight tracking, and seamless airport transfers.',
-    image: experienceAirportImage,
+    image: '/img/home/generated/luxury-service-background-v1.webp',
     height: 400,
     href: '/airport-transfer',
   },
   {
     title: 'Business Travel',
     subtitle: 'Executive transportation that keeps your schedule running smoothly.',
-    image: experienceBusinessImage,
+    image: '/img/home/generated/executive-corporate-transfer-v1.webp',
     height: 400,
     href: '/executive-business-travel',
   },
   {
     title: 'Private Chauffeur',
     subtitle: 'A dedicated driver whenever your plans require flexibility.',
-    image: experienceChauffeurImage,
+    image: '/img/home/generated/chauffeur-arrival-detail-v1.webp',
     height: 400,
     href: '/chauffeur-service',
   },
@@ -154,13 +150,13 @@ export type HomeFleetVehicle = {
   categories: HomeFleetCategory[]
 }
 
-/** Homepage fleet cards — WebP from SVG masters in fleet-section/_original/ */
+/** Homepage fleet cards — realistic photo assets generated for luxury light/dark presentation. */
 export const homeFleetVehicles: HomeFleetVehicle[] = [
   {
     id: 'mercedes-e-class',
     backendId: 'c0000001-0000-0000-0000-000000000004',
     name: 'Mercedes E Class',
-    image: '/img/home/fleet-section/mercedes-e-class.webp',
+    image: '/img/home/generated/fleet/executive-silver-sedan-v1.webp',
     seats: 4,
     bags: 3,
     categories: ['business-class', 'first-class'],
@@ -169,7 +165,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'mercedes-s-class',
     backendId: 'c0000001-0000-0000-0000-000000000005',
     name: 'Mercedes S Class',
-    image: '/img/home/fleet-section/mercedes-s-class.webp',
+    image: '/img/home/generated/fleet/first-class-black-sedan-v1.webp',
     seats: 4,
     bags: 3,
     categories: ['first-class'],
@@ -178,7 +174,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'mercedes-v-class',
     backendId: 'c0000001-0000-0000-0000-000000000002',
     name: 'Mercedes V Class',
-    image: '/img/home/fleet-section/mercedes-v-class.webp',
+    image: '/img/home/generated/fleet/luxury-black-van-v1.webp',
     seats: 7,
     bags: 6,
     categories: ['business-van', 'first-class'],
@@ -187,7 +183,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'mercedes-vito-van',
     backendId: 'c0000001-0000-0000-0000-000000000001',
     name: 'Mercedes Vito Van',
-    image: '/img/home/fleet-section/mercedes-vito-van.webp',
+    image: '/img/home/generated/fleet/luxury-black-van-v1.webp',
     seats: 7,
     bags: 6,
     categories: ['business-van'],
@@ -196,7 +192,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'mercedes-van',
     backendId: 'c0000001-0000-0000-0000-000000000003',
     name: 'Mercedes Van',
-    image: '/img/home/fleet-section/mercedes-van.webp',
+    image: '/img/home/generated/fleet/luxury-black-van-v1.webp',
     seats: 8,
     bags: 7,
     categories: ['mini-bus'],
@@ -205,7 +201,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'tesla-model-s',
     backendId: 'c0000001-0000-0000-0000-000000000006',
     name: 'Tesla Model S',
-    image: '/img/home/fleet-section/tesla-model-s.webp',
+    image: '/img/home/generated/fleet/electric-executive-sedan-v1.webp',
     seats: 4,
     bags: 3,
     categories: ['business-class'],
@@ -214,7 +210,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'hyundai-ioniq',
     backendId: 'c0000001-0000-0000-0000-000000000007',
     name: 'Hyundai Ioniq',
-    image: '/img/home/fleet-section/hyundai-ioniq.webp',
+    image: '/img/home/generated/fleet/electric-executive-sedan-v1.webp',
     seats: 4,
     bags: 3,
     categories: ['business-class'],
@@ -223,7 +219,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
     id: 'toyota-corolla',
     backendId: 'c0000001-0000-0000-0000-000000000008',
     name: 'Toyota Corolla Familiar',
-    image: '/img/home/fleet-section/toyota-corolla-familiar.webp',
+    image: '/img/home/generated/fleet/executive-silver-sedan-v1.webp',
     seats: 4,
     bags: 3,
     categories: ['business-class'],
@@ -231,7 +227,7 @@ export const homeFleetVehicles: HomeFleetVehicle[] = [
   {
     id: 'byd-seal',
     name: 'BYD Seal',
-    image: '/img/home/fleet-section/byd-seal.webp',
+    image: '/img/home/generated/fleet/electric-executive-sedan-v1.webp',
     seats: 4,
     bags: 3,
     categories: ['business-class'],

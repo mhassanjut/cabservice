@@ -131,8 +131,8 @@ const issuedAt = formatReceiptShortDate(new Date().toISOString())
   box-sizing: border-box;
   width: 595px;
   padding: 0;
-  background: #fafaf8;
-  color: #1a1a1a;
+  background: rgba(var(--theme-surface-rgb), 1);
+  color: rgba(var(--theme-ink-rgb), 1);
   font-family: Inter, system-ui, sans-serif;
   font-size: 12px;
   line-height: 1.5;
@@ -143,7 +143,7 @@ const issuedAt = formatReceiptShortDate(new Date().toISOString())
   flex-direction: column;
   gap: 8px;
   padding: 28px 32px 24px;
-  background: #090909;
+  background: rgba(var(--theme-shade-rgb), 1);
 }
 
 .booking-receipt-doc__logo {
@@ -157,7 +157,7 @@ const issuedAt = formatReceiptShortDate(new Date().toISOString())
   font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(250, 250, 248, 0.62);
+  color: rgba(var(--theme-ink-rgb), 0.62);
 }
 
 .booking-receipt-doc__accent {
@@ -187,13 +187,13 @@ const issuedAt = formatReceiptShortDate(new Date().toISOString())
   font-size: 28px;
   font-weight: 600;
   line-height: 1.15;
-  color: #1a1a1a;
+  color: rgba(var(--theme-ink-rgb), 1);
 }
 
 .booking-receipt-doc__subtitle {
   margin: 0;
   max-width: 280px;
-  color: #6b7280;
+  color: rgba(var(--theme-muted-rgb), 1);
 }
 
 .booking-receipt-doc__ref-block {
@@ -203,10 +203,10 @@ const issuedAt = formatReceiptShortDate(new Date().toISOString())
   gap: 6px;
   min-width: 180px;
   padding: 16px 18px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(var(--theme-ink-rgb), 0.08);
   border-radius: 16px;
-  background: #fff;
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.04);
+  background: rgba(var(--theme-surface-rgb), 1);
+  box-shadow: 0 8px 12px rgba(var(--theme-shadow-rgb), 0.04);
 }
 
 .booking-receipt-doc__ref-label {
@@ -214,7 +214,7 @@ const issuedAt = formatReceiptShortDate(new Date().toISOString())
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #6b7280;
+  color: rgba(var(--theme-muted-rgb), 1);
 }
 
 .booking-receipt-doc__ref {
@@ -222,7 +222,7 @@ const issuedAt = formatReceiptShortDate(new Date().toISOString())
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.02em;
-  color: #1a1a1a;
+  color: rgba(var(--theme-ink-rgb), 1);
 }
 
 .booking-receipt-doc__status {
@@ -246,9 +246,9 @@ const issuedAt = formatReceiptShortDate(new Date().toISOString())
 
 .booking-receipt-doc__card {
   padding: 18px 20px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(var(--theme-ink-rgb), 0.08);
   border-radius: 16px;
-  background: #fff;
+  background: rgba(var(--theme-surface-rgb), 1);
 }
 
 .booking-receipt-doc__card-title,
@@ -258,7 +258,7 @@ const issuedAt = formatReceiptShortDate(new Date().toISOString())
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #6b7280;
+  color: rgba(var(--theme-muted-rgb), 1);
 }
 
 .booking-receipt-doc__dl {
@@ -277,21 +277,21 @@ const issuedAt = formatReceiptShortDate(new Date().toISOString())
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #a7a7a7;
+  color: rgba(var(--theme-muted-rgb), 1);
 }
 
 .booking-receipt-doc__dl dd {
   margin: 0;
   font-size: 12px;
-  color: #1a1a1a;
+  color: rgba(var(--theme-ink-rgb), 1);
 }
 
 .booking-receipt-doc__journey {
   margin: 0 32px 20px;
   padding: 20px 22px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(var(--theme-ink-rgb), 0.08);
   border-radius: 16px;
-  background: #fff;
+  background: rgba(var(--theme-surface-rgb), 1);
 }
 
 .booking-receipt-doc__route {
@@ -316,7 +316,7 @@ const issuedAt = formatReceiptShortDate(new Date().toISOString())
 .booking-receipt-doc__route-value {
   margin: 0;
   font-size: 12px;
-  color: #1a1a1a;
+  color: rgba(var(--theme-ink-rgb), 1);
 }
 
 .booking-receipt-doc__route-line {
@@ -333,7 +333,7 @@ const issuedAt = formatReceiptShortDate(new Date().toISOString())
   gap: 4px;
   margin: 0;
   padding-top: 14px;
-  border-top: 1px solid #e5e5e5;
+  border-top: 1px solid rgba(var(--theme-ink-rgb), 1);
 }
 
 .booking-receipt-doc__schedule span,
@@ -342,14 +342,14 @@ const issuedAt = formatReceiptShortDate(new Date().toISOString())
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #a7a7a7;
+  color: rgba(var(--theme-muted-rgb), 1);
 }
 
 .booking-receipt-doc__schedule strong,
 .booking-receipt-doc__notes strong {
   font-size: 12px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: rgba(var(--theme-ink-rgb), 1);
 }
 
 .booking-receipt-doc__notes {
@@ -362,8 +362,8 @@ const issuedAt = formatReceiptShortDate(new Date().toISOString())
   margin: 0 32px 24px;
   padding: 18px 20px;
   border-radius: 16px;
-  background: #090909;
-  color: #fafaf8;
+  background: rgba(var(--theme-shade-rgb), 1);
+  color: rgba(var(--theme-ink-rgb), 1);
 }
 
 .booking-receipt-doc__total-row {
@@ -375,14 +375,14 @@ const issuedAt = formatReceiptShortDate(new Date().toISOString())
 }
 
 .booking-receipt-doc__total-row--muted {
-  color: rgba(250, 250, 248, 0.62);
+  color: rgba(var(--theme-ink-rgb), 0.62);
   font-size: 11px;
 }
 
 .booking-receipt-doc__total-row--grand {
   margin-top: 8px;
   padding-top: 14px;
-  border-top: 1px solid rgba(250, 250, 248, 0.12);
+  border-top: 1px solid rgba(var(--theme-ink-rgb), 0.12);
   font-size: 14px;
 }
 
@@ -398,8 +398,8 @@ const issuedAt = formatReceiptShortDate(new Date().toISOString())
   justify-content: space-between;
   gap: 24px;
   padding: 18px 32px 28px;
-  border-top: 1px solid #e5e5e5;
-  color: #6b7280;
+  border-top: 1px solid rgba(var(--theme-ink-rgb), 1);
+  color: rgba(var(--theme-muted-rgb), 1);
   font-size: 10px;
 }
 
@@ -413,7 +413,7 @@ const issuedAt = formatReceiptShortDate(new Date().toISOString())
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #1a1a1a;
+  color: rgba(var(--theme-ink-rgb), 1);
 }
 
 .booking-receipt-doc__footer-contact {

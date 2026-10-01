@@ -7,7 +7,8 @@ import 'swiper/css/pagination'
 import { siteConfig } from '~/config/site'
 import { buildWhatsappUrl } from '~/utils/whatsapp'
 
-const HERO_SIZES = 'xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw'
+const HERO_SIZES = 'xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:1536px'
+const HERO_MOBILE_SIZES = 'xs:100vw sm:640px md:640px'
 
 const HERO_SLIDES = [
   {
@@ -15,8 +16,8 @@ const HERO_SLIDES = [
     mobileSrc: '/img/home/generated/hero-mobile-user-airport-v1.webp',
     width: 1672,
     height: 941,
-    mobileWidth: 941,
-    mobileHeight: 1672,
+    mobileWidth: 640,
+    mobileHeight: 1137,
   },
 ] as const
 
@@ -86,7 +87,7 @@ const heroIntents = [
                 preset="hero"
                 :width="slide.mobileWidth"
                 :height="slide.mobileHeight"
-                sizes="xs:100vw sm:100vw"
+                :sizes="HERO_MOBILE_SIZES"
                 :loading="index === 0 ? 'eager' : 'lazy'"
                 :fetchpriority="index === 0 ? 'high' : 'low'"
                 decoding="async"
@@ -120,7 +121,7 @@ const heroIntents = [
                 preset="hero"
                 :width="HERO_SLIDES[0].mobileWidth"
                 :height="HERO_SLIDES[0].mobileHeight"
-                sizes="xs:100vw sm:100vw"
+                :sizes="HERO_MOBILE_SIZES"
                 loading="eager"
                 fetchpriority="high"
                 preload

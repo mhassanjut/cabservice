@@ -221,9 +221,9 @@ onBeforeUnmount(() => {
               loading="lazy"
               decoding="async"
               placeholder
-              width="900"
-              height="600"
-              sizes="xs:90vw sm:90vw md:45vw lg:45vw xl:600px xxl:600px"
+              width="720"
+              height="480"
+              sizes="xs:88vw sm:88vw md:44vw lg:540px xl:540px xxl:540px"
             />
           </div>
 

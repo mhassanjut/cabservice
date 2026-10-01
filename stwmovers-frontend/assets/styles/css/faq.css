@@ -67,7 +67,7 @@
 
 .faq-page .faq-btn--gold {
   background: var(--home-gold);
-  color: #fff;
+  color: #17130d;
 }
 
 .faq-page .faq-btn--gold:hover {
@@ -76,12 +76,12 @@
 
 .faq-page .faq-btn--outline-light {
   background: transparent;
-  border-color: rgba(255, 255, 255, 0.85);
-  color: #fff;
+  border-color: rgba(var(--theme-ink-rgb), 0.85);
+  color: rgba(var(--theme-ink-rgb), 1);
 }
 
 .faq-page .faq-btn--outline-light:hover {
-  background: #fff;
+  background: rgba(var(--theme-surface-rgb), 1);
   color: var(--home-text);
 }
 
@@ -90,13 +90,13 @@
   align-items: center;
   min-height: 43px;
   padding: 0 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(var(--theme-ink-rgb), 0.35);
   border-radius: 100px;
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.9375rem;
   font-weight: 500;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.08);
+  color: rgba(var(--theme-ink-rgb), 1);
+  background: rgba(var(--theme-surface-rgb), 0.08);
 }
 
 .faq-page .faq-pill--gold {
@@ -111,7 +111,7 @@
   min-height: var(--marketing-hero-height);
   display: flex;
   align-items: flex-end;
-  color: #fff;
+  color: rgba(var(--theme-ink-rgb), 1);
   overflow: hidden;
 }
 
@@ -133,7 +133,7 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(180deg, rgba(20, 14, 2, 0.55) 0%, rgba(0, 0, 0, 0.15) 55%, rgba(0, 0, 0, 0.6) 100%);
+  background: linear-gradient(180deg, rgba(var(--theme-shade-rgb), 0.55) 0%, rgba(var(--theme-shade-rgb), 0.15) 55%, rgba(var(--theme-shade-rgb), 0.6) 100%);
 }
 
 .faq-page .faq-hero__inner {
@@ -178,7 +178,7 @@
   font-family: 'Inter', system-ui, sans-serif;
   font-size: var(--marketing-hero-body);
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(var(--theme-ink-rgb), 0.88);
 }
 
 .faq-page .faq-hero__pills {
@@ -240,14 +240,14 @@
   text-transform: uppercase;
   text-decoration: none;
   color: var(--home-text-muted);
-  background: #fff;
+  background: rgba(var(--theme-surface-rgb), 1);
   transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
 }
 
 .faq-page .faq-jump__link:hover {
   border-color: var(--home-gold);
-  color: var(--home-gold-dark);
-  background: var(--home-gold-soft, #f7f1e5);
+  color: #17130d;
+  background: var(--home-gold-soft, rgba(var(--theme-surface-rgb), 1));
 }
 
 /* ─── Category sections & accordion ─── */
@@ -315,7 +315,7 @@
   min-height: clamp(18rem, 36vw, 32.5rem);
   padding: clamp(3rem, 7vw, 7.5rem) clamp(1.25rem, 5vw, 5rem);
   text-align: center;
-  color: #fff;
+  color: rgba(var(--theme-ink-rgb), 1);
   overflow: hidden;
 }
 
@@ -323,14 +323,14 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: #14140f;
+  background: rgba(var(--theme-shade-rgb), 1);
 }
 
 .faq-page .faq-cta__overlay {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.6) 100%);
+  background: linear-gradient(180deg, rgba(var(--theme-shade-rgb), 0.35) 0%, rgba(var(--theme-shade-rgb), 0.6) 100%);
 }
 
 .faq-page .faq-cta__content {
@@ -353,7 +353,7 @@
   font-family: 'Inter', system-ui, sans-serif;
   font-weight: 700;
   line-height: 1.2;
-  color: #fff;
+  color: rgba(var(--theme-ink-rgb), 1);
   font-size: clamp(2rem, 4vw, 3.5rem);
 }
 
@@ -363,7 +363,7 @@
   font-family: 'Inter', system-ui, sans-serif;
   font-size: clamp(1rem, 1.2vw, 1.125rem);
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(var(--theme-ink-rgb), 0.82);
 }
 
 .faq-page .faq-cta__actions {

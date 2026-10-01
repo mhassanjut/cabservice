@@ -80,7 +80,7 @@
 
 .about-page .about-btn--gold {
   background: var(--home-gold);
-  color: #fff;
+  color: #17130d;
 }
 
 .about-page .about-btn--gold:hover {
@@ -90,12 +90,12 @@
 /* Outline button on dark backgrounds (hero / final CTA) */
 .about-page .about-btn--outline-light {
   background: transparent;
-  border-color: rgba(255, 255, 255, 0.85);
-  color: #fff;
+  border-color: rgba(var(--theme-ink-rgb), 0.85);
+  color: rgba(var(--theme-ink-rgb), 1);
 }
 
 .about-page .about-btn--outline-light:hover {
-  background: #fff;
+  background: rgba(var(--theme-surface-rgb), 1);
   color: var(--home-text);
 }
 
@@ -118,7 +118,7 @@
   min-height: var(--marketing-hero-height);
   display: flex;
   align-items: flex-end;
-  color: #fff;
+  color: rgba(var(--theme-ink-rgb), 1);
   overflow: hidden;
 }
 
@@ -132,7 +132,7 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(180deg, rgba(20, 14, 2, 0.55) 0%, rgba(0, 0, 0, 0.15) 55%, rgba(0, 0, 0, 0.6) 100%);
+  background: linear-gradient(180deg, rgba(var(--theme-shade-rgb), 0.55) 0%, rgba(var(--theme-shade-rgb), 0.15) 55%, rgba(var(--theme-shade-rgb), 0.6) 100%);
 }
 
 .about-page .about-hero__inner {
@@ -172,7 +172,7 @@
   font-family: 'Inter', system-ui, sans-serif;
   font-size: var(--marketing-hero-body);
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(var(--theme-ink-rgb), 0.88);
 }
 
 .about-page .about-hero__actions {
@@ -347,8 +347,8 @@
 
 /* ─── Trust links ─── */
 .about-page .about-trust {
-  background: #171613;
-  color: #fff;
+  background: rgba(var(--theme-shade-rgb), 1);
+  color: rgba(var(--theme-ink-rgb), 1);
 }
 
 .about-page .about-trust__head {
@@ -359,7 +359,7 @@
 }
 
 .about-page .about-trust__head .about-heading {
-  color: #fff;
+  color: rgba(var(--theme-ink-rgb), 1);
 }
 
 .about-page .about-trust__grid {
@@ -372,10 +372,10 @@
   gap: 0.45rem;
   min-height: 100%;
   padding: clamp(1rem, 3vw, 1.25rem);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(var(--theme-ink-rgb), 0.12);
   border-radius: 8px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.025));
-  color: #fff;
+  background: linear-gradient(180deg, rgba(var(--theme-surface-rgb), 0.07), rgba(var(--theme-surface-rgb), 0.025));
+  color: rgba(var(--theme-ink-rgb), 1);
   text-decoration: none;
   transition: border-color 0.2s ease, transform 0.2s ease;
 }
@@ -393,7 +393,7 @@
 }
 
 .about-page .about-trust__card small {
-  color: rgba(255, 255, 255, 0.68);
+  color: rgba(var(--theme-ink-rgb), 0.68);
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.88rem;
   line-height: 1.55;
@@ -468,7 +468,7 @@
   min-height: clamp(22rem, 40vw, 37.5rem);
   padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem);
   text-align: center;
-  color: #fff;
+  color: rgba(var(--theme-ink-rgb), 1);
 }
 
 .about-page .about-promise__media {
@@ -481,7 +481,7 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.6) 100%);
+  background: linear-gradient(180deg, rgba(var(--theme-shade-rgb), 0.4) 0%, rgba(var(--theme-shade-rgb), 0.6) 100%);
 }
 
 .about-page .about-promise__content {
@@ -499,7 +499,7 @@
   font-family: 'Inter', system-ui, sans-serif;
   font-weight: 700;
   line-height: 1.2;
-  color: #fff;
+  color: rgba(var(--theme-ink-rgb), 1);
   font-size: clamp(2rem, 4vw, 3.5rem);
 }
 
@@ -509,7 +509,7 @@
   font-family: 'Inter', system-ui, sans-serif;
   font-size: clamp(1rem, 1.2vw, 1.125rem);
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(var(--theme-ink-rgb), 0.82);
 }
 
 /* ─── Guest Story / Testimonials (82:789) ─── */
@@ -586,7 +586,7 @@
   font-family: var(--home-font-display);
   font-size: 1rem;
   font-weight: 700;
-  color: #000;
+  color: rgba(var(--theme-ink-rgb), 1);
 }
 
 .about-page .about-testimonial__author-company {
@@ -594,7 +594,7 @@
   font-family: var(--home-font-display);
   font-size: 0.875rem;
   font-weight: 400;
-  color: #4f4f4f;
+  color: rgba(var(--theme-muted-rgb), 1);
 }
 
 @media (min-width: 900px) {
@@ -612,7 +612,7 @@
   min-height: clamp(18rem, 36vw, 32.5rem);
   padding: clamp(3rem, 7vw, 7.5rem) clamp(1.25rem, 5vw, 5rem);
   text-align: center;
-  color: #fff;
+  color: rgba(var(--theme-ink-rgb), 1);
   overflow: hidden;
 }
 
@@ -620,14 +620,14 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: #14140f;
+  background: rgba(var(--theme-shade-rgb), 1);
 }
 
 .about-page .about-cta__overlay {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.6) 100%);
+  background: linear-gradient(180deg, rgba(var(--theme-shade-rgb), 0.35) 0%, rgba(var(--theme-shade-rgb), 0.6) 100%);
 }
 
 .about-page .about-cta__content {
@@ -646,7 +646,7 @@
   font-family: 'Inter', system-ui, sans-serif;
   font-weight: 700;
   line-height: 1.2;
-  color: #fff;
+  color: rgba(var(--theme-ink-rgb), 1);
   font-size: clamp(2rem, 4vw, 3.5rem);
 }
 
@@ -656,7 +656,7 @@
   font-family: 'Inter', system-ui, sans-serif;
   font-size: clamp(1rem, 1.2vw, 1.125rem);
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(var(--theme-ink-rgb), 0.82);
 }
 
 .about-page .about-cta__actions {

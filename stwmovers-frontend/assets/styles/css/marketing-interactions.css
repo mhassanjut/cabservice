@@ -10,7 +10,7 @@
 .site-root--home :is(.blog-card__media img, .service-directory__card img) { transition: transform 220ms ease; }
 @media(hover:hover) and (pointer:fine) {
   .site-root--home :is(.blog-card, .service-directory__card, .growth-list-card, .home-intent__card):hover {
-    transform: none; border-color: #b79d60; box-shadow: 0 6px 24px #0002;
+    transform: none; border-color: #b79d60; box-shadow: 0 6px 24px rgba(var(--theme-shadow-rgb), 0.133);
   }
   .site-root--home :is(.blog-card:hover .blog-card__media img, .service-directory__card:hover img) { transform: scale(1.025); }
   .site-root--home :is(.services-btn, .blogs-btn, .growth-btn, .home-hero__cta):hover { transform: translateY(-1px); }

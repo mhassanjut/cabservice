@@ -28,6 +28,9 @@ const priorityServiceSlugs = [
 ]
 
 const priorityBlogSlugs = [
+  'barcelona-airport-to-eixample-private-transfer-guide',
+  'barcelona-airport-to-cruise-port-transfer-guide',
+  'barcelona-to-sitges-private-transfer-guide',
   'barcelona-airport-transfer-vs-taxi',
   'airport-taxi-barcelona-private-transfer-guide',
   'cab-service-barcelona-private-chauffeur-guide',
@@ -69,6 +72,9 @@ for (const path of [
   '/services/private-driver-barcelona',
   '/services/executive-chauffeur-barcelona',
   '/blogs/barcelona-airport-transfer-vs-taxi',
+  '/blogs/barcelona-airport-to-eixample-private-transfer-guide',
+  '/blogs/barcelona-airport-to-cruise-port-transfer-guide',
+  '/blogs/barcelona-to-sitges-private-transfer-guide',
   '/blogs/airport-taxi-barcelona-private-transfer-guide',
   '/blogs/cab-service-barcelona-private-chauffeur-guide',
   '/blogs/private-driver-barcelona-cost-booking-use-cases',

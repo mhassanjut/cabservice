@@ -2,7 +2,7 @@
   <section class="home-corporate" aria-labelledby="corporate-heading">
     <div class="home-corporate__media" aria-hidden="true">
       <NuxtImg
-        src="/img/home/corporate-banner.webp"
+        src="/img/home/generated/executive-corporate-transfer-v1.webp"
         alt=""
         preset="hero"
         loading="lazy"

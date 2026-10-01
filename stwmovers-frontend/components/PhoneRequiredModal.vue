@@ -206,14 +206,14 @@ const submit = () => {
   font-size: clamp(1.35rem, 3vw, 1.5rem);
   font-weight: 700;
   letter-spacing: -0.01em;
-  color: #111827;
+  color: rgba(var(--theme-ink-rgb), 1);
 }
 
 .phone-required-panel__lead {
   margin: 0 0 1.25rem;
   font-size: 0.9375rem;
   line-height: 1.6;
-  color: #6b7280;
+  color: rgba(var(--theme-muted-rgb), 1);
   max-width: none;
 }
 
@@ -239,7 +239,7 @@ const submit = () => {
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #6b7280;
+  color: rgba(var(--theme-muted-rgb), 1);
 }
 
 .phone-required-panel__submit {
@@ -258,7 +258,7 @@ const submit = () => {
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #fff;
+  color: #17130d;
   cursor: pointer;
   transition: background 0.2s ease, filter 0.2s ease;
 }
@@ -268,7 +268,7 @@ const submit = () => {
 }
 
 .phone-required-panel__submit:disabled {
-  background: #d4d4d4;
+  background: rgba(var(--theme-surface-rgb), 1);
   cursor: not-allowed;
 }
 
@@ -284,13 +284,13 @@ const submit = () => {
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #9ca3af;
+  color: rgba(var(--theme-muted-rgb), 1);
   cursor: pointer;
   transition: color 0.15s ease;
 }
 
 .phone-required-panel__cancel:hover:not(:disabled) {
-  color: #6b7280;
+  color: rgba(var(--theme-muted-rgb), 1);
 }
 
 .phone-required-panel__cancel:disabled {

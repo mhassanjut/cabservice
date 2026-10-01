@@ -80,7 +80,7 @@
 
 .services-page .services-btn--gold {
   background: var(--home-gold);
-  color: #fff;
+  color: #17130d;
 }
 
 .services-page .services-btn--gold:hover {
@@ -95,18 +95,18 @@
 
 .services-page .services-btn--outline:hover {
   background: var(--home-text);
-  color: #fff;
+  color: rgba(var(--theme-ink-rgb), 1);
 }
 
 /* Outline button on dark backgrounds (hero / final CTA) */
 .services-page .services-btn--outline-light {
   background: transparent;
-  border-color: rgba(255, 255, 255, 0.85);
-  color: #fff;
+  border-color: rgba(var(--theme-ink-rgb), 0.85);
+  color: rgba(var(--theme-ink-rgb), 1);
 }
 
 .services-page .services-btn--outline-light:hover {
-  background: #fff;
+  background: rgba(var(--theme-surface-rgb), 1);
   color: var(--home-text);
 }
 
@@ -128,7 +128,7 @@
   font-size: 0.9375rem;
   font-weight: 500;
   color: var(--home-text);
-  background: #fff;
+  background: rgba(var(--theme-surface-rgb), 0.06);
 }
 
 /* ─── Hero (82:492) ─── */
@@ -137,7 +137,7 @@
   min-height: var(--marketing-hero-height);
   display: flex;
   align-items: flex-end;
-  color: #fff;
+  color: rgba(var(--theme-ink-rgb), 1);
   overflow: hidden;
 }
 
@@ -165,7 +165,7 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(180deg, rgba(20, 14, 2, 0.55) 0%, rgba(0, 0, 0, 0.15) 55%, rgba(0, 0, 0, 0.6) 100%);
+  background: linear-gradient(180deg, rgba(var(--theme-shade-rgb), 0.55) 0%, rgba(var(--theme-shade-rgb), 0.15) 55%, rgba(var(--theme-shade-rgb), 0.6) 100%);
 }
 
 .services-page .services-hero__inner {
@@ -205,7 +205,7 @@
   font-family: 'Inter', system-ui, sans-serif;
   font-size: var(--marketing-hero-body);
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(var(--theme-ink-rgb), 0.88);
 }
 
 @media (min-width: 900px) {
@@ -443,7 +443,7 @@
   padding: clamp(1.75rem, 3vw, 2.5rem);
   border: 1px solid var(--home-border);
   border-radius: var(--services-radius);
-  background: #fff;
+  background: rgba(var(--theme-surface-rgb), 0.055);
 }
 
 .services-page .services-step__num {
@@ -486,7 +486,7 @@
   min-height: clamp(18rem, 36vw, 32.5rem);
   padding: clamp(3rem, 7vw, 7.5rem) clamp(1.25rem, 5vw, 5rem);
   text-align: center;
-  color: #fff;
+  color: rgba(var(--theme-ink-rgb), 1);
   overflow: hidden;
 }
 
@@ -494,14 +494,14 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: #14140f;
+  background: rgba(var(--theme-shade-rgb), 1);
 }
 
 .services-page .services-cta__overlay {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.6) 100%);
+  background: linear-gradient(180deg, rgba(var(--theme-shade-rgb), 0.35) 0%, rgba(var(--theme-shade-rgb), 0.6) 100%);
 }
 
 .services-page .services-cta__content {
@@ -520,7 +520,7 @@
   font-family: 'Inter', system-ui, sans-serif;
   font-weight: 700;
   line-height: 1.2;
-  color: #fff;
+  color: rgba(var(--theme-ink-rgb), 1);
   font-size: clamp(2rem, 4vw, 3.5rem);
 }
 
@@ -530,7 +530,7 @@
   font-family: 'Inter', system-ui, sans-serif;
   font-size: clamp(1rem, 1.2vw, 1.125rem);
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(var(--theme-ink-rgb), 0.82);
 }
 
 .services-page .services-cta__actions {
@@ -539,4 +539,24 @@
   justify-content: center;
   gap: 1rem;
   margin-top: 0.5rem;
+}
+
+html[data-site-theme="light"] .services-page {
+  background: rgba(var(--theme-surface-rgb), 1) !important;
+  color: rgba(var(--theme-ink-rgb), 1);
+}
+
+html[data-site-theme="light"] .services-page .services-tag,
+html[data-site-theme="light"] .services-page .services-step,
+html[data-site-theme="light"] .services-page .service-directory__card {
+  background: rgba(var(--theme-surface-rgb), 0.78);
+  border-color: rgba(var(--theme-ink-rgb), 0.13);
+  color: rgba(var(--theme-ink-rgb), 1);
+}
+
+html[data-site-theme="light"] .services-page .service-directory p,
+html[data-site-theme="light"] .services-page .services-lead,
+html[data-site-theme="light"] .services-page .services-step__text,
+html[data-site-theme="light"] .services-page .services-feature__text {
+  color: rgba(var(--theme-ink-rgb), 0.68);
 }

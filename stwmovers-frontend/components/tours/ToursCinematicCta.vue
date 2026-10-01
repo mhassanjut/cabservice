@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import cinematicCtaUrl from '~/assets/images/tour-page/cinematic-cta.png?url'
+import cinematicCtaUrl from '~/assets/images/tour-page/cinematic-cta.webp?url'
 import { siteConfig } from '~/config/site'
 import { buildWhatsappUrl } from '~/utils/whatsapp'
 

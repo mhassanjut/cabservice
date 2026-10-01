@@ -1,0 +1,120 @@
+/* Shared palette for marketing, booking, account and dialog surfaces. */
+:root {
+  color-scheme: dark;
+  --theme-ink-rgb: 244, 244, 246;
+  --theme-muted-rgb: 174, 176, 184;
+  --theme-shade-rgb: 10, 10, 12;
+  --theme-surface-rgb: 24, 24, 28;
+  --theme-shadow-rgb: 0, 0, 0;
+}
+html[data-site-theme="light"] {
+  color-scheme: light;
+  --theme-ink-rgb: 24, 26, 30;
+  --theme-muted-rgb: 83, 88, 99;
+  --theme-shade-rgb: 247, 248, 250;
+  --theme-surface-rgb: 255, 255, 255;
+  --theme-shadow-rgb: 46, 50, 60;
+  --color-bg-primary: #f7f8fa;
+  --color-bg-secondary: #fff;
+  --color-bg-card: #fff;
+  --color-bg-deep: #f7f8fa;
+  --color-bg: #f7f8fa;
+  --color-bg-elevated: #eef0f3;
+  --color-surface: #fff;
+  --color-surface-hover: #eef0f3;
+  --color-border: rgba(24, 26, 30, .16);
+  --color-border-strong: rgba(130, 97, 22, .4);
+  --color-text: #181a1e;
+  --color-text-primary: #181a1e;
+  --color-text-secondary: #535863;
+  --color-muted: #535863;
+  --color-faint: #626773;
+  --color-gold: #826116;
+  --color-gold-bright: #795912;
+  --color-gold-light: #795912;
+  --color-danger: #b52435;
+  --color-success: #176b48;
+  --surface: rgba(24, 26, 30, .04);
+  --surface2: rgba(24, 26, 30, .07);
+}
+html[data-site-theme] .home-page,
+html[data-site-theme] .site-root {
+  --home-bg: var(--color-bg-deep);
+  --home-text: var(--color-text);
+  --home-text-muted: var(--color-muted);
+  --home-gold: var(--color-gold-bright);
+  --home-border: var(--color-border);
+  --home-border-soft: var(--color-border);
+  --home-white: var(--color-surface);
+  --growth-ink: var(--color-text);
+  --growth-cream: var(--color-surface);
+  --home-corporate-overlay: linear-gradient(90deg, rgba(var(--theme-shade-rgb), .94), rgba(var(--theme-shade-rgb), .15));
+  background-color: var(--color-bg-deep);
+  color: var(--color-text);
+}
+html[data-site-theme] .home-section--white,
+html[data-site-theme] .services-page,
+html[data-site-theme] .blogs-page,
+html[data-site-theme] .site-root--home {
+  background: var(--color-bg-deep) !important;
+}
+html[data-site-theme] :is(.app-nav, .app-nav.is-scrolled) {
+  background: rgba(var(--theme-shade-rgb), .92) !important;
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+html[data-site-theme] .app-nav__scrim { background: transparent !important; }
+html[data-site-theme="light"] :is(.app-nav__logo, .home-footer__logo, .footer-logo) img {
+  filter: brightness(0);
+}
+html[data-site-theme="light"] :is(img.app-nav__logo, .app-nav__brand img, .home-footer__brand img, .refined-footer__logo) {
+  filter: brightness(0) !important;
+  opacity: .92;
+}
+html[data-site-theme="dark"] .refined-footer__logo {
+  filter: none !important;
+  opacity: 1;
+}
+html[data-site-theme="light"] .home-hero__copy-scrim {
+  background: linear-gradient(90deg, rgba(247, 248, 250, .97), rgba(247, 248, 250, .9) 38%, rgba(247, 248, 250, .18) 78%) !important;
+}
+html[data-site-theme="light"] :is(.home-hero__intent i, .home-hero__booking i, .app-nav__theme-toggle) {
+  color: var(--color-gold-bright) !important;
+}
+html[data-site-theme] :is(.home-btn--gold, .services-btn--gold, .about-btn--gold, .contact-btn--gold, .btn-gold, .app-nav__cta, .booking-form__bar-submit) {
+  background: linear-gradient(135deg, #f5dda0, #d8b24c) !important;
+  color: #17130d !important;
+}
+html[data-site-theme] :is(input, select, textarea) {
+  color: var(--color-text);
+  accent-color: var(--color-gold);
+}
+html[data-site-theme] :is(input, textarea)::placeholder {
+  color: var(--color-muted);
+  opacity: 1;
+}
+html[data-site-theme] option {
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+html[data-site-theme] :is(button, a, input, select, textarea):focus-visible {
+  outline: 2px solid var(--color-gold-bright);
+  outline-offset: 3px;
+}
+html[data-site-theme="light"] :is(.home-hero__overlay, .services-hero__overlay, .about-hero__overlay, .contact-hero__overlay, .tours-hero__overlay, .growth-hero__overlay, .ads-hero__overlay, .blogs-hero__overlay) {
+  background: linear-gradient(90deg, rgba(247, 248, 250, .97), rgba(247, 248, 250, .82) 38%, rgba(247, 248, 250, .18)) !important;
+}
+html[data-site-theme="light"] .home-service-clarity {
+  background-image: linear-gradient(90deg, rgba(247, 248, 250, .97), rgba(247, 248, 250, .88)), url('/img/home/generated/luxury-service-background-v1.webp');
+}
+html[data-site-theme="light"] :is(.home-service-clarity, .home-hero)::after {
+  background: linear-gradient(0deg, #f7f8fa, transparent) !important;
+}
+@media (max-width: 767px) {
+  html[data-site-theme="light"] .home-hero__copy-scrim {
+    background: linear-gradient(90deg, rgba(247, 248, 250, .97), rgba(247, 248, 250, .86) 65%, rgba(247, 248, 250, .55)) !important;
+  }
+  html[data-site-theme="light"] :is(.home-hero__overlay, .services-hero__overlay, .about-hero__overlay, .contact-hero__overlay, .tours-hero__overlay, .growth-hero__overlay, .ads-hero__overlay, .blogs-hero__overlay) {
+    background: linear-gradient(90deg, rgba(247, 248, 250, .97), rgba(247, 248, 250, .7) 70%, rgba(247, 248, 250, .4)) !important;
+  }
+}
