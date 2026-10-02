@@ -58,11 +58,11 @@ useJsonLdSchema(
 
     <HomeConversionProof />
 
-    <HomeBookingConfidence />
-
     <HomeIntentPaths />
 
     <HomeFleet />
+
+    <HomeBookingConfidence />
 
     <HomeTestimonials />
 

@@ -354,7 +354,7 @@ const onSubmit = async () => {
         <p v-if="submitAttempted && (pickupError || destinationError || dateError || timeError)" class="err" role="alert">
           Please check the highlighted journey details before continuing.
         </p>
-        <p v-if="maps.error" class="err env-warn" role="status">Location search is temporarily unavailable. Please try again or contact our team.</p>
+        <p v-if="maps.error.value" class="err env-warn" role="status">Location search is temporarily unavailable. Please try again or contact our team.</p>
         <p v-else-if="!config.public.googleMapsApiKey" class="err env-warn">
           Location search is temporarily unavailable. Please contact our team using the phone or WhatsApp links.
         </p>

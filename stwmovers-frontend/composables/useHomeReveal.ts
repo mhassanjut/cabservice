@@ -11,7 +11,6 @@ const groups = [
 
 export function useHomeReveal(root: Ref<HTMLElement | undefined>) {
   let entrance: IntersectionObserver | undefined
-  let exit: IntersectionObserver | undefined
   let mutations: MutationObserver | undefined
   let preference: MediaQueryList | undefined
   const targets = new Set<HTMLElement>()
@@ -31,7 +30,6 @@ export function useHomeReveal(root: Ref<HTMLElement | undefined>) {
 
   function stop() {
     entrance?.disconnect()
-    exit?.disconnect()
     mutations?.disconnect()
     targets.forEach(show)
   }
@@ -49,13 +47,14 @@ export function useHomeReveal(root: Ref<HTMLElement | undefined>) {
         const element = entry.target as HTMLElement
         if (!entry.isIntersecting || !element.hasAttribute('data-reveal-pending')) continue
         show(element)
+        entrance?.unobserve(element)
         if (element.contains(document.activeElement)) continue
         const animation = element.animate([
-          { opacity: 0, translate: `0 ${mobile ? 14 : 20}px` },
+          { opacity: 0.7, translate: `0 ${mobile ? 8 : 12}px` },
           { opacity: 1, translate: '0 0' },
         ], {
-          duration: mobile ? 340 : 380,
-          delay: Math.min(order++ * 45, 135),
+          duration: mobile ? 220 : 260,
+          delay: Math.min(order++ * 30, 60),
           easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
           fill: 'backwards',
         })
@@ -63,17 +62,6 @@ export function useHomeReveal(root: Ref<HTMLElement | undefined>) {
         animation.onfinish = () => animations.delete(element)
       }
     }, { threshold: 0, rootMargin: mobile ? '0px 0px -60px 0px' : '0px 0px -80px 0px' })
-
-    // Rearm only well outside the viewport, avoiding flicker at the reveal boundary.
-    exit = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        const element = entry.target as HTMLElement
-        if (!entry.isIntersecting && !element.contains(document.activeElement)) {
-          show(element)
-          element.setAttribute('data-reveal-pending', '')
-        }
-      })
-    }, { rootMargin: '160px 0px 160px 0px' })
 
     const discover = () => {
       root.value?.querySelectorAll<HTMLElement>('section :is(h2, p), section ' + groups.split(', ').join(', section ')).forEach(element => {
@@ -87,13 +75,11 @@ export function useHomeReveal(root: Ref<HTMLElement | undefined>) {
           element.setAttribute('data-reveal-pending', '')
         }
         entrance?.observe(element)
-        exit?.observe(element)
       })
       targets.forEach(element => {
         if (element.isConnected) return
         show(element)
         entrance?.unobserve(element)
-        exit?.unobserve(element)
         targets.delete(element)
       })
     }

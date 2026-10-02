@@ -292,7 +292,7 @@ const onSubmit = async () => {
       @choose-pickup="onPickupModalChoose"
     />
     <template v-if="props.variant === 'bar'">
-      <p v-if="maps.error" class="booking-form__bar-notice err env-warn">Location search is temporarily unavailable. Please try again or contact our team.</p>
+      <p v-if="maps.error.value" class="booking-form__bar-notice err env-warn" role="status">Location search is temporarily unavailable. Please try again or contact our team.</p>
       <p v-else-if="!config.public.googleMapsApiKey" class="booking-form__bar-notice err env-warn">
         Location search is temporarily unavailable. Please contact our team for help with your journey.
       </p>
@@ -406,7 +406,7 @@ const onSubmit = async () => {
       </div>
     </template>
     <template v-else>
-    <p v-if="maps.error" class="err env-warn">Location search is temporarily unavailable. Please try again or contact our team.</p>
+    <p v-if="maps.error.value" class="err env-warn" role="status">Location search is temporarily unavailable. Please try again or contact our team.</p>
     <p v-else-if="!config.public.googleMapsApiKey" class="err env-warn">
       Location search is temporarily unavailable. Please contact our team for help with your journey.
     </p>

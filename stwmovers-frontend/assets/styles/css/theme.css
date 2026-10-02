@@ -78,21 +78,15 @@ html[data-site-theme] .site-root--home :is(.home-intent__card, .home-proof__pane
 html[data-site-theme] .site-root--home :is(.home-intent__card, .home-confidence__card):is(:hover, :focus-visible) {
   background-color: var(--color-surface-hover);
 }
-/* Matching edges connect sections without flattening their centre surfaces. */
+/* Quiet, defined section edges keep photography free of stacked fades. */
 html[data-site-theme] .home-section--white {
-  background: linear-gradient(180deg, var(--color-bg), var(--color-bg-secondary) 30%, var(--color-bg-secondary) 70%, var(--color-bg));
+  background: var(--color-bg-secondary);
 }
 html[data-site-theme] .home-hero::after {
-  content: '';
-  position: absolute;
-  inset: auto 0 0;
-  height: 112px;
-  z-index: 1;
-  background: linear-gradient(0deg, var(--color-bg), transparent);
-  pointer-events: none;
+  content: none;
 }
 html[data-site-theme] .home-confidence {
-  background: linear-gradient(180deg, var(--color-bg), var(--color-bg-secondary) 30%, var(--color-bg-secondary) 70%, var(--color-bg));
+  background: var(--color-bg-secondary);
 }
 html[data-site-theme] :is(.home-intent__card, .home-proof__panel, .home-confidence__card) {
   background: var(--color-bg-card);
@@ -103,14 +97,39 @@ html[data-site-theme] :is(.home-intent__card, .home-confidence__card):is(:hover,
   border-color: rgba(216, 178, 76, .48);
 }
 html[data-site-theme] .home-service-clarity::after {
-  background: linear-gradient(180deg, var(--color-bg), transparent 24%, transparent 76%, var(--color-bg));
+  content: none;
 }
 html[data-site-theme] :is(.home-corporate, .home-cta)::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(180deg, var(--color-bg), transparent 24%, transparent 76%, var(--color-bg));
+  content: none;
+}
+html[data-site-theme] .home-page > * + * {
+  border-top: 1px solid var(--color-border);
+}
+html[data-site-theme] .home-hero .booking-form--bar {
+  background: #20282d;
+  border-color: rgba(216, 178, 76, .55);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+html[data-site-theme] .home-hero .booking-form__bar-label {
+  color: #bec6cc;
+}
+html[data-site-theme] .home-hero .booking-form__bar-icon {
+  width: 1.75rem;
+  flex-shrink: 0;
+  text-align: center;
+}
+html[data-site-theme] .home-hero .booking-form__bar-submit {
+  box-shadow: none;
+}
+html[data-site-theme] .site-root--home :is(.home-intent__card, .home-confidence__card) {
+  border-radius: 8px;
+}
+html[data-site-theme] .site-root--home .home-proof__panel {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
 }
 html[data-site-theme] .home-page > :is(.home-section, .home-proof, .home-confidence) {
   padding-block: 52px;
@@ -149,7 +168,7 @@ html[data-site-theme] :is(button, a, input, select, textarea):focus-visible {
 
 /* Added only after observers are active; server-rendered content stays readable. */
 .home-page [data-reveal-pending] {
-  opacity: 0;
+  opacity: 1;
 }
 .home-page [data-home-reveal]:focus-within {
   opacity: 1;

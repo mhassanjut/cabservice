@@ -38,7 +38,7 @@ const href = computed(() =>
 
 <style>
 @media (max-width: 859px) {
-  body:has(.journey-page) .wa-float { display: none; }
+  body:has(.mobile-bar a[href*="wa.me"]) .wa-float { display: none; }
 }
 body:has(.app-nav__drawer.is-open) .wa-float,
 body:has(.app-nav__drawer.is-open) .mobile-bar {

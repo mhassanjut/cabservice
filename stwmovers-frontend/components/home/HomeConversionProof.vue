@@ -49,10 +49,10 @@ const whatsappHref = buildWhatsappUrl({
 
         <div class="home-proof__actions">
           <NuxtLink class="home-proof__btn home-proof__btn--gold" to="/journey#book-journey">
-            Request Quote
+            Request a Quote
           </NuxtLink>
           <a class="home-proof__btn home-proof__btn--ghost" :href="whatsappHref" target="_blank" rel="noopener noreferrer">
-            WhatsApp
+            Continue on WhatsApp
           </a>
         </div>
       </div>

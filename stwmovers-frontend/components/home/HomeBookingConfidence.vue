@@ -47,8 +47,7 @@ const whatsappHref = buildWhatsappUrl({
         <p class="home-eyebrow">Choose faster</p>
         <h2 id="home-confidence-heading">Start with the journey you need.</h2>
         <p>
-          Visitors arriving from Google Ads, AI answers, or local searches can move straight to the right booking path
-          without comparing every service page first.
+          Plan an airport arrival, business journey, cruise connection, or group transfer around your schedule and luggage.
         </p>
       </div>
 
@@ -74,7 +73,7 @@ const whatsappHref = buildWhatsappUrl({
           <i class="fa-solid fa-arrow-right" aria-hidden="true" />
         </a>
         <a class="home-confidence__action home-confidence__action--ghost" :href="whatsappHref" target="_blank" rel="noopener noreferrer">
-          Ask on WhatsApp
+          Continue on WhatsApp
           <i class="fa-brands fa-whatsapp" aria-hidden="true" />
         </a>
       </div>
