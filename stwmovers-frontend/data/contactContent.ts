@@ -142,7 +142,7 @@ export const contactFaqItems: ContactFaqItem[] = [
   {
     question: 'Do you monitor delayed flights for airport transfers?',
     answer:
-      'Absolutely. We track your flight in real time and adjust the pickup automatically, so your chauffeur is always waiting when you land — at no extra cost for reasonable delays.',
+      'Include your flight number when booking. Ask our team to confirm flight monitoring, waiting time and any delay-related charges for your transfer before you travel.',
   },
   {
     question: 'Can I request multiple stops during hourly chauffeur service?',
@@ -152,7 +152,7 @@ export const contactFaqItems: ContactFaqItem[] = [
   {
     question: 'Do you provide child seats upon request?',
     answer:
-      'We do. Add your requirements in the notes when requesting your journey and we will fit the appropriate child or booster seats free of charge.',
+      'Request a child or booster seat in your booking notes, including the child\'s age and any specific requirements. Our team will confirm availability, suitability and any charge before you book.',
   },
   {
     question: 'Can I book recurring travel for corporate business accounts?',

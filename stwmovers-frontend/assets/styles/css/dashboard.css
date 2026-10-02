@@ -178,17 +178,17 @@
 }
 
 .dashboard-status-badge--success {
-  background: rgba(var(--theme-surface-rgb), 1);
+  background: #ecfdf3;
   color: #027a48;
 }
 
 .dashboard-status-badge--warning {
-  background: rgba(var(--theme-surface-rgb), 1);
+  background: #fffaeb;
   color: #b54708;
 }
 
 .dashboard-status-badge--danger {
-  background: rgba(var(--theme-surface-rgb), 1);
+  background: #fef3f2;
   color: #b42318;
 }
 

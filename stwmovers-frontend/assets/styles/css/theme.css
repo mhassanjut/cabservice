@@ -24,7 +24,7 @@
   --color-gold-bright: #e4c76b;
 }
 html[data-site-theme] .home-page,
-html[data-site-theme] .site-root {
+html[data-site-theme] .site-root:not(.site-root--booking) {
   --home-bg: var(--color-bg);
   --home-text: var(--color-text);
   --home-text-muted: var(--color-muted);
@@ -36,6 +36,27 @@ html[data-site-theme] .site-root {
   --growth-cream: var(--color-bg-secondary);
   --home-corporate-overlay: linear-gradient(90deg, rgba(var(--theme-shade-rgb), .94), rgba(var(--theme-shade-rgb), .15));
   background-color: var(--color-bg);
+  color: var(--color-text);
+}
+/* Checkout retains its original light surface and dark form text. */
+html[data-site-theme] .site-root--booking {
+  color-scheme: light;
+  background: var(--bk-bg);
+  color: var(--bk-text);
+}
+html[data-site-theme] .site-root--booking :is(input, select, textarea) {
+  color: var(--bk-text);
+}
+html[data-site-theme] .site-root--booking :is(input, textarea)::placeholder {
+  color: var(--bk-muted);
+}
+html[data-site-theme] .site-root--booking option {
+  background: var(--bk-surface);
+  color: var(--bk-text);
+}
+.app-nav__drawer-link.is-current {
+  background: rgba(216, 178, 76, .14);
+  border-left-color: #d8b24c;
   color: var(--color-text);
 }
 /* A cool graphite tint on the homepage balances warm photography and gold. */

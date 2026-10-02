@@ -39,18 +39,18 @@ const articles = computed(() => mergePublishedPosts(localBlogPosts, remotePosts.
 
 <style scoped>
 .home-insights { background: rgba(var(--theme-shade-rgb), 1); color: rgba(var(--theme-ink-rgb), 1); }
-.home-insights .home-eyebrow { color: #d2a83d; }
+.home-insights .home-eyebrow { color: var(--color-gold); }
 .home-insights__heading { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 28px; }
 .home-insights__heading h2 { margin: 0; }
-.home-insights__heading > a { flex-shrink: 0; color: #e5c36c; text-decoration: none; font-size: 14px; }
+.home-insights__heading > a { flex-shrink: 0; color: var(--color-gold-bright); text-decoration: none; font-size: 14px; }
 .home-insights__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
 .home-insights__article { display: flex; height: 100%; flex-direction: column; color: inherit; text-decoration: none; }
 .home-insights__article img { width: 100%; aspect-ratio: 8 / 5; height: auto; object-fit: cover; border-radius: 4px; transition: filter 0.2s ease; }
 .home-insights__article h3 { margin: 18px 0 12px; font-size: 22px; line-height: 1.3; font-weight: 300; letter-spacing: 0; }
 .home-insights__article p { margin: 0 0 18px; color: rgba(var(--theme-ink-rgb), 1); font-size: 14px; line-height: 1.6; }
-.home-insights__article span { margin-top: auto; color: #e5c36c; font-size: 13px; }
+.home-insights__article span { margin-top: auto; color: var(--color-gold-bright); font-size: 13px; }
 .home-insights__article:hover img { filter: brightness(1.1); }
-.home-insights a:focus-visible { outline: 2px solid #e5c36c; outline-offset: 5px; }
+.home-insights a:focus-visible { outline: 2px solid var(--color-gold-bright); outline-offset: 5px; }
 @media (max-width: 767px) {
   .home-insights__heading { align-items: start; flex-direction: column; gap: 12px; }
   .home-insights__grid { grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: 86%; overflow-x: auto; scroll-snap-type: x mandatory; padding: 6px 2px 20px; }

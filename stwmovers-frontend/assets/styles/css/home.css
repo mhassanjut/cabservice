@@ -403,7 +403,7 @@
   }
 }
 
-.site-root--home .app-nav__panel--home .app-nav__drawer-link.router-link-exact-active {
+.site-root--home .app-nav__panel--home .app-nav__drawer-link.is-current {
   background: rgba(216, 178, 76, 0.14);
   border-left-color: #d8b24c;
   color: rgba(var(--theme-ink-rgb), 1);

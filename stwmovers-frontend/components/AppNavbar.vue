@@ -4,6 +4,10 @@ import logoUrl from '~/assets/icons/Logo.svg?url'
 
 const auth = useAuthStore()
 const route = useRoute()
+const isCurrentLink = (href: string) => {
+  const [path, hash] = href.split('#')
+  return route.path === path && (hash ? route.hash === `#${hash}` : !route.hash || route.hash !== '#fleet')
+}
 const menuOpen = ref(false)
 const menuToggle = ref<HTMLButtonElement>()
 const drawerPanel = ref<HTMLElement>()
@@ -19,15 +23,12 @@ const hasHeroBackdrop = computed(() => {
 
 const isServicesActive = computed(() =>
   route.path === routes.services
-  || route.path.startsWith('/services/')
-  || route.path.startsWith('/locations')
-  || route.path.startsWith('/answers'),
+  || route.path.startsWith('/services/'),
 )
 
-const isInsightsActive = computed(() => route.path === routes.blogs || route.path.startsWith('/blogs/'))
+const isInsightsActive = computed(() => route.path === routes.blogs || route.path.startsWith('/blogs/') || route.path.startsWith('/answers'))
 const isCompanyActive = computed(() =>
   route.path === routes.aboutUs
-  || route.path === routes.contact
   || route.path === routes.faq
   || route.path.includes('policy')
   || route.path.includes('terms')
@@ -271,8 +272,8 @@ const closeMenu = () => {
             </div>
           </div>
           <template v-if="menu.label === 'Services'">
-            <NuxtLink class="app-nav__link" to="/#fleet">Fleet</NuxtLink>
-            <NuxtLink class="app-nav__link" to="/locations">Service Areas</NuxtLink>
+            <NuxtLink class="app-nav__link" :class="{ 'router-link-exact-active': isCurrentLink('/#fleet') }" active-class="" exact-active-class="" :aria-current="isCurrentLink('/#fleet') ? 'location' : undefined" to="/#fleet">Fleet</NuxtLink>
+            <NuxtLink class="app-nav__link" :class="{ 'router-link-exact-active': route.path.startsWith('/locations') }" to="/locations">Service Areas</NuxtLink>
           </template>
           </template>
           <NuxtLink class="app-nav__link" to="/contact">Contact</NuxtLink>
@@ -340,6 +341,10 @@ const closeMenu = () => {
                 v-for="link in group.links"
                 :key="link.href"
                 class="app-nav__drawer-link"
+                :class="{ 'is-current': isCurrentLink(link.href) }"
+                active-class=""
+                exact-active-class=""
+                :aria-current="isCurrentLink(link.href) ? 'page' : undefined"
                 :to="link.href"
                 @click="closeMenu"
               >

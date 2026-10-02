@@ -204,6 +204,7 @@ const onPickupModalChoose = () => {
 }
 
 const onSubmit = async () => {
+  if (loading.value) return
   Object.assign(touched, { pickupLocation: true, dropoffLocation: true, pickupDate: true, pickupTime: true })
   const e = errors.value
   const firstError = e.pickupLocation || e.dropoffLocation || e.pickupDate || e.pickupTime
@@ -212,6 +213,9 @@ const onSubmit = async () => {
     if (props.variant === 'bar') {
       toast.show(firstError, 'error')
     }
+    await nextTick()
+    const field = e.pickupLocation ? pickupRef : e.dropoffLocation ? dropoffRef : e.pickupDate ? dateRef : timeRef
+    field.value?.focus()
     return
   }
   loading.value = true
@@ -288,9 +292,9 @@ const onSubmit = async () => {
       @choose-pickup="onPickupModalChoose"
     />
     <template v-if="props.variant === 'bar'">
-      <p v-if="maps.error" class="booking-form__bar-notice err env-warn">{{ maps.error }}</p>
+      <p v-if="maps.error" class="booking-form__bar-notice err env-warn">Location search is temporarily unavailable. Please try again or contact our team.</p>
       <p v-else-if="!config.public.googleMapsApiKey" class="booking-form__bar-notice err env-warn">
-        Set NUXT_PUBLIC_GOOGLE_MAPS_API_KEY in .env to enable location autocomplete.
+        Location search is temporarily unavailable. Please contact our team for help with your journey.
       </p>
       <div class="booking-form__bar-grid">
         <div class="booking-form__field" :class="{ 'booking-form__field--maps-pending': placesPending }">
@@ -305,7 +309,7 @@ const onSubmit = async () => {
               ref="pickupRef"
               v-model="form.pickupLocation"
               class="booking-form__bar-input"
-              :placeholder="placesPending ? 'Loading places…' : 'Select Pickup'"
+              placeholder="Select Pickup"
               required
               autocomplete="off"
               :aria-busy="placesPending || undefined"
@@ -326,7 +330,7 @@ const onSubmit = async () => {
               ref="dropoffRef"
               v-model="form.dropoffLocation"
               class="booking-form__bar-input"
-              :placeholder="placesPending ? 'Loading places…' : 'Select Destination'"
+              placeholder="Select Destination"
               required
               autocomplete="off"
               :aria-busy="placesPending || undefined"
@@ -394,17 +398,17 @@ const onSubmit = async () => {
           </span>
         </div>
         <div class="booking-form__submit-wrap">
-          <button class="booking-form__bar-submit" type="submit" :disabled="loading">
-            <span>Get a Quote</span>
+          <button class="booking-form__bar-submit" type="submit" :disabled="loading" :aria-busy="loading" aria-live="polite">
+            <span>{{ loading ? 'Finding vehicles…' : 'View Vehicles & Prices' }}</span>
             <i class="fa-solid fa-arrow-right" aria-hidden="true" />
           </button>
         </div>
       </div>
     </template>
     <template v-else>
-    <p v-if="maps.error" class="err env-warn">{{ maps.error }}</p>
+    <p v-if="maps.error" class="err env-warn">Location search is temporarily unavailable. Please try again or contact our team.</p>
     <p v-else-if="!config.public.googleMapsApiKey" class="err env-warn">
-      Set NUXT_PUBLIC_GOOGLE_MAPS_API_KEY in .env to enable location autocomplete.
+      Location search is temporarily unavailable. Please contact our team for help with your journey.
     </p>
     <h3 class="font-serif">Get your transfer quote</h3>
     <div class="grid cols-2">
@@ -418,7 +422,7 @@ const onSubmit = async () => {
           ref="pickupRef"
           v-model="form.pickupLocation"
           class="input"
-          :placeholder="placesPending ? 'Loading places…' : undefined"
+          placeholder="Select Pickup"
           required
           autocomplete="off"
           :aria-busy="placesPending || undefined"
@@ -437,7 +441,7 @@ const onSubmit = async () => {
           ref="dropoffRef"
           v-model="form.dropoffLocation"
           class="input"
-          :placeholder="placesPending ? 'Loading places…' : undefined"
+          placeholder="Select Destination"
           required
           autocomplete="off"
           :aria-busy="placesPending || undefined"
@@ -486,8 +490,8 @@ const onSubmit = async () => {
       </div>
     </div>
     <p v-if="form.distanceKm" class="help">Distance ≈ {{ formatDistanceKm(form.distanceKm) }}</p>
-    <button class="btn btn--solid-gold" type="submit" :disabled="loading">
-      Book Now
+    <button class="btn btn--solid-gold" type="submit" :disabled="loading" :aria-busy="loading" aria-live="polite">
+      {{ loading ? 'Finding vehicles…' : 'View Vehicles & Prices' }}
     </button>
     </template>
     <LoadingOverlay :show="loading" label="Finding premium vehicles…" />

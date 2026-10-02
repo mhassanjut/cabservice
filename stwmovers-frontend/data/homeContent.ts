@@ -119,7 +119,7 @@ export const homeBookingSteps = [
   {
     step: '02',
     title: 'Meet Your Chauffeur',
-    text: 'Receive chauffeur details and live tracking 2 hours prior to your scheduled departure.',
+    text: 'Confirm your meeting point and chauffeur contact arrangements with our team before departure.',
   },
   {
     step: '03',

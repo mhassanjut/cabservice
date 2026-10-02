@@ -1406,12 +1406,13 @@ select.input {
 
 /* In-field Maps pending hint (BookingForm + ContactBooking) */
 .booking-form__maps-hint {
-  margin-left: 0.4rem;
-  font-weight: 400;
-  font-size: 0.7em;
-  letter-spacing: 0.02em;
-  text-transform: none;
-  color: var(--color-muted, rgba(var(--theme-ink-rgb), 0.45));
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
   white-space: nowrap;
 }
 

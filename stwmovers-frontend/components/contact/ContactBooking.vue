@@ -8,6 +8,8 @@ import { normalizeCarFilters } from '~/utils/carFilters'
 import { resolvePickupCity, type SupportedPickupCity } from '~/utils/cities'
 import { routeEndpoint } from '~/utils/routeEndpoint'
 
+withDefaults(defineProps<{ journey?: boolean }>(), { journey: false })
+
 const route = useRoute()
 const router = useRouter()
 const booking = useBookingStore()
@@ -21,6 +23,8 @@ const form = reactive({
   date: '',
   time: '',
   notes: '',
+  passengers: 2,
+  luggage: '',
 })
 
 const loading = ref(false)
@@ -239,13 +243,16 @@ watch(
 )
 
 const onSubmit = async () => {
+  if (loading.value) return
   submitAttempted.value = true
   pickupTouched.value = true
   destinationTouched.value = true
   dateTouched.value = true
   timeTouched.value = true
   if (pickupError.value || destinationError.value || dateError.value || timeError.value) {
-    promptNextPendingField()
+    await nextTick()
+    const field = pickupError.value ? pickupRef : destinationError.value ? destinationRef : dateError.value ? dateRef : timeRef
+    field.value?.focus()
     return
   }
 
@@ -284,7 +291,8 @@ const onSubmit = async () => {
       durationMinutes: tripRoute.durationMinutes,
       pickupCity: resolvedPickup,
       destinationCity: destinationCity.value,
-      notes: form.notes.trim() || undefined,
+      passengerCount: form.passengers,
+      notes: [form.notes.trim(), form.luggage ? `Luggage: ${form.luggage}` : ''].filter(Boolean).join('\n') || undefined,
     })
     const res = await ridesService.carsWithFare({
       pickupLat: pickupPlace.value!.lat,
@@ -310,7 +318,7 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <section id="book-journey" class="contact-section" aria-labelledby="contact-booking-heading">
+  <section id="book-journey" class="contact-section" :class="{ 'contact-section--journey': journey }" aria-labelledby="contact-booking-heading">
     <PickupValidationModal
       :show="showPickupModal"
       @close="showPickupModal = false"
@@ -318,10 +326,12 @@ const onSubmit = async () => {
     />
     <div class="contact-container contact-booking__grid">
       <div class="contact-booking__info">
-        <h2 id="contact-booking-heading" class="contact-heading contact-heading--sm">
+        <h2 v-if="!journey" id="contact-booking-heading" class="contact-heading contact-heading--sm">
           {{ contactBooking.heading }}
         </h2>
-        <p class="contact-lead contact-booking__lead">{{ contactBooking.lead }}</p>
+        <h2 v-else id="contact-booking-heading" class="contact-heading contact-heading--sm">Your journey details</h2>
+        <p v-if="!journey" class="contact-lead contact-booking__lead">{{ contactBooking.lead }}</p>
+        <p v-else class="contact-lead contact-booking__lead">Plan your pickup, destination and travel time. Need help with your trip? Contact our Barcelona team.</p>
 
         <ul class="contact-channels">
           <li v-for="channel in contactChannels" :key="channel.label" class="contact-channel">
@@ -341,9 +351,12 @@ const onSubmit = async () => {
       </div>
 
       <form class="contact-form-card" novalidate @submit.prevent="onSubmit">
-        <p v-if="maps.error" class="err env-warn">{{ maps.error }}</p>
+        <p v-if="submitAttempted && (pickupError || destinationError || dateError || timeError)" class="err" role="alert">
+          Please check the highlighted journey details before continuing.
+        </p>
+        <p v-if="maps.error" class="err env-warn" role="status">Location search is temporarily unavailable. Please try again or contact our team.</p>
         <p v-else-if="!config.public.googleMapsApiKey" class="err env-warn">
-          Set NUXT_PUBLIC_GOOGLE_MAPS_API_KEY in .env to enable location autocomplete.
+          Location search is temporarily unavailable. Please contact our team using the phone or WhatsApp links.
         </p>
 
         <div class="contact-form__grid">
@@ -362,16 +375,16 @@ const onSubmit = async () => {
               class="contact-input"
               type="text"
               autocomplete="off"
-              :placeholder="placesPending ? 'Loading places…' : 'e.g. Mandarin Oriental, Barcelona'"
+              placeholder="e.g. Mandarin Oriental, Barcelona"
               required
-              aria-describedby="contact-pickup-hint"
+              :aria-describedby="pickupError ? 'contact-pickup-hint contact-pickup-error' : 'contact-pickup-hint'"
               :aria-busy="placesPending || undefined"
               :aria-invalid="pickupError ? 'true' : undefined"
               @input="pickupPlace = null; pickupCity = undefined"
               @blur="pickupTouched = true"
               @focus="onPlaceFocus('pickup')"
             >
-            <p v-if="pickupError" class="err">{{ pickupError }}</p>
+            <p v-if="pickupError" id="contact-pickup-error" class="err">{{ pickupError }}</p>
           </div>
           <div class="contact-field" :class="{ 'contact-field--maps-pending': placesPending }">
             <label class="contact-label" for="contact-destination">
@@ -388,16 +401,16 @@ const onSubmit = async () => {
               class="contact-input"
               type="text"
               autocomplete="off"
-              :placeholder="placesPending ? 'Loading places…' : 'e.g. Barcelona-El Prat Airport'"
+              placeholder="e.g. Barcelona-El Prat Airport"
               required
-              aria-describedby="contact-destination-hint"
+              :aria-describedby="destinationError ? 'contact-destination-hint contact-destination-error' : 'contact-destination-hint'"
               :aria-busy="placesPending || undefined"
               :aria-invalid="destinationError ? 'true' : undefined"
               @input="destinationPlace = null; destinationCity = undefined"
               @blur="destinationTouched = true"
               @focus="onPlaceFocus('destination')"
             >
-            <p v-if="destinationError" class="err">{{ destinationError }}</p>
+            <p v-if="destinationError" id="contact-destination-error" class="err">{{ destinationError }}</p>
           </div>
           <div class="contact-field">
             <label class="contact-label" for="contact-date">Travel Date</label>
@@ -411,11 +424,12 @@ const onSubmit = async () => {
                 required
                 :min="minPickupDate"
                 :aria-invalid="dateError ? 'true' : undefined"
+                :aria-describedby="dateError ? 'contact-date-error' : undefined"
                 @blur="dateTouched = true"
                 @click="openPicker(dateRef)"
               >
             </label>
-            <p v-if="dateError" class="err">{{ dateError }}</p>
+            <p v-if="dateError" id="contact-date-error" class="err">{{ dateError }}</p>
           </div>
           <div class="contact-field">
             <label class="contact-label" for="contact-time">Pickup Time</label>
@@ -429,14 +443,25 @@ const onSubmit = async () => {
                 required
                 :min="minPickupTime"
                 :aria-invalid="timeError ? 'true' : undefined"
+                :aria-describedby="timeError ? 'contact-time-error' : undefined"
                 @blur="timeTouched = true"
                 @click="openPicker(timeRef)"
               >
             </label>
-            <p v-if="timeError" class="err">{{ timeError }}</p>
+            <p v-if="timeError" id="contact-time-error" class="err">{{ timeError }}</p>
+          </div>
+          <div class="contact-field">
+            <label class="contact-label" for="contact-passengers">Passengers</label>
+            <select id="contact-passengers" v-model.number="form.passengers" class="contact-input">
+              <option v-for="count in 8" :key="count" :value="count">{{ count }}{{ count === 8 ? '+' : '' }}</option>
+            </select>
+          </div>
+          <div class="contact-field">
+            <label class="contact-label" for="contact-luggage">Luggage (optional)</label>
+            <input id="contact-luggage" v-model="form.luggage" class="contact-input" maxlength="160" placeholder="e.g. 2 suitcases and 2 cabin bags">
           </div>
           <div class="contact-field contact-field--full">
-            <label class="contact-label" for="contact-notes">Additional Notes or Requests</label>
+            <label class="contact-label" for="contact-notes">Additional Notes or Requests (optional)</label>
             <textarea
               id="contact-notes"
               v-model="form.notes"
@@ -450,8 +475,10 @@ const onSubmit = async () => {
           type="submit"
           class="contact-btn contact-btn--gold contact-btn--block contact-form__submit"
           :disabled="loading"
+          :aria-busy="loading"
+          aria-live="polite"
         >
-          {{ contactBooking.submitLabel }}
+          {{ loading ? 'Finding vehicles…' : 'View Vehicles & Prices' }}
         </button>
       </form>
     </div>
