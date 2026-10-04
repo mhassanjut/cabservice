@@ -103,6 +103,7 @@ const applyPickup = (p: { label: string; lat: number; lng: number; city?: string
 const mapsAttached = ref(false)
 /** True while Places is warming after focus (in-field pending, never full-page). */
 const mapsWarming = ref(false)
+const mapsNoticeVisible = ref(false)
 let mapsInitPromise: Promise<void> | null = null
 
 const placesPending = computed(
@@ -111,6 +112,10 @@ const placesPending = computed(
     mapsWarming.value &&
     !maps.ready.value &&
     !maps.error.value,
+)
+
+const showMapsUnavailable = computed(
+  () => mapsNoticeVisible.value && Boolean(maps.error.value || !config.public.googleMapsApiKey),
 )
 
 const attachAutocomplete = () => {
@@ -142,6 +147,7 @@ const ensureMapsReady = () => {
 
 /** Start Maps on first interaction; show field-level pending until Places is ready. */
 const onPlaceFocus = () => {
+  mapsNoticeVisible.value = true
   if (!config.public.googleMapsApiKey || maps.ready.value || maps.error.value) return
   mapsWarming.value = true
   void Promise.resolve(ensureMapsReady()).finally(() => {
@@ -205,6 +211,7 @@ const onPickupModalChoose = () => {
 
 const onSubmit = async () => {
   if (loading.value) return
+  mapsNoticeVisible.value = true
   Object.assign(touched, { pickupLocation: true, dropoffLocation: true, pickupDate: true, pickupTime: true })
   const e = errors.value
   const firstError = e.pickupLocation || e.dropoffLocation || e.pickupDate || e.pickupTime
@@ -292,9 +299,8 @@ const onSubmit = async () => {
       @choose-pickup="onPickupModalChoose"
     />
     <template v-if="props.variant === 'bar'">
-      <p v-if="maps.error.value" class="booking-form__bar-notice err env-warn" role="status">Location search is temporarily unavailable. Please try again or contact our team.</p>
-      <p v-else-if="!config.public.googleMapsApiKey" class="booking-form__bar-notice err env-warn">
-        Location search is temporarily unavailable. Please contact our team for help with your journey.
+      <p v-if="showMapsUnavailable" class="booking-form__bar-notice env-warn" role="status">
+        Place suggestions are unavailable right now. Continue by WhatsApp or contact our team for help.
       </p>
       <div class="booking-form__bar-grid">
         <div class="booking-form__field" :class="{ 'booking-form__field--maps-pending': placesPending }">
@@ -406,9 +412,8 @@ const onSubmit = async () => {
       </div>
     </template>
     <template v-else>
-    <p v-if="maps.error.value" class="err env-warn" role="status">Location search is temporarily unavailable. Please try again or contact our team.</p>
-    <p v-else-if="!config.public.googleMapsApiKey" class="err env-warn">
-      Location search is temporarily unavailable. Please contact our team for help with your journey.
+    <p v-if="showMapsUnavailable" class="env-warn" role="status">
+      Place suggestions are unavailable right now. Continue by WhatsApp or contact our team for help.
     </p>
     <h3 class="font-serif">Get your transfer quote</h3>
     <div class="grid cols-2">
@@ -618,7 +623,7 @@ const onSubmit = async () => {
   font-weight: 500;
   line-height: normal;
   color: rgba(var(--theme-ink-rgb), 1);
-  min-height: 19px;
+  min-height: 44px;
 }
 
 .booking-form--bar .booking-form__bar-input::placeholder {
@@ -643,7 +648,7 @@ const onSubmit = async () => {
   position: relative;
   display: flex;
   align-items: center;
-  min-height: 19px;
+  min-height: 44px;
 }
 
 .booking-form--bar .booking-form__bar-value {

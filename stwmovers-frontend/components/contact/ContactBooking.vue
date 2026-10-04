@@ -45,6 +45,7 @@ const destinationAutocomplete = ref<AutocompleteHandle | null>(null)
 const dateRef = ref<HTMLInputElement | null>(null)
 const timeRef = ref<HTMLInputElement | null>(null)
 const mapsWarming = ref(false)
+const mapsNoticeVisible = ref(false)
 let mapsInitPromise: Promise<void> | null = null
 
 const placesPending = computed(
@@ -53,6 +54,10 @@ const placesPending = computed(
     mapsWarming.value &&
     !maps.ready.value &&
     !maps.error.value,
+)
+
+const showMapsUnavailable = computed(
+  () => mapsNoticeVisible.value && Boolean(maps.error.value || !config.public.googleMapsApiKey),
 )
 
 const minPickupDate = computed(() => minPickupDateValue())
@@ -86,6 +91,7 @@ const ensureMapsReady = () => {
 }
 
 const onPlaceFocus = (field: 'pickup' | 'destination' = 'pickup') => {
+  mapsNoticeVisible.value = true
   const trigger = () => {
     if (field === 'pickup') pickupAutocomplete.value?.triggerSuggestions()
     else destinationAutocomplete.value?.triggerSuggestions()
@@ -244,6 +250,7 @@ watch(
 
 const onSubmit = async () => {
   if (loading.value) return
+  mapsNoticeVisible.value = true
   submitAttempted.value = true
   pickupTouched.value = true
   destinationTouched.value = true
@@ -354,9 +361,8 @@ const onSubmit = async () => {
         <p v-if="submitAttempted && (pickupError || destinationError || dateError || timeError)" class="err" role="alert">
           Please check the highlighted journey details before continuing.
         </p>
-        <p v-if="maps.error.value" class="err env-warn" role="status">Location search is temporarily unavailable. Please try again or contact our team.</p>
-        <p v-else-if="!config.public.googleMapsApiKey" class="err env-warn">
-          Location search is temporarily unavailable. Please contact our team using the phone or WhatsApp links.
+        <p v-if="showMapsUnavailable" class="env-warn" role="status">
+          Place suggestions are unavailable right now. Continue by WhatsApp or contact our team for help.
         </p>
 
         <div class="contact-form__grid">

@@ -185,6 +185,9 @@ const faqs = [
 }
 
 .local-service-hero__link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
   color: rgba(var(--theme-ink-rgb), 1);
   font-weight: 600;
   text-decoration: underline;

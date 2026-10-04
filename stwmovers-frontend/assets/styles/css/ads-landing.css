@@ -281,6 +281,9 @@
 }
 
 .ads-phone {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
   color: var(--home-gold);
   font-family: 'Inter', system-ui, sans-serif;
   font-weight: 850;

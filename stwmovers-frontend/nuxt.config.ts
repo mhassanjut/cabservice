@@ -6,6 +6,7 @@ import { seoDefaults } from './config/seo'
 
 export default defineNuxtConfig({
   ssr: true,
+  compatibilityDate: '2026-10-04',
   modules: ['@pinia/nuxt', '@nuxt/image', '@nuxt/eslint'],
   css: [
     '~/assets/styles/css/fonts.css',

@@ -198,8 +198,8 @@
 
 .site-root--home .app-nav .user-menu .btn.user-menu__login--outline {
   box-sizing: border-box;
-  height: 41px;
-  min-height: 41px;
+  height: 44px;
+  min-height: 44px;
   padding: 12px 32px;
   border-width: 1px;
   border-style: solid;
@@ -234,7 +234,7 @@
 }
 
 .site-root--home .app-nav .user-menu .btn.user-menu__login--outline.app-nav__action-btn {
-  min-height: 41px;
+  min-height: 44px;
   padding: 12px 32px;
   transition:
     transform 0.22s ease,
@@ -257,14 +257,14 @@
 }
 
 .site-root--home .app-nav__journey-cta.app-nav__action-btn {
-  min-height: 39px;
+  min-height: 44px;
   padding: 12px 16px;
 }
 
 .site-root--home .app-nav__journey-cta {
   box-sizing: border-box;
-  height: 39px;
-  min-height: 39px;
+  height: 44px;
+  min-height: 44px;
   padding: 12px 16px;
   border: 0;
   border-radius: 32px;
@@ -1757,14 +1757,14 @@ html[data-site-theme] .home-hero__intent a:focus-visible {
 
   .home-hero__intent li {
     flex: 0 0 auto;
-    min-height: 2.5rem;
+    min-height: 44px;
     padding: 0;
     font-size: 0.75rem;
     scroll-snap-align: start;
   }
 
   .home-hero__intent a {
-    min-height: 2.5rem;
+    min-height: 44px;
     padding-inline: 0.75rem;
   }
 
@@ -2675,8 +2675,8 @@ html[data-site-theme] .home-hero__intent a:focus-visible {
 }
 
 .home-fleet__nav-btn {
-  width: 2rem;
-  height: 2rem;
+  width: 2.75rem;
+  height: 2.75rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2713,6 +2713,7 @@ html[data-site-theme] .home-hero__intent a:focus-visible {
 
 .home-fleet__tab {
   flex-shrink: 0;
+  min-height: 44px;
   padding: 0.675rem 1.685rem;
   border: 0;
   border-radius: var(--home-fleet-tab-radius);
@@ -2877,7 +2878,8 @@ html[data-site-theme] .home-hero__intent a:focus-visible {
   display: inline-flex;
   align-items: center;
   gap: 0.675rem;
-  padding-left: 1.35rem;
+  min-height: 44px;
+  padding: 0.35rem 0 0.35rem 1.35rem;
   font-family: var(--home-fleet-font);
   font-size: clamp(0.9375rem, 1vw, 1.0625rem);
   font-weight: 600;
@@ -2944,7 +2946,8 @@ html[data-site-theme] .home-hero__intent a:focus-visible {
   }
 
   .home-fleet__tab {
-    padding: 0.5rem 1rem;
+    min-height: 44px;
+    padding: 0.65rem 1rem;
     font-size: 0.8125rem;
   }
 
@@ -2986,6 +2989,7 @@ html[data-site-theme] .home-hero__intent a:focus-visible {
   .home-fleet__card-cta {
     right: 1.25rem;
     bottom: 1.25rem;
+    padding-left: 1rem;
   }
 }
 

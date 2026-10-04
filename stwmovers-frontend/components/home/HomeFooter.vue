@@ -52,15 +52,16 @@ const groups = [
 .refined-footer a { text-decoration: none; color: inherit; font-size: 13px; }
 .refined-footer a:hover { color: #e5c36c; }
 .refined-footer ul { list-style: none; padding: 0; margin: 0; }
-.refined-footer li a { display: inline-flex; align-items: center; min-height: 36px; }
+.refined-footer li a { display: inline-flex; align-items: center; min-height: 44px; }
 .refined-footer__group > button { display: none; }
 .refined-footer__contact address { font-style: normal; font-size: 13px; line-height: 1.7; margin-bottom: 12px; }
-.refined-footer__contact > a { display: block; min-height: 36px; overflow-wrap: anywhere; }
+.refined-footer__contact > a { display: flex; align-items: center; min-height: 44px; overflow-wrap: anywhere; }
 .refined-footer__legal { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; padding-top: 20px; border-top: 1px solid rgba(var(--theme-ink-rgb), 0.122); font-size: 12px; }
 .refined-footer__legal nav { display: flex; flex-wrap: wrap; gap: 8px 18px; }
-.refined-footer__legal a { display: inline-flex; align-items: center; min-height: 44px; }
+.refined-footer__legal a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; }
+.refined-footer__legal > a { width: 44px; border: 1px solid rgba(var(--theme-ink-rgb), 0.14); border-radius: 50%; }
 .refined-footer__credit { margin: 12px 0 0; color: rgba(var(--theme-muted-rgb), 1); font-size: 11px; letter-spacing: 0.04em; text-align: right; }
-.refined-footer__credit a { color: inherit; text-decoration: none; }
+.refined-footer__credit a { display: inline-flex; align-items: center; min-height: 44px; color: inherit; text-decoration: none; }
 .refined-footer__credit a:hover { color: #e5c36c; }
 @media(max-width:767px) {
  .refined-footer { padding-bottom: calc(110px + env(safe-area-inset-bottom)); }
@@ -74,5 +75,6 @@ const groups = [
  .refined-footer li a { min-height: 44px; }
  .refined-footer__contact { padding-top: 24px; }
  .refined-footer__credit { text-align: left; }
+ .refined-footer__credit a { min-height: 44px; }
 }
 </style>

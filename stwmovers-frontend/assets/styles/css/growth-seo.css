@@ -189,7 +189,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 34px;
+  min-height: 44px;
   padding: 0 0.85rem;
   color: rgba(var(--theme-ink-rgb), 0.9);
   font-family: 'Inter', system-ui, sans-serif;
@@ -537,11 +537,17 @@
 }
 
 .growth-comparison {
+  display: block;
+  width: 100%;
+  max-width: 100%;
   overflow-x: auto;
+  overflow-y: hidden;
   border: 1px solid rgba(var(--theme-ink-rgb), 0.12);
   border-radius: 8px;
   background: rgba(var(--theme-surface-rgb), 1);
   box-shadow: 0 18px 44px rgba(var(--theme-shadow-rgb), 0.07);
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
 }
 
 .growth-comparison table {
@@ -662,6 +668,9 @@
 }
 
 .growth-aside__phone {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
   color: var(--home-gold);
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.94rem;
@@ -970,6 +979,86 @@
 
   .growth-mobile-cta {
     display: grid;
+  }
+
+  .growth-comparison {
+    overflow: visible;
+    background:
+      linear-gradient(140deg, rgba(var(--theme-surface-rgb), 0.98), rgba(var(--theme-shade-rgb), 0.9));
+  }
+
+  .growth-comparison table,
+  .growth-comparison thead,
+  .growth-comparison tbody,
+  .growth-comparison tr,
+  .growth-comparison th,
+  .growth-comparison td {
+    display: block;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .growth-comparison table {
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  .growth-comparison thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  .growth-comparison tbody tr {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(var(--theme-ink-rgb), 0.12);
+  }
+
+  .growth-comparison tbody tr:last-child {
+    border-bottom: 0;
+  }
+
+  .growth-comparison tbody th,
+  .growth-comparison tbody td {
+    padding: 0;
+    border-bottom: 0;
+  }
+
+  .growth-comparison tbody th {
+    margin-bottom: 0.8rem;
+    width: 100%;
+    color: var(--home-gold);
+    font-size: 0.9rem;
+  }
+
+  .growth-comparison tbody td {
+    margin-top: 0.7rem;
+    padding: 0.75rem 0.85rem 0.85rem;
+    border: 1px solid rgba(var(--theme-ink-rgb), 0.1);
+    border-radius: 8px;
+    background: rgba(var(--theme-surface-rgb), 0.72);
+    color: rgba(var(--theme-ink-rgb), 0.9);
+  }
+
+  .growth-comparison tbody td::before {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: var(--home-gold);
+    font-size: 0.68rem;
+    font-weight: 850;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .growth-comparison tbody td:nth-of-type(1)::before {
+    content: 'STW Movers';
+  }
+
+  .growth-comparison tbody td:nth-of-type(2)::before {
+    content: 'Taxi or cab';
   }
 }
 

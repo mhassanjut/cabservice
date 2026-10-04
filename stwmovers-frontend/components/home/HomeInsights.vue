@@ -42,7 +42,7 @@ const articles = computed(() => mergePublishedPosts(localBlogPosts, remotePosts.
 .home-insights .home-eyebrow { color: var(--color-gold); }
 .home-insights__heading { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 28px; }
 .home-insights__heading h2 { margin: 0; }
-.home-insights__heading > a { flex-shrink: 0; color: var(--color-gold-bright); text-decoration: none; font-size: 14px; }
+.home-insights__heading > a { display: inline-flex; align-items: center; flex-shrink: 0; min-height: 44px; color: var(--color-gold-bright); text-decoration: none; font-size: 14px; }
 .home-insights__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
 .home-insights__article { display: flex; height: 100%; flex-direction: column; color: inherit; text-decoration: none; }
 .home-insights__article img { width: 100%; aspect-ratio: 8 / 5; height: auto; object-fit: cover; border-radius: 4px; transition: filter 0.2s ease; }
