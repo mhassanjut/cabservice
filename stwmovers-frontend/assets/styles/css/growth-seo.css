@@ -137,7 +137,7 @@
 
 .growth-btn--primary:hover {
   background: linear-gradient(135deg, #ffe8a3, #b98538);
-  color: rgba(var(--theme-ink-rgb), 1);
+  color: #17130d;
 }
 
 .growth-btn--light {
@@ -151,12 +151,13 @@
 }
 
 .growth-btn--dark {
-  background: var(--home-text);
-  color: rgba(var(--theme-ink-rgb), 1);
+  background: #f3f4f4;
+  color: #171d21;
 }
 
 .growth-btn--dark:hover {
-  background: rgba(var(--theme-shade-rgb), 1);
+  background: #e4c76b;
+  color: #171d21;
 }
 
 .growth-btn--outline-dark {
@@ -909,6 +910,7 @@
 
 .growth-mobile-cta a:last-child {
   background: var(--home-gold);
+  color: #17130d;
 }
 
 @media (min-width: 820px) {

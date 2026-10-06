@@ -40,6 +40,9 @@ html[data-site-theme] .site-root:not(.site-root--booking) {
 }
 /* Checkout retains its original light surface and dark form text. */
 html[data-site-theme] .site-root--booking {
+  --theme-surface-rgb: 255, 255, 255;
+  --theme-ink-rgb: 23, 29, 40;
+  --theme-muted-rgb: 93, 101, 114;
   color-scheme: light;
   background: var(--bk-bg);
   color: var(--bk-text);

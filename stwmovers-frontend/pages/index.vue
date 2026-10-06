@@ -13,9 +13,6 @@ import {
 
 definePageMeta({ layout: 'home' })
 
-const homeRoot = ref<HTMLElement>()
-useHomeReveal(homeRoot)
-
 usePageSeo({
   title: seoDefaults.defaultTitle,
   description: seoDefaults.defaultDescription,
@@ -53,7 +50,7 @@ useJsonLdSchema(
 </script>
 
 <template>
-  <div ref="homeRoot" class="home-page">
+  <div class="home-page">
     <HomeHero />
 
     <HomeConversionProof />

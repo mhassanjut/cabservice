@@ -1791,7 +1791,9 @@
 }
 
 .checkout-panel__submit:disabled {
-  background: rgba(var(--theme-surface-rgb), 1);
+  background: #fff;
+  color: #171d28;
+  border: 1px solid var(--bk-border);
   cursor: not-allowed;
 }
 

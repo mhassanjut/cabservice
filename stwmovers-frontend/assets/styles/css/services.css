@@ -95,7 +95,7 @@
 
 .services-page .services-btn--outline:hover {
   background: var(--home-text);
-  color: rgba(var(--theme-ink-rgb), 1);
+  color: #171d21;
 }
 
 /* Outline button on dark backgrounds (hero / final CTA) */
