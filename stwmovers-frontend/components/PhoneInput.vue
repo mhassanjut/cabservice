@@ -175,7 +175,7 @@ onMounted(async () => {
         showDialCodeInList: true,
         showDialCodeInSelection: true,
         searchBoxPlaceholder: 'Search country',
-        tabindex: -1,
+        tabindex: 0,
       }"
       @validate="onValidate"
       @country-changed="onCountryChanged"
@@ -196,7 +196,7 @@ onMounted(async () => {
  */
 .phone-input {
   width: 100%;
-  color: rgba(var(--theme-ink-rgb), 1);
+  color: var(--ui-field-text);
 }
 
 .phone-input__fallback {
@@ -206,23 +206,23 @@ onMounted(async () => {
   width: 100%;
   min-height: 52px;
   padding: 0 14px;
-  border: 1px solid rgba(var(--theme-ink-rgb), 1);
+  border: 1px solid var(--ui-field-border);
   border-radius: 10px;
-  background: rgba(var(--theme-surface-rgb), 1);
+  background: var(--ui-field-bg);
 }
 
 .phone-input__fallback-flag {
   width: 28px;
   height: 20px;
   border-radius: 3px;
-  background: rgba(var(--theme-surface-rgb), 1);
+  background: var(--ui-field-bg);
 }
 
 .phone-input__fallback-field {
   flex: 1;
   height: 14px;
   border-radius: 999px;
-  background: rgba(var(--theme-surface-rgb), 1);
+  background: var(--ui-field-bg);
 }
 
 .phone-input__control {
@@ -232,11 +232,11 @@ onMounted(async () => {
   align-items: stretch;
   width: 100%;
   min-height: 52px;
-  border: 1px solid rgba(var(--theme-ink-rgb), 1) !important;
+  border: 1px solid var(--ui-field-border) !important;
   border-radius: 10px !important;
-  background: rgba(var(--theme-surface-rgb), 1) !important;
+  background: var(--ui-field-bg) !important;
   box-shadow: none !important;
-  color: rgba(var(--theme-ink-rgb), 1);
+  color: var(--ui-field-text);
   text-align: left;
   transition: border-color 0.2s ease;
 }
@@ -246,7 +246,7 @@ onMounted(async () => {
 }
 
 .phone-input__control--invalid {
-  border-color: #dc2626 !important;
+  border-color: var(--ui-error) !important;
 }
 
 .phone-input__control :deep(.vti__dropdown) {
@@ -257,9 +257,9 @@ onMounted(async () => {
   align-self: stretch;
   min-width: 88px;
   padding: 0 10px 0 12px;
-  border-right: 1px solid rgba(var(--theme-ink-rgb), 1);
+  border-right: 1px solid var(--ui-field-border);
   background: transparent;
-  color: rgba(var(--theme-muted-rgb), 1);
+  color: var(--ui-field-muted);
   cursor: pointer;
 }
 
@@ -276,14 +276,14 @@ onMounted(async () => {
   gap: 6px;
   font-size: 0.875rem;
   line-height: 1;
-  color: rgba(var(--theme-muted-rgb), 1);
+  color: var(--ui-field-muted);
 }
 
 .phone-input__control :deep(.vti__selection .vti__country-code) {
   margin-left: 2px;
   font-size: 0.875rem;
   font-weight: 600;
-  color: rgba(var(--theme-ink-rgb), 1);
+  color: var(--ui-field-text);
 }
 
 .phone-input__control :deep(.vti__selection .vti__flag) {
@@ -301,10 +301,10 @@ onMounted(async () => {
   margin: 0;
   padding: 4px 0 6px;
   list-style: none;
-  border: 1px solid rgba(var(--theme-ink-rgb), 1);
+  border: 1px solid var(--ui-field-border);
   border-radius: 12px;
-  background: rgba(var(--theme-surface-rgb), 1);
-  color: rgba(var(--theme-ink-rgb), 1);
+  background: var(--ui-field-bg);
+  color: var(--ui-field-text);
   box-shadow: 0 16px 40px rgba(var(--theme-shadow-rgb), 0.14);
   overflow-x: hidden;
   overflow-y: auto;
@@ -316,9 +316,19 @@ onMounted(async () => {
   width: 8px;
 }
 
+.phone-input__control :deep(.vti__dropdown-list.above) {
+  top: auto;
+  bottom: calc(100% + 8px);
+}
+
+.phone-input__control :deep(.vti__dropdown-list.below) {
+  top: calc(100% + 8px);
+  bottom: auto;
+}
+
 .phone-input__control :deep(.vti__dropdown-list::-webkit-scrollbar-thumb) {
   border-radius: 999px;
-  background: rgba(var(--theme-surface-rgb), 1);
+  background: var(--ui-field-bg);
 }
 
 .phone-input__control :deep(.vti__dropdown-item) {
@@ -328,7 +338,7 @@ onMounted(async () => {
   padding: 10px 14px;
   font-size: 0.875rem;
   line-height: 1.4;
-  color: rgba(var(--theme-ink-rgb), 1);
+  color: var(--ui-field-text);
   cursor: pointer;
 }
 
@@ -339,7 +349,7 @@ onMounted(async () => {
 
 .phone-input__control :deep(.vti__dropdown-item.highlighted) {
   background: rgba(216, 178, 76, 0.14);
-  color: rgba(var(--theme-ink-rgb), 1);
+  color: var(--ui-field-text);
 }
 
 .phone-input__control :deep(.vti__search_box_container) {
@@ -360,10 +370,10 @@ onMounted(async () => {
   min-height: 38px;
   margin: 4px 6px 6px;
   padding: 9px 10px !important;
-  border: 1px solid rgba(var(--theme-ink-rgb), 1) !important;
+  border: 1px solid var(--ui-field-border) !important;
   border-radius: 8px !important;
-  background: rgba(var(--theme-surface-rgb), 1) !important;
-  color: rgba(var(--theme-ink-rgb), 1);
+  background: var(--ui-field-bg) !important;
+  color: var(--ui-field-text);
   font: 400 0.875rem/1.25 var(--font-sans, Inter, sans-serif) !important;
   outline: none;
   box-shadow: none;
@@ -372,13 +382,13 @@ onMounted(async () => {
 }
 
 .phone-input__control :deep(input.vti__search_box.vti__input::placeholder) {
-  color: rgba(var(--theme-muted-rgb), 1);
+  color: var(--ui-field-muted);
 }
 
 .phone-input__control :deep(input.vti__search_box.vti__input:focus) {
   outline: none;
   box-shadow: none;
-  border-color: rgba(var(--theme-ink-rgb), 1) !important;
+  border-color: var(--ui-field-text) !important;
 }
 
 .phone-input__control :deep(.vti__input:not(.vti__search_box)) {
@@ -394,11 +404,11 @@ onMounted(async () => {
   font-family: var(--font-sans);
   font-size: 0.9375rem;
   line-height: 1.5;
-  color: rgba(var(--theme-ink-rgb), 1);
+  color: var(--ui-field-text);
 }
 
 .phone-input__control :deep(.vti__input:not(.vti__search_box)::placeholder) {
-  color: rgba(var(--theme-muted-rgb), 1);
+  color: var(--ui-field-muted);
 }
 
 .phone-input__control :deep(.vti__input:not(.vti__search_box):focus) {

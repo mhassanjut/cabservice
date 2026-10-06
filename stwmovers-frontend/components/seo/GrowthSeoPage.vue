@@ -333,9 +333,9 @@ const assuranceItems = [
         <aside class="growth-aside" aria-label="Booking summary">
           <p class="growth-kicker">Best for</p>
           <p>{{ page.summary }}</p>
-          <NuxtLink class="growth-btn growth-btn--dark" to="/journey#book-journey">
+          <UiButton variant="secondary" to="/journey#book-journey">
             Get private quote
-          </NuxtLink>
+          </UiButton>
           <a class="growth-aside__phone" :href="whatsappHref" target="_blank" rel="noopener noreferrer">
             Prefer WhatsApp? Send trip details
           </a>

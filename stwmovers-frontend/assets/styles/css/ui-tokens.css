@@ -1,0 +1,35 @@
+/* Components consume semantic pairs; page layouts own their theme. */
+:root {
+  --ui-action-bg: #d8b24c;
+  --ui-action-hover: #e4c76b;
+  --ui-action-text: #17130d;
+  --ui-secondary-bg: #f3f4f4;
+  --ui-secondary-text: #171d21;
+  --ui-field-bg: #202223;
+  --ui-field-text: #f3f4f4;
+  --ui-field-muted: #b9bdbf;
+  --ui-field-border: #747b80;
+  --ui-disabled-bg: #33383c;
+  --ui-disabled-text: #c3c8cc;
+  --ui-error: #ff9d9d;
+  --ui-focus: #e4c76b;
+  --ui-control-height: 48px;
+  --ui-radius: 8px;
+  --ui-space: 8px;
+  --ui-motion: 160ms;
+}
+
+.site-root--booking {
+  --ui-field-bg: #fff;
+  --ui-field-text: #171d28;
+  --ui-field-muted: #596373;
+  --ui-field-border: #7b8491;
+  --ui-disabled-bg: #fff;
+  --ui-disabled-text: #596373;
+  --ui-error: #b42318;
+  --ui-focus: #84600f;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --ui-motion: 0ms; }
+}

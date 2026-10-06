@@ -1,6 +1,12 @@
 # STW Movers Frontend — Architecture Overview
 
-Nuxt 3 SSR app for a Barcelona airport transfer and chauffeur booking service, with customer checkout, driver portal, and admin dashboard.
+Nuxt 4 SSR app for a Barcelona airport transfer and chauffeur booking service, with customer checkout, driver portal, and admin dashboard.
+
+Start with [Engineering standards](docs/ENGINEERING-STANDARDS.md) for current
+setup, ownership rules, shared controls and verification. The incremental
+[standardization baseline](docs/STANDARDIZATION-BASELINE.md) records coverage and
+remaining milestones. The historical inventory below is descriptive, not a
+guarantee that every entry is still current.
 
 ---
 
@@ -25,7 +31,9 @@ Nuxt 3 SSR app for a Barcelona airport transfer and chauffeur booking service, w
 
 | Path | Purpose |
 |------|---------|
-| `assets/css/main.css` | Global styles, CSS variables, and shared UI tokens. |
+| `assets/styles/css/main.css` | Existing global styles and compatibility tokens. |
+| `assets/styles/css/theme.css` | Public and checkout theme boundaries. |
+| `assets/styles/css/ui-tokens.css` | Semantic colour pairs and shared control dimensions. |
 
 ---
 

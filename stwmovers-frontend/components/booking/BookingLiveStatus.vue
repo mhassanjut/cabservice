@@ -16,7 +16,7 @@ const steps: { key: BookingStatus; label: string }[] = [
 const idx = computed(() => {
   const order = steps.map((s) => s.key)
   const i = order.indexOf(props.status)
-  // Once confirmed, show Confirmed as complete (green) and Driver as the active next step (yellow).
+  // Once confirmed, show Driver as the active next step.
   if (props.status === 'CONFIRMED') return 4
   return Math.max(0, i)
 })

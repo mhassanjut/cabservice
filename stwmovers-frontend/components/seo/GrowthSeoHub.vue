@@ -233,9 +233,9 @@ const hubSupport = computed(() => {
             vehicle and confirm whether a private chauffeur is the better fit than a taxi or cab.
           </p>
         </div>
-        <NuxtLink class="growth-btn growth-btn--dark" to="/journey#book-journey">
+        <UiButton variant="secondary" to="/journey#book-journey">
           Request a quote
-        </NuxtLink>
+        </UiButton>
       </div>
     </section>
   </main>

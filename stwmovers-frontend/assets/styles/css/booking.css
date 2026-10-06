@@ -324,8 +324,8 @@
 }
 
 .booking-stepper__item.is-done .booking-stepper__badge {
-  border-color: #22a06b;
-  background: #22a06b;
+  border-color: #c8a24d;
+  background: #c8a24d;
   color: rgba(var(--theme-ink-rgb), 1);
 }
 
@@ -391,7 +391,7 @@
 }
 
 .booking-stepper--confirm .booking-stepper__line.is-done {
-  background: #10B981;
+  background: #c8a24d;
 }
 
 /* ─── Vehicle selection page ─── */
@@ -1653,7 +1653,7 @@
 .checkout-panel__icon--green {
   background: rgba(34, 160, 107, 0.12);
   border-color: rgba(34, 160, 107, 0.25);
-  color: #22a06b;
+  color: #927025;
 }
 
 .checkout-panel__icon-img {
@@ -1947,7 +1947,7 @@
 }
 
 .live-status__item.is-done .live-status__line {
-  background: #10B981;
+  background: #c8a24d;
 }
 
 .live-status__item.is-current .live-status__circle {
@@ -2026,7 +2026,7 @@
   padding: 6px 16px;
   border-radius: 9999px;
   background: rgba(16, 185, 129, 0.0705882);
-  color: #10B981;
+  color: #927025;
 }
 
 .confirm-hero__ref-label {
@@ -2192,7 +2192,7 @@
 }
 
 .confirm-details .booking-journey__icon {
-  color: #10B981;
+  color: #c8a24d;
 }
 
 .confirm-details__list {

@@ -17,6 +17,8 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "lint": "eslint .",
+    "test": "vitest run",
+    "check": "npm run lint && npm run typecheck && npm test",
     "seo:sprint-check": "node scripts/test-seo-ai-sprint.mjs",
     "typecheck": "nuxt typecheck",
     "postinstall": "node scripts/ensure-oxc-wasi.mjs"
@@ -37,9 +39,14 @@
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.17.0",
+    "@vitejs/plugin-vue": "^6.0.9",
+    "@vue/test-utils": "^2.5.1",
     "eslint": "^10.11.0",
+    "happy-dom": "^20.14.5",
+    "postcss": "^8.5.29",
     "sharp": "^0.35.4",
     "typescript": "^5.9.3",
+    "vitest": "^4.1.11",
     "vue-tsc": "^3.3.11"
   }
 }

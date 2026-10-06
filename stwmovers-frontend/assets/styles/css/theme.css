@@ -63,6 +63,28 @@ html[data-site-theme] .site-root--booking option {
   color: var(--color-text);
 }
 /* A cool graphite tint on the homepage balances warm photography and gold. */
+.site-root--booking .refined-footer {
+  --theme-ink-rgb: 243, 244, 244;
+  --theme-muted-rgb: 185, 189, 191;
+  --theme-surface-rgb: 32, 34, 35;
+  --theme-shade-rgb: 17, 18, 19;
+  color: #f3f4f4;
+  color-scheme: dark;
+}
+
+/* Google positions these outside the form; retain full address readability. */
+.pac-container {
+  min-width: min(360px, calc(100vw - 32px));
+  max-width: calc(100vw - 32px);
+  z-index: 1200;
+}
+.pac-item {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+  padding-block: 8px;
+}
+
 html[data-site-theme] .site-root--home {
   --theme-shade-rgb: 23, 29, 33;
   --theme-surface-rgb: 39, 48, 54;

@@ -5,9 +5,9 @@ import { paymentService } from '~/services/api/payment.service'
 import type { BookingDto } from '~/types/api'
 
 const confirmJourneyIcons = {
-  pickup: '/MapPinLogo-green.svg',
-  dropoff: '/MapPinLogo-green.svg',
-  travelDate: '/TravelDateLogo-green.svg',
+  pickup: '/MapPinLogo.svg',
+  dropoff: '/MapPinLogo.svg',
+  travelDate: '/TravelDateLogo.svg',
 } as const
 
 definePageMeta({ layout: 'booking' })

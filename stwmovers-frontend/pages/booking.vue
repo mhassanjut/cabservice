@@ -315,28 +315,22 @@ const onGoogleError = (message: string) => {
             </div>
 
             <form class="checkout-panel__form" @submit.prevent="createBooking">
-              <div class="checkout-panel__field">
-                <label class="checkout-panel__label" for="guest-name">Full Name</label>
-                <input
+                <UiTextField
                   id="guest-name"
                   v-model="guest.fullName"
-                  class="checkout-panel__input"
+                  label="Full Name"
                   type="text"
                   autocomplete="name"
                   required
-                >
-              </div>
-              <div class="checkout-panel__field">
-                <label class="checkout-panel__label" for="guest-email">Email</label>
-                <input
+                />
+                <UiTextField
                   id="guest-email"
                   v-model="guest.email"
-                  class="checkout-panel__input"
+                  label="Email"
                   type="email"
                   autocomplete="email"
                   required
-                >
-              </div>
+                />
               <div class="checkout-panel__field">
                 <label class="checkout-panel__label" for="guest-phone">Phone</label>
                 <PhoneInput
@@ -347,14 +341,14 @@ const onGoogleError = (message: string) => {
                 />
                 <p v-if="guestPhoneError" class="err" role="alert">{{ guestPhoneError }}</p>
               </div>
-              <button
-                class="checkout-panel__submit"
+              <UiButton
                 type="submit"
-                :disabled="loading || !guestValid"
+                :loading="loading"
+                :disabled="!guestValid"
               >
                 Continue
                 <i class="fa-solid fa-arrow-right" aria-hidden="true" />
-              </button>
+              </UiButton>
             </form>
           </article>
 

@@ -12,6 +12,7 @@ export default defineNuxtConfig({
     '~/assets/styles/css/fonts.css',
     '~/assets/styles/css/main.css',
     '~/assets/styles/css/theme.css',
+    '~/assets/styles/css/ui-tokens.css',
   ],
 
   image: {

@@ -93,7 +93,7 @@ export function useGoogleSignIn() {
         size: 'large',
         text: 'continue_with',
         shape: 'pill',
-        width: Math.max(container.clientWidth, 280),
+        width: Math.min(400, Math.max(200, container.clientWidth - 8)),
       })
     } catch {
       onError('Google Sign-In failed to load. Allow popups for this site or try again.')

@@ -51,11 +51,6 @@ watch(isConfigured, async (ready: boolean) => {
   padding-block: 3px;
 }
 
-.google-signin-slot :deep(div),
-.google-signin-slot :deep(iframe) {
-  max-width: 100% !important;
-}
-
 .google-signin-slot :deep(iframe) {
   display: block;
   min-height: 44px;
