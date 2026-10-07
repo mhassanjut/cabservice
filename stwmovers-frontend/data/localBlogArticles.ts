@@ -7,6 +7,7 @@ export type LocalBlogArticle = {
   title: string
   excerpt: string
   date: string
+  modified?: string
   image: string
   imageAlt: string
   directAnswer: string
@@ -44,7 +45,7 @@ const officialTaxiFareSource = {
 }
 const officialPortCruiseSource = {
   label: 'Port de Barcelona cruise passenger information',
-  href: 'https://www.portdebarcelona.cat/en/passengers/cruises',
+  href: 'https://www.portdebarcelona.cat/en/business-and-services/cruise-ships/information-passenger/passenger-terminals',
   note: 'Official cruise-passenger context for Barcelona port and terminal transfer planning.',
 }
 const officialSitgesTourismSource = {
@@ -64,6 +65,9 @@ const stwPricingSource = {
 }
 
 function articleTakeaways(article: LocalBlogArticle) {
+  if (article.slug.includes('taxi-van')) {
+    return ['Check seating and luggage together; a seat count is not a luggage allowance.', 'Confirm child-seat and accessibility requirements explicitly.', 'Compare the complete cost and pickup arrangements for one suitable vehicle or several vehicles.']
+  }
   if (article.slug.includes('eixample')) {
     return [
       'Eixample is a high-intent hotel and apartment destination, so exact address and luggage planning matter more than the airport label alone.',
@@ -90,8 +94,8 @@ function articleTakeaways(article: LocalBlogArticle) {
 
   if (article.slug.includes('airport')) {
     return [
-      'Private airport transfer is strongest when luggage, flight timing, family travel, or a premium arrival matters.',
-      'Taxi or cab can work for simple airport rides, but pickup, vehicle fit, and waiting experience are less controlled.',
+      'Compare the meeting instructions, total price and booking terms for your actual itinerary.',
+      'Taxi and private-hire pickups have different arrangements; follow the instructions for your chosen service.',
       'The most useful quote includes flight number, terminal, destination, passengers, luggage, and timing notes.',
     ]
   }
@@ -120,6 +124,13 @@ function articleTakeaways(article: LocalBlogArticle) {
 }
 
 function articleDecisionRows(article: LocalBlogArticle) {
+  if (article.slug.includes('taxi-van')) {
+    return [
+      ['Can everyone fit?', 'Confirmed seating and luggage capacity', 'Supply bag counts and dimensions for bulky items.'],
+      ['One vehicle or several?', 'Compare available options', 'Include the total cost and coordination requirements.'],
+      ['Special requirements?', 'Explicit operator confirmation', 'Vehicle size alone does not establish accessibility or child-seat availability.'],
+    ]
+  }
   if (article.slug.includes('eixample')) {
     return [
       ['Best premium choice', 'Pre-booked BCN to Eixample transfer', 'Direct hotel or apartment handoff, luggage fit, flight-aware pickup, and clearer arrival planning.'],
@@ -146,8 +157,8 @@ function articleDecisionRows(article: LocalBlogArticle) {
 
   if (article.slug.includes('airport')) {
     return [
-      ['Best premium choice', 'Pre-booked airport transfer', 'Planned pickup, luggage fit, flight details, and direct hotel or port route.'],
-      ['Simple budget choice', 'Taxi, cab, train, or bus', 'Works when luggage is light, timing is flexible, and waiting is acceptable.'],
+      ['Prefer arrangements in advance?', 'Pre-booked airport transfer', 'Confirm the meeting point, vehicle fit and booking terms.'],
+      ['Prefer transport on arrival?', 'Official airport taxi rank', 'Check current fare rules and suitability for your group.'],
       ['Quote detail to send', 'Flight number and destination', 'These two details make airport arrival planning much more accurate.'],
     ]
   }
@@ -317,6 +328,7 @@ export const localBlogArticles: LocalBlogArticle[] = [
   },
   {
     slug: 'barcelona-airport-to-cruise-port-transfer-guide',
+    modified: '2026-10-07T00:00:00.000Z',
     title: 'Barcelona Airport to Cruise Port Transfer: Luggage, Timing, and Private Chauffeur Guide',
     excerpt:
       'A route-specific guide for BCN Airport to Barcelona cruise port transfers, including taxi, cab, private transfer, luggage, terminal timing, and chauffeur planning.',
@@ -324,13 +336,18 @@ export const localBlogArticles: LocalBlogArticle[] = [
     image: '/img/blogs/barcelona-airport-cruise-port-transfer.webp',
     imageAlt: 'Private chauffeur transfer from Barcelona Airport to cruise port',
     directAnswer:
-      'For Barcelona Airport to the cruise port, a private transfer is best when luggage, boarding windows, flight timing, cruise terminal instructions, or a calm premium handoff matter. A taxi or cab can work when timing is flexible and travellers are comfortable managing luggage and port details after landing.',
+      'Plan an airport-to-cruise transfer around your flight arrival and the boarding deadline supplied by your cruise line. Confirm the ship terminal and allow for baggage collection, pickup and road delays. A pre-booked transfer arranges transport; it does not guarantee a tight flight-to-ship connection.',
     sections: [
       {
         heading: 'Why airport-to-cruise-port transfers need more planning',
         body:
           'A cruise-port transfer is more time-sensitive than a normal airport ride. The traveller may be managing suitcases, boarding documents, a cruise line schedule, and a port-side terminal or ship detail. That makes pre-booking more valuable than deciding at the curb.',
         bullets: ['BCN arrival plus cruise boarding window', 'Luggage-heavy travel', 'Terminal or ship-specific handoff'],
+      },
+      {
+        heading: 'Build the connection backwards from the boarding deadline',
+        body: 'Use the latest boarding time in your cruise documents, not only the scheduled sailing time. Allow for airport exit procedures, baggage collection, reaching the pickup point, road travel and cruise check-in. A transfer booking does not guarantee a tight connection. Ask the cruise line about missed boarding arrangements.',
+        bullets: ['Reconfirm the terminal with the cruise line', 'Share flight and ship details before accepting a quote', 'For return journeys, use expected disembarkation time rather than docking time'],
       },
       {
         heading: 'Taxi, cab, or private transfer?',
@@ -433,6 +450,7 @@ export const localBlogArticles: LocalBlogArticle[] = [
   },
   {
     slug: 'barcelona-airport-transfer-vs-taxi',
+    modified: '2026-10-07T00:00:00.000Z',
     title: 'Barcelona Airport Transfer vs Taxi: What Should You Choose?',
     excerpt:
       'A practical comparison of BCN airport transfer, airport taxi, cab, and private chauffeur options for travellers arriving in Barcelona.',
@@ -440,13 +458,18 @@ export const localBlogArticles: LocalBlogArticle[] = [
     image: '/img/services/airport.png',
     imageAlt: 'Private airport transfer vehicle ready for Barcelona arrival',
     directAnswer:
-      'Choose a Barcelona airport transfer when you want the pickup, luggage fit, passenger count, flight details, and destination planned before landing. Choose a taxi or cab when the trip is simple, luggage is light, and waiting in the airport taxi queue is acceptable.',
+      'Use an official airport taxi rank if you prefer to arrange the journey after landing. Consider a pre-booked private transfer if you want to agree pickup instructions and booking terms in advance. Neither is automatically cheaper or better: compare total price, luggage fit, waiting conditions and flexibility for your specific journey.',
     sections: [
       {
         heading: 'The simple decision rule',
         body:
-          'A taxi or cab can be enough for a short city ride. A pre-booked airport transfer is stronger when the arrival includes luggage, children, late timing, business guests, cruise connections, or a hotel pickup that needs clear instructions.',
-        bullets: ['Private transfer: planned before arrival', 'Taxi or cab: useful for simple on-demand rides', 'Chauffeur service: best when comfort and timing matter'],
+          'Both options can serve airport journeys. Confirm special requirements with the chosen provider; neither a taxi label nor a chauffeur label establishes luggage capacity or accessibility.',
+        bullets: ['Private transfer: review booking terms in advance', 'Taxi rank: follow official airport signs', 'Compare the complete price for your itinerary'],
+      },
+      {
+        heading: 'Compare pickup arrangements and the total price',
+        body: 'Aena identifies official Barcelona taxis as black and yellow and lists airport taxi ranks separately from vehicles-for-hire arrangements. Follow the instructions for your chosen service. Consult current AMB fare information for taxis; for a private transfer, ask what the total includes. Taxi tariffs do not establish STW prices.',
+        bullets: ['Confirm waiting allowance and extra-stop charges', 'Ask whether parking or other extras are included', 'Read cancellation and change conditions before paying'],
       },
       {
         heading: 'When STW Movers is the better fit',
@@ -464,7 +487,7 @@ export const localBlogArticles: LocalBlogArticle[] = [
       {
         question: 'Is a Barcelona airport transfer better than a taxi?',
         answer:
-          'It is better when the journey needs planning: luggage, family travel, business timing, late arrivals, cruise connections, or a premium arrival experience.',
+          'It depends on the journey. Compare availability, total price, meeting instructions, luggage capacity and booking terms. A taxi can suit an on-arrival decision; a private transfer can suit a journey arranged beforehand.',
       },
       {
         question: 'Is STW Movers a taxi company?',
@@ -665,6 +688,7 @@ export const localBlogArticles: LocalBlogArticle[] = [
   },
   {
     slug: 'hourly-chauffeur-barcelona-when-it-makes-sense',
+    modified: '2026-10-07T00:00:00.000Z',
     title: 'Hourly Chauffeur in Barcelona: When It Makes Sense',
     excerpt:
       'When hourly chauffeur service is better than booking separate taxi, cab, or private driver rides across Barcelona.',
@@ -672,13 +696,18 @@ export const localBlogArticles: LocalBlogArticle[] = [
     image: '/img/services/hourly.png',
     imageAlt: 'Hourly chauffeur vehicle waiting for private driver itinerary in Barcelona',
     directAnswer:
-      'Hourly chauffeur service in Barcelona makes sense when the vehicle should stay available for multiple stops, meetings, shopping, sightseeing, restaurants, event movement, or schedule changes. It is stronger than separate taxis when waiting time and flexibility matter.',
+      'Request hourly chauffeur service when you need vehicle availability between several stops. A point-to-point transfer may suffice for one fixed journey. Confirm the duration, included distance, waiting rules, overtime rate and whether itinerary changes require approval before accepting an hourly quote.',
     sections: [
       {
         heading: 'The hourly chauffeur use case',
         body:
           'Hourly service gives the day one transport plan. Instead of booking separate rides, the chauffeur remains available for waiting, route changes, and short stops.',
         bullets: ['Meetings in different areas', 'Shopping and dining stops', 'Private sightseeing and event movement'],
+      },
+      {
+        heading: 'A worked itinerary, without an invented price',
+        body: 'A hotel pickup followed by two meetings and a return may suit hourly service when the vehicle needs to wait. If meetings are many hours apart and no waiting vehicle is needed, request separate transfers as well. Compare complete quotes; hourly service is not automatically cheaper.',
+        bullets: ['State when booked time starts and ends', 'Ask whether waiting and a mileage allowance are included', 'Confirm overtime approval and extra-stop charges'],
       },
       {
         heading: 'When separate taxis are enough',
@@ -711,6 +740,7 @@ export const localBlogArticles: LocalBlogArticle[] = [
   },
   {
     slug: 'airport-taxi-barcelona-private-transfer-guide',
+    modified: '2026-10-07T00:00:00.000Z',
     title: 'Airport Taxi Barcelona vs Private Transfer: 2026 Booking Guide',
     excerpt:
       'A detailed guide for travellers comparing Barcelona airport taxi, airport cab, private transfer, and chauffeur options before arriving at BCN.',
@@ -718,18 +748,18 @@ export const localBlogArticles: LocalBlogArticle[] = [
     image: '/img/services/airport.png',
     imageAlt: 'Private chauffeur vehicle for Barcelona airport taxi alternative',
     directAnswer:
-      'Use a Barcelona airport taxi when the trip is simple, luggage is light, and waiting at the airport rank is acceptable. Use a private transfer when you want pickup details, luggage fit, passenger count, flight timing, and destination planned before landing.',
+      'For a pre-booked BCN pickup, keep your flight number, arrival terminal, meeting instructions and booking contact available. Follow the instructions issued for your booking and report delays or terminal changes. For an official taxi, follow airport taxi-rank signs; these pickup processes are not interchangeable.',
     sections: [
       {
-        heading: 'What airport taxi searchers really need',
+        heading: 'Before departure: confirm T1 or T2 and your meeting point',
         body:
-          'Most airport taxi searches are not only about the word taxi. The traveller wants a dependable ride from BCN Airport to a hotel, apartment, cruise terminal, meeting, or resort without confusion after landing.',
-        bullets: ['Airport taxi Barcelona', 'BCN airport cab', 'Barcelona airport private transfer'],
+          'Send the flight number and destination address. Ask for the exact meeting point, a day-of contact and the procedure if the terminal changes. Aena provides separate taxi and private-hire guidance. Your booking-specific meeting point should come from your operator, not a generic photograph.',
+        bullets: ['Check your terminal with the airline', 'Keep pickup instructions accessible offline', 'Confirm when the waiting allowance starts'],
       },
       {
-        heading: 'Where private transfer has the advantage',
+        heading: 'After landing: baggage delays and missed contact',
         body:
-          'Private transfer is strongest when the route includes luggage, children, a late arrival, an early return, a cruise boarding time, a business guest, or a destination outside central Barcelona.',
+          'Contact the operator if baggage collection or airport procedures delay you. Confirm whether the booking remains active and whether additional waiting charges apply. Flight tracking does not automatically mean unlimited waiting or a replacement vehicle after a missed pickup.',
       },
       {
         heading: 'How to compare value, not just fare',
@@ -849,6 +879,7 @@ export const localBlogArticles: LocalBlogArticle[] = [
   },
   {
     slug: 'taxi-van-barcelona-groups-luggage-airport',
+    modified: '2026-10-07T00:00:00.000Z',
     title: 'Taxi Van Barcelona: Group Airport Transfers and Luggage Planning',
     excerpt:
       'A group travel guide for taxi van Barcelona, airport van transfer, family luggage transfer, and private chauffeur van searches.',
@@ -859,10 +890,14 @@ export const localBlogArticles: LocalBlogArticle[] = [
       'A taxi van or private van transfer in Barcelona is useful when passengers and luggage may not fit comfortably in a standard car. For airport, cruise, family, and group trips, pre-booking helps match the vehicle before travel instead of splitting into multiple taxis.',
     sections: [
       {
-        heading: 'Why groups search taxi van',
+        heading: 'Check passengers and luggage together',
         body:
-          'Taxi van searches usually come from families, cruise passengers, groups of friends, event guests, or travellers with bulky luggage who need one vehicle plan.',
-        bullets: ['Airport van transfer', '7-seat or 8-seat taxi intent', 'Family and cruise luggage transfer'],
+          'Seat count alone does not tell you how many large suitcases fit. Send the number of adults and children, large and cabin bags, pushchairs and bulky equipment. Ask for confirmation of the available vehicle category and luggage capacity for that combination.',
+        bullets: ['Count every passenger, including children', 'Provide dimensions for unusually large items', 'Confirm suitability before accepting the quote'],
+      },
+      {
+        heading: 'Child seats and mobility equipment need separate confirmation',
+        body: 'State child-seat needs and any mobility equipment dimensions. If a passenger must remain in a wheelchair, explain that explicitly. A larger van is not necessarily accessible. Request written confirmation of suitability, seat availability and additional charges rather than assuming these are included.',
       },
       {
         heading: 'One planned vehicle vs multiple rides',
@@ -975,6 +1010,7 @@ function articleHtml(article: LocalBlogArticle) {
     .join('')
 
   return `
+    ${article.modified ? `<p class="article-updated">Updated ${new Date(article.modified).toISOString().slice(0, 10)}. Booking arrangements remain subject to confirmation.</p>` : ''}
     <aside class="article-answer-card">
       <p>Direct answer</p>
       <strong>${article.directAnswer}</strong>
@@ -988,8 +1024,8 @@ function articleHtml(article: LocalBlogArticle) {
         </ul>
       </div>
       <aside class="article-aeo-card article-aeo-card--dark">
-        <p class="article-aeo-card__eyebrow">Dispatch note</p>
-        <h2>How STW Movers evaluates the request</h2>
+        <p class="article-aeo-card__eyebrow">Planning note</p>
+        <h2>Details worth confirming</h2>
         <p>${articleExpertNote(article)}</p>
       </aside>
     </section>
@@ -1058,7 +1094,7 @@ export function localArticleToWpPost(article: LocalBlogArticle): WpPost {
       article.slug.split('').reduce((total, char) => total + char.charCodeAt(0), 0),
     ),
     date: article.date,
-    modified: article.date,
+    modified: article.modified || article.date,
     slug: article.slug,
     link: `${siteConfig.siteUrl}/blogs/${article.slug}`,
     status: 'publish',
@@ -1072,7 +1108,7 @@ export function localArticleToWpPost(article: LocalBlogArticle): WpPost {
           alt_text: article.imageAlt,
         },
       ],
-      author: [{ name: 'STW Movers Barcelona dispatch team' }],
+      author: [{ name: 'STW Movers' }],
     },
   }
 }
@@ -1115,13 +1151,8 @@ export function localBlogSeo(article: LocalBlogArticle): ParsedSeo {
         image: `${siteConfig.siteUrl}${article.image}`,
         url: canonical,
         datePublished: article.date,
-        dateModified: article.date,
+        dateModified: article.modified || article.date,
         author: {
-          '@type': 'Organization',
-          name: 'STW Movers Barcelona dispatch team',
-          url: siteConfig.siteUrl,
-        },
-        reviewedBy: {
           '@type': 'Organization',
           name: 'STW Movers',
           url: siteConfig.siteUrl,

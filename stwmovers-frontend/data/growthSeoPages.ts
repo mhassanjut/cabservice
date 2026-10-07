@@ -47,7 +47,6 @@ export type GrowthPage = {
 const bookCta = { label: 'Get private quote', href: '/journey#book-journey' }
 const contactCta = { label: 'Contact STW Movers', href: '/contact' }
 const growthLastUpdated = '2026-09-21'
-const growthReviewedBy = 'STW Movers Barcelona dispatch team'
 const officialAirportSource = {
   label: 'Aena Barcelona-El Prat airport taxi and transport information',
   href: 'https://www.aena.es/en/josep-tarradellas-barcelona-el-prat/getting-there/taxi.html',
@@ -73,6 +72,8 @@ const servicePages: GrowthPage[] = [
   {
     kind: 'service',
     slug: 'barcelona-airport-transfer',
+    lastUpdated: '2026-10-07',
+    directAnswer: 'Request a Barcelona airport transfer with your flight number, arrival date, destination, passenger count and luggage details. Confirm the terminal, meeting instructions, waiting allowance and total price before booking. A private transfer is arranged in advance; it is not a pickup from the airport taxi rank.',
     path: '/services/barcelona-airport-transfer',
     eyebrow: 'Airport transfer Barcelona',
     title: 'Barcelona Airport Transfer Service',
@@ -88,6 +89,11 @@ const servicePages: GrowthPage[] = [
         body:
           'Airport journeys need more than a car at the curb. We plan pickup time around flight status, terminal access, luggage needs, and the next step of your itinerary.',
         bullets: ['BCN Terminal 1 and Terminal 2 pickup', 'Hotel, office, port, and private-address drop-offs', 'Return transfers with sensible buffer time'],
+      },
+      {
+        heading: 'Where should I meet the driver at T1 or T2?',
+        body: 'Use the meeting instructions supplied for your booking rather than assuming the taxi rank is the meeting point. Aena lists taxi and vehicles-for-hire arrangements separately. Share your flight number and check the terminal again if your airline changes it.',
+        bullets: ['Ask for the exact meeting point and contact number', 'Confirm when the waiting allowance starts and any extra charge', 'Contact the team if your flight or baggage collection is delayed'],
       },
       {
         heading: 'Who this service fits',
@@ -111,13 +117,15 @@ const servicePages: GrowthPage[] = [
       { label: 'Barcelona airport chauffeur', href: '/locations/barcelona-airport-chauffeur-service' },
       { label: 'Flight delay transfer answer', href: '/answers/flight-delay-airport-transfer-barcelona' },
     ],
-    sources: [officialAirportSource, officialTaxiFareSource, stwServiceCatalogSource, stwPricingSource],
+    sources: [officialAirportSource, officialVtcSource, officialTaxiFareSource, stwServiceCatalogSource, stwPricingSource],
     primaryCta: bookCta,
     secondaryCta: contactCta,
   },
   {
     kind: 'service',
     slug: 'private-driver-barcelona',
+    lastUpdated: '2026-10-07',
+    directAnswer: 'Choose a point-to-point private driver for a defined pickup and destination, or request hourly service for a schedule with several stops. Share the itinerary and expected duration before booking. Ask which waiting time, distance and extra stops the quote covers; an hourly request is not unlimited travel.',
     path: '/services/private-driver-barcelona',
     eyebrow: 'Private driver Barcelona',
     title: 'Private Driver in Barcelona',
@@ -139,6 +147,11 @@ const servicePages: GrowthPage[] = [
         body:
           'This service is useful when the trip includes waiting time, luggage, several passengers, or a schedule that should not depend on street availability.',
         bullets: ['Dinner and evening transport', 'Shopping or sightseeing with stops', 'Client and family transport'],
+      },
+      {
+        heading: 'What should an hourly quote include?',
+        body: 'Ask for the booked duration, start and finish locations, included distance if applicable, and the cost of overtime or additional stops. Send appointment times as well as addresses so travel and waiting can be considered separately.',
+        bullets: ['Confirm whether the vehicle waits between appointments', 'Request changes before extending the itinerary', 'Check cancellation conditions before accepting the quote'],
       },
     ],
     faqs: [
@@ -163,6 +176,8 @@ const servicePages: GrowthPage[] = [
   {
     kind: 'service',
     slug: 'executive-chauffeur-barcelona',
+    lastUpdated: '2026-10-07',
+    directAnswer: 'For business travel in Barcelona, request a chauffeur itinerary with meeting addresses, appointment times, airport details and a day-of contact. Confirm vehicle availability, waiting terms and invoice requirements before booking. Share access instructions for offices or venues rather than relying on a venue name alone.',
     path: '/services/executive-chauffeur-barcelona',
     eyebrow: 'Executive chauffeur Barcelona',
     title: 'Executive Chauffeur Service in Barcelona',
@@ -182,8 +197,12 @@ const servicePages: GrowthPage[] = [
       {
         heading: 'Professional details that matter',
         body:
-          'A business chauffeur page should answer practical questions quickly: where the pickup is, how waiting time works, and how multiple stops are handled.',
-        bullets: ['Pre-planned itinerary notes', 'Private vehicle experience', 'Support for hotels, offices, Fira, and restaurants'],
+          'Provide the building entrance, meeting schedule and a contact who can coordinate changes. For conferences, include the venue and entrance shown on your event invitation. Confirm whether waiting between appointments is part of the quote.',
+        bullets: ['Pickup instructions for each stop', 'Passenger and luggage requirements', 'Invoice details and any purchase-order requirement'],
+      },
+      {
+        heading: 'What if the meeting runs late?',
+        body: 'Discuss the waiting allowance and overtime rate before booking. If a meeting changes, contact the team rather than assuming the driver can extend the service. Additional time and itinerary changes depend on availability and the agreed booking conditions.',
       },
     ],
     faqs: [
@@ -252,6 +271,8 @@ const servicePages: GrowthPage[] = [
   {
     kind: 'service',
     slug: 'barcelona-cruise-port-transfer',
+    lastUpdated: '2026-10-07',
+    directAnswer: 'For a Barcelona cruise transfer, provide the ship name, sailing date, terminal if known, luggage count and destination. Plan around the expected time you can leave the ship, not only the docking time. Confirm the meeting point and allow for disembarkation before agreeing an onward airport pickup.',
     path: '/services/barcelona-cruise-port-transfer',
     eyebrow: 'Cruise port transfer',
     title: 'Barcelona Cruise Port Transfer',
@@ -273,6 +294,11 @@ const servicePages: GrowthPage[] = [
         body:
           'When timing allows, the journey can include a hotel stop, restaurant drop-off, or onward transfer to Sitges, Costa Brava, or another nearby destination.',
         bullets: ['Hotel check-in transfers', 'City stop before airport departure', 'Onward private transfers outside Barcelona'],
+      },
+      {
+        heading: 'Can I connect from the ship to a flight?',
+        body: 'Share the flight departure time and the disembarkation information from your cruise line. Road travel is only part of the connection: leaving the ship, collecting bags and airline check-in also take time. Ask the team to review the itinerary; a transfer booking does not guarantee a tight connection.',
+        bullets: ['Reconfirm the terminal with your cruise line', 'Tell the team about changes to disembarkation', 'Check the waiting and cancellation terms for your booking'],
       },
     ],
     faqs: [
@@ -1387,6 +1413,7 @@ const competitorServicePages: GrowthPage[] = [
   {
     kind: 'service',
     slug: 'barcelona-van-transfer',
+    lastUpdated: '2026-10-07',
     path: '/services/barcelona-van-transfer',
     eyebrow: 'Barcelona van transfer',
     title: 'Barcelona Van Transfer for Groups and Luggage',
@@ -1400,15 +1427,19 @@ const competitorServicePages: GrowthPage[] = [
     image: '/img/home/fleet-section/mercedes-v-class.webp',
     sections: [
       {
-        heading: 'Compete with taxi van and 7-seat searches',
+        heading: 'Match the vehicle to passengers and luggage',
         body:
-          'Competitors rank around taxi van Barcelona, 7 plazas, 8 passenger taxi, family van, and airport taxi van. STW Movers should answer the same need with premium private transfer positioning.',
+          'A seat count alone does not establish luggage capacity. Send the number of adults and children, large suitcases, cabin bags, pushchairs and any bulky equipment. Ask for confirmation that the available vehicle fits the whole group before accepting a quote.',
         bullets: ['Group airport transfers', 'Cruise port luggage transfers', 'Family hotel and resort routes'],
       },
       {
         heading: 'One vehicle plan instead of two uncertain rides',
         body:
           'Groups often compare vans because luggage and passenger count decide the trip. Pre-booking allows vehicle fit to be discussed before the travel day.',
+      },
+      {
+        heading: 'Child seats and accessibility requests',
+        body: 'Mention child-seat and accessibility needs when requesting the quote. Provide the relevant seat requirements and whether mobility equipment must remain occupied during travel. Do not assume a larger vehicle is wheelchair accessible; request explicit confirmation of suitability and availability.',
       },
     ],
     faqs: [
@@ -2125,34 +2156,6 @@ const competitorAnswerPages: GrowthPage[] = [
   },
 ]
 
-function marketIntentDescription(page: GrowthPage) {
-  if (/taxi|cab/i.test(page.description)) return page.description
-
-  if (page.kind === 'answer') {
-    return `${page.description} Includes taxi, cab, private driver, and chauffeur search intent for Barcelona travellers.`
-  }
-
-  return `${page.description} A premium taxi and cab alternative for pre-booked private transfers in Barcelona.`
-}
-
-function marketIntentSection(page: GrowthPage): GrowthSection {
-  if (page.kind === 'answer') {
-    return {
-      heading: 'Taxi and cab search context',
-      body:
-        'People often use taxi, cab, private taxi, airport cab, and private driver searches for the same travel need. STW Movers answers that intent with a planned chauffeur and private transfer option.',
-      bullets: ['Useful for taxi and cab comparison searches', 'Keeps the offer premium and pre-booked', 'Helps match paid ads to real search language'],
-    }
-  }
-
-  return {
-    heading: 'Taxi and cab alternative for this journey',
-    body:
-      'If you are searching for a Barcelona taxi, private cab, airport taxi, or cab transfer, this service is the premium pre-booked alternative: planned pickup, private vehicle, and direct support before travel.',
-    bullets: ['Private taxi-style point-to-point transfer', 'Cab alternative with planned pickup details', 'Chauffeur service for airport, hotel, port, and business travel'],
-  }
-}
-
 function marketIntentFaq(page: GrowthPage): GrowthFaq {
   return {
     question:
@@ -2197,12 +2200,9 @@ export function growthBookingSteps(page: GrowthPage) {
 function withMarketIntent(page: GrowthPage): GrowthPage {
   return {
     ...page,
-    description: marketIntentDescription(page),
     directAnswer: directAnswerForPage(page),
-    sections: [...page.sections, marketIntentSection(page)],
     faqs: [...page.faqs, marketIntentFaq(page)],
-    lastUpdated: growthLastUpdated,
-    reviewedBy: growthReviewedBy,
+    lastUpdated: page.lastUpdated || growthLastUpdated,
   }
 }
 
@@ -2279,7 +2279,6 @@ function webPageSchemaForPage(page: GrowthPage) {
     name: page.seoTitle,
     headline: page.title,
     description: page.description,
-    datePublished: page.lastUpdated,
     dateModified: page.lastUpdated,
     inLanguage: 'en',
     isPartOf: {
@@ -2288,10 +2287,10 @@ function webPageSchemaForPage(page: GrowthPage) {
     about: {
       '@id': `${absolute(page.path)}#primary`,
     },
-    reviewedBy: {
+    reviewedBy: page.reviewedBy ? {
       '@type': 'Organization',
-      name: page.reviewedBy || 'STW Movers',
-    },
+      name: page.reviewedBy,
+    } : undefined,
   }
 }
 

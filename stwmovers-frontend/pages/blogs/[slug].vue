@@ -27,8 +27,11 @@ if (!error.value && !post.value && !localArticle.value) {
 const title = computed(() => (post.value ? wpTitle(post.value) : 'Article'))
 const excerpt = computed(() => (post.value ? wpExcerpt(post.value) : ''))
 const image = computed(() => (post.value ? wpFeaturedImage(post.value) : null))
-const dateLabel = computed(() => (post.value ? formatWpDate(post.value.date) : ''))
-const lastUpdatedLabel = computed(() => (dateLabel.value ? `Last updated ${dateLabel.value}` : 'Reviewed by STW Movers'))
+const lastUpdatedLabel = computed(() => {
+  if (!post.value) return ''
+  const date = post.value.modified || post.value.date
+  return date ? `Last updated ${formatWpDate(date)}` : ''
+})
 const articleTopic = computed(() => {
   if (!localArticle.value) return 'STW Movers Insight'
   if (slug.value.includes('airport')) return 'Airport transfer guide'
@@ -67,15 +70,14 @@ useRankMathSeo(articleSeo)
           <header class="blog-article__header">
             <div class="blog-article__meta-row">
               <span>{{ articleTopic }}</span>
-              <span>{{ lastUpdatedLabel }}</span>
-              <span>Reviewed by STW Movers</span>
+              <span v-if="lastUpdatedLabel">{{ lastUpdatedLabel }}</span>
               <span>Quote-ready guide</span>
             </div>
             <h1 class="blog-article__title">{{ title }}</h1>
             <p v-if="excerpt" class="blog-article__excerpt">{{ excerpt }}</p>
             <div class="blog-article__authority" aria-label="Article standards">
               <span>Written for travellers comparing taxi, cab, private driver, and chauffeur options.</span>
-              <span>Includes direct answers, decision logic, booking details, FAQs, and next-step service links.</span>
+              <span>Confirm vehicle availability, pickup instructions and booking conditions before travelling.</span>
             </div>
           </header>
 

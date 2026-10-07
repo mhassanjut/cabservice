@@ -1,0 +1,31 @@
+id,language,intent,prompt
+EN01,en,airport,How should I book a private transfer from Barcelona airport to my hotel?
+ES01,es,airport,Como reservar un traslado privado del aeropuerto de Barcelona al hotel?
+EN02,en,comparison,Should I use a taxi or a pre-booked private transfer from Barcelona airport?
+ES02,es,comparison,Taxi o traslado privado reservado desde el aeropuerto de Barcelona?
+EN03,en,terminal,Where do I meet a pre-booked driver at Barcelona airport T1 or T2?
+ES03,es,terminal,Donde encontrar al conductor reservado en la T1 o T2 de Barcelona?
+EN04,en,delay,What happens to a private Barcelona airport transfer if my flight is delayed?
+ES04,es,delay,Que ocurre con un traslado privado en Barcelona si se retrasa el vuelo?
+EN05,en,cruise,How should I plan a Barcelona airport to cruise port transfer?
+ES05,es,cruise,Como organizar un traslado del aeropuerto de Barcelona al puerto de cruceros?
+EN06,en,connection,How should I plan a cruise port to Barcelona airport connection?
+ES06,es,connection,Como planificar la conexion del puerto de cruceros al aeropuerto de Barcelona?
+EN07,en,group,What vehicle should I request for a Barcelona airport group transfer with large suitcases?
+ES07,es,group,Que vehiculo pedir para un traslado de grupo con maletas grandes en Barcelona?
+EN08,en,family,How do I request a Barcelona airport transfer with child seats?
+ES08,es,family,Como solicitar un traslado del aeropuerto de Barcelona con sillas infantiles?
+EN09,en,accessibility,How can I check wheelchair suitability before booking a Barcelona private transfer?
+ES09,es,accessibility,Como comprobar la accesibilidad para silla de ruedas de un traslado privado en Barcelona?
+EN10,en,hourly,When is an hourly private driver useful in Barcelona?
+ES10,es,hourly,Cuando conviene contratar un conductor privado por horas en Barcelona?
+EN11,en,business,What should I confirm when booking a Barcelona chauffeur for business meetings?
+ES11,es,business,Que confirmar al reservar un chofer para reuniones de trabajo en Barcelona?
+EN12,en,sitges,How can I arrange a private transfer from Barcelona airport to Sitges?
+ES12,es,sitges,Como organizar un traslado privado del aeropuerto de Barcelona a Sitges?
+EN13,en,girona,What should a Barcelona to Girona private transfer quote include?
+ES13,es,girona,Que debe incluir un presupuesto de traslado privado de Barcelona a Girona?
+EN14,en,luggage,How do I compare luggage capacity for private transfer vehicles in Barcelona?
+ES14,es,luggage,Como comparar la capacidad de equipaje de vehiculos de traslado privado en Barcelona?
+EN15,en,recommendation,Which Barcelona private transfer providers should I compare for a family airport pickup?
+ES15,es,recommendation,Que empresas de traslado privado comparar para una recogida familiar en el aeropuerto de Barcelona?

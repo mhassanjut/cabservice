@@ -14,34 +14,32 @@ const whatsappHref = buildWhatsappUrl({
 const marketIntent = computed(() => {
   if (props.page.kind === 'answer') {
     return {
-      heading: 'For taxi, cab, and private driver searches',
+      heading: 'Choose the right journey for your plans',
       body:
-        'Many travellers compare Barcelona taxi, cab, and private driver options before booking. STW Movers is positioned for travellers who want the directness of a taxi with a more planned, private chauffeur experience.',
+        'Compare the pickup arrangements, luggage space and booking conditions before deciding. STW Movers offers pre-booked private journeys, not street-hail taxi service.',
     }
   }
 
   if (props.page.kind === 'location') {
     return {
-      heading: 'Private taxi and cab alternative for this route',
+      heading: 'Plan the pickup for this route',
       body:
-        'This page supports common local searches such as Barcelona taxi service, private cab, airport cab, and chauffeur near this pickup area, while keeping the offer clearly premium and pre-booked.',
+        'Share the exact address, travel date and any access restrictions. Confirm the meeting point and vehicle availability before making onward plans.',
     }
   }
 
   return {
     heading: 'Private taxi and cab alternative in Barcelona',
     body:
-      'For travellers searching taxi, cab, airport taxi, or private driver in Barcelona, STW Movers offers a pre-booked chauffeur option with clearer timing, vehicle planning, and direct support.',
+      'Arrange your journey in advance and confirm the pickup, vehicle and price before travelling. For an immediate ride, compare locally available taxi and public transport options as well.',
   }
 })
 
 const searchIntentChips = [
-  'Barcelona taxi',
-  'Barcelona cab',
-  'Airport taxi BCN',
-  'Private cab Barcelona',
-  'Private driver',
-  'Chauffeur service',
+  'Pickup details',
+  'Travel date',
+  'Passengers',
+  'Luggage',
 ]
 
 const heroTrustLinks = computed(() => [
@@ -108,7 +106,7 @@ const comparisonRows = computed(() => {
     {
       factor: 'Booking style',
       stw: 'Pre-booked private quote with pickup, destination, passengers, luggage, and timing reviewed in advance.',
-      taxi: 'Usually chosen at the moment of travel, with less planning around luggage, stops, or hosting needs.',
+      taxi: 'Available through ranks, street hailing or booking services; advance booking and vehicle options depend on the provider.',
     },
     {
       factor: 'Experience',
@@ -151,19 +149,19 @@ const quoteChecklist = computed(() => {
 
 const assuranceItems = [
   {
-    title: 'Luxury without friction',
+    title: 'Agree the total',
     body:
-      'The page keeps the quote path visible for paid traffic while still answering the detailed questions organic and AI visitors need.',
+      'Check the total price, included waiting time and any extra-stop charges before accepting the quote.',
   },
   {
-    title: 'Search language covered',
+    title: 'Confirm vehicle fit',
     body:
-      'Taxi, cab, private driver, chauffeur, and airport transfer wording is included naturally so the page matches how travellers search.',
+      'Include large bags, pushchairs and special requirements so seating and luggage space can be checked together.',
   },
   {
-    title: 'Decision support',
+    title: 'Keep pickup instructions',
     body:
-      'Comparison tables, FAQs, and booking steps reduce hesitation before a visitor sends trip details.',
+      'Keep your booking confirmation and contact details accessible, and report itinerary changes before pickup.',
   },
 ]
 </script>
@@ -189,7 +187,7 @@ const assuranceItems = [
           <h1>{{ page.title }}</h1>
           <p class="growth-hero__summary">{{ page.summary }}</p>
           <p class="growth-freshness">
-            Last updated {{ updatedLabel }}. Reviewed by {{ page.reviewedBy || 'STW Movers' }}.
+            Last updated {{ updatedLabel }}.<span v-if="page.reviewedBy"> Reviewed by {{ page.reviewedBy }}.</span>
           </p>
           <div class="growth-actions">
             <NuxtLink
@@ -250,10 +248,17 @@ const assuranceItems = [
       </div>
     </section>
 
-    <section class="growth-intent-strip" aria-label="Popular transfer searches">
+    <section v-if="page.directAnswer" class="growth-band growth-band--answer">
+      <div class="growth-container growth-answer">
+        <p class="growth-kicker">At a glance</p>
+        <p>{{ page.directAnswer }}</p>
+      </div>
+    </section>
+
+    <section class="growth-intent-strip" aria-label="Journey planning">
       <div class="growth-container growth-intent-strip__inner">
         <div>
-          <p class="growth-kicker">Popular transfer searches</p>
+          <p class="growth-kicker">Plan your journey</p>
           <h2>{{ marketIntent.heading }}</h2>
           <p>{{ marketIntent.body }}</p>
         </div>
@@ -275,11 +280,11 @@ const assuranceItems = [
     <section class="growth-conversion-band" aria-labelledby="growth-conversion-heading">
       <div class="growth-container growth-conversion-band__inner">
         <div>
-          <p class="growth-kicker">Conversion ready</p>
-          <h2 id="growth-conversion-heading">Built for Google Ads, organic search, and AI answer traffic</h2>
+          <p class="growth-kicker">Before you book</p>
+          <h2 id="growth-conversion-heading">The details that make your quote useful</h2>
           <p>
-            This page gives high-intent visitors a fast quote path, a premium taxi and cab alternative message, and
-            enough detail to decide whether STW Movers fits the trip.
+            Tell us where you are travelling, when you need pickup and what you are bringing.
+            Availability and specific arrangements should be confirmed for your booking.
           </p>
         </div>
         <aside class="growth-mini-checklist" aria-label="Quote checklist">
@@ -297,17 +302,10 @@ const assuranceItems = [
       </div>
     </section>
 
-    <section v-if="page.directAnswer" class="growth-band growth-band--answer">
-      <div class="growth-container growth-answer">
-        <p class="growth-kicker">Direct answer</p>
-        <p>{{ page.directAnswer }}</p>
-      </div>
-    </section>
-
     <section v-if="page.sources?.length" class="growth-band growth-band--sources">
       <div class="growth-container growth-sources">
         <div>
-          <p class="growth-kicker">Official references</p>
+          <p class="growth-kicker">References and service information</p>
           <h2>Sources used for this guide</h2>
         </div>
         <div class="growth-sources__links">

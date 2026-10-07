@@ -1,5 +1,7 @@
 # STW Movers Local SEO + AI Visibility Sprints
 
+> Historical implementation record. Correction (2026-10-07): "Verified" below means found in repository content, not independently verified business facts. Use [the current evidence register and measurement gates](AI-VISIBILITY-SPRINT-ONE.md) before publishing claims. No AI visibility baseline was measured by this document.
+
 Local-only working plan for the pre-publication release. The goal is to improve Google organic visibility, Google Ads conversion intent, and AI answer retrieval for Barcelona chauffeur, airport transfer, taxi, and cab searches without creating doorway-style duplicate pages.
 
 ## Sprint One: Inventory, Intent Map, Duplication Review, Verified Facts
