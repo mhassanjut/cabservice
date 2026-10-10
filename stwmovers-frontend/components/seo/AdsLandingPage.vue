@@ -11,31 +11,6 @@ const whatsappHref = buildWhatsappUrl({
   text: `Hello STW Movers, I want a private quote for ${props.page.title}.`,
 })
 
-const searchIntentChips = computed(() =>
-  props.page.primaryIntent
-    .split(',')
-    .map((item) => item.trim())
-    .filter(Boolean),
-)
-
-const quoteFields = computed(() => [
-  {
-    label: 'Pickup',
-    value: props.page.slug.includes('airport') ? 'BCN airport, hotel, port' : 'Airport, hotel, venue',
-    icon: 'fa-solid fa-location-dot',
-  },
-  {
-    label: 'Route',
-    value: props.page.slug.includes('van') ? 'Group and luggage fit' : 'Door-to-door private transfer',
-    icon: 'fa-solid fa-flag-checkered',
-  },
-  {
-    label: 'Timing',
-    value: props.page.slug.includes('chauffeur') ? 'Hourly or fixed pickup' : 'Date, time, flight details',
-    icon: 'fa-regular fa-clock',
-  },
-])
-
 const trackAdsAction = (action: string, location: string, label: string) => {
   trackMarketingEvent('ads_landing_action_clicked', {
     action,
@@ -54,7 +29,7 @@ const trackAdsAction = (action: string, location: string, label: string) => {
       <div class="ads-hero__media" aria-hidden="true">
         <NuxtImg
           :src="page.image"
-          :alt="page.title"
+          alt=""
           sizes="100vw sm:100vw md:100vw lg:100vw"
           densities="x1 x2"
           format="webp"
@@ -69,13 +44,13 @@ const trackAdsAction = (action: string, location: string, label: string) => {
           <h1>{{ page.title }}</h1>
           <p>{{ page.description }}</p>
           <div class="ads-actions">
-            <NuxtLink
+            <a
               class="ads-btn ads-btn--gold"
-              to="/journey#book-journey"
-              @click="trackAdsAction('quote_form', 'hero', 'Request private quote')"
+              href="#ads-booking"
+              @click="trackAdsAction('booking_form', 'hero', 'View vehicles and prices')"
             >
-              Request private quote
-            </NuxtLink>
+              View vehicles &amp; prices
+            </a>
             <a
               class="ads-btn ads-btn--glass"
               :href="whatsappHref"
@@ -91,25 +66,21 @@ const trackAdsAction = (action: string, location: string, label: string) => {
           </ul>
         </div>
 
-        <aside class="ads-quote-panel ads-quote-panel--form" aria-label="Quick quote details">
-          <p class="ads-eyebrow">Quote-ready</p>
-          <h2>Check availability before pickup.</h2>
-          <div class="ads-mini-form" aria-label="Quote form preview">
-            <div v-for="field in quoteFields" :key="field.label" class="ads-mini-field">
-              <i :class="field.icon" aria-hidden="true" />
-              <span>
-                <small>{{ field.label }}</small>
-                <strong>{{ field.value }}</strong>
-              </span>
-            </div>
-          </div>
-          <NuxtLink
+        <aside class="ads-quote-panel ads-quote-panel--form" aria-label="Plan your transfer">
+          <p class="ads-eyebrow">A considered journey</p>
+          <h2>See the right vehicle and price for your trip.</h2>
+          <ul class="ads-trip-points">
+            <li><i class="fa-solid fa-location-dot" aria-hidden="true" /> Pickup and destination</li>
+            <li><i class="fa-regular fa-calendar" aria-hidden="true" /> Travel date and time</li>
+            <li><i class="fa-solid fa-users" aria-hidden="true" /> Passenger requirements</li>
+          </ul>
+          <a
             class="ads-btn ads-btn--gold ads-btn--wide"
-            to="/journey#book-journey"
-            @click="trackAdsAction('quote_form', 'hero_quote_panel', 'Open quote form')"
+            href="#ads-booking"
+            @click="trackAdsAction('booking_form', 'hero_trip_panel', 'View vehicles and prices')"
           >
-            Open quote form
-          </NuxtLink>
+            Plan your journey
+          </a>
           <div class="ads-quote-panel__contact">
             <a
               class="ads-phone"
@@ -128,30 +99,28 @@ const trackAdsAction = (action: string, location: string, label: string) => {
               WhatsApp
             </a>
           </div>
-          <p class="ads-quote-panel__note">No payment here. Send trip details first.</p>
+          <p class="ads-quote-panel__note">Add your trip details to compare available vehicles and prices.</p>
         </aside>
       </div>
     </section>
 
-    <section class="ads-trust-strip" aria-label="Conversion trust signals">
-      <div class="ads-container ads-trust-strip__inner">
-        <span>Private quote before pickup</span>
-        <span>Airport, hotel, port, and city routes</span>
-        <span>Phone and WhatsApp lead path</span>
-        <span>Built for Google Ads intent</span>
+    <section id="ads-booking" class="ads-booking-section" aria-labelledby="ads-booking-heading">
+      <div class="ads-container">
+        <div class="ads-booking-section__heading">
+          <p class="ads-eyebrow">Plan your transfer</p>
+          <h2 id="ads-booking-heading">A vehicle and fare for the journey ahead.</h2>
+          <p>{{ page.audience }}. Enter your route and travel time to see available options.</p>
+        </div>
+        <BookingForm class="ads-booking-form" variant="card" />
       </div>
     </section>
 
-    <section class="ads-search-band" aria-label="Search intent">
-      <div class="ads-container ads-search-band__inner">
-        <div>
-          <p class="ads-eyebrow">Search intent match</p>
-          <h2>{{ page.primaryIntent }}</h2>
-          <div class="ads-message-chips" aria-label="Matched search terms">
-            <span v-for="chip in searchIntentChips" :key="chip">{{ chip }}</span>
-          </div>
-        </div>
-        <p>{{ page.audience }}</p>
+    <section class="ads-trust-strip" aria-label="Service details">
+      <div class="ads-container ads-trust-strip__inner">
+        <span>Private journeys arranged in advance</span>
+        <span>Airport and cruise-port transfers</span>
+        <span>Vehicle options and prices before booking</span>
+        <span>Phone and WhatsApp support</span>
       </div>
     </section>
 
@@ -159,7 +128,7 @@ const trackAdsAction = (action: string, location: string, label: string) => {
       <div class="ads-container">
         <div class="ads-section-head">
           <p class="ads-eyebrow">Why book STW Movers</p>
-          <h2>A luxury private transfer path for ready-to-book visitors</h2>
+          <h2>Thoughtful travel, from pickup to arrival.</h2>
         </div>
         <div class="ads-benefit-grid">
           <section v-for="benefit in page.benefits" :key="benefit.title" class="ads-card">
@@ -174,10 +143,10 @@ const trackAdsAction = (action: string, location: string, label: string) => {
       <div class="ads-container ads-split">
         <div>
           <p class="ads-eyebrow">Taxi and cab comparison</p>
-          <h2>When a private chauffeur is the stronger choice</h2>
+          <h2>Choose the option that suits your journey.</h2>
           <p>
-            Taxi and cab searches often mean the visitor is close to booking. This page gives that intent a more premium
-            option with clearer pickup planning and stronger conversion actions.
+            A taxi can suit an immediate point-to-point ride. A pre-booked private transfer is useful when you want to
+            arrange your timing, destination, and vehicle before travelling.
           </p>
         </div>
         <div class="ads-table" aria-label="Private chauffeur comparison">
@@ -205,7 +174,7 @@ const trackAdsAction = (action: string, location: string, label: string) => {
       <div class="ads-container ads-faq-layout">
         <div>
           <p class="ads-eyebrow">Before booking</p>
-          <h2>Quick answers for high-intent traffic</h2>
+          <h2>Common questions before booking</h2>
         </div>
         <div class="ads-faq-grid">
           <section v-for="faq in page.faqs" :key="faq.question" class="ads-card">
@@ -220,19 +189,19 @@ const trackAdsAction = (action: string, location: string, label: string) => {
       <div class="ads-container ads-final__inner">
         <div>
           <p class="ads-eyebrow">Ready to move</p>
-          <h2 id="ads-final-heading">Get a private chauffeur quote for your Barcelona trip.</h2>
+          <h2 id="ads-final-heading">Plan your Barcelona transfer.</h2>
           <p>
-            Use the quote form, WhatsApp, or phone. STW Movers will help match the right service, route, and vehicle.
+            Enter your route to compare available vehicles and prices, or contact the team if you would like help first.
           </p>
         </div>
         <div class="ads-final__actions">
-          <NuxtLink
+          <a
             class="ads-btn ads-btn--gold"
-            to="/journey#book-journey"
-            @click="trackAdsAction('quote_form', 'final_cta', 'Request private quote')"
+            href="#ads-booking"
+            @click="trackAdsAction('booking_form', 'final_cta', 'View vehicles and prices')"
           >
-            Request private quote
-          </NuxtLink>
+            View vehicles &amp; prices
+          </a>
           <a
             class="ads-btn ads-btn--dark"
             :href="whatsappHref"
@@ -258,9 +227,9 @@ const trackAdsAction = (action: string, location: string, label: string) => {
     </section>
 
     <nav class="ads-mobile-cta" aria-label="Mobile landing page actions">
-      <NuxtLink to="/journey#book-journey" @click="trackAdsAction('quote_form', 'mobile_sticky', 'Quote')">
-        Quote
-      </NuxtLink>
+      <a href="#ads-booking" @click="trackAdsAction('booking_form', 'mobile_sticky', 'View vehicles and prices')">
+        View prices
+      </a>
       <a :href="`tel:${siteConfig.contactPhone}`" @click="trackAdsAction('phone', 'mobile_sticky', 'Call')">
         Call
       </a>

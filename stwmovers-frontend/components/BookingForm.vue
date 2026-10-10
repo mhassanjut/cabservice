@@ -493,6 +493,19 @@ const onSubmit = async () => {
         </label>
         <p v-if="touched.pickupTime && errors.pickupTime" class="err">{{ errors.pickupTime }}</p>
       </div>
+      <div class="field">
+        <label class="label" for="passengers-card">Passengers</label>
+        <select
+          id="passengers-card"
+          v-model="passengerCount"
+          class="input"
+        >
+          <option value="">Select passengers</option>
+          <option v-for="count in PASSENGER_CAPACITY_CHOICES" :key="count" :value="count">
+            {{ passengerCapacityLabel(count) }}
+          </option>
+        </select>
+      </div>
     </div>
     <p v-if="form.distanceKm" class="help">Distance ≈ {{ formatDistanceKm(form.distanceKm) }}</p>
     <button class="btn btn--solid-gold" type="submit" :disabled="loading" :aria-busy="loading" aria-live="polite">

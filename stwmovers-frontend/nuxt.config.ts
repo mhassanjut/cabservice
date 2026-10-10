@@ -84,6 +84,8 @@ export default defineNuxtConfig({
       googleClientId: '',
       stripePublicKey: '',
       googleAnalyticsId: '',
+      googleAdsConversionId: '',
+      googleAdsPurchaseConversionLabel: '',
       microsoftClarityId: '',
     },
   },

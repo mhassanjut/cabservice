@@ -223,18 +223,18 @@ export const adsLandingPages: Record<string, AdsLandingPage> = {
     slug: 'cab-service-barcelona',
     path: '/cab-service-barcelona',
     eyebrow: 'Cab service Barcelona',
-    title: 'Cab Service Search? Choose a Private Chauffeur When the Trip Matters',
+    title: 'Private Cab Service in Barcelona for Airport and City Journeys',
     description:
       'STW Movers is a private chauffeur and transfer option for travellers searching cab service Barcelona, airport cab, private cab, or premium taxi alternative.',
     image: '/img/services/hourly.png',
-    audience: 'Search visitors using cab language for airport, hotel, business, and local transfers',
+    audience: 'Airport arrivals, hotel pickups, business trips, and local transfers in Barcelona',
     primaryIntent: 'Cab service Barcelona, airport cab BCN, private cab Barcelona',
     proof: ['Private quote', 'Passenger and luggage planning', 'Door-to-door routes', 'Luxury transfer feel'],
     benefits: [
       {
         title: 'Cab convenience, chauffeur standards',
         body:
-          'The search intent is simple: get from one place to another. STW Movers adds a more polished vehicle and planning experience.',
+          'Arrange a private vehicle for airport, hotel, business, or city travel, with trip details planned before pickup.',
       },
       {
         title: 'Better for groups and luggage',
@@ -242,9 +242,9 @@ export const adsLandingPages: Record<string, AdsLandingPage> = {
           'Share passenger and luggage count before the trip so the vehicle can be matched to the journey.',
       },
       {
-        title: 'Built for conversion traffic',
+        title: 'Straightforward ways to book',
         body:
-          'Fast quote, phone, and WhatsApp actions help ready-to-book visitors move quickly from search to request.',
+          'Compare vehicle options online, or contact the team by phone or WhatsApp if you need help planning your trip.',
       },
     ],
     comparison: [
@@ -271,9 +271,9 @@ export const adsLandingPages: Record<string, AdsLandingPage> = {
           'You can request a fast private quote by form, phone, or WhatsApp, but the service is pre-booked rather than street-hailed.',
       },
       {
-        question: 'Is cab service language important for this market?',
+        question: 'Can I book a street-hail taxi through STW Movers?',
         answer:
-          'Yes. Many travellers use cab, taxi, private cab, or airport cab terms when they actually need a reliable private transfer.',
+          'No. STW Movers provides pre-booked private transfers and chauffeur journeys rather than street-hail taxi rides.',
       },
     ],
     related: [
@@ -286,18 +286,18 @@ export const adsLandingPages: Record<string, AdsLandingPage> = {
     slug: 'airport-taxi-barcelona',
     path: '/landing/airport-taxi-barcelona',
     eyebrow: 'Airport taxi Barcelona',
-    title: 'Airport Taxi Barcelona Search? Book a Private Chauffeur Instead',
+    title: 'Barcelona Airport Taxi Alternative with a Private Chauffeur',
     description:
-      'A high-converting BCN airport taxi alternative for travellers who want flight-aware pickup, luggage planning, and a premium private transfer before they land.',
+      'Arrange a private BCN airport transfer with your pickup time and destination planned before travel. Compare available vehicles and prices for your journey.',
     image: '/img/services/airport.png',
-    audience: 'Google Ads visitors searching airport taxi Barcelona, airport cab BCN, and BCN airport transfer',
+    audience: 'BCN airport arrivals, hotel transfers, cruise-port connections, and departures',
     primaryIntent: 'airport taxi Barcelona, BCN airport taxi, airport cab Barcelona',
     proof: ['BCN Terminal 1 and 2', 'Flight-aware quote', 'Luggage planning', 'Fast WhatsApp support'],
     benefits: [
       {
-        title: 'Built for airport intent',
+        title: 'Plan your airport pickup ahead',
         body:
-          'The page speaks directly to airport taxi searchers while positioning STW Movers as the planned, premium alternative.',
+          'Share your route and travel time in advance, then compare available vehicles and prices for the transfer.',
       },
       {
         title: 'Quote before arrival',
@@ -312,9 +312,9 @@ export const adsLandingPages: Record<string, AdsLandingPage> = {
     ],
     comparison: [
       {
-        factor: 'Search need',
+        factor: 'Planning',
         stw: 'A private airport transfer planned before the flight arrives.',
-        alternative: 'An airport taxi chosen from queue or app availability after arrival.',
+        alternative: 'An on-demand taxi arranged after arrival.',
       },
       {
         factor: 'Best fit',
@@ -322,9 +322,9 @@ export const adsLandingPages: Record<string, AdsLandingPage> = {
         alternative: 'Simple airport-to-city rides when waiting and vehicle variation are acceptable.',
       },
       {
-        factor: 'Conversion action',
-        stw: 'Quote form, phone, and WhatsApp with airport details.',
-        alternative: 'On-demand ride decision at the airport.',
+        factor: 'Booking',
+        stw: 'Enter trip details online or contact the team for assistance.',
+        alternative: 'Arrange a ride on arrival, subject to local availability.',
       },
     ],
     faqs: [
@@ -349,23 +349,23 @@ export const adsLandingPages: Record<string, AdsLandingPage> = {
     slug: 'cab-barcelona',
     path: '/landing/cab-barcelona',
     eyebrow: 'Cab Barcelona',
-    title: 'Cab Barcelona Search? Upgrade to a Private Chauffeur Quote',
+    title: 'Private Cab in Barcelona for Airport, Hotel, and City Travel',
     description:
       'A dedicated cab Barcelona landing page for travellers who want a fast ride but prefer a premium private driver, luggage planning, and direct support.',
     image: '/img/services/hourly.png',
-    audience: 'Paid search visitors using cab Barcelona, private cab Barcelona, and cab service Barcelona terms',
+    audience: 'Travellers arranging airport pickups, hotel journeys, business trips, and city transfers',
     primaryIntent: 'cab Barcelona, cab service Barcelona, private cab Barcelona',
     proof: ['Private quote path', 'Premium cab alternative', 'Airport and city routes', 'Phone and WhatsApp actions'],
     benefits: [
       {
-        title: 'Matches cab search language',
+        title: 'Private travel, arranged in advance',
         body:
-          'Visitors see the exact wording they searched, then a clear explanation of the more polished chauffeur option.',
+          'Choose a pre-booked private vehicle for trips where timing, pickup details, or direct assistance matter.',
       },
       {
-        title: 'Low-friction lead path',
+        title: 'Choose how to arrange your trip',
         body:
-          'Quote, phone, and WhatsApp actions are visible for ready-to-book traffic from Google Ads.',
+          'Enter your journey details online, or contact the team by phone or WhatsApp for help before booking.',
       },
       {
         title: 'Strong for higher-value rides',
@@ -394,7 +394,7 @@ export const adsLandingPages: Record<string, AdsLandingPage> = {
       {
         question: 'Can STW Movers replace a cab for important trips?',
         answer:
-          'Yes. It is designed for travellers who search cab language but want a pre-booked private chauffeur experience.',
+          'STW Movers offers pre-booked private chauffeur journeys for travellers who prefer to arrange their trip in advance.',
       },
       {
         question: 'What should I send for a cab-style private quote?',
@@ -416,14 +416,14 @@ export const adsLandingPages: Record<string, AdsLandingPage> = {
     description:
       'Book a private Barcelona transfer with chauffeur-level planning for airport arrivals, cruise port trips, hotels, families, business guests, and city-to-city routes.',
     image: '/img/contact/destination-sunset.png',
-    audience: 'Search visitors comparing private transfer Barcelona, airport transfer, port transfer, and private driver routes',
+    audience: 'Airport and cruise-port arrivals, hotel guests, families, and business travellers',
     primaryIntent: 'private transfer Barcelona, Barcelona transfer service, private airport transfer Barcelona',
     proof: ['Airport and port routes', 'City-to-city options', 'Family and business fit', 'Private quote pricing'],
     benefits: [
       {
-        title: 'One page for transfer intent',
+        title: 'Airport, port, and city-to-city journeys',
         body:
-          'The page is broad enough for airport, port, hotel, and city-to-city paid search while staying conversion-focused.',
+          'Plan a direct transfer between Barcelona Airport, the cruise port, hotels, and destinations beyond the city.',
       },
       {
         title: 'Planned before pickup',
@@ -431,9 +431,9 @@ export const adsLandingPages: Record<string, AdsLandingPage> = {
           'Route, passengers, luggage, date, time, and flight or cruise details shape the quote before travel.',
       },
       {
-        title: 'Premium lead quality',
+        title: 'Plan around your travel needs',
         body:
-          'The page filters for visitors who value comfort, timing, presentation, and private vehicle planning.',
+          'Share your route, timing, and passenger count so you can review suitable vehicle options before booking.',
       },
     ],
     comparison: [
@@ -460,9 +460,9 @@ export const adsLandingPages: Record<string, AdsLandingPage> = {
           'Yes. STW Movers can quote city-to-city transfers from Barcelona to nearby destinations when route details are provided.',
       },
       {
-        question: 'Is this page for airport and cruise port traffic?',
+        question: 'Can I book an airport or cruise-port transfer?',
         answer:
-          'Yes. It is designed for airport, port, hotel, family, business, and onward-route transfer intent.',
+          'Yes. STW Movers offers pre-booked transfers for airport, cruise-port, hotel, business, and onward journeys.',
       },
     ],
     related: [
@@ -475,18 +475,18 @@ export const adsLandingPages: Record<string, AdsLandingPage> = {
     slug: 'taxi-van-barcelona',
     path: '/landing/taxi-van-barcelona',
     eyebrow: 'Taxi van Barcelona',
-    title: 'Taxi Van Barcelona Search? Request a Private Van Transfer Quote',
+    title: 'Private Van Transfer in Barcelona for Groups and Luggage',
     description:
       'A dedicated landing page for groups, families, cruise guests, and luggage-heavy airport arrivals comparing taxi van Barcelona and private van transfer options.',
     image: '/img/home/fleet-section/mercedes-v-class.webp',
-    audience: 'Google Ads visitors searching taxi van Barcelona, airport van transfer, 7-seat taxi, and group cab options',
+    audience: 'Families, groups, and travellers carrying extra luggage around Barcelona',
     primaryIntent: 'taxi van Barcelona, airport van transfer Barcelona, 7 seat taxi Barcelona',
     proof: ['Group and luggage fit', 'Airport and cruise routes', 'Family transfers', 'Private vehicle planning'],
     benefits: [
       {
         title: 'Built for capacity questions',
         body:
-          'The page answers the real concern behind taxi van searches: passengers, suitcases, strollers, and keeping the group together.',
+          'Share the number of passengers when comparing vehicles. Contact the team to confirm suitcase, stroller, and bulky-item space.',
       },
       {
         title: 'Better than splitting vehicles',
@@ -494,9 +494,9 @@ export const adsLandingPages: Record<string, AdsLandingPage> = {
           'One planned transfer can be simpler than dividing people and bags between separate taxis.',
       },
       {
-        title: 'Strong mobile conversion',
+        title: 'Quick trip details on mobile',
         body:
-          'The CTA asks for passenger and luggage counts, which are the key qualification details for van transfer leads.',
+          'Enter your route, travel time, and passenger count from your phone to compare available vehicle options.',
       },
     ],
     comparison: [
@@ -525,7 +525,7 @@ export const adsLandingPages: Record<string, AdsLandingPage> = {
       {
         question: 'Is this a taxi van or chauffeur van page?',
         answer:
-          'It targets taxi van search intent but offers pre-booked private chauffeur transfer service.',
+          'STW Movers offers pre-booked private van transfers with a chauffeur, rather than an on-demand street taxi.',
       },
     ],
     related: [
@@ -540,9 +540,9 @@ export const adsLandingPages: Record<string, AdsLandingPage> = {
     eyebrow: 'Chauffeur Barcelona',
     title: 'Chauffeur Barcelona for Airport, Business, Events, and Private Travel',
     description:
-      'A luxury chauffeur Barcelona landing page for high-intent visitors seeking airport pickup, executive travel, hourly private driver service, and premium transfers.',
+      'Book a private chauffeur in Barcelona for airport pickups, executive travel, hourly driver service, and private transfers.',
     image: '/img/services/business.png',
-    audience: 'Paid search visitors seeking chauffeur Barcelona, executive driver, luxury airport transfer, and private driver service',
+    audience: 'Business travellers, event guests, private hosts, and visitors arranging airport pickups',
     primaryIntent: 'chauffeur Barcelona, executive chauffeur Barcelona, private chauffeur Barcelona',
     proof: ['Executive presentation', 'Airport and hotel routes', 'Hourly availability', 'Luxury private transfer feel'],
     benefits: [
@@ -552,14 +552,14 @@ export const adsLandingPages: Record<string, AdsLandingPage> = {
           'The copy and page flow signal luxury, discretion, timing, and a more polished arrival than generic transport pages.',
       },
       {
-        title: 'Good for high-value leads',
+        title: 'For business and special occasions',
         body:
-          'Airport arrivals, Fira events, meetings, hosted guests, dinners, and multi-stop days fit chauffeur intent.',
+          'Arrange a chauffeur for airport arrivals, Fira events, meetings, hosted guests, dinners, and multi-stop days.',
       },
       {
-        title: 'Clear quote qualification',
+        title: 'Share the details that matter',
         body:
-          'The page asks for itinerary, timing, passenger, luggage, and vehicle details so inquiries are easier to qualify.',
+          'Enter your route, travel time, and passenger count online. Contact the team to discuss luggage or vehicle requirements.',
       },
     ],
     comparison: [
@@ -618,7 +618,6 @@ export function adsLandingPageSchema(page: AdsLandingPage, siteUrl: string) {
         name: page.title,
         description: page.description,
         inLanguage: 'en',
-        dateModified: '2026-09-21',
         mainEntity: {
           '@id': `${absolute(page.path)}#service`,
         },
@@ -647,16 +646,16 @@ export function adsLandingPageSchema(page: AdsLandingPage, siteUrl: string) {
           addressCountry: 'ES',
         },
         potentialAction: {
-          '@type': 'ReserveAction',
-          target: absolute('/journey#book-journey'),
-          name: 'Request a private chauffeur quote',
+          '@type': 'ViewAction',
+          target: absolute(`${page.path}#ads-booking`),
+          name: 'Compare available vehicles and prices',
         },
       },
       {
         '@type': 'HowTo',
         '@id': `${absolute(page.path)}#quote-process`,
-        name: `How to request a quote for ${page.eyebrow}`,
-        description: `Steps for requesting a private chauffeur quote from the ${page.title} landing page.`,
+        name: `How to compare vehicles for ${page.eyebrow}`,
+        description: `Steps to view available private transfer vehicles and prices for ${page.title}.`,
         totalTime: 'PT2M',
         step: [
           {
@@ -668,14 +667,14 @@ export function adsLandingPageSchema(page: AdsLandingPage, siteUrl: string) {
           {
             '@type': 'HowToStep',
             position: 2,
-            name: 'Add timing and trip details',
-            text: 'Send the date, pickup time, flight or cruise details, passengers, luggage, and any special requests.',
+            name: 'Add timing and passenger details',
+            text: 'Choose the travel date, pickup time, and passenger count to help compare suitable vehicle options.',
           },
           {
             '@type': 'HowToStep',
             position: 3,
-            name: 'Request the private quote',
-            text: 'Use the quote form, phone, or WhatsApp so STW Movers can match the route and vehicle plan.',
+            name: 'View vehicle options and prices',
+            text: 'Review available vehicles and prices, then continue through the booking steps. Contact STW Movers for help with additional requirements.',
           },
         ],
       },

@@ -4,5 +4,6 @@
   </NuxtLayout>
   <ClientOnly>
     <WhatsappLeadDialog />
+    <MeasurementConsentBanner />
   </ClientOnly>
 </template>

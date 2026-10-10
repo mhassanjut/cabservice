@@ -1,3 +1,5 @@
+import { getCampaignAttribution, getMeasurementConsent } from '~/utils/measurementConsent'
+
 declare global {
   interface Window {
     dataLayer?: unknown[]
@@ -45,6 +47,15 @@ function loadGoogleAnalytics(gaId: string, pagePath: string) {
   injectAsyncScript(`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`)
 }
 
+function setGoogleConsent(consent: 'granted' | 'denied') {
+  window.gtag?.('consent', 'update', {
+    analytics_storage: consent,
+    ad_storage: consent,
+    ad_user_data: consent,
+    ad_personalization: consent,
+  })
+}
+
 function onIdleOrIntent(callback: () => void) {
   let called = false
   let timeoutId: number | undefined
@@ -81,12 +92,26 @@ export default defineNuxtPlugin({
   setup() {
     const config = useRuntimeConfig()
     const gaId = String(config.public.googleAnalyticsId || '').trim()
+    const adsId = String(config.public.googleAdsConversionId || '').trim()
     const clarityId = String(config.public.microsoftClarityId || '').trim()
 
-    if (!gaId && !clarityId) return
+    if (!gaId && !clarityId && !adsId) return
+
+    window.dataLayer = window.dataLayer || []
+    window.gtag = window.gtag || function gtagQueue(...args: unknown[]) {
+      window.dataLayer!.push(args)
+    }
+    window.gtag('consent', 'default', {
+      analytics_storage: 'denied',
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      wait_for_update: 500,
+    })
 
     const router = useRouter()
     let gaLoaded = false
+    let adsConfigured = false
     let clarityLoaded = false
 
     const ensureAnalytics = (path: string, fullPath = path) => {
@@ -95,18 +120,48 @@ export default defineNuxtPlugin({
         loadGoogleAnalytics(gaId, fullPath)
         gaLoaded = true
       }
+      if (adsId && !adsConfigured) {
+        if (!gaId) {
+          window.gtag?.('js', new Date())
+          injectAsyncScript(`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(adsId)}`)
+        }
+        window.gtag?.('config', adsId)
+        adsConfigured = true
+      }
       if (clarityId && !clarityLoaded) {
         loadMicrosoftClarity(clarityId)
         clarityLoaded = true
       }
     }
 
-    onIdleOrIntent(() => {
+    const enableMeasurement = () => {
+      if (getMeasurementConsent() !== 'granted') return
+      setGoogleConsent('granted')
+      getCampaignAttribution()
       const current = router.currentRoute.value
       ensureAnalytics(current.path, current.fullPath)
-    })
+      if (clarityId && !clarityLoaded) {
+        loadMicrosoftClarity(clarityId)
+        clarityLoaded = true
+      }
+    }
+
+    if (getMeasurementConsent() === 'granted') {
+      enableMeasurement()
+      onIdleOrIntent(enableMeasurement)
+    }
+
+    window.addEventListener('stw:measurement-consent', ((event: CustomEvent<'granted' | 'denied'>) => {
+      if (event.detail === 'granted') {
+        enableMeasurement()
+      } else {
+        setGoogleConsent('denied')
+        window.location.reload()
+      }
+    }) as EventListener)
 
     router.afterEach((to) => {
+      if (getMeasurementConsent() !== 'granted') return
       const wasGaLoaded = gaLoaded
       ensureAnalytics(to.path, to.fullPath)
       if (gaId && wasGaLoaded && shouldTrackPath(to.path)) {

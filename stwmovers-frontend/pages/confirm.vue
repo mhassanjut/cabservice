@@ -3,6 +3,8 @@ import { routes } from '~/constants/routes'
 import { bookingService } from '~/services/api/booking.service'
 import { paymentService } from '~/services/api/payment.service'
 import type { BookingDto } from '~/types/api'
+import { trackGoogleAdsPurchase, trackMarketingEvent } from '~/utils/marketingEvents'
+import { getMeasurementConsent } from '~/utils/measurementConsent'
 
 const confirmJourneyIcons = {
   pickup: '/MapPinLogo.svg',
@@ -18,6 +20,7 @@ useConfirmBackNavigation()
 
 const route = useRoute()
 const booking = useBookingStore()
+const config = useRuntimeConfig()
 const auth = useAuthStore()
 const toast = useToastStore()
 const { downloading: receiptDownloading, download: downloadReceipt } = useBookingReceipt()
@@ -27,6 +30,11 @@ const receiptEl = ref<HTMLElement | null>(null)
 const data = ref<BookingDto | null>(null)
 const confirming = ref(false)
 let timer: ReturnType<typeof setInterval> | null = null
+const handleMeasurementConsent = () => {
+  if (getMeasurementConsent() === 'granted' && data.value && isConfirmedStatus(data.value.status)) {
+    trackConfirmedPurchase(data.value)
+  }
+}
 
 const refId = computed(
   () => (route.query.ref as string) || booking.bookingReference || '',
@@ -79,9 +87,47 @@ const load = async () => {
 const isConfirmedStatus = (status: BookingDto['status']) =>
   confirmedStatuses.includes(status as (typeof confirmedStatuses)[number])
 
+const trackConfirmedPurchase = (confirmedBooking: BookingDto) => {
+  if (getMeasurementConsent() !== 'granted') return
+  const transactionId = confirmedBooking.bookingReference
+  const value = confirmedBooking.calculatedFare
+  if (!transactionId || typeof value !== 'number' || !Number.isFinite(value)) return
+
+  const storageKey = `stw:purchase:${transactionId}`
+  try {
+    if (sessionStorage.getItem(storageKey)) return
+    sessionStorage.setItem(storageKey, 'sent')
+  } catch {
+    // Analytics remains best-effort when browser storage is unavailable.
+  }
+
+  trackMarketingEvent('purchase', {
+    transaction_id: transactionId,
+    value,
+    currency: 'EUR',
+    items: [
+      {
+        item_id: confirmedBooking.carId ?? 'private-transfer',
+        item_name: confirmedBooking.carName ?? 'Private transfer',
+        item_category: confirmedBooking.rideType,
+        price: value,
+        quantity: 1,
+      },
+    ],
+  })
+  trackGoogleAdsPurchase({
+    conversionId: String(config.public.googleAdsConversionId || ''),
+    conversionLabel: String(config.public.googleAdsPurchaseConversionLabel || ''),
+    transactionId,
+    value,
+    currency: 'EUR',
+  })
+}
+
 const finalizeCheckout = async () => {
   if (!data.value?.bookingReference || !isConfirmedStatus(data.value.status)) return
 
+  trackConfirmedPurchase(data.value)
   booking.completeCheckout(data.value.bookingReference)
 
   if (sessionId.value) {
@@ -90,6 +136,7 @@ const finalizeCheckout = async () => {
 }
 
 onMounted(async () => {
+  window.addEventListener('stw:measurement-consent', handleMeasurementConsent)
   auth.hydrate()
 
   if (sessionId.value) {
@@ -130,6 +177,7 @@ onMounted(async () => {
 
 onUnmounted(() => {
   if (timer) clearInterval(timer)
+  window.removeEventListener('stw:measurement-consent', handleMeasurementConsent)
 })
 
 const newRide = () => {

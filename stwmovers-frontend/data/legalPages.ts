@@ -135,17 +135,17 @@ export const legalPages: LegalPage[] = [
       {
         heading: 'Analytics and measurement',
         body:
-          'Analytics tools may help STW Movers understand which pages are useful, how visitors move through service pages, and where quote requests begin.',
+          'Optional analytics tools may help STW Movers understand which pages are useful, how visitors move through service pages, and where quote requests begin. These tools are enabled only after you accept optional measurement.',
       },
       {
         heading: 'Advertising measurement',
         body:
-          'If advertising tools are enabled, cookies or tags may help measure campaign performance for airport transfer, private driver, taxi alternative, and cab service landing pages.',
+          'If configured, Google Ads measurement may use advertising identifiers and tags to attribute a completed booking to an advertisement. Optional advertising measurement is enabled only after you accept it.',
       },
       {
         heading: 'Managing cookies',
         body:
-          'Most browsers allow visitors to block or delete cookies. Some booking or form features may work less smoothly if essential cookies are disabled.',
+          'You can accept or reject optional measurement using the website prompt. You can reopen this choice from this page at any time. Browser settings can also block or delete cookies. Essential booking functionality remains available when optional measurement is declined.',
       },
     ],
   },
