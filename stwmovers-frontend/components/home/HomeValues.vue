@@ -11,7 +11,7 @@ import { homeValueProps } from '~/data/homeContent'
         </h2>
         <p class="home-values__lead">Designed Around Comfort, Built On Trust.</p>
       </header>
-      <div class="home-values__grid">
+      <div class="home-values__grid" role="region" aria-label="Reasons to travel with STW Movers" tabindex="0">
         <article v-for="item in homeValueProps" :key="item.title" class="home-value">
           <span class="home-icon-wrap home-value__icon">
             <NuxtImg class="home-icon" :src="item.icon" alt="" width="32" height="32" loading="lazy" />

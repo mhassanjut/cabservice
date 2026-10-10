@@ -748,6 +748,7 @@
   .home-proof__stats::-webkit-scrollbar,
   .home-intent__grid::-webkit-scrollbar,
   .home-service-clarity__links::-webkit-scrollbar,
+  .home-steps::-webkit-scrollbar,
   .home-values__grid::-webkit-scrollbar {
     display: none;
   }
@@ -755,6 +756,7 @@
   .home-proof__stat,
   .home-intent__card,
   .home-service-clarity__links li,
+  .home-steps__item,
   .home-value {
     flex: 0 0 min(76vw, 20rem);
     scroll-snap-align: start;
@@ -3749,5 +3751,124 @@ html[data-site-theme] .home-hero__intent a:focus-visible {
 @media (max-width: 859px) {
   .home-page {
     padding-bottom: 4.5rem;
+  }
+}
+
+/* Keep homepage card groups swipeable on phones after the desktop grid rules. */
+@media (max-width: 767px) {
+  .home-intent__grid,
+  .home-service-clarity__links,
+  .home-steps,
+  .home-values__grid {
+    display: flex;
+    box-sizing: border-box;
+    width: calc(100% + var(--home-gutter) + var(--home-gutter));
+    max-width: none;
+    gap: 0.875rem;
+    margin-inline: calc(-1 * var(--home-gutter));
+    padding: 0 var(--home-gutter) 0.5rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--home-gutter);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .home-intent__grid::-webkit-scrollbar,
+  .home-service-clarity__links::-webkit-scrollbar,
+  .home-steps::-webkit-scrollbar,
+  .home-values__grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .home-intent__card,
+  .home-service-clarity__links li,
+  .home-value {
+    flex: 0 0 min(82vw, 22rem);
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+
+  .home-service-clarity__links li {
+    list-style: none;
+  }
+
+  .home-steps__item {
+    flex: 0 0 min(82vw, 22rem);
+    min-width: 0;
+    min-height: 18rem;
+    padding: 1.5rem;
+    border: 1px solid var(--home-border-soft);
+    border-radius: 8px;
+    justify-content: flex-start;
+    scroll-snap-align: start;
+  }
+
+  .home-steps {
+    flex-direction: row;
+  }
+
+  .home-values__grid .home-value,
+  .home-values__grid .home-value:last-child {
+    border: 1px solid rgba(var(--theme-ink-rgb), 0.12);
+    border-radius: 8px;
+    background: rgba(var(--theme-surface-rgb), 0.055);
+  }
+}
+
+@media (max-width: 767px) {
+  .home-fleet__controls {
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .home-fleet__tabs {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 0.35rem;
+    padding: 0 0.25rem 0.35rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+
+  .home-fleet__tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .home-fleet__tab {
+    min-height: 42px;
+    padding: 0.625rem 0.85rem;
+    font-size: 0.75rem;
+    scroll-snap-align: start;
+  }
+
+  .home-fleet__carousel {
+    box-sizing: border-box;
+    width: calc(100% + var(--home-gutter) + var(--home-gutter));
+    gap: 0.875rem;
+    margin-inline: calc(-1 * var(--home-gutter));
+    padding-inline: var(--home-gutter);
+    scroll-padding-inline: var(--home-gutter);
+  }
+
+  .home-fleet__card {
+    flex-basis: calc(100vw - var(--home-gutter) - var(--home-gutter));
+    box-sizing: border-box;
+    min-height: 23rem;
+    scroll-snap-stop: always;
+  }
+
+  .home-fleet__card-media {
+    box-sizing: border-box;
+    padding: 4.25rem 0 3.5rem;
+    background: #121719;
+  }
+
+  .home-fleet__card-image {
+    object-fit: contain;
+    object-position: center;
   }
 }
