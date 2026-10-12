@@ -4,7 +4,7 @@ import AdsLandingPage from '~/components/seo/AdsLandingPage.vue'
 import { siteConfig } from '~/config/site'
 import { adsLandingPageSchema, findAdsLandingPage } from '~/data/adsLandingPages'
 
-definePageMeta({ layout: 'home' })
+definePageMeta({ layout: 'ads' })
 
 const route = useRoute()
 const slug = String(route.params.slug)

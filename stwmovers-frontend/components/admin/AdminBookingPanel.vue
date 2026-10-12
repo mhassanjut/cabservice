@@ -2,6 +2,7 @@
 import type { AdminBookingDetailDto, AdminDriverDto } from '~/types/api'
 import { adminService } from '~/services/api/admin.service'
 import { bookingStatusTone, formatStatusLabel } from '~/utils/adminStatus'
+import { sanitizeCampaignAttribution } from '~/utils/campaignAttribution'
 
 const props = defineProps<{
   open: boolean
@@ -12,6 +13,10 @@ const emit = defineEmits<{ close: [] }>()
 
 const toast = useToastStore()
 const detail = ref<AdminBookingDetailDto | null>(null)
+const attribution = computed(() => {
+  try { return sanitizeCampaignAttribution(JSON.parse(detail.value?.marketingAttribution || '{}')) }
+  catch { return {} }
+})
 const drivers = ref<AdminDriverDto[]>([])
 const loading = ref(false)
 const error = ref(false)
@@ -159,6 +164,15 @@ const onCustomFare = async () => {
               <div v-if="detail.stripeSessionId" class="admin-detail-list__wide">
                 <dt>Stripe session</dt>
                 <dd>{{ detail.stripeSessionId }}</dd>
+              </div>
+            </dl>
+          </section>
+
+          <section v-if="Object.keys(attribution).length" class="admin-panel__block">
+            <h3 class="admin-panel__block-title font-serif">Acquisition source</h3>
+            <dl class="admin-detail-list">
+              <div v-for="(value, key) in attribution" :key="key" class="admin-detail-list__wide">
+                <dt>{{ String(key).replaceAll('_', ' ') }}</dt><dd>{{ value }}</dd>
               </div>
             </dl>
           </section>

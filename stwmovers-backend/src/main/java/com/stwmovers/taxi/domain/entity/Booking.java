@@ -53,6 +53,9 @@ public class Booking {
     @Column(name = "guest_phone", length = 50)
     private String guestPhone;
 
+    @Column(name = "marketing_attribution", columnDefinition = "text")
+    private String marketingAttribution;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_id")
     private Car car;

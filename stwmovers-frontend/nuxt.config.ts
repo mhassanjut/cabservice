@@ -155,6 +155,7 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
+    '/landing/**': { headers: { 'x-robots-tag': 'noindex, follow' } },
     '/admin': { ssr: false, headers: { 'x-robots-tag': 'noindex, follow' } },
     '/admin/**': { ssr: false, headers: { 'x-robots-tag': 'noindex, follow' } },
     '/booking': { headers: { 'x-robots-tag': 'noindex, follow' } },

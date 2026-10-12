@@ -13,8 +13,10 @@ import type { BookingDraft } from '~/types/booking'
 const props = withDefaults(
   defineProps<{
     variant?: 'card' | 'bar'
+    heading?: string
+    headingTag?: 'h2' | 'h3'
   }>(),
-  { variant: 'card' },
+  { variant: 'card', heading: 'Get your transfer quote', headingTag: 'h3' },
 )
 
 const booking = useBookingStore()
@@ -415,7 +417,7 @@ const onSubmit = async () => {
     <p v-if="showMapsUnavailable" class="env-warn" role="status">
       Place suggestions are unavailable right now. Continue by WhatsApp or contact our team for help.
     </p>
-    <h3 class="font-serif">Get your transfer quote</h3>
+    <component :is="props.headingTag" class="font-serif">{{ props.heading }}</component>
     <div class="grid cols-2">
       <div class="field" :class="{ 'field--maps-pending': placesPending }">
         <label class="label" for="pickup-card">

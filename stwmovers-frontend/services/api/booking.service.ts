@@ -1,5 +1,7 @@
 import type { BookingDto, Paged } from '~/types/api'
 import { api } from '~/services/http/api'
+import { bookingAttribution } from '~/utils/campaignAttribution'
+import { getCampaignAttribution, getMeasurementConsent } from '~/utils/measurementConsent'
 
 export type CreateBookingPayload = {
   carId?: string
@@ -26,7 +28,10 @@ export const bookingService = {
   create(body: CreateBookingPayload, opts?: { auth?: boolean; silent?: boolean }) {
     return api<BookingDto>('/api/v1/bookings', {
       method: 'POST',
-      body,
+      body: {
+        ...body,
+        marketingAttribution: bookingAttribution(getCampaignAttribution(), getMeasurementConsent() === 'granted'),
+      },
       auth: opts?.auth ?? true,
       silent: opts?.silent,
     })

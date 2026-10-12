@@ -20,5 +20,6 @@ public class AdminBookingDetailResponse {
     String stripeSessionId;
     String stripePaymentIntentId;
     BigDecimal paymentAmount;
+    String marketingAttribution;
     List<String> allowedNextStatuses;
 }

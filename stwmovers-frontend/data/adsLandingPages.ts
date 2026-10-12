@@ -1,4 +1,4 @@
-import { siteConfig } from '~/config/site'
+import { canonicalPathFor } from '~/config/seoPagePolicy'
 
 export type AdsLandingPage = {
   slug: string
@@ -351,7 +351,7 @@ export const adsLandingPages: Record<string, AdsLandingPage> = {
     eyebrow: 'Cab Barcelona',
     title: 'Private Cab in Barcelona for Airport, Hotel, and City Travel',
     description:
-      'A dedicated cab Barcelona landing page for travellers who want a fast ride but prefer a premium private driver, luggage planning, and direct support.',
+      'Arrange a private Barcelona ride for airport, hotel or city travel. Share your route and passenger count to compare vehicles and prices before booking.',
     image: '/img/services/hourly.png',
     audience: 'Travellers arranging airport pickups, hotel journeys, business trips, and city transfers',
     primaryIntent: 'cab Barcelona, cab service Barcelona, private cab Barcelona',
@@ -477,7 +477,7 @@ export const adsLandingPages: Record<string, AdsLandingPage> = {
     eyebrow: 'Taxi van Barcelona',
     title: 'Private Van Transfer in Barcelona for Groups and Luggage',
     description:
-      'A dedicated landing page for groups, families, cruise guests, and luggage-heavy airport arrivals comparing taxi van Barcelona and private van transfer options.',
+      'Arrange a private Barcelona van transfer for your family or group. Confirm passenger numbers, suitcases and special requirements before booking.',
     image: '/img/home/fleet-section/mercedes-v-class.webp',
     audience: 'Families, groups, and travellers carrying extra luggage around Barcelona',
     primaryIntent: 'taxi van Barcelona, airport van transfer Barcelona, 7 seat taxi Barcelona',
@@ -547,9 +547,9 @@ export const adsLandingPages: Record<string, AdsLandingPage> = {
     proof: ['Executive presentation', 'Airport and hotel routes', 'Hourly availability', 'Luxury private transfer feel'],
     benefits: [
       {
-        title: 'Premium from the first screen',
+        title: 'Your itinerary, arranged in advance',
         body:
-          'The copy and page flow signal luxury, discretion, timing, and a more polished arrival than generic transport pages.',
+          'Share the pickup, appointments and expected waiting time so the team can plan a private chauffeur journey around your schedule.',
       },
       {
         title: 'For business and special occasions',
@@ -606,7 +606,8 @@ export function findAdsLandingPage(slug: string) {
 }
 
 export function adsLandingPageSchema(page: AdsLandingPage, siteUrl: string) {
-  const absolute = (path: string) => `${siteUrl.replace(/\/$/, '')}${path}`
+  const absolute = (path: string) => `${siteUrl.replace(/\/$/, '')}${canonicalPathFor(path)}`
+  const localBusinessId = `${siteUrl.replace(/\/$/, '')}/#localbusiness`
 
   return {
     '@context': 'https://schema.org',
@@ -628,17 +629,9 @@ export function adsLandingPageSchema(page: AdsLandingPage, siteUrl: string) {
         name: page.title,
         description: page.description,
         serviceType: 'Private chauffeur and transfer service',
+        url: absolute(page.path),
         provider: {
-          '@type': 'LocalBusiness',
-          '@id': `${siteUrl}/#localbusiness`,
-          name: 'STW Movers',
-          url: siteUrl,
-          telephone: siteConfig.contactPhone,
-          email: siteConfig.contactEmail,
-          address: {
-            '@type': 'PostalAddress',
-            ...siteConfig.contactAddressPostal,
-          },
+          '@id': localBusinessId,
         },
         areaServed: {
           '@type': 'City',
@@ -652,55 +645,9 @@ export function adsLandingPageSchema(page: AdsLandingPage, siteUrl: string) {
         },
       },
       {
-        '@type': 'HowTo',
-        '@id': `${absolute(page.path)}#quote-process`,
-        name: `How to compare vehicles for ${page.eyebrow}`,
-        description: `Steps to view available private transfer vehicles and prices for ${page.title}.`,
-        totalTime: 'PT2M',
-        step: [
-          {
-            '@type': 'HowToStep',
-            position: 1,
-            name: 'Choose pickup and destination',
-            text: 'Share the pickup point and drop-off destination for the Barcelona journey.',
-          },
-          {
-            '@type': 'HowToStep',
-            position: 2,
-            name: 'Add timing and passenger details',
-            text: 'Choose the travel date, pickup time, and passenger count to help compare suitable vehicle options.',
-          },
-          {
-            '@type': 'HowToStep',
-            position: 3,
-            name: 'View vehicle options and prices',
-            text: 'Review available vehicles and prices, then continue through the booking steps. Contact STW Movers for help with additional requirements.',
-          },
-        ],
-      },
-      {
-        '@type': 'ItemList',
-        '@id': `${absolute(page.path)}#trust-signals`,
-        name: `${page.eyebrow} trust signals`,
-        itemListElement: page.proof.map((item, index) => ({
-          '@type': 'ListItem',
-          position: index + 1,
-          name: item,
-        })),
-      },
-      {
-        '@type': 'ItemList',
-        '@id': `${absolute(page.path)}#comparison`,
-        name: `${page.eyebrow} comparison points`,
-        itemListElement: page.comparison.map((row, index) => ({
-          '@type': 'ListItem',
-          position: index + 1,
-          name: row.factor,
-          description: `${row.stw} Compared with taxi or cab: ${row.alternative}`,
-        })),
-      },
-      {
         '@type': 'FAQPage',
+        '@id': `${absolute(page.path)}#faq`,
+        url: absolute(page.path),
         mainEntity: page.faqs.map((faq) => ({
           '@type': 'Question',
           name: faq.question,

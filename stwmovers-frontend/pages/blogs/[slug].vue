@@ -20,6 +20,14 @@ const post = computed(() => detail.value?.post ?? localPost.value)
 const showError = computed(() => Boolean(error.value && !localArticle.value))
 const articleSeo = computed(() => detail.value?.seo ?? (localArticle.value ? localBlogSeo(localArticle.value) : null))
 
+if (error.value && !localArticle.value) {
+  throw createError({
+    statusCode: error.value.statusCode === 404 ? 404 : 503,
+    statusMessage: error.value.statusCode === 404 ? 'Article not found' : 'Article temporarily unavailable',
+    fatal: true,
+  })
+}
+
 if (!error.value && !post.value && !localArticle.value) {
   throw createError({ statusCode: 404, statusMessage: 'Article not found', fatal: true })
 }

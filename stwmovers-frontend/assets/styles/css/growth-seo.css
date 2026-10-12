@@ -1091,3 +1091,15 @@
     font-size: 0.78rem;
   }
 }
+.growth-route-summary { padding-block: 2.5rem; border-block: 1px solid rgba(255, 255, 255, 0.14); }
+.growth-route-summary h2 { margin: 0 0 1.5rem; font-size: 1.75rem; font-weight: 400; line-height: 1.25; }
+.growth-route-summary__facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem 2rem; margin: 0; }
+.growth-route-summary__facts > div { min-width: 0; }
+.growth-route-summary dt { margin-bottom: 0.5rem; color: var(--home-gold); font-size: 0.875rem; font-weight: 600; }
+.growth-route-summary dd { margin: 0; color: var(--home-text); font-size: 1rem; line-height: 1.6; }
+.growth-route-summary__checklist { margin-top: 1.75rem; padding-top: 1.5rem; border-top: 1px solid rgba(255, 255, 255, 0.14); }
+.growth-route-summary__checklist h3 { margin: 0 0 0.75rem; font-size: 1.125rem; font-weight: 500; }
+.growth-route-summary__checklist ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.65rem 2rem; margin: 0; padding-left: 1.2rem; color: var(--home-text-muted); line-height: 1.6; }
+@media (max-width: 560px) {
+  .growth-route-summary__facts, .growth-route-summary__checklist ul { grid-template-columns: minmax(0, 1fr); }
+}

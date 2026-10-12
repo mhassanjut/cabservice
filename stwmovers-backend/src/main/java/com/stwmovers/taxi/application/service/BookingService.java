@@ -61,6 +61,7 @@ public class BookingService {
     private final PaymentRepository paymentRepository;
     private final TourRepository tourRepository;
     private final TourCarPricingRepository tourCarPricingRepository;
+    private final BookingAttributionService bookingAttributionService;
 
     public BookingService(
             BookingRepository bookingRepository,
@@ -71,7 +72,8 @@ public class BookingService {
             BookingReferenceGenerator bookingReferenceGenerator,
             PaymentRepository paymentRepository,
             TourRepository tourRepository,
-            TourCarPricingRepository tourCarPricingRepository) {
+            TourCarPricingRepository tourCarPricingRepository,
+            BookingAttributionService bookingAttributionService) {
         this.bookingRepository = bookingRepository;
         this.carRepository = carRepository;
         this.userRepository = userRepository;
@@ -81,6 +83,7 @@ public class BookingService {
         this.paymentRepository = paymentRepository;
         this.tourRepository = tourRepository;
         this.tourCarPricingRepository = tourCarPricingRepository;
+        this.bookingAttributionService = bookingAttributionService;
     }
 
     @Transactional
@@ -183,6 +186,7 @@ public class BookingService {
                 .calculatedFare(calculatedFare)
                 .destinationCity(request.getDestinationCity())
                 .notes(normalizeNotes(request.getNotes()))
+                .marketingAttribution(bookingAttributionService.serialize(request.getMarketingAttribution()))
                 .build();
 
         return EntityMapper.toBookingResponse(bookingRepository.save(booking));
@@ -324,6 +328,7 @@ public class BookingService {
                 .stripeSessionId(stripeSessionId)
                 .stripePaymentIntentId(stripePaymentIntentId)
                 .paymentAmount(paymentAmount)
+                .marketingAttribution(booking.getMarketingAttribution())
                 .allowedNextStatuses(allowedNext)
                 .build();
     }

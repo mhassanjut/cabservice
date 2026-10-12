@@ -1,5 +1,6 @@
 import { siteConfig } from '~/config/site'
 import type { ParsedSeo } from '~/types/blog'
+import { canonicalPathFor } from '~/config/seoPagePolicy'
 import type { WpPost } from '~/types/wordpress'
 
 export type LocalBlogArticle = {
@@ -56,7 +57,7 @@ const officialSitgesTourismSource = {
 const stwServiceCatalogSource = {
   label: 'STW Movers service catalog',
   href: `${siteConfig.siteUrl}/services.md`,
-  note: 'Machine-readable STW Movers service positioning, priority pages, and local transfer clusters.',
+  note: 'STW Movers service details and links for planning a private journey.',
 }
 const stwPricingSource = {
   label: 'STW Movers quote and pricing guide',
@@ -70,7 +71,7 @@ function articleTakeaways(article: LocalBlogArticle) {
   }
   if (article.slug.includes('eixample')) {
     return [
-      'Eixample is a high-intent hotel and apartment destination, so exact address and luggage planning matter more than the airport label alone.',
+      'Use the exact Eixample hotel or apartment address when planning the drop-off, and check luggage requirements before choosing a vehicle.',
       'Private transfer is strongest for late arrivals, families, premium hotels, apartment check-ins, and business guests going directly into central Barcelona.',
       'A useful quote should include flight number, terminal if known, Eixample address, passengers, luggage, and any meet-and-greet preference.',
     ]
@@ -86,7 +87,7 @@ function articleTakeaways(article: LocalBlogArticle) {
 
   if (article.slug.includes('sitges')) {
     return [
-      'Sitges transfer intent is usually premium leisure, villas, weddings, events, or hotel travel where door-to-door comfort matters.',
+      'For a Sitges hotel, villa, wedding or event, confirm the final address and arrival time before arranging door-to-door transport.',
       'Private transfer is strongest when travellers have luggage, late arrivals, children, multiple guests, or a villa/hotel address outside the simplest taxi path.',
       'Send the exact Sitges address, pickup point, passengers, luggage, and whether the trip starts from BCN Airport, Barcelona city, or the cruise port.',
     ]
@@ -267,7 +268,7 @@ function articleSources(article: LocalBlogArticle) {
   return sources.filter((source, index, list) => list.findIndex((item) => item.href === source.href) === index)
 }
 
-export const localBlogArticles: LocalBlogArticle[] = [
+const baseLocalBlogArticles: LocalBlogArticle[] = [
   {
     slug: 'barcelona-airport-to-eixample-private-transfer-guide',
     title: 'Barcelona Airport to Eixample Private Transfer: Taxi, Cab, or Chauffeur?',
@@ -797,10 +798,10 @@ export const localBlogArticles: LocalBlogArticle[] = [
       'Choose a Barcelona cab for a short on-demand ride. Choose a private chauffeur when the trip should be pre-booked with pickup details, luggage planning, route context, passenger count, and a premium arrival experience.',
     sections: [
       {
-        heading: 'Cab language matters in Barcelona search',
+        heading: 'A taxi ride or a pre-booked chauffeur?',
         body:
-          'English-speaking travellers often use cab, taxi, private cab, and airport cab for the same intent: they need movement from one place to another. STW Movers should match that language while clearly positioning the service as private chauffeur, not street hail.',
-        bullets: ['Cab service Barcelona', 'Private cab Barcelona', 'Airport cab BCN'],
+          'In Barcelona, cab usually means taxi. Official taxis can be arranged on demand, while a private chauffeur journey is booked in advance. Choose according to your pickup time, luggage, vehicle needs and whether the driver should wait between stops.',
+        bullets: ['On-demand city trips', 'Pre-booked airport and hotel journeys', 'Hourly or multi-stop transport'],
       },
       {
         heading: 'The luxury difference',
@@ -820,9 +821,9 @@ export const localBlogArticles: LocalBlogArticle[] = [
           'STW Movers can be requested quickly by form, phone, or WhatsApp, but it is a pre-booked private chauffeur service rather than an on-demand street-hail cab.',
       },
       {
-        question: 'Is cab service Barcelona a good Google Ads keyword?',
+        question: 'Can I arrange several stops in the same booking?',
         answer:
-          'Yes, when the landing page clearly matches cab intent and then explains the premium private transfer alternative without pretending to be a street taxi.',
+          'Request an hourly or multi-stop quote with the addresses, expected duration and waiting requirements. Confirm the total and any extra-time charges before accepting the booking.',
       },
     ],
     related: [
@@ -975,6 +976,51 @@ export const localBlogArticles: LocalBlogArticle[] = [
     ],
   },
 ]
+
+const planningSections: Record<string, { heading: string; body: string }> = {
+  'barcelona-airport-transfer-vs-taxi': {
+    heading: 'Compare the same journey and vehicle requirements',
+    body: 'For a fair comparison, use the same destination, passenger count and luggage. Check the taxi tariff with AMB, then ask what a private quote includes. A lower headline fare may cover a different vehicle or omit waiting and extra stops. Compare the total for the trip you actually need.',
+  },
+  'airport-taxi-barcelona-private-transfer-guide': {
+    heading: 'Keep a practical arrival checklist offline',
+    body: 'Save the booking contact, terminal and meeting instructions before flying. After arrival, report a terminal change or baggage delay before leaving the agreed meeting area. Confirm whether the waiting allowance starts at landing or at your scheduled pickup; do not assume those times are interchangeable.',
+  },
+  'barcelona-airport-to-cruise-port-transfer-guide': {
+    heading: 'Use the ship terminal, not a generic port address',
+    body: 'Port de Barcelona lists several passenger terminals. Confirm the assignment with your cruise line and include the ship name and sailing date in the transfer request. The boarding deadline is more useful than the departure time when planning your airport connection. Keep enough flexibility for flight and baggage delays.',
+  },
+  'taxi-van-barcelona-groups-luggage-airport': {
+    heading: 'Describe the combination of passengers and bags',
+    body: 'A group of six with cabin bags and a group of six with large suitcases may need different vehicles. List the bag sizes, pushchairs and any mobility equipment, then confirm that the proposed configuration has room for everyone. A listed seat count alone does not establish luggage or wheelchair suitability.',
+  },
+  'hourly-chauffeur-barcelona-when-it-makes-sense': {
+    heading: 'Write the waiting periods into the itinerary',
+    body: 'For a hotel pickup, meeting, lunch and return journey, record when the driver needs to remain available between stops. Agree the hire start and end, included duration, overtime rate and permitted changes. If the plan only requires two separate direct rides, compare those quotes with the hourly option.',
+  },
+}
+
+const paidServiceLinks: Record<string, string> = {
+  '/landing/airport-taxi-barcelona': '/services/barcelona-airport-taxi-alternative',
+  '/landing/cab-barcelona': '/services/cab-service-barcelona',
+  '/landing/private-transfer-barcelona': '/services/city-to-city-transfers-barcelona',
+  '/landing/taxi-van-barcelona': '/services/barcelona-van-transfer',
+  '/landing/chauffeur-barcelona': '/services/executive-chauffeur-barcelona',
+}
+
+export const localBlogArticles: LocalBlogArticle[] = baseLocalBlogArticles.map((article) => {
+  const detail = planningSections[article.slug]
+  const related = article.related.map((link) => ({
+    label: link.label.replace(/landing page/i, 'service'),
+    href: paidServiceLinks[link.href] || canonicalPathFor(link.href),
+  }))
+  return {
+    ...article,
+    modified: detail || ['barcelona-airport-to-eixample-private-transfer-guide', 'barcelona-to-sitges-private-transfer-guide', 'cab-service-barcelona-private-chauffeur-guide'].includes(article.slug) ? '2026-10-12T00:00:00.000Z' : article.modified,
+    sections: detail ? [...article.sections, detail] : article.sections,
+    related: related.filter((link, index) => related.findIndex((other) => other.href === link.href) === index),
+  }
+})
 
 function articleHtml(article: LocalBlogArticle) {
   const takeaways = articleTakeaways(article)

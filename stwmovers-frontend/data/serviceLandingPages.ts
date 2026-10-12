@@ -24,11 +24,11 @@ export type ServiceLandingPage = {
 export const airportTransferSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  '@id': `${siteUrl}/airport-transfer#service`,
+  '@id': `${siteUrl}/services/barcelona-airport-transfer#service`,
   name: 'Barcelona Airport Transfer',
   alternateName: 'Private Airport Transfer Barcelona',
   description:
-    'STW Movers provides reliable private airport transfers to and from Barcelona Airport (BCN). Our professional chauffeur service offers fixed pricing, flight monitoring, meet and greet, and 24/7 availability for individuals, families, and business travelers.',
+    'STW Movers arranges pre-booked private transfers to and from Barcelona Airport. Confirm the vehicle, pickup instructions, total price and waiting conditions before travel.',
   serviceType: 'Airport Transfer',
   provider: {
     '@type': 'Organization',
@@ -36,7 +36,7 @@ export const airportTransferSchema = {
     name: 'STW Movers',
     url: `${siteUrl}/`,
   },
-  url: `${siteUrl}/airport-transfer`,
+  url: `${siteUrl}/services/barcelona-airport-transfer`,
   image: `${siteUrl}/favicon-192.png`,
   areaServed: [
     { '@type': 'City', name: 'Barcelona' },

@@ -8,8 +8,8 @@ describe('evidence-led article refresh', () => {
     const article = findLocalBlogArticle(slug)!
     const post = localArticleToWpPost(article)
     expect(post.date).toBe(article.date)
-    expect(post.modified).toBe('2026-10-07T00:00:00.000Z')
-    expect(post.content.rendered).toContain('Updated 2026-10-07')
+    expect(post.modified).toBe(article.modified)
+    expect(post.content.rendered).toContain(`Updated ${article.modified!.slice(0, 10)}`)
     expect(article.directAnswer.length).toBeGreaterThan(100)
     expect(post.content.rendered).toContain('Sources behind this guide')
     const schema = JSON.stringify(localBlogSeo(article).schema)

@@ -1,4 +1,6 @@
 import { siteConfig } from '~/config/site'
+import { canonicalPathFor } from '~/config/seoPagePolicy'
+import { routePlanning, type RoutePlanning } from './routePlanning'
 
 export type GrowthPageKind = 'service' | 'location' | 'answer'
 
@@ -42,6 +44,7 @@ export type GrowthPage = {
   sources?: GrowthSource[]
   lastUpdated?: string
   reviewedBy?: string
+  journey?: RoutePlanning
 }
 
 const bookCta = { label: 'Get private quote', href: '/journey#book-journey' }
@@ -550,7 +553,7 @@ const locationPages: GrowthPage[] = [
     description:
       'Barcelona airport chauffeur service for BCN arrivals, departures, executive guests, families, hotels, cruise port transfers, and business travel.',
     summary:
-      'This location page targets BCN airport chauffeur intent: private pickup, planned vehicle fit, and onward travel across Barcelona.',
+      'Arrange your BCN airport pickup with the flight number, arrival terminal, destination and luggage details ready before travel.',
     image: '/img/services/airport.png',
     sections: [
       {
@@ -1267,7 +1270,7 @@ const answerPages: GrowthPage[] = [
       {
         heading: 'Choose airport transfer for simple airport routes',
         body:
-          'If the trip is BCN airport to hotel, hotel to airport, or airport to cruise port, an airport transfer page usually matches the intent.',
+          'Choose a direct airport transfer for a journey between BCN Airport and a hotel, private address or cruise terminal without waiting between appointments.',
       },
       {
         heading: 'Choose chauffeur service for broader support',
@@ -1307,15 +1310,15 @@ const competitorServicePages: GrowthPage[] = [
     description:
       'Private chauffeur alternative for travellers searching cab service Barcelona, airport cab, private cab, taxi, or private driver options.',
     summary:
-      'STW Movers matches cab-service intent with a pre-booked private chauffeur experience for airport, hotel, business, family, and event travel.',
+      'Pre-book a private driver for your airport, hotel, business or family journey, with the pickup and suitable vehicle arranged before travel.',
     directAnswer:
       'STW Movers is a cab service alternative in Barcelona for travellers who want a private chauffeur planned before pickup. It is useful for airport cab searches, hotel transfers, business guests, cruise port trips, and families with luggage who want a more polished option than an on-demand cab.',
     image: '/img/services/hourly.png',
     sections: [
       {
-        heading: 'Use cab language without weakening the premium offer',
+        heading: 'A private ride planned before pickup',
         body:
-          'Barcelona visitors often use cab and taxi wording for the same need: a reliable ride. STW should capture that language while making the distinction clear: this is a pre-booked private chauffeur and transfer service.',
+          'Share your pickup and destination in advance to arrange a private transfer. Confirm the vehicle, luggage space and pickup instructions rather than relying on a street-hail ride.',
         bullets: ['Cab service Barcelona', 'Airport cab BCN', 'Private cab Barcelona'],
       },
       {
@@ -1332,9 +1335,9 @@ const competitorServicePages: GrowthPage[] = [
           'No. STW Movers is a pre-booked private chauffeur and transfer service for travellers comparing cab, taxi, airport transfer, and private driver options.',
       },
       {
-        question: 'Why target cab service Barcelona?',
+        question: 'Can I arrange an early hotel pickup?',
         answer:
-          'Many English-speaking travellers use cab wording in search. Targeting it helps STW appear for the same transport intent while offering a premium private option.',
+          'Request the pickup in advance and include your hotel address, departure time and luggage. The team will confirm availability and the meeting instructions for your booking.',
       },
       {
         question: 'Can I request a cab-style point-to-point ride?',
@@ -1367,9 +1370,9 @@ const competitorServicePages: GrowthPage[] = [
     image: '/img/services/airport.png',
     sections: [
       {
-        heading: 'Built for airport taxi and cab searches',
+        heading: 'Arrange your airport arrival in advance',
         body:
-          'Many visitors search for airport taxi Barcelona, BCN airport cab, or Barcelona airport transfer because they want a direct ride after landing. This page answers that intent while positioning STW Movers as the premium pre-booked option.',
+          'Send your flight number, terminal if known and destination before travel. Confirm the meeting point and waiting terms for your booking, and contact the team if the flight or terminal changes.',
         bullets: ['BCN Terminal 1 and Terminal 2', 'Airport to hotel, office, apartment, or cruise port', 'Private quote before travel'],
       },
       {
@@ -1398,7 +1401,7 @@ const competitorServicePages: GrowthPage[] = [
       {
         question: 'Does this page cover both airport taxi and cab wording?',
         answer:
-          'Yes. Barcelona travellers use airport taxi, airport cab, private cab, private driver, and airport transfer language for similar intent.',
+          'Yes. Compare the pickup arrangement, passenger and luggage capacity, and quoted journey conditions before choosing a taxi or a pre-booked private driver.',
       },
     ],
     related: [
@@ -1532,7 +1535,7 @@ const competitorLocationPages: GrowthPage[] = [
     description:
       'Private transfer from Barcelona Airport to the city centre, hotels, Eixample, Gothic Quarter, Sants, and business districts.',
     summary:
-      'This route page targets BCN airport to Barcelona city centre searches, including airport taxi, cab, private transfer, and hotel arrival intent.',
+      'Travel from BCN Airport to your Barcelona hotel or apartment with the final address, terminal and vehicle requirements arranged in advance.',
     directAnswer:
       'Barcelona Airport to the city centre can be handled by taxi, public transport, app ride, or pre-booked private transfer. STW Movers is the premium option when travellers want direct hotel drop-off, luggage planning, private chauffeur presentation, and pickup details reviewed before arrival.',
     image: '/img/services/airport.png',
@@ -1580,7 +1583,7 @@ const competitorLocationPages: GrowthPage[] = [
     description:
       'Private transfer from Barcelona Airport to the cruise port for guests with luggage, families, groups, and fixed embarkation schedules.',
     summary:
-      'Barcelona airport to cruise port transfer is a high-intent route where luggage, timing, terminal information, and vehicle fit matter.',
+      'Connect BCN Airport with your cruise terminal using the flight details, ship name, boarding deadline and luggage requirements to plan the pickup.',
     directAnswer:
       'A Barcelona Airport to cruise port private transfer is best when travellers have luggage, a ship boarding window, family or group needs, and want the route planned before landing. STW Movers can quote the transfer with flight number, cruise details, passengers, luggage, and timing.',
     image: '/img/contact/destination-sunset.png',
@@ -1628,7 +1631,7 @@ const competitorLocationPages: GrowthPage[] = [
     description:
       'Private transfer between Barcelona, BCN Airport, cruise port, and Girona for hotels, events, families, business travel, and luggage.',
     summary:
-      'Barcelona to Girona private transfer targets long-distance taxi and private driver searches where travellers want door-to-door comfort.',
+      'Arrange a door-to-door journey from Barcelona to Girona, with your city-centre, station or hotel destination confirmed before departure.',
     image: '/img/home/optimized/location-begur.webp',
     sections: [
       {
@@ -1721,13 +1724,13 @@ const phaseThreeRouteLocationPages: GrowthPage[] = [
     description:
       'Private transfer from Barcelona Airport to Eixample hotels, apartments, clinics, offices, and 08015 addresses with luggage-aware planning.',
     summary:
-      'This route page targets BCN airport to Eixample searches for travellers comparing airport taxi, airport cab, and private chauffeur options.',
+      'Arrange a private journey from BCN Airport to your Eixample hotel, apartment or office with luggage space and the exact drop-off address checked in advance.',
     directAnswer:
       'A Barcelona Airport to Eixample private transfer is best when travellers want direct hotel or apartment drop-off, luggage planning, and pickup details confirmed before landing. STW Movers can quote the route with flight number, destination address, passengers, luggage, and timing.',
     image: '/img/about/hero.png',
     sections: [
       {
-        heading: 'A high-intent airport-to-hotel route',
+        heading: 'Plan the final hotel or apartment drop-off',
         body:
           'Eixample is one of Barcelona’s strongest arrival zones for hotels, serviced apartments, clinics, restaurants, and offices. A private transfer is useful when the final address and luggage matter.',
         bullets: ['BCN airport to Eixample hotels', 'Airport to 08015 and central addresses', 'Family, business, and luggage-heavy arrivals'],
@@ -1817,7 +1820,7 @@ const phaseThreeRouteLocationPages: GrowthPage[] = [
     description:
       'Private executive transfer from Barcelona Airport to Fira Barcelona venues, hotels, meetings, trade shows, and conference schedules.',
     summary:
-      'Airport to Fira transfer pages support business visitors searching for taxi, cab, airport transfer, and executive chauffeur options.',
+      'Travel from BCN Airport to the correct Fira venue, with your event address, arrival deadline and luggage included in the transfer plan.',
     directAnswer:
       'A Barcelona Airport to Fira private transfer is best for exhibitors, speakers, executives, and hosted guests who need airport timing connected to an event schedule. STW Movers can quote the route with flight details, venue or hotel address, passenger count, luggage, and meeting time.',
     image: '/img/services/events.png',
@@ -1865,7 +1868,7 @@ const phaseThreeRouteLocationPages: GrowthPage[] = [
     description:
       'Private transfer from Barcelona cruise port to BCN Airport for disembarkation, luggage, family groups, flight timing, and return travel.',
     summary:
-      'Cruise port to airport transfer targets guests who need luggage-aware timing from ship disembarkation to BCN departure.',
+      'Plan your transfer from the cruise terminal to BCN Airport around disembarkation, baggage collection and your airline check-in deadline.',
     directAnswer:
       'A Barcelona cruise port to airport private transfer is useful when guests have luggage, family or group needs, and a flight time after disembarkation. STW Movers can quote the route with ship details, pickup time, passengers, luggage, flight number, and terminal if known.',
     image: '/img/contact/destination-sunset.png',
@@ -2018,7 +2021,7 @@ const competitorAnswerPages: GrowthPage[] = [
       {
         heading: 'Use official fare data for taxi questions',
         body:
-          'For taxi-meter pricing, travellers should check official AMB tariff information. STW Movers should cite official taxi rules rather than inventing taxi prices.',
+          'Check the current AMB tariff before comparing an official taxi with a private transfer. Look at the airport supplement, minimum fare and any other charges that apply to your journey.',
         bullets: ['Taxi meter fares are regulated', 'Airport trips can include supplements or minimums', 'Private chauffeur quotes are separate from taxi-meter pricing'],
       },
       {
@@ -2123,27 +2126,27 @@ const competitorAnswerPages: GrowthPage[] = [
     image: '/img/services/business.png',
     sections: [
       {
-        heading: 'Why cab wording matters',
+        heading: 'Choosing between a cab and a private transfer',
         body:
-          'In this market, visitors use taxi and cab interchangeably. STW needs to answer both terms while clearly explaining that the service is private chauffeur, not street hail.',
-        bullets: ['Cab service Barcelona', 'Private cab Barcelona', 'Airport cab BCN'],
+          'Official taxis can suit an immediate city ride. A private chauffeur transfer is booked in advance so you can discuss the pickup, passengers, luggage and any stops before travelling.',
+        bullets: ['An immediate city ride', 'A planned airport or hotel pickup', 'A multi-stop itinerary'],
       },
       {
-        heading: 'How STW should be positioned',
+        heading: 'What to agree before booking',
         body:
-          'The right message is cab convenience with chauffeur standards: route reviewed before travel, premium vehicle experience, and quote support.',
+          'Agree the pickup time, final address, suitable vehicle and total price. Ask whether waiting and additional stops are included, and keep the booking contact available on the day.',
       },
     ],
     faqs: [
       {
         question: 'Can I call STW Movers a cab service?',
         answer:
-          'STW Movers should be described as a private chauffeur and transfer service for travellers comparing cab, taxi, private driver, and airport transfer options.',
+          'STW Movers provides pre-booked private transfers and chauffeur journeys. It does not operate a street-hail taxi service.',
       },
       {
-        question: 'Is chauffeur service better for Google Ads traffic?',
+        question: 'Can I arrange several stops with the same driver?',
         answer:
-          'It can convert better for high-value trips when the page still matches cab and taxi intent but presents a premium private transfer offer.',
+          'Ask for an hourly or multi-stop quote and share the expected duration, addresses and waiting requirements. Additional time and itinerary changes should be agreed before booking.',
       },
     ],
     related: [
@@ -2171,7 +2174,7 @@ function directAnswerForPage(page: GrowthPage) {
   if (page.directAnswer) return page.directAnswer
 
   if (page.kind === 'location') {
-    return `${page.title} is a pre-booked private chauffeur and transfer option for travellers who want planned pickup timing, vehicle fit, luggage support, and direct contact before travel. It is useful for airport, cruise port, hotel, business, family, and premium taxi or cab alternative searches in Barcelona.`
+    return `${page.title} can be arranged in advance with STW Movers. Share the exact pickup and destination, travel time, passengers and luggage. Confirm the vehicle, meeting instructions and total price before booking, especially if your hotel has restricted vehicle access or you are connecting with a flight or cruise.`
   }
 
   if (page.kind === 'service') {
@@ -2198,11 +2201,19 @@ export function growthBookingSteps(page: GrowthPage) {
 }
 
 function withMarketIntent(page: GrowthPage): GrowthPage {
+  const journey = routePlanning[page.slug]
+  const sources = [...(page.sources || []), ...(journey?.sources || [])]
+  const tailoredQuote = ['hourly-chauffeur-barcelona', 'event-chauffeur-barcelona'].includes(page.slug)
+  const copyUpdated = ['barcelona-airport-chauffeur-service', 'cab-service-barcelona', 'barcelona-airport-taxi-alternative', 'chauffeur-service-vs-airport-transfer', 'barcelona-airport-taxi-cost-2026', 'barcelona-cab-service-vs-chauffeur']
   return {
     ...page,
+    journey,
+    primaryCta: tailoredQuote ? { label: 'Request a tailored itinerary', href: '/contact' } : page.primaryCta,
+    related: page.related.map((link) => ({ ...link, href: canonicalPathFor(link.href), label: link.label.replace(/landing page/gi, 'service') })),
+    sources: sources.filter((source, index) => sources.findIndex((other) => other.href === source.href) === index),
     directAnswer: directAnswerForPage(page),
     faqs: [...page.faqs, marketIntentFaq(page)],
-    lastUpdated: page.lastUpdated || growthLastUpdated,
+    lastUpdated: journey || tailoredQuote || copyUpdated.includes(page.slug) ? '2026-10-12' : page.lastUpdated || growthLastUpdated,
   }
 }
 
@@ -2225,7 +2236,7 @@ export function findGrowthPage(kind: GrowthPageKind, slug: string) {
 }
 
 function absolute(path: string) {
-  return `${siteConfig.siteUrl.replace(/\/$/, '')}${path}`
+  return `${siteConfig.siteUrl.replace(/\/$/, '')}${canonicalPathFor(path)}`
 }
 
 function breadcrumbForPage(page: GrowthPage) {
@@ -2367,24 +2378,6 @@ function primaryEntityForPage(page: GrowthPage) {
   }
 }
 
-function itemListForPage(page: GrowthPage) {
-  return {
-    '@type': 'ItemList',
-    '@id': `${absolute(page.path)}#comparison-points`,
-    name: `${page.title} comparison points`,
-    itemListElement: [
-      'Pre-booked private chauffeur',
-      'Barcelona taxi and cab alternative intent',
-      'Airport, cruise port, hotel, business, family, and city-to-city use cases',
-      'Quote based on route, passengers, luggage, timing, and vehicle fit',
-    ].map((name, index) => ({
-      '@type': 'ListItem',
-      position: index + 1,
-      name,
-    })),
-  }
-}
-
 export function growthPageSchema(page: GrowthPage) {
   return {
     '@context': 'https://schema.org',
@@ -2394,7 +2387,6 @@ export function growthPageSchema(page: GrowthPage) {
       breadcrumbForPage(page),
       faqSchemaForPage(page),
       howToSchemaForPage(page),
-      itemListForPage(page),
     ],
   }
 }

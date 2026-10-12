@@ -101,7 +101,6 @@ export function chauffeurServiceSchema(input: {
     '@type': 'Service',
     '@id': `${siteAbsoluteUrl(input.path)}#${input.id}`,
     name: input.name,
-    alternateName: ['Barcelona taxi alternative', 'Barcelona cab alternative', 'Private driver Barcelona'],
     description: input.description,
     serviceType: input.serviceType || 'Private chauffeur and transfer service',
     url: siteAbsoluteUrl(input.path),
@@ -112,14 +111,6 @@ export function chauffeurServiceSchema(input: {
       { '@type': 'Place', name: 'Barcelona Cruise Port' },
       { '@type': 'AdministrativeArea', name: 'Catalonia', addressCountry: 'ES' },
     ],
-    offers: {
-      '@type': 'AggregateOffer',
-      priceCurrency: 'EUR',
-      availability: 'https://schema.org/InStock',
-      url: siteAbsoluteUrl('/journey#book-journey'),
-      description:
-        'Private quote based on pickup, destination, date, time, passengers, luggage, vehicle fit, flight details, waiting time, and route needs.',
-    },
     potentialAction: quoteActionSchema(),
   }
 }

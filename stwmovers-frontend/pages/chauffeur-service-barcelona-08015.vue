@@ -100,9 +100,9 @@ const faqs = [
             terminals, and selected city-to-city destinations across Catalonia.
           </p>
           <p>
-            This page is intentionally specific: it helps travellers in and around 08015 understand
-            the booking process, vehicle fit, airport timing, and support options without turning the
-            postcode into a doorway page.
+            Share the exact hotel, apartment or office address in 08015, together with your travel
+            time and luggage details. Confirm the meeting point and vehicle fit before your
+            airport transfer or onward journey.
           </p>
         </div>
 

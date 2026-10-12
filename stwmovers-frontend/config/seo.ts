@@ -2,9 +2,9 @@ import { siteConfig } from './site'
 
 export const seoDefaults = {
   brandName: 'STW Movers',
-  defaultTitle: 'Barcelona Taxi, Cab & Chauffeur Transfers',
+  defaultTitle: 'Private Barcelona Airport Transfers & Chauffeur | STW Movers',
   defaultDescription:
-    'Private Barcelona taxi, cab and chauffeur transfers for BCN airport, cruise port, hotels, business travel and city-to-city rides. Premium vehicles and pre-booked quotes.',
+    'Pre-book private Barcelona airport transfers and chauffeur journeys for hotels, cruise terminals, business travel and city-to-city routes. Plan your pickup before travelling.',
   themeColor: '#0a0a0c',
   defaultOgImagePath: '/og-default.svg',
 } as const

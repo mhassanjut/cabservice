@@ -3,6 +3,7 @@ package com.stwmovers.taxi.application.dto.request;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
+import java.util.Map;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -62,4 +63,6 @@ public class CreateBookingRequest {
     private String notes;
 
     private UUID tourId;
+
+    private Map<String, String> marketingAttribution;
 }

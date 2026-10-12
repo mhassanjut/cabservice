@@ -38,10 +38,10 @@ const whatsappHref = buildWhatsappUrl({
 })
 
 const heroIntents = [
-  { icon: 'fa-solid fa-plane', label: 'Airport transfer', href: '/airport-transfer-barcelona' },
+  { icon: 'fa-solid fa-plane', label: 'Airport transfer', href: '/services/barcelona-airport-transfer' },
   { icon: 'fa-regular fa-building', label: 'Taxi alternative', href: '/barcelona-taxi-alternative' },
-  { icon: 'fa-solid fa-crown', label: 'Cab service', href: '/cab-service-barcelona' },
-  { icon: 'fa-solid fa-shield-halved', label: 'Private driver', href: '/private-driver-barcelona' },
+  { icon: 'fa-solid fa-crown', label: 'Cab service', href: '/services/cab-service-barcelona' },
+  { icon: 'fa-solid fa-shield-halved', label: 'Private driver', href: '/services/private-driver-barcelona' },
 ] as const
 </script>
 

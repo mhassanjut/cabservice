@@ -1,4 +1,5 @@
 import { seoDefaults } from '~/config/seo'
+import { isPaidCampaignPath } from '~/config/seoPagePolicy'
 
 const NOINDEX_PATH_PREFIXES = [
   '/admin',
@@ -20,7 +21,7 @@ export function absoluteUrl(pathOrUrl: string, siteUrl: string) {
 
 export function robotsForPath(path?: string) {
   if (!path) return 'index,follow'
-  return NOINDEX_PATH_PREFIXES.some((prefix) => path === prefix || path.startsWith(`${prefix}/`))
+  return isPaidCampaignPath(path) || NOINDEX_PATH_PREFIXES.some((prefix) => path === prefix || path.startsWith(`${prefix}/`))
     ? 'noindex,follow'
     : 'index,follow'
 }

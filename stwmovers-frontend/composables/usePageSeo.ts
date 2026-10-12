@@ -1,5 +1,6 @@
 import { absoluteUrl, pageDescription, pageTitle, robotsForPath } from '~/utils/seo'
 import { seoDefaults } from '~/config/seo'
+import { canonicalPathFor } from '~/config/seoPagePolicy'
 
 type PageSeoInput = {
   title?: string
@@ -12,7 +13,7 @@ type PageSeoInput = {
 export function usePageSeo(input: PageSeoInput) {
   const config = useRuntimeConfig()
   const siteUrl = config.public.siteUrl || 'https://www.stwmovers.com'
-  const canonical = input.path ? absoluteUrl(input.path, siteUrl) : siteUrl
+  const canonical = input.path ? absoluteUrl(canonicalPathFor(input.path), siteUrl) : siteUrl
   const ogImage = absoluteUrl(input.ogImagePath || seoDefaults.defaultOgImagePath, siteUrl)
   const robots = input.robots || robotsForPath(input.path)
 

@@ -20,6 +20,7 @@
     "test": "vitest run",
     "check": "npm run lint && npm run typecheck && npm test",
     "seo:sprint-check": "node scripts/test-seo-ai-sprint.mjs",
+    "seo:rendered-check": "node scripts/check-rendered-seo.mjs",
     "typecheck": "nuxt typecheck",
     "postinstall": "node scripts/ensure-oxc-wasi.mjs"
   },

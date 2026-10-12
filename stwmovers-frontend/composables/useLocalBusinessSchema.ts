@@ -15,7 +15,6 @@ export function useLocalBusinessSchema() {
         '@type': 'Organization',
         '@id': organizationId,
         name: 'STW Movers',
-        legalName: 'STW Movers',
         url: `${siteUrl}/`,
         logo: `${siteUrl}/favicon-192.png`,
         image: `${siteUrl}/favicon-192.png`,

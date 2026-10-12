@@ -292,6 +292,7 @@ export type AdminBookingDetailDto = {
   stripeSessionId?: string
   stripePaymentIntentId?: string
   paymentAmount?: number
+  marketingAttribution?: string
   allowedNextStatuses: string[]
 }
 

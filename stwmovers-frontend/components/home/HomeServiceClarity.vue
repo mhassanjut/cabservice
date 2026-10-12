@@ -16,13 +16,13 @@
 
       <ul class="home-service-clarity__links" aria-label="Priority chauffeur services">
         <li>
-          <NuxtLink to="/airport-transfer">Barcelona Airport Transfer</NuxtLink>
+          <NuxtLink to="/services/barcelona-airport-transfer">Barcelona Airport Transfer</NuxtLink>
         </li>
         <li>
-          <NuxtLink to="/chauffeur-service">Private Driver Barcelona</NuxtLink>
+          <NuxtLink to="/services/private-driver-barcelona">Private Driver Barcelona</NuxtLink>
         </li>
         <li>
-          <NuxtLink to="/executive-business-travel">Executive Chauffeur Barcelona</NuxtLink>
+          <NuxtLink to="/services/executive-chauffeur-barcelona">Executive Chauffeur Barcelona</NuxtLink>
         </li>
         <li>
           <NuxtLink to="/chauffeur-service-barcelona-08015">Chauffeur Service in 08015</NuxtLink>

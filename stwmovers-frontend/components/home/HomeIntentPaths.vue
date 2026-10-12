@@ -4,13 +4,13 @@ const intentPaths = [
     icon: 'fa-plane-arrival',
     title: 'Barcelona Airport Transfer',
     body: 'Pre-booked BCN airport pickup for arrivals, departures, hotels, cruise port links, families, and luggage-heavy journeys.',
-    href: '/airport-transfer-barcelona',
+    href: '/services/barcelona-airport-transfer',
   },
   {
     icon: 'fa-user-tie',
     title: 'Private Driver Barcelona',
     body: 'A dedicated private driver for meetings, dinners, shopping, sightseeing, business guests, and flexible city movement.',
-    href: '/private-driver-barcelona',
+    href: '/services/private-driver-barcelona',
   },
   {
     icon: 'fa-taxi',

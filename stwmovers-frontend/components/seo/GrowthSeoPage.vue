@@ -255,6 +255,22 @@ const assuranceItems = [
       </div>
     </section>
 
+    <section v-if="page.journey" class="growth-route-summary" aria-labelledby="route-summary-heading">
+      <div class="growth-container">
+        <h2 id="route-summary-heading">Your journey at a glance</h2>
+        <dl class="growth-route-summary__facts">
+          <div><dt>Pickup</dt><dd>{{ page.journey.pickup }}</dd></div>
+          <div><dt>Destination</dt><dd>{{ page.journey.destination }}</dd></div>
+          <div><dt>Timing</dt><dd>{{ page.journey.timing }}</dd></div>
+          <div><dt>Vehicle fit</dt><dd>{{ page.journey.vehicle }}</dd></div>
+        </dl>
+        <div class="growth-route-summary__checklist">
+          <h3>Details to confirm</h3>
+          <ul><li v-for="detail in page.journey.checklist" :key="detail">{{ detail }}</li></ul>
+        </div>
+      </div>
+    </section>
+
     <section class="growth-intent-strip" aria-label="Journey planning">
       <div class="growth-container growth-intent-strip__inner">
         <div>
@@ -421,19 +437,5 @@ const assuranceItems = [
       </div>
     </section>
 
-    <nav class="growth-mobile-cta" aria-label="Mobile conversion actions">
-      <a :href="`tel:${siteConfig.contactPhone}`">
-        <i class="fa-solid fa-phone" aria-hidden="true" />
-        Call
-      </a>
-      <a :href="whatsappHref" target="_blank" rel="noopener noreferrer">
-        <i class="fa-brands fa-whatsapp" aria-hidden="true" />
-        WhatsApp
-      </a>
-      <NuxtLink to="/journey#book-journey">
-        <i class="fa-solid fa-car" aria-hidden="true" />
-        Quote
-      </NuxtLink>
-    </nav>
   </article>
 </template>

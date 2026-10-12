@@ -66,22 +66,14 @@ const trackAdsAction = (action: string, location: string, label: string) => {
           </ul>
         </div>
 
-        <aside class="ads-quote-panel ads-quote-panel--form" aria-label="Plan your transfer">
-          <p class="ads-eyebrow">A considered journey</p>
-          <h2>See the right vehicle and price for your trip.</h2>
-          <ul class="ads-trip-points">
-            <li><i class="fa-solid fa-location-dot" aria-hidden="true" /> Pickup and destination</li>
-            <li><i class="fa-regular fa-calendar" aria-hidden="true" /> Travel date and time</li>
-            <li><i class="fa-solid fa-users" aria-hidden="true" /> Passenger requirements</li>
-          </ul>
-          <a
-            class="ads-btn ads-btn--gold ads-btn--wide"
-            href="#ads-booking"
-            @click="trackAdsAction('booking_form', 'hero_trip_panel', 'View vehicles and prices')"
-          >
-            Plan your journey
-          </a>
-          <div class="ads-quote-panel__contact">
+        <section id="ads-booking" class="ads-booking-panel" aria-label="Plan your transfer">
+          <BookingForm class="ads-booking-form" variant="card" heading="Your private transfer" heading-tag="h2" />
+          <p class="ads-booking-panel__note">Prices depend on your route and vehicle. Confirm luggage, waiting and special requirements before booking.</p>
+          <p v-if="['chauffeur-barcelona', 'private-transfer-barcelona', 'cab-barcelona'].includes(page.slug)" class="ads-booking-panel__note">
+            This form prices one-way transfers. For hourly hire or several stops,
+            <NuxtLink to="/services/hourly-chauffeur-barcelona">plan a tailored chauffeur itinerary</NuxtLink>.
+          </p>
+          <div class="ads-booking-panel__contact">
             <a
               class="ads-phone"
               :href="`tel:${siteConfig.contactPhone}`"
@@ -99,19 +91,7 @@ const trackAdsAction = (action: string, location: string, label: string) => {
               WhatsApp
             </a>
           </div>
-          <p class="ads-quote-panel__note">Add your trip details to compare available vehicles and prices.</p>
-        </aside>
-      </div>
-    </section>
-
-    <section id="ads-booking" class="ads-booking-section" aria-labelledby="ads-booking-heading">
-      <div class="ads-container">
-        <div class="ads-booking-section__heading">
-          <p class="ads-eyebrow">Plan your transfer</p>
-          <h2 id="ads-booking-heading">A vehicle and fare for the journey ahead.</h2>
-          <p>{{ page.audience }}. Enter your route and travel time to see available options.</p>
-        </div>
-        <BookingForm class="ads-booking-form" variant="card" />
+        </section>
       </div>
     </section>
 

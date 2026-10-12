@@ -59,7 +59,7 @@ export const legalPages: LegalPage[] = [
     eyebrow: 'Guest privacy',
     intro:
       'STW Movers collects only the information needed to answer inquiries, prepare private quotes, coordinate booked journeys, and support guests before and after travel.',
-    updated: '21 September 2026',
+    updated: '12 October 2026',
     sections: [
       {
         heading: 'Information we use',
@@ -80,6 +80,11 @@ export const legalPages: LegalPage[] = [
         heading: 'Data care',
         body:
           'Trip details are treated as private operational information. They are shared only where needed to provide the service, process the booking, or comply with applicable obligations.',
+      },
+      {
+        heading: 'Optional campaign measurement',
+        body:
+          'When you accept optional measurement, campaign identifiers, campaign labels, the landing-page path and referring website may be attached to your booking so the team can understand its acquisition source. Landing-page and referrer query strings are excluded. Declining optional measurement does not prevent booking; rejecting it later clears campaign data from the current browser session but does not remove data already saved with a booking. Contact the team with any request about saved booking data.',
       },
     ],
   },
