@@ -108,10 +108,10 @@ useRankMathSeo(articleSeo)
               <p class="blogs-eyebrow">Inside this guide</p>
               <h2 id="blog-planning-heading">Quick route through the article</h2>
               <ol>
-                <li v-for="section in localArticle.sections" :key="section.heading">
-                  {{ section.heading }}
+                <li v-for="(section, index) in localArticle.sections" :key="section.heading">
+                  <a :href="`#guide-section-${index + 1}`">{{ section.heading }}</a>
                 </li>
-                <li>Common questions</li>
+                <li><a href="#guide-questions">Common questions</a></li>
               </ol>
             </div>
             <div class="blog-article__quote-card">

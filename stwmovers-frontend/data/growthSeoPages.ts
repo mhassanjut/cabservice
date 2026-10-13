@@ -2201,6 +2201,7 @@ export function growthBookingSteps(page: GrowthPage) {
 }
 
 function withMarketIntent(page: GrowthPage): GrowthPage {
+  const arrivalAnswer = page.kind === 'answer' && ['barcelona-airport-meet-and-greet', 'flight-delay-airport-transfer-barcelona', 'family-airport-transfer-barcelona-luggage', 'barcelona-airport-transfer-cost', 'best-way-from-bcn-airport-to-barcelona'].includes(page.slug)
   const journey = routePlanning[page.slug]
   const sources = [...(page.sources || []), ...(journey?.sources || [])]
   const tailoredQuote = ['hourly-chauffeur-barcelona', 'event-chauffeur-barcelona'].includes(page.slug)
@@ -2209,11 +2210,11 @@ function withMarketIntent(page: GrowthPage): GrowthPage {
     ...page,
     journey,
     primaryCta: tailoredQuote ? { label: 'Request a tailored itinerary', href: '/contact' } : page.primaryCta,
-    related: page.related.map((link) => ({ ...link, href: canonicalPathFor(link.href), label: link.label.replace(/landing page/gi, 'service') })),
+    related: [...page.related, ...(arrivalAnswer ? [{ label: 'Airport pickup guide: terminals, delays and luggage', href: '/blogs/barcelona-airport-pickup-guide' }] : [])].map((link) => ({ ...link, href: canonicalPathFor(link.href), label: link.label.replace(/landing page/gi, 'service') })),
     sources: sources.filter((source, index) => sources.findIndex((other) => other.href === source.href) === index),
     directAnswer: directAnswerForPage(page),
-    faqs: [...page.faqs, marketIntentFaq(page)],
-    lastUpdated: journey || tailoredQuote || copyUpdated.includes(page.slug) ? '2026-10-12' : page.lastUpdated || growthLastUpdated,
+    faqs: [...page.faqs, marketIntentFaq(page), ...(arrivalAnswer ? [{ question: 'What should I confirm before accepting an airport pickup?', answer: 'Confirm the flight and terminal, exact meeting instructions, passengers and luggage, total price, waiting allowance and change conditions. Keep the operator contact available offline and report any arrival change promptly.' }] : [])],
+    lastUpdated: arrivalAnswer ? '2026-10-14' : journey || tailoredQuote || copyUpdated.includes(page.slug) ? '2026-10-12' : page.lastUpdated || growthLastUpdated,
   }
 }
 

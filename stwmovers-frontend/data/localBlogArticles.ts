@@ -2,6 +2,7 @@ import { siteConfig } from '~/config/site'
 import type { ParsedSeo } from '~/types/blog'
 import { canonicalPathFor } from '~/config/seoPagePolicy'
 import type { WpPost } from '~/types/wordpress'
+import { airportPickupArticle, articleExpansions } from './articleEditorialSprint'
 
 export type LocalBlogArticle = {
   slug: string
@@ -1008,16 +1009,18 @@ const paidServiceLinks: Record<string, string> = {
   '/landing/chauffeur-barcelona': '/services/executive-chauffeur-barcelona',
 }
 
-export const localBlogArticles: LocalBlogArticle[] = baseLocalBlogArticles.map((article) => {
+export const localBlogArticles: LocalBlogArticle[] = [airportPickupArticle, ...baseLocalBlogArticles].map((article) => {
   const detail = planningSections[article.slug]
+  const expansion = articleExpansions[article.slug]
   const related = article.related.map((link) => ({
     label: link.label.replace(/landing page/i, 'service'),
     href: paidServiceLinks[link.href] || canonicalPathFor(link.href),
   }))
   return {
     ...article,
-    modified: detail || ['barcelona-airport-to-eixample-private-transfer-guide', 'barcelona-to-sitges-private-transfer-guide', 'cab-service-barcelona-private-chauffeur-guide'].includes(article.slug) ? '2026-10-12T00:00:00.000Z' : article.modified,
-    sections: detail ? [...article.sections, detail] : article.sections,
+    modified: expansion ? '2026-10-14T00:00:00.000Z' : detail || ['barcelona-airport-to-eixample-private-transfer-guide', 'barcelona-to-sitges-private-transfer-guide', 'cab-service-barcelona-private-chauffeur-guide'].includes(article.slug) ? '2026-10-12T00:00:00.000Z' : article.modified,
+    sections: [...article.sections, ...(detail ? [detail] : []), ...(expansion?.sections || [])],
+    faqs: [...article.faqs, ...(expansion?.faqs || [])],
     related: related.filter((link, index) => related.findIndex((other) => other.href === link.href) === index),
   }
 })
@@ -1030,8 +1033,8 @@ function articleHtml(article: LocalBlogArticle) {
 
   const sectionHtml = article.sections
     .map(
-      (section) => `
-        <section>
+      (section, index) => `
+        <section id="guide-section-${index + 1}" class="article-editorial-section">
           <h2>${section.heading}</h2>
           <p>${section.body}</p>
           ${
@@ -1127,7 +1130,7 @@ function articleHtml(article: LocalBlogArticle) {
           .join('')}
       </ul>
     </section>
-    <section class="article-faq-block">
+    <section id="guide-questions" class="article-faq-block">
       <h2>Common questions</h2>
       ${faqHtml}
     </section>
