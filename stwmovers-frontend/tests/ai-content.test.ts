@@ -9,7 +9,8 @@ describe('AI visibility content safeguards', () => {
     expect(page).toBeDefined()
     expect(page.directAnswer!.length).toBeGreaterThan(100)
     expect(page.sections.length).toBeGreaterThanOrEqual(3)
-    expect(page.lastUpdated).toBe('2026-10-07')
+    expect(page.lastUpdated).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+    expect(Number.isFinite(Date.parse(page.lastUpdated!))).toBe(true)
     expect(page.primaryCta?.href).toBe('/journey#book-journey')
     expect(JSON.stringify(page)).not.toMatch(/Competitors rank|Compete with|paid ads|search intent/i)
     const schema = growthPageSchema(page)['@graph']

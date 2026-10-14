@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import '~/assets/styles/css/blogs.css'
 import { routes } from '~/constants/routes'
+import { trackMarketingEvent } from '~/utils/marketingEvents'
 import { findLocalBlogArticle, localArticleToWpPost, localBlogSeo } from '~/data/localBlogArticles'
 import {
   formatWpDate,
@@ -13,6 +14,9 @@ definePageMeta({ layout: 'home' })
 
 const route = useRoute()
 const slug = computed(() => String(route.params.slug || ''))
+const trackArticleAction = (action: string, location: string) => trackMarketingEvent('article_action_clicked', {
+  action, location, article_slug: slug.value, page_path: route.path,
+})
 const { data: detail, pending, error } = await useBlogPost(slug)
 const localArticle = computed(() => findLocalBlogArticle(slug.value))
 const localPost = computed(() => (localArticle.value ? localArticleToWpPost(localArticle.value) : null))
@@ -109,7 +113,7 @@ useRankMathSeo(articleSeo)
               <h2 id="blog-planning-heading">Quick route through the article</h2>
               <ol>
                 <li v-for="(section, index) in localArticle.sections" :key="section.heading">
-                  <a :href="`#guide-section-${index + 1}`">{{ section.heading }}</a>
+                  <a :href="`#guide-section-${index + 1}`" @click="trackArticleAction('contents_navigation', `section_${index + 1}`)">{{ section.heading }}</a>
                 </li>
                 <li><a href="#guide-questions">Common questions</a></li>
               </ol>
@@ -122,7 +126,7 @@ useRankMathSeo(articleSeo)
                 <li>Date, time, flight, or cruise details</li>
                 <li>Passengers, luggage, and preferred vehicle</li>
               </ul>
-              <NuxtLink to="/journey#book-journey">
+              <NuxtLink to="/journey#book-journey" @click="trackArticleAction('quote_started', 'planning')">
                 Request private quote
               </NuxtLink>
             </div>
@@ -139,7 +143,7 @@ useRankMathSeo(articleSeo)
                 cab alternative, or chauffeur plan for your route.
               </p>
             </div>
-            <NuxtLink to="/journey#book-journey">
+            <NuxtLink to="/journey#book-journey" @click="trackArticleAction('quote_started', 'article_end')">
               Send trip details
             </NuxtLink>
           </section>
@@ -150,7 +154,7 @@ useRankMathSeo(articleSeo)
               <h2 id="blog-related-heading">Recommended next pages</h2>
             </div>
             <div class="blog-article__related-links">
-              <NuxtLink v-for="link in localArticle.related" :key="link.href" :to="link.href">
+              <NuxtLink v-for="link in localArticle.related" :key="link.href" :to="link.href" @click="trackArticleAction('related_page_clicked', link.href)">
                 {{ link.label }}
               </NuxtLink>
             </div>

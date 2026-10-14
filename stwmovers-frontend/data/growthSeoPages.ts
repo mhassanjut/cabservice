@@ -1,6 +1,7 @@
 import { siteConfig } from '~/config/site'
 import { canonicalPathFor } from '~/config/seoPagePolicy'
 import { routePlanning, type RoutePlanning } from './routePlanning'
+import { serviceEditorial } from './serviceEditorialSprint'
 
 export type GrowthPageKind = 'service' | 'location' | 'answer'
 
@@ -2201,6 +2202,7 @@ export function growthBookingSteps(page: GrowthPage) {
 }
 
 function withMarketIntent(page: GrowthPage): GrowthPage {
+  const editorial = page.kind === 'service' ? serviceEditorial[page.slug] : undefined
   const arrivalAnswer = page.kind === 'answer' && ['barcelona-airport-meet-and-greet', 'flight-delay-airport-transfer-barcelona', 'family-airport-transfer-barcelona-luggage', 'barcelona-airport-transfer-cost', 'best-way-from-bcn-airport-to-barcelona'].includes(page.slug)
   const journey = routePlanning[page.slug]
   const sources = [...(page.sources || []), ...(journey?.sources || [])]
@@ -2208,13 +2210,14 @@ function withMarketIntent(page: GrowthPage): GrowthPage {
   const copyUpdated = ['barcelona-airport-chauffeur-service', 'cab-service-barcelona', 'barcelona-airport-taxi-alternative', 'chauffeur-service-vs-airport-transfer', 'barcelona-airport-taxi-cost-2026', 'barcelona-cab-service-vs-chauffeur']
   return {
     ...page,
+    sections: [...page.sections, ...(editorial?.sections || [])],
     journey,
     primaryCta: tailoredQuote ? { label: 'Request a tailored itinerary', href: '/contact' } : page.primaryCta,
-    related: [...page.related, ...(arrivalAnswer ? [{ label: 'Airport pickup guide: terminals, delays and luggage', href: '/blogs/barcelona-airport-pickup-guide' }] : [])].map((link) => ({ ...link, href: canonicalPathFor(link.href), label: link.label.replace(/landing page/gi, 'service') })),
+    related: [...page.related, ...(editorial?.related || []), ...(arrivalAnswer ? [{ label: 'Airport pickup guide: terminals, delays and luggage', href: '/blogs/barcelona-airport-pickup-guide' }] : [])].map((link) => ({ ...link, href: canonicalPathFor(link.href), label: link.label.replace(/landing page/gi, 'service') })).filter((link, index, links) => links.findIndex(other => other.href === link.href) === index),
     sources: sources.filter((source, index) => sources.findIndex((other) => other.href === source.href) === index),
     directAnswer: directAnswerForPage(page),
     faqs: [...page.faqs, marketIntentFaq(page), ...(arrivalAnswer ? [{ question: 'What should I confirm before accepting an airport pickup?', answer: 'Confirm the flight and terminal, exact meeting instructions, passengers and luggage, total price, waiting allowance and change conditions. Keep the operator contact available offline and report any arrival change promptly.' }] : [])],
-    lastUpdated: arrivalAnswer ? '2026-10-14' : journey || tailoredQuote || copyUpdated.includes(page.slug) ? '2026-10-12' : page.lastUpdated || growthLastUpdated,
+    lastUpdated: editorial || arrivalAnswer ? '2026-10-14' : journey || tailoredQuote || copyUpdated.includes(page.slug) ? '2026-10-12' : page.lastUpdated || growthLastUpdated,
   }
 }
 
