@@ -28,6 +28,7 @@ const form = reactive({
 })
 
 const loading = ref(false)
+const vehicleSearchFailed = ref(false)
 const submitAttempted = ref(false)
 const pickupRef = ref<HTMLInputElement | null>(null)
 const destinationRef = ref<HTMLInputElement | null>(null)
@@ -250,6 +251,7 @@ watch(
 
 const onSubmit = async () => {
   if (loading.value) return
+  vehicleSearchFailed.value = false
   mapsNoticeVisible.value = true
   submitAttempted.value = true
   pickupTouched.value = true
@@ -317,7 +319,7 @@ const onSubmit = async () => {
     booking.persistToStorage()
     await router.push(routes.cars)
   } catch {
-    toast.show('Could not load vehicles. Please retry.', 'error')
+    vehicleSearchFailed.value = true
   } finally {
     loading.value = false
   }
@@ -326,6 +328,7 @@ const onSubmit = async () => {
 
 <template>
   <section id="book-journey" class="contact-section" :class="{ 'contact-section--journey': journey }" aria-labelledby="contact-booking-heading">
+    <VehicleSearchError v-if="vehicleSearchFailed" :busy="loading" @retry="onSubmit" />
     <PickupValidationModal
       :show="showPickupModal"
       @close="showPickupModal = false"

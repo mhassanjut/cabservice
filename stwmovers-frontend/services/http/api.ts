@@ -10,7 +10,6 @@ type ApiOptions = {
   _retried401?: boolean
 }
 
-let slowTimer: ReturnType<typeof setTimeout> | null = null
 let refreshing: Promise<boolean> | null = null
 
 function getCsrfToken(): string | undefined {
@@ -37,7 +36,7 @@ export async function api<T>(path: string, opts: ApiOptions = {}): Promise<T> {
     headers['X-XSRF-TOKEN'] = csrfToken
   }
 
-  slowTimer = setTimeout(() => toast.show('Still working…', 'info'), 8000)
+  const slowTimer = opts.silent ? null : setTimeout(() => toast.show('Still working…', 'info'), 8000)
   try {
     const res = await $fetch<ApiResponse<T>>(path, {
       baseURL: String(config.public.apiBaseUrl ?? ''),
@@ -88,7 +87,7 @@ export async function api<T>(path: string, opts: ApiOptions = {}): Promise<T> {
         const msg = err.data?.message
         if (msg) toast.show(msg, 'error')
       } else if (!status) {
-        toast.show('Connection lost. Tap to retry.', 'error')
+        toast.show('Unable to connect. Please try again.', 'error')
       } else if (status >= 500) {
         toast.show('Something went wrong. Please try again.', 'error')
       }

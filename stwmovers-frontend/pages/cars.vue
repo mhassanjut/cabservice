@@ -18,6 +18,7 @@ const maps = useGoogleMaps()
 const config = useRuntimeConfig()
 const resultsLoading = ref(booking.isDraftValid && !booking.cars.length)
 const hasFetched = ref(booking.cars.length > 0)
+const vehicleSearchFailed = ref(false)
 
 const SKELETON_COUNT = 3
 
@@ -95,6 +96,8 @@ onBeforeRouteLeave(() => {
 })
 
 const fetchCars = async () => {
+  if (resultsLoading.value && hasFetched.value) return
+  vehicleSearchFailed.value = false
   resultsLoading.value = true
   try {
     if (booking.isTourBooking && booking.draft.tourId) {
@@ -121,12 +124,7 @@ const fetchCars = async () => {
     })
     booking.setCars(res.content)
   } catch {
-    toast.show(
-      booking.isTourBooking
-        ? 'Could not load vehicles for this tour. Please try again.'
-        : 'Could not load vehicles. Please try again.',
-      'error',
-    )
+    vehicleSearchFailed.value = true
     booking.setCars([])
   } finally {
     resultsLoading.value = false
@@ -274,7 +272,8 @@ const vehicleCount = computed(() => booking.cars.filter((c) => c.available).leng
                 </div>
               </article>
 
-              <p v-if="hasFetched && !resultsLoading && !booking.cars.length" class="vehicle-results__empty">
+              <VehicleSearchError v-if="vehicleSearchFailed" :busy="resultsLoading" @retry="fetchCars" />
+              <p v-if="hasFetched && !vehicleSearchFailed && !resultsLoading && !booking.cars.length" class="vehicle-results__empty">
                 <i class="fa-solid fa-car-side" aria-hidden="true" />
                 No vehicles match your filters. Try adjusting passengers or price range.
               </p>

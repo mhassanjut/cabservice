@@ -39,6 +39,7 @@ const form = reactive<BookingDraft>({
 })
 
 const loading = ref(false)
+const vehicleSearchFailed = ref(false)
 const routeSyncId = ref(0)
 const showPickupModal = ref(false)
 const pickupRef = ref<HTMLInputElement | null>(null)
@@ -213,6 +214,7 @@ const onPickupModalChoose = () => {
 
 const onSubmit = async () => {
   if (loading.value) return
+  vehicleSearchFailed.value = false
   mapsNoticeVisible.value = true
   Object.assign(touched, { pickupLocation: true, dropoffLocation: true, pickupDate: true, pickupTime: true })
   const e = errors.value
@@ -281,7 +283,7 @@ const onSubmit = async () => {
     })
     await router.push(routes.cars)
   } catch {
-    toast.show('Could not load vehicles. Please retry.', 'error')
+    vehicleSearchFailed.value = true
   } finally {
     loading.value = false
   }
@@ -295,6 +297,7 @@ const onSubmit = async () => {
     :class="props.variant === 'bar' ? 'booking-form--bar' : 'card card--elevated'"
     @submit.prevent="onSubmit"
   >
+    <VehicleSearchError v-if="vehicleSearchFailed" :busy="loading" @retry="onSubmit" />
     <PickupValidationModal
       :show="showPickupModal"
       @close="showPickupModal = false"

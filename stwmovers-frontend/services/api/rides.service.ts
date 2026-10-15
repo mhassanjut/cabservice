@@ -3,6 +3,6 @@ import { api } from '~/services/http/api'
 
 export const ridesService = {
   carsWithFare(req: CarsWithFareRequest) {
-    return api<Paged<CarWithFare>>('/api/v1/rides/cars', { method: 'POST', body: req, auth: false })
+    return api<Paged<CarWithFare>>('/api/v1/rides/cars', { method: 'POST', body: req, auth: false, silent: true })
   },
 }
