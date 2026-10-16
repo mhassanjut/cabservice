@@ -1,0 +1,31 @@
+name: Backend Diagnostics
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Inspect backend startup
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+        run: |
+          set -eu
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          echo "$VPS_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no "$VPS_USER@$VPS_HOST" 'bash -s' <<'REMOTE'
+          systemctl show stwmovers-backend --property=ActiveState,SubState,Result,ExecMainStatus,NRestarts
+          journalctl -u stwmovers-backend -n 500 --no-pager -o cat |
+            grep -E 'ERROR|Exception|Caused by:|Migration|migration|Schema-validation|Failed to|Started |Port .*in use|Could not|Unable to|Reason:' |
+            sed -E 's/((password|passwd|secret|token)[=: ]+)[^ ,;]+/\1[REDACTED]/Ig' | tail -70
+          curl --silent --max-time 10 -o /dev/null -w 'Local API HTTP %{http_code}\n' http://127.0.0.1:8080/api/v1/cars || true
+          REMOTE
