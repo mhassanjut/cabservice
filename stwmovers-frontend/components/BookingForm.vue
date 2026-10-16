@@ -40,6 +40,7 @@ const form = reactive<BookingDraft>({
 
 const loading = ref(false)
 const vehicleSearchFailed = ref(false)
+const destinationTooBroad = ref(false)
 const routeSyncId = ref(0)
 const showPickupModal = ref(false)
 const pickupRef = ref<HTMLInputElement | null>(null)
@@ -75,6 +76,7 @@ const errors = computed(() => {
   if (!form.pickupLocation) e.pickupLocation = 'Pickup is required.'
   else if (!form.pickup?.lat) e.pickupLocation = 'Select a place from suggestions.'
   if (!form.dropoffLocation) e.dropoffLocation = 'Drop-off is required.'
+  else if (destinationTooBroad.value) e.dropoffLocation = 'Choose a destination town, hotel or street address, rather than a region or country.'
   else if (!form.dropoff?.lat) e.dropoffLocation = 'Select a place from suggestions.'
   else if (areSameBookingPlaces(form.pickup, form.dropoff)) {
     e.dropoffLocation = 'Pickup and destination cannot be the same.'
@@ -128,6 +130,7 @@ const attachAutocomplete = () => {
   }
   if (dropoffRef.value) {
     maps.autocomplete(dropoffRef.value, (p) => {
+      destinationTooBroad.value = Boolean(p.broadArea)
       form.dropoffLocation = p.label
       form.dropoff = routeEndpoint({ lat: p.lat, lng: p.lng }, p.label, p.placeId)
       form.destinationCity = p.city ?? undefined

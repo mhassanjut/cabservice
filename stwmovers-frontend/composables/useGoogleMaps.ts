@@ -1,7 +1,8 @@
 import { shortestRouteMetrics } from '~/utils/directions'
 import type { RouteEndpoint } from '~/utils/routeEndpoint'
+import { isBroadBookingPlace } from '~/utils/bookingPlace'
 
-type PlaceResult = { label: string; lat: number; lng: number; city?: string | null; placeId?: string }
+type PlaceResult = { label: string; lat: number; lng: number; city?: string | null; placeId?: string; broadArea?: boolean }
 
 export type AutocompleteHandle = {
   triggerSuggestions: () => void
@@ -15,6 +16,7 @@ export type DrivingRouteResult = {
 const READY_CALLBACK = '__stwmoversGoogleMapsReady'
 
 type GooglePlace = {
+  types?: string[]
   formatted_address?: string
   geometry?: { location?: { lat: () => number; lng: () => number } }
   address_components?: Array<{ long_name: string; types: string[] }>
@@ -139,7 +141,7 @@ export function useGoogleMaps() {
     const g = getGoogleMaps()
     const ac = new g.maps.places.Autocomplete(input, {
       componentRestrictions: { country: 'es' },
-      fields: ['formatted_address', 'geometry', 'address_components', 'name', 'place_id'],
+      fields: ['formatted_address', 'geometry', 'address_components', 'name', 'place_id', 'types'],
     })
     ac.addListener('place_changed', () => {
       const place = ac.getPlace()
@@ -151,6 +153,7 @@ export function useGoogleMaps() {
         lng: loc.lng(),
         city: extractCityName(place),
         placeId: place.place_id ?? undefined,
+        broadArea: isBroadBookingPlace(place),
       })
     })
 

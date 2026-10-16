@@ -29,6 +29,7 @@ const form = reactive({
 
 const loading = ref(false)
 const vehicleSearchFailed = ref(false)
+const destinationTooBroad = ref(false)
 const submitAttempted = ref(false)
 const pickupRef = ref<HTMLInputElement | null>(null)
 const destinationRef = ref<HTMLInputElement | null>(null)
@@ -70,6 +71,7 @@ const attachAutocomplete = () => {
   }
   if (destinationRef.value && !destinationAutocomplete.value) {
     destinationAutocomplete.value = maps.autocomplete(destinationRef.value, (place) => {
+      destinationTooBroad.value = Boolean(place.broadArea)
       form.destination = place.label
       destinationPlace.value = routeEndpoint(
         { lat: place.lat, lng: place.lng },
@@ -186,7 +188,9 @@ const pickupError = computed(() =>
 )
 
 const destinationError = computed(() =>
-  fieldError('Destination', form.destination, destinationPlace.value, destinationTouched.value),
+  (destinationTouched.value || submitAttempted.value) && destinationTooBroad.value
+    ? 'Choose a destination town, hotel or street address, rather than a region or country.'
+    : fieldError('Destination', form.destination, destinationPlace.value, destinationTouched.value),
 )
 
 const dateError = computed(() => {

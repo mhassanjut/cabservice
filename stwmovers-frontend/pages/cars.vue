@@ -39,15 +39,24 @@ onMounted(async () => {
     const origin = routeEndpointFromDraft(booking.draft.pickupLocation, booking.draft.pickup)
     const destination = routeEndpointFromDraft(booking.draft.dropoffLocation, booking.draft.dropoff)
     if (origin && destination && config.public.googleMapsApiKey) {
-      await maps.load()
-      const route = await maps.resolveDrivingRoute(origin, destination)
-      const distanceChanged = route.distanceKm !== booking.draft.distanceKm
-      const durationChanged = route.durationMinutes !== booking.draft.durationMinutes
-      booking.setDraft({
-        distanceKm: route.distanceKm,
-        durationMinutes: route.durationMinutes,
-      })
-      if (distanceChanged || durationChanged) booking.setCars([])
+      try {
+        await maps.load()
+        const route = await maps.resolveDrivingRoute(origin, destination)
+        const distanceChanged = route.distanceKm !== booking.draft.distanceKm
+        const durationChanged = route.durationMinutes !== booking.draft.durationMinutes
+        booking.setDraft({
+          distanceKm: route.distanceKm,
+          durationMinutes: route.durationMinutes,
+        })
+        if (distanceChanged || durationChanged) booking.setCars([])
+      } catch {
+        if (!booking.draft.distanceKm || booking.draft.distanceKm <= 0) {
+          resultsLoading.value = false
+          toast.show('Could not calculate your route. Please edit your journey and try again.', 'error')
+          await router.replace(editJourneyLocation)
+          return
+        }
+      }
     }
   } else {
     booking.setCars([])
